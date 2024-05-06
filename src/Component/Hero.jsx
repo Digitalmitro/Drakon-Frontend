@@ -49,14 +49,14 @@ const Hero = ({closeCart}) => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-10 justify-between items-center container mx-auto py-20">
-          <div className="bg-men-running w-full lg:w-[480px] flex items-center">
-            <p className="text-4xl lg:text-5xl text-white font-bold w-5 mx-20 lg:mx-32">
-              Men Running
+          <div className="bg-men-running w-full lg:w-[480px] flex items-center justify-center">
+            <p className="text-4xl lg:text-5xl  font-bold   lg:mx-32">
+              Cricket Gloves
             </p>
           </div>
-          <div className="bg-women-running w-full lg:w-[480px] flex items-center">
-            <p className="text-4xl lg:text-5xl text-white font-bold w-5 mx-20 lg:mx-32">
-              Women Running
+          <div className="bg-women-running w-full lg:w-[480px] flex items-center justify-center">
+            <p className="text-4xl lg:text-5xl  font-bold   lg:mx-32">
+              Elbow Guard
             </p>
           </div>
           <div className="h-[300px] w-full lg:w-[480px] bg-orange-600 flex items-center justify-center">
