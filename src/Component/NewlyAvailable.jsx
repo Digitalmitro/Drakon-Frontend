@@ -27,7 +27,7 @@ const NewlyAvailable = ({closeCart}) => {
 
   const dispatch = useDispatch();
   return (
-    <div className="newly-available h-full lg:h-[600px] py-10 lg:py-0" onClick={closeCart}>
+    <div className="newly-available h-full lg:h-[600px] py-10 lg:py-0 mb-[250px]" onClick={closeCart}>
       <div className="container mx-auto">
         <div className="flex items-center flex-col lg:flex-row lg:gap-10 z-50 relative">
           <div className="flex-1">

@@ -19,7 +19,7 @@ const Home = () => {
       <Featured closeCart={hideCartModal} />
       <WhyChooseUs closeCart={hideCartModal} />
       <NewlyAvailable closeCart={hideCartModal} />
-      <ShoesDisplay closeCart={hideCartModal} />
+      {/* <ShoesDisplay closeCart={hideCartModal} /> */}
     </div>
   );
 };
