@@ -100,7 +100,7 @@ function Navbar(props) {
               <Typography variant="h5" className="flex gap-5">
                 {" "}
                 <img src={mail} width={40} />
-                Sales@sparkdispensaryok.com
+                drakonsportapparel@gmail.com
               </Typography>
             </Box>
             <Box className="flex gap-10">
