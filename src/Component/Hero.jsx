@@ -11,11 +11,11 @@ const Hero = ({ closeCart }) => {
     <>
       <div onClick={closeCart} className="bg-[#F3F3F3]">
         <div
-          className="hero-bg-img flex items-center"
+          className="hero-bg-img flex items-center  bg-contain lg:bg-cover "
           style={{ zoom: isMobile ? "0.7" : "" }}
         >
           <div className=" ml-[20px] lg:ml-[200px] text-center lg:text-left">
-            <h3 className="uppercase text-5xl font-bold text-white mb-10">
+            <h3 className="uppercase text-3xl lg:text-5xl font-bold text-white mb-10">
               Always in motion
             </h3>
             <Button
@@ -30,6 +30,7 @@ const Hero = ({ closeCart }) => {
                 "&:hover": {
                   backgroundColor: "#be410c", // Adjust the brightness to darken the color
                 },
+                zoom: isMobile ? "0.7" : ""
               }}
               variant="contained"
             >
@@ -47,6 +48,7 @@ const Hero = ({ closeCart }) => {
                 "&:hover": {
                   backgroundColor: "#cccccc", // Adjust the brightness to darken the color
                 },
+                zoom: isMobile ? "0.7" : ""
               }}
               variant="contained"
             >
@@ -55,19 +57,19 @@ const Hero = ({ closeCart }) => {
           </div>
         </div>
 
-        <div className="container mx-auto py-10 grid lg:grid-cols-4 gap-10">
-          <div className="w-full flex flex-col items-center justify-center">
+        <div className="container mx-auto py-10 grid lg:grid-cols-2 gap-10">
+          {/* <div className="w-full flex flex-col items-center justify-center">
             <img src={gloves} alt="" className="lg:w-64" />
             <h3 className="text-4xl lg:text-3xl font-bold">Cricket Gloves</h3>
             <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
             <p className="text-xl lg:text-lg">Drakon Sports Apparel gloves...</p>
-          </div>
-          <div className="w-full flex flex-col items-center justify-center">
+          </div> */}
+          {/* <div className="w-full flex flex-col items-center justify-center">
             <img src={elbowGuard} alt="" className="lg:w-64" />
             <h3 className="text-4xl lg:text-3xl font-bold">Elbow Guard</h3>
             <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
             <p className="text-xl lg:text-lg">Drakon Sports elbow guard...</p>
-          </div>
+          </div> */}
           <div className="w-full flex flex-col items-center justify-center">
             <img src={tshirt} alt="" className="lg:mb-[0px] lg:h-[400px]" />
             <h3 className="text-4xl lg:text-3xl font-bold">Drakon Hoodie</h3>
