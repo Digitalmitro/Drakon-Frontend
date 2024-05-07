@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeItem } from "../Redux/CartSlice";
+import { clearCart, removeItem } from "../Redux/CartSlice";
 
 const Cart = () => {
   const products = useSelector((state) => state.cartReducer.items);
@@ -9,10 +9,14 @@ const Cart = () => {
 
   const totalPrice = products.reduce((acc, curr) => acc + curr.price, 0);
   const netPayable = totalPrice - totalPrice * 0.3;
+  const handleChekcout = () => {
+    dispatch(clearCart());
 
+    window.location.href = "/";
+  };
   useEffect(() => {
-    window.scrollTo(0,0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="container mx-auto flex flex-col lg:flex-row lg:gap-10">
       <div className="flex-1 p-14 my-20 lg:border">
@@ -84,6 +88,7 @@ const Cart = () => {
           </h3>
         </div>
         <Button
+          onClick={handleChekcout}
           sx={{
             paddingY: "10px",
             width: "100%",
