@@ -9,24 +9,25 @@ import mail from "../assets/mail.png";
 import locationFooter from "../assets/location-footer.png";
 import { useMediaQuery } from "@mui/material";
 
-const Footer = ({closeCart}) => {
+const Footer = ({ closeCart }) => {
   const isMobile = useMediaQuery("(max-width:900px)");
   return (
     <div
-    onClick={closeCart}
+      onClick={closeCart}
       className="bg-black lg:h-[500px]"
       style={{ zoom: isMobile ? "0.7" : "" }}
     >
       <div className="container mx-auto py-10">
         <div className="flex items-center p-5 lg:p-0 h-full">
           <div className="lg:grid grid-cols-4 justify-items-center text-center lg:text-left">
-            <div className="flex flex-col items-center lg:items-start gap-6">
+            <div className="flex flex-col items-center lg:items-start gap-6 mb-5 lg:mb-0">
               <div>
                 <img src={logoFooter} alt="" />
               </div>
               <p className="text-white text-xl leading-9">
-                Amet minim mollit non deserunt ullamc est sit aliqua dolor amet
-                sint. Amet minim mollit non deserunt ullamco est sit aliqua.
+                Explore our e-commerce site for a range of sports gear,
+                including t-shirts, glasses, elbow guards, and hoodies. Shop
+                now!
               </p>
               <div className="flex gap-6">
                 <div>
@@ -43,7 +44,7 @@ const Footer = ({closeCart}) => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center lg:items-start gap-2 text-white">
+            <div className="flex flex-col items-center lg:items-start gap-2 text-white mb-5 lg:mb-0">
               <h3 className="text-2xl font-bold">Services</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col gap-7 text-xl">
@@ -53,7 +54,7 @@ const Footer = ({closeCart}) => {
                 <li>Headband</li>
               </ul>
             </div>
-            <div className="flex flex-col items-center lg:items-start gap-2 text-white">
+            <div className="flex flex-col items-center lg:items-start gap-2 text-white mb-5 lg:mb-0">
               <h3 className="text-2xl font-bold">Useful Links</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col gap-7 text-xl">
@@ -87,7 +88,7 @@ const Footer = ({closeCart}) => {
             </div>
           </div>
         </div>
-        <hr className="my-5"/>
+        <hr className="my-5" />
         <p className="text-white text-center">
           Copyright by SPORT APPAREL @ 2024. All rights reserved
         </p>
