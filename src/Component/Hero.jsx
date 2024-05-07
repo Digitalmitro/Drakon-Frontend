@@ -1,13 +1,20 @@
 import { Button, useMediaQuery } from "@mui/material";
 import React from "react";
+import gloves from "../assets/8.png";
+import elbowGuard from "../assets/7.png";
+import tshirt from "../assets/6.png";
+import sunglass from "../assets/9.png";
 
-const Hero = ({closeCart}) => {
+const Hero = ({ closeCart }) => {
   const isMobile = useMediaQuery("(max-width:900px)");
   return (
     <>
       <div onClick={closeCart} className="bg-[#F3F3F3]">
-        <div className="hero-bg-img flex items-center" style={{zoom: isMobile ? "0.6" : ""}}>
-          <div className=" ml-[50px] lg:ml-[200px] text-center lg:text-left">
+        <div
+          className="hero-bg-img flex items-center"
+          style={{ zoom: isMobile ? "0.7" : "" }}
+        >
+          <div className=" ml-[20px] lg:ml-[200px] text-center lg:text-left">
             <h3 className="uppercase text-5xl font-bold text-white mb-10">
               Always in motion
             </h3>
@@ -48,21 +55,32 @@ const Hero = ({closeCart}) => {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-10 justify-between items-center container mx-auto py-20">
-          <div className="bg-men-running w-full lg:w-[480px] flex items-center justify-center">
-            <p className="text-4xl lg:text-5xl  font-bold   lg:mx-32">
-              Cricket Gloves
+        <div className="container mx-auto py-10 grid lg:grid-cols-4 gap-10">
+          <div className="w-full flex flex-col items-center justify-center">
+            <img src={gloves} alt="" className="lg:w-64" />
+            <h3 className="text-4xl lg:text-3xl font-bold">Cricket Gloves</h3>
+            <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
+            <p className="text-xl lg:text-lg">Drakon Sports Apparel gloves...</p>
+          </div>
+          <div className="w-full flex flex-col items-center justify-center">
+            <img src={elbowGuard} alt="" className="lg:w-64" />
+            <h3 className="text-4xl lg:text-3xl font-bold">Elbow Guard</h3>
+            <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
+            <p className="text-xl lg:text-lg">Drakon Sports elbow guard...</p>
+          </div>
+          <div className="w-full flex flex-col items-center justify-center">
+            <img src={tshirt} alt="" className="lg:mb-[0px] lg:h-[400px]" />
+            <h3 className="text-4xl lg:text-3xl font-bold">Drakon Hoodie</h3>
+            <h3 className="text-3xl lg:text-2xl font-bold my-3">$ 125</h3>
+            <p className="text-xl lg:text-lg">
+            Drakon Sports Apparel hoodie...
             </p>
           </div>
-          <div className="bg-women-running w-full lg:w-[480px] flex items-center justify-center">
-            <p className="text-4xl lg:text-5xl  font-bold   lg:mx-32">
-              Elbow Guard
-            </p>
-          </div>
-          <div className="h-[300px] w-full lg:w-[480px] bg-orange-600 flex items-center justify-center">
-            <p className="text-4xl lg:text-5xl text-white font-bold w-64 ml-20 lg:ml-0">
-              Sale! Upto 40% OFF
-            </p>
+          <div className="w-full flex flex-col items-center justify-center">
+            <img src={sunglass} alt="" className="lg:w-64" />
+            <h3 className="text-4xl lg:text-3xl font-bold">Sunglass</h3>
+            <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
+            <p className="text-xl lg:text-lg">Drakon Sports sunglass...</p>
           </div>
         </div>
       </div>

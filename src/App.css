@@ -138,3 +138,11 @@
   background-color: black;
   border-radius: 100vw;
 }
+
+.floatingCart {
+  display: none;
+}
+
+.toggleFloatingCart:hover .floatingCart {
+  display: block;
+}

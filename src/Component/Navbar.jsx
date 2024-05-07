@@ -26,15 +26,17 @@ import twitter from "../assets/twitter.png";
 import facebook from "../assets/facebook.png";
 import pinterest from "../assets/pinterest.png";
 import instagram from "../assets/instagram.png";
-import { useMediaQuery } from "@mui/material";
+import { Badge, useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { CancelOutlined } from "@mui/icons-material";
 import { cartModal, removeItem } from "../Redux/CartSlice";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = ["Home", "Equipment", "Apparel", "About", "Contact"];
 
 function Navbar(props) {
+  const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -45,14 +47,22 @@ function Navbar(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <div className="flex justify-center p-5">
-        <img src={logo} alt="logo" style={{ zoom: "0.7" }} />
+        <img
+          onClick={() => navigate("/")}
+          src={logo}
+          alt="logo"
+          style={{ zoom: "0.7", cursor: "pointer" }}
+        />
       </div>
       <Divider />
       <List>
-        {navItems.map((item) => (
+        {navItems.map((item, index) => (
           <ListItem key={item} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+              <ListItemText
+                onClick={() => (index === 0 ? navigate("/") : "")}
+                primary={item}
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -76,10 +86,9 @@ function Navbar(props) {
       <AppBar component="nav" sx={{ background: "#F3F3F3", boxShadow: "none" }}>
         <Box className="bg-black">
           <Box
-            className="lg:max-w-full px-10 py-1 mx-auto gap-[30px] justify-between items-center"
+            className="lg:max-w-full px-10 py-1 mx-auto gap-[30px] hidden lg:flex justify-between items-center"
             sx={{
               zoom: isMobile ? "0.2" : "0.5",
-              display: "flex",
             }}
           >
             <Box className="flex gap-24">
@@ -102,7 +111,10 @@ function Navbar(props) {
             </Box>
           </Box>
         </Box>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar
+          className="h-[90px] lg:h-0"
+          sx={{ justifyContent: "space-between" }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -110,14 +122,21 @@ function Navbar(props) {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" }, color: "black" }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ fontSize: "2.5rem" }} />
           </IconButton>
-          <img src={logo} alt="logo" width={"100"} />
+          <img
+            onClick={() => navigate("/")}
+            src={logo}
+            alt="logo"
+            width={""}
+            className="w-36 cursor-pointer"
+          />
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item, index) => (
               <Button
                 key={item}
                 sx={{ color: "#000000", fontWeight: index === 0 ? "700" : "" }}
+                onClick={() => (index === 0 ? navigate("/") : "")}
               >
                 {item}
               </Button>
@@ -128,19 +147,67 @@ function Navbar(props) {
               ""
             ) : (
               <>
-                <img src={search} width={25} className="cursor-pointer" />
-                <img src={heart} width={25} className="cursor-pointer" />
+                <img src={search} width={""} className="cursor-pointer w-7" />
+                <img src={heart} width={""} className="cursor-pointer w-7" />
               </>
             )}
+            <div className="toggleFloatingCart">
+              <Badge
+                badgeContent={products.length > 0 ? products.length : 0}
+                color="primary"
+              >
+                <img
+                  onClick={() => navigate("/cart")}
+                  src={shoppingBag}
+                  width={""}
+                  className="cursor-pointer w-10 lg:w-7"
+                />
+              </Badge>
+              <div className="floatingCart cart-container h-[300px] w-80 overflow-y-auto absolute right-5 top-11 z-[1000] bg-black opacity-80 rounded-md">
+                {products?.map((e) => (
+                  <>
+                    <div className="cursor-pointer flex justify-between items-center p-5">
+                      <div>
+                        <img
+                          onClick={() => navigate("/cart")}
+                          src={e.image}
+                          alt=""
+                          width={50}
+                        />
+                      </div>
+                      <h3
+                        onClick={() => navigate("/cart")}
+                        className="text-white"
+                      >
+                        {e.title}
+                      </h3>
+                      <h3
+                        onClick={() => navigate("/cart")}
+                        className="text-white"
+                      >
+                        $ {e.price}
+                      </h3>
+                      <CancelOutlined
+                        onClick={() => dispatch(removeItem(e._id))}
+                        fontSize="1.5rem"
+                        className="cursor-pointer"
+                      />
+                    </div>
+                    <hr className="border-white" />
+                  </>
+                ))}
+                {products?.length < 0 && (
+                  <p className="text-white">No items in cart</p>
+                )}
+              </div>
+            </div>
             <img
-              onClick={handleOpenChange}
-              src={shoppingBag}
-              width={25}
-              className="cursor-pointer"
+              src={profile}
+              width={""}
+              className="cursor-pointer w-10 lg:w-7"
             />
-            <img src={profile} width={25} className="cursor-pointer" />
           </Box>
-          {isOpenCart && (
+          {/* {isOpenCart && (
             <div className="cart-container h-[300px] w-80 overflow-y-auto absolute right-5 top-14 z-[1000] bg-black opacity-80 rounded-md">
               {products?.map((e) => (
                 <>
@@ -159,9 +226,11 @@ function Navbar(props) {
                   <hr className="border-white" />
                 </>
               ))}
-              {products?.length < 0 && <p className="text-white">No items in cart</p>}
+              {products?.length < 0 && (
+                <p className="text-white">No items in cart</p>
+              )}
             </div>
-          )}
+          )} */}
         </Toolbar>
       </AppBar>
       <nav>
