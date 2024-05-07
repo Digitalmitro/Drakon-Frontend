@@ -1,5 +1,5 @@
 import React from "react";
-import whyChooseUsImg from "../assets/why-choose-us-img.png";
+import whyChooseUsImg from "../assets/new.png";
 import { useMediaQuery } from "@mui/material";
 
 const WhyChooseUs = ({closeCart}) => {
