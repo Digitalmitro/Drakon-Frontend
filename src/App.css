@@ -32,7 +32,7 @@
 
 .newly-available {
   position: relative; /* Make the position relative for the overlay */
-  background-image: url("./assets/bg-newly-available.png");
+  background-image: url("./assets/WhatsApp.jpeg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -147,3 +147,4 @@
 .toggleFloatingCart:hover .floatingCart {
   display: block;
 }
+
