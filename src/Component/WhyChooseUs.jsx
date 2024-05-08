@@ -71,7 +71,7 @@ const WhyChooseUs = ({ closeCart }) => {
           Why Choose Us
         </h2>
         <div className="grid  gap-y-5">
-          <div className="w-full h-[450px] lg-w-full lg:h-full lg:p-10 border-2 border-gray-400 rounded-[50%] flex justify-center items-center">
+          <div className="w-[400px] h-[400px] lg-w-full lg:h-full lg:p-10 border-2 border-gray-400 rounded-[50%] flex justify-center items-center">
             <img
               src={whyChooseUsImg}
               alt=""
