@@ -95,7 +95,7 @@ function Navbar(props) {
               <Typography variant="h5" className="flex gap-5">
                 {" "}
                 <img src={location} width={20} />
-                2919 NW Cache Rd Lawton OK 73505
+                2001 Timberloch Pl The Woodlands TX 77380
               </Typography>
               <Typography variant="h5" className="flex gap-5">
                 {" "}
@@ -107,7 +107,7 @@ function Navbar(props) {
               <img src={twitter} width={"25px"} />
               <img src={facebook} width={"25px"} />
               <img src={pinterest} width={"25px"} />
-              <img src={instagram} width={"37px"} style={{}} />
+              <img style={{height:'38px' , marginTop:"3px"}} src={instagram} width={"28px"} />
             </Box>
           </Box>
         </Box>
