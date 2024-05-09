@@ -74,7 +74,7 @@ const Footer = ({ closeCart }) => {
                 </li>
                 <li className="flex items-center gap-5">
                   <img src={mail} alt="" className="object-cover w-8" />
-                  <p>drakonsportapparel@gmail.com</p>
+                  <p>info@drakon-sports.com</p>
                 </li>
                 <li className="flex items-center gap-5">
                   <img
