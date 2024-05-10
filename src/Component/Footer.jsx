@@ -70,7 +70,7 @@ const Footer = ({ closeCart }) => {
               <ul className="flex flex-col items-center lg:items-start gap-7 text-xl">
                 <li className="flex items-center gap-5">
                   <img src={phone} alt="" className="object-cover w-10" />
-                  <p>+1 405 638-5343</p>
+                  <p>+1 858-997-3098</p>
                 </li>
                 <li className="flex items-center gap-5">
                   <img src={mail} alt="" className="object-cover w-8" />
@@ -82,7 +82,7 @@ const Footer = ({ closeCart }) => {
                     alt=""
                     className="object-cover w-12"
                   />
-                  <p>2919 nW Cache rd, lawton, oK 73505, United States</p>
+                  <p>2001 Timberloch Pl The Woodlands TX 77380</p>
                 </li>
               </ul>
             </div>
