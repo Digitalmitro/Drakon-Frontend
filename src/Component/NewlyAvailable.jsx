@@ -5,7 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addItem } from "../Redux/CartSlice";
 import { message } from "antd";
-
+import inventory from "../inventory.json"
 const NewlyAvailable = ({closeCart}) => {
   const isMobile = useMediaQuery("(max-width:900px)");
 
@@ -32,7 +32,7 @@ const NewlyAvailable = ({closeCart}) => {
         <div className="flex items-center flex-col lg:flex-row lg:gap-10 z-50 relative">
           <div className="flex-1">
             <img
-              src={products[products?.length - 1]?.image}
+              src={inventory[inventory?.length - 1]?.image}
               alt="shoes"
               style={{ zoom: isMobile ? "0.5" : "1.2" }}
             />
@@ -42,13 +42,13 @@ const NewlyAvailable = ({closeCart}) => {
               New available
             </h3>
             <h3 className="text-xl text-center lg:text-left lg:text-3xl font-bold text-white mt-2 mb-7">
-              {products[products.length - 1]?.title}
+              {inventory[inventory.length - 1]?.title}
             </h3>
             <p className="text-white text-center lg:text-left lg:text-xl leading-10 lg:w-[80%]">
-              {products[products.length - 1]?.description}
+              {inventory[inventory.length - 1]?.description}
             </p>
             <h4 className="text-[#F5743B] text-center lg:text-left text-2xl lg:text-3xl my-7 font-bold">
-              $ {products[products.length - 1]?.price}
+              $ {inventory[inventory.length - 1]?.price}
             </h4>
             <div
               className={`flex ${isMobile ? "justify-center" : ""} gap-7`}
@@ -56,7 +56,7 @@ const NewlyAvailable = ({closeCart}) => {
             >
               <Button
                 onClick={() => {
-                  dispatch(addItem(products[products?.length - 1]))
+                  dispatch(addItem(inventory[inventory?.length - 1]))
                   message.success("Item added to cart")
                 }}
                 sx={{
