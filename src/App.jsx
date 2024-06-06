@@ -13,6 +13,15 @@ import { useDispatch } from "react-redux";
 import { cartModal } from "./Redux/CartSlice";
 import Home from "./Page/Home";
 import Cart from "./Component/Cart";
+import Tab from "./Component/Tab";
+import Productdetails from "./Component/Productdetails";
+import Profile from "./Page/Profile";
+import Account from "./Page/Account";
+import Faq from "./Page/Faq";
+import Contact from "./Page/Contact";
+import About from "./Page/About";
+import Checkout from "./Page/Checkout"
+import Product from "./Component/Product";
 
 function App() {
   const isMobile = useMediaQuery("(max-width:900px)");
@@ -27,7 +36,16 @@ function App() {
         <Navbar closeCart={hideCartModal} />
         <Routes>
           <Route path="/" element={<Home />}/>
+          <Route path="/profile" element={<Profile/>}/>
+          <Route path="/account" element={<Account/>}/>
+          <Route path="/faq" element={<Faq/>}/>
+          <Route path="/productdetails" element={<Productdetails/>}/>
+          <Route path="/contact" element={<Contact/>}/>
+          <Route path="/about" element={<About/>}/>
+          <Route path="/checkout" element={<Checkout/>}/>
           <Route path="/cart" element={<Cart />}/>
+          <Route path ="/tab" element={<Tab/>}/>
+          <Route path="/product" element={<Product/>}/>
           {/* Add more routes here */}
         </Routes>
         <div

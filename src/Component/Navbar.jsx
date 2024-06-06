@@ -56,11 +56,17 @@ function Navbar(props) {
       </div>
       <Divider />
       <List>
-        {navItems.map((item, index) => (
+        {navItems.map((item) => (
           <ListItem key={item} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
               <ListItemText
-                onClick={() => (index === 0 ? navigate("/") : "")}
+                onClick={() =>
+                  navigate(
+                    item.toLowerCase() === "home"
+                      ? "/"
+                      : `/${item.toLowerCase()}`
+                  )
+                }
                 primary={item}
               />
             </ListItemButton>
@@ -107,7 +113,11 @@ function Navbar(props) {
               <img src={twitter} width={"25px"} />
               <img src={facebook} width={"25px"} />
               <img src={pinterest} width={"25px"} />
-              <img style={{height:'38px' , marginTop:"3px"}} src={instagram} width={"28px"} />
+              <img
+                style={{ height: "38px", marginTop: "3px" }}
+                src={instagram}
+                width={"28px"}
+              />
             </Box>
           </Box>
         </Box>
@@ -136,7 +146,13 @@ function Navbar(props) {
               <Button
                 key={item}
                 sx={{ color: "#000000", fontWeight: index === 0 ? "700" : "" }}
-                onClick={() => (index === 0 ? navigate("/") : "")}
+                onClick={() =>
+                  navigate(
+                    item.toLowerCase() === "home"
+                      ? "/"
+                      : `/${item.toLowerCase()}`
+                  )
+                }
               >
                 {item}
               </Button>
@@ -203,6 +219,7 @@ function Navbar(props) {
             </div>
             <img
               src={profile}
+              onClick={()=>navigate("/profile")}
               width={""}
               className="cursor-pointer w-10 lg:w-7"
             />
