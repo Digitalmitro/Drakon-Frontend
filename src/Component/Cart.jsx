@@ -18,6 +18,7 @@ const Cart = () => {
     window.scrollTo(0, 0);
   }, []);
   return (
+    <>
     <div className="container mx-auto flex flex-col lg:flex-row lg:gap-10">
       <div className="flex-1 p-14 my-20 lg:border">
         <table className="table-auto w-full text-left">
@@ -102,7 +103,16 @@ const Cart = () => {
           Proceed To Checkout
         </Button>
       </div>
+      
     </div>
+    <div className="container mb-5" >
+    <div className="login-box" style={{display:"flex",gap:"40px", width:"50%"}}>
+    <input type="text" className="form-control w-80" id="exampleFormControlInput1" placeholder=" Enter coupon code" />
+    <button type="sumbit" className="btn btn-primary coupon-btn">Apply coupon</button>
+    </div>
+    </div>
+
+   </>
   );
 };
 
