@@ -219,7 +219,7 @@ function Navbar(props) {
             </div>
             <img
               src={profile}
-              onClick={()=>navigate("/profile")}
+              onClick={()=>navigate("/account")}
               width={""}
               className="cursor-pointer w-10 lg:w-7"
             />
