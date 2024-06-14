@@ -112,7 +112,7 @@ const Account = () => {
                     </label>
                   </div>
 
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn" style={{ backgroundColor: "#FF7F50 " }}>
                     Log in
                   </button>
                 </form>
@@ -157,7 +157,7 @@ const Account = () => {
                     </a>{" "}
                   </p>
 
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn " style={{ backgroundColor: "#FF7F50 " }}>
                     Register
                   </button>
                 </form>
