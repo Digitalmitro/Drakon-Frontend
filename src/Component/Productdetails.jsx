@@ -2,6 +2,7 @@ import ReactStars from 'react-rating-stars-component';
 import Payment from '../assets/method.png';
 
 import product1 from "../assets/pad.png";
+import { useEffect } from 'react';
 const Productdetails = () => {
 
     const ratingChanged = (newRating) => {
