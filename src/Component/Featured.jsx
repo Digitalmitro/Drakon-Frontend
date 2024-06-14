@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { addItem } from "../Redux/CartSlice";
 import { message } from "antd";
 import feature from "../feature.json"
+import { Link } from "react-router-dom";
 const Featured = ({closeCart}) => {
   const dispatch = useDispatch();
 
@@ -34,7 +35,8 @@ const Featured = ({closeCart}) => {
         </h2>
         <div className="flex flex-col lg:flex-row gap-10 justify-between py-20">
           {feature?.map((e) => (
-            <div className="shadow-lg lg:h-[600px] lg:w-[400px] lg:p-20 flex flex-col justify-between items-center gap-6 lg:gap-0 bg-white p-10">
+           <Link to={"/productDetails"}>
+             <div className="shadow-lg lg:h-[600px] lg:w-[400px] lg:p-20 flex flex-col justify-between items-center gap-6 lg:gap-0 bg-white p-10">
               <div className="lg:w-[200px] h-[200px] flex justify-center">
                 <img
                   src={e.image}
@@ -64,6 +66,7 @@ const Featured = ({closeCart}) => {
                 Buy now
               </Button>
             </div>
+           </Link>
           ))}
         </div>
       </div>

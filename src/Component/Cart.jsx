@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeItem } from "../Redux/CartSlice";
 
@@ -17,102 +17,156 @@ const Cart = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // pagination logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 3; // You can adjust this value
+  const totalPages = Math.ceil(products.length / productsPerPage);
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <>
-    <div className="container mx-auto flex flex-col lg:flex-row lg:gap-10">
-      <div className="flex-1 p-14 my-20 lg:border">
-        <table className="table-auto w-full text-left">
-          <thead>
-            <tr>
-              <th></th>
-              <th></th>
-              <th>Product</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product._id} className="border-b-2">
-                <td
-                  className="cursor-pointer"
-                  onClick={() => dispatch(removeItem(product._id))}
-                >
-                  <svg
-                    width={40}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+      <div className="container mx-auto flex flex-col lg:flex-row lg:gap-10">
+        <div className="flex-1 p-14 mt-2">
+          <div className=" container p-2 pt-4 mb-5 border ">
+          <table className="table-auto w-full text-left py-2">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>Product</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentProducts.map((product) => (
+                <tr key={product._id} className="border-b-2 ">
+                  <td
+                    className="cursor-pointer"
+                    onClick={() => dispatch(removeItem(product._id))}
                   >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <path
-                        d="M16 8L8 16M8.00001 8L16 16"
-                        stroke="#000000"
-                        stroke-width="1.5"
+                    <svg
+                      width={40}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                      ></path>{" "}
-                    </g>
-                  </svg>
-                </td>
-                <td>
-                  <img className="w-24 h-24" src={product.image} alt="" />
-                </td>
-                <td>{product.title}</td>
-                <td>$ {product.price}</td>
-              </tr>
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <path
+                          d="M16 8L8 16M8.00001 8L16 16"
+                          stroke="#000000"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></path>{" "}
+                      </g>
+                    </svg>
+                  </td>
+                  <td>
+                    <img className="w-24 h-24" src={product.image} alt="" />
+                  </td>
+                  <td>{product.title}</td>
+                  <td>$ {product.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <ul className="pagination mt-2 d-flex justify-content-center">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <li
+                key={index}
+                className={`page-item ${
+                  currentPage === index + 1 ? "active" : ""
+                }`}
+              >
+                <button
+                  className="page-link"
+                  style={{  backgroundColor: "#F5743B",}}
+                  onClick={() => paginate(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              </li>
             ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex-1 p-14 lg:my-20 border">
-        <h2 className="text-3xl font-bold mb-5">Cart Total</h2>
-        <div className="flex justify-between mb-5">
-          <h3 className="text-xl font-bold text-gray-400">Subtotal</h3>
-          <h3 className="text-xl font-bold text-gray-400">$ {totalPrice}</h3>
-        </div>
-        <div className="flex justify-between mb-10">
-          <h3 className="text-xl font-bold text-red-400">(-) Tax</h3>
-          <h3 className="text-xl font-bold text-red-400">3%</h3>
-        </div>
-        <hr />
-        <div className="flex justify-between my-10">
-          <h3 className="text-xl font-bold text-gray-400">You Pay</h3>
-          <h3 className="text-xl font-bold text-gray-400">
-            $ {netPayable.toFixed(2)}
-          </h3>
-        </div>
-        <Button
-          onClick={handleChekcout}
-          sx={{
-            paddingY: "10px",
-            width: "100%",
-            background: "#F5743B",
-            "&:hover": {
-              backgroundColor: "#be410c", // Adjust the brightness to darken the color
-            },
-          }}
-          variant={"contained"}
+          </ul>
+          </div>
+
+
+
+          <div className="container ">
+        <div
+          className="login-box"
+          style={{ display: "flex", gap: "40px" }}
         >
-          Proceed To Checkout
-        </Button>
+          <input
+            type="text"
+            className="form-control w-80"
+            id="exampleFormControlInput1"
+            placeholder=" Enter coupon code"
+          />
+          <button
+            type="sumbit"
+            className="btn btn-primary coupon-btn"
+            style={{ backgroundColor: "coral" }}
+          >
+            Apply coupon
+          </button>
+        </div>
+      </div>
+
+        </div>
+        
+        <div className="flex-1 p-14 lg:my-20 border">
+          <h2 className="text-3xl font-bold mb-5">Cart Total</h2>
+          <div className="flex justify-between mb-5">
+            <h3 className="text-xl font-bold text-gray-400">Subtotal</h3>
+            <h3 className="text-xl font-bold text-gray-400">$ {totalPrice}</h3>
+          </div>
+          <div className="flex justify-between mb-10">
+            <h3 className="text-xl font-bold text-red-400">(-) Tax</h3>
+            <h3 className="text-xl font-bold text-red-400">3%</h3>
+          </div>
+          <hr />
+          <div className="flex justify-between my-10">
+            <h3 className="text-xl font-bold text-gray-400">You Pay</h3>
+            <h3 className="text-xl font-bold text-gray-400">
+              $ {netPayable.toFixed(2)}
+            </h3>
+          </div>
+          <Button
+            onClick={handleChekcout}
+            sx={{
+              paddingY: "10px",
+              width: "100%",
+              background: "#F5743B",
+              "&:hover": {
+                backgroundColor: "#be410c", // Adjust the brightness to darken the color
+              },
+            }}
+            variant={"contained"}
+          >
+            Proceed To Checkout
+          </Button>
+        </div>
       </div>
       
-    </div>
-    <div className="container mb-5" >
-    <div className="login-box" style={{display:"flex",gap:"40px", width:"50%"}}>
-    <input type="text" className="form-control w-80" id="exampleFormControlInput1" placeholder=" Enter coupon code" />
-    <button type="sumbit" className="btn btn-primary coupon-btn">Apply coupon</button>
-    </div>
-    </div>
-
-   </>
+    </>
   );
 };
 

@@ -17,11 +17,16 @@ import Tab from "./Component/Tab";
 import Productdetails from "./Component/Productdetails";
 import Profile from "./Page/Profile";
 import Account from "./Page/Account";
-import Faq from "./Page/Faq";
 import Contact from "./Page/Contact";
 import About from "./Page/About";
 import Checkout from "./Page/Checkout"
+import Category from "./Page/Category"
 import Product from "./Component/Product";
+import Faq from "./Page/NavPolicies/Faq";
+import ShippingPolicy from "./Page/NavPolicies/ShippingPolicy";
+import PrivacyPolicy from "./Page/NavPolicies/PrivacyPolicy";
+import ReturnAndRefund from "./Page/NavPolicies/ReturnAndRefund";
+import TermsAndCondition from "./Page/NavPolicies/TermsAndCondition";
 
 function App() {
   const isMobile = useMediaQuery("(max-width:900px)");
@@ -38,7 +43,6 @@ function App() {
           <Route path="/" element={<Home />}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/account" element={<Account/>}/>
-          <Route path="/faq" element={<Faq/>}/>
           <Route path="/productdetails" element={<Productdetails/>}/>
           <Route path="/contact" element={<Contact/>}/>
           <Route path="/about" element={<About/>}/>
@@ -46,7 +50,14 @@ function App() {
           <Route path="/cart" element={<Cart />}/>
           <Route path ="/tab" element={<Tab/>}/>
           <Route path="/product" element={<Product/>}/>
-          {/* Add more routes here */}
+
+          <Route path="/shippingpolicy" element={<ShippingPolicy/>}/>
+          <Route path="/privacypolicy" element={<PrivacyPolicy/>}/>
+          <Route path="/returnrefund" element={<ReturnAndRefund/>}/>
+          <Route path="/faq" element={<Faq/>}/>
+          <Route path="/category" element={<Category/>}/>
+
+          <Route path="/termscondition" element={<TermsAndCondition/>}/>
         </Routes>
         <div
           onClick={hideCartModal}
@@ -60,7 +71,7 @@ function App() {
             <input
               style={{ zoom: isMobile ? "0.5" : "" }}
               type="text"
-              className="w-1/2 rounded-full p-5 mr-5 bg-transparent border-2 border-white outline-white text-white placeholder-white"
+              className="w-1/2 rounded-full px-5 py-4 mr-5 bg-transparent border-2 border-white outline-white text-white placeholder-white"
               placeholder="Enter your email"
             />
             <Button

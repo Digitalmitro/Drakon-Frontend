@@ -2,7 +2,7 @@ const Contact = () => {
 
     return (
         <>
-            <div className="container-fluid contact-banner">
+            <div className="container-fluid contact-banner d-flex items-center justify-content-center text-center">
                 <h2 className="text-center size">Contact</h2>
             </div>
 
@@ -13,8 +13,8 @@ const Contact = () => {
 
 
 
-                <div className="container my-5">
-                    <div className="d-flex" style={{gap:"80px"}}> 
+                <div className="container my-5 py-5">
+                    <div className="d-flex m-3" style={{gap:"80px"}}> 
                         <div className="col-6 ms-1">
                             <h5 className="fs-6 text">Have a question? </h5>
                             <h3 className="fs-2 text pb-4 fw-bold">Send Message</h3>

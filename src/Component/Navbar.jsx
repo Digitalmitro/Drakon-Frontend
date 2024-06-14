@@ -30,7 +30,7 @@ import { Badge, useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { CancelOutlined } from "@mui/icons-material";
 import { cartModal, removeItem } from "../Redux/CartSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = ["Home", "Equipment", "Apparel", "About", "Contact"];
@@ -64,6 +64,9 @@ function Navbar(props) {
                   navigate(
                     item.toLowerCase() === "home"
                       ? "/"
+                      : item.toLowerCase() === "equipment" ||
+                        item.toLowerCase() === "apparel"
+                      ? `/product`
                       : `/${item.toLowerCase()}`
                   )
                 }
@@ -109,7 +112,27 @@ function Navbar(props) {
                 info@drakon-sports.com
               </Typography>
             </Box>
+            <Box className="flex gap-24"></Box>
             <Box className="flex gap-10">
+              <div className="mt-2 gap-5 d-flex justify-content-center mx-5">
+                <Typography variant="h5" className="flex gap-5">
+                  <Link to={"/shippingpolicy"}>shipping policy</Link>
+                </Typography>
+                <Typography variant="h5" className="flex gap-5">
+                  <Link to={"/returnrefund"}>return & refund</Link>
+                </Typography>
+
+                <Typography variant="h5" className="flex gap-5">
+                  <Link to={"/privacypolicy"}>privacy policy</Link>
+                </Typography>
+                <Typography variant="h5" className="flex gap-5">
+                  <Link to={"/termscondition"}>Terms & Condition</Link>
+                </Typography>
+                <Typography variant="h5" className="flex gap-5">
+                  <Link to={"/faq"}>FAQ</Link>
+                </Typography>
+              </div>
+
               <img src={twitter} width={"25px"} />
               <img src={facebook} width={"25px"} />
               <img src={pinterest} width={"25px"} />
@@ -150,6 +173,9 @@ function Navbar(props) {
                   navigate(
                     item.toLowerCase() === "home"
                       ? "/"
+                      : item.toLowerCase() === "equipment" ||
+                        item.toLowerCase() === "apparel"
+                      ? `/product`
                       : `/${item.toLowerCase()}`
                   )
                 }
@@ -219,7 +245,7 @@ function Navbar(props) {
             </div>
             <img
               src={profile}
-              onClick={()=>navigate("/account")}
+              onClick={() => navigate("/account")}
               width={""}
               className="cursor-pointer w-10 lg:w-7"
             />
