@@ -2,18 +2,46 @@ import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeItem } from "../Redux/CartSlice";
+import axios from "axios";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import product1 from "../assets/pad.png";
+import { message } from "antd";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
 const Cart = () => {
-  const products = useSelector((state) => state.cartReducer.items);
-  const dispatch = useDispatch();
+  const token = Cookies.get("token");
+  const decodedToken = token && jwtDecode(token);
+  const user = decodedToken?.email;
+  const user_id = decodedToken?._id;
+  
+  const { id } = useParams();
+  const navigate = useNavigate()
+  const [data, setData] = useState();
+ 
+  const handleProduct = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
+      );
+      console.log(response);
 
-  const totalPrice = products.reduce((acc, curr) => acc + curr.price, 0);
-  const netPayable = totalPrice - totalPrice * 0.3;
-  const handleChekcout = () => {
-    dispatch(clearCart());
-
-    window.location.href = "/";
+      setData(response.data.wishlist);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+
+  console.log("data", data);
+  const totalPrice = data?.reduce((acc, curr) => acc + curr.price, 0);
+  const netPayable = totalPrice - (totalPrice * 0.3);
+
+  useEffect(() => {
+    handleProduct();
+  }, []);
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -21,16 +49,32 @@ const Cart = () => {
   // pagination logic
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 3; // You can adjust this value
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const totalPages = Math.ceil(data?.length / productsPerPage);
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
+  const currentProducts = data?.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+
+  async function removedProductFromCart(productId) {
+    try {
+      const  data  = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_API}/wishlist/${productId}`
+      );
+      
+      handleProduct();
+      
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   return (
     <>
@@ -47,11 +91,11 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody>
-              {currentProducts.map((product) => (
+              {currentProducts?.map((product) => (
                 <tr key={product._id} className="border-b-2 ">
                   <td
                     className="cursor-pointer"
-                    onClick={() => dispatch(removeItem(product._id))}
+                    onClick={() => removedProductFromCart(product._id)}
                   >
                     <svg
                       width={40}
@@ -136,7 +180,7 @@ const Cart = () => {
           <h2 className="text-3xl font-bold mb-5">Cart Total</h2>
           <div className="flex justify-between mb-5">
             <h3 className="text-xl font-bold text-gray-400">Subtotal</h3>
-            <h3 className="text-xl font-bold text-gray-400">$ {totalPrice}</h3>
+            <h3 className="text-xl font-bold text-gray-400">${totalPrice}</h3>
           </div>
           <div className="flex justify-between mb-10">
             <h3 className="text-xl font-bold text-red-400">(-) Tax</h3>
@@ -150,13 +194,13 @@ const Cart = () => {
             </h3>
           </div>
           <Button
-            onClick={handleChekcout}
+           onClick={() => navigate(`/checkout`)}
             sx={{
               paddingY: "10px",
               width: "100%",
               background: "#F5743B",
               "&:hover": {
-                backgroundColor: "#be410c", // Adjust the brightness to darken the color
+                backgroundColor: "#be410c", 
               },
             }}
             variant={"contained"}
