@@ -1,19 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import pad2 from "../assets/pad2.png";
 import RangeSlider from "./rangeSlider"
 import { Link } from "react-router-dom";
+import axios from 'axios'
 
 const Product = () => {
 
     const [minPrice, setMinPrice] = useState(2500);
   const [maxPrice, setMaxPrice] = useState(8500);
+  const  [data, setData] = useState()
+  const  [load, setLoad] = useState(false)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 8
+
+
+  const getData = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_API}/products`)
+       await setData(res.data)
+       setLoad(true)
+    } catch (error) {
+      // Handle error
+      console.error('Error fetching data:', error)
+      setLoad(true)
+
+    }
+  }  
+  console.log("data", data)
   const handleMinPriceChange = (e) => {
     const newMinPrice = parseInt(e.target.value);
     if (newMinPrice >= 0 && newMinPrice <= maxPrice - 500) {
       setMinPrice(newMinPrice);
     }
   };
+  
+  useEffect(() => {
+    getData()
+  },[])
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  }
+
+  const paginatedData = data?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  const totalPages = Math.ceil(data?.length / itemsPerPage)
+
+
 
   const handleMaxPriceChange = (e) => {
     const newMaxPrice = parseInt(e.target.value);
@@ -162,176 +199,49 @@ const Product = () => {
             <div className="col-md-9 my-5">
               <div class="row ">
               
-               <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-               <Link to={"/productDetails"}>  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title ">Wireless Headphones</h5>
-                      <p class="card-text">$99.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐☆</span>
-                      </p>
-                    </div>
-                  </div> </Link>
-                </div>
-              
-            
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <Link to={"/productDetails"}>   <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Smartwatch</h5>
-                      <p class="card-text">$199.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐⭐</span>
-                      </p>
-                    </div>
+              {load ? (
+                  paginatedData.map((info)=> {
+                    return(
+                      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                      <Link to={`/productDetails/${info._id}`}>  <div class="card h-100">
+                           <img src={info.image} />
+                           <div class="card-body">
+                             <h5 class="card-title ">{info.title}</h5>
+                             <p class="card-text">${info.price}</p>
+                             <p class="card-text">
+                               <span class="text-warning star">⭐⭐⭐⭐☆</span>
+                             </p>
+                           </div>
+                         </div> </Link>
                        </div>
-                       </Link ></div>
-               
-               
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <Link to={"/productDetails"}> <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Bluetooth Speaker</h5>
-                      <p class="card-text">$49.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐☆</span>
-                      </p>
-                    </div>
-                  </div>
-               
-                   </Link>  </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <Link to={"/productDetails"}>
 
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Laptop Stand</h5>
-                      <p class="card-text"> $29.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐☆</span>
-                      </p>
-                    </div>
-                  </div>
-             </Link>
-             </div>
 
-             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    
+                    )
+                  })
+              ): "loading...."}
 
-             <Link to={"/productDetails"}>
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Smartphone</h5>
-                      <p class="card-text">$699.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐⭐</span>
-                      </p>
-                    </div>
-                  </div>
-               
-                </Link>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <Link to={"/productDetails"}>
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Tablet</h5>
-                      <p class="card-text">$399.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐☆</span>
-                      </p>
-                    </div>
-                  </div>
-              
-</Link>
-</div>
-<div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-
-<Link to={"/productDetails"}>
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Camera</h5>
-                      <p class="card-text">$299.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐☆</span>
-                      </p>
-                    </div>
-                  </div>
-                
-</Link>
-</div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <Link to={"/productDetails"}>
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Gaming Console</h5>
-                      <p class="card-text">$499.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐⭐</span>
-                      </p>
-                    </div>
-                  </div>
-                  </Link>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Fitness Tracker</h5>
-                      <p class="card-text">$149.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐☆</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">E-Reader</h5>
-                      <p class="card-text">$129.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐☆</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Drone</h5>
-                      <p class="card-text"> $799.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐⭐</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                  <div class="card h-100">
-                    <img src={pad2} />
-                    <div class="card-body">
-                      <h5 class="card-title">Smart Thermostat</h5>
-                      <p class="card-text">$199.99</p>
-                      <p class="card-text">
-                        <span class="text-warning star">⭐⭐⭐⭐☆</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+<nav aria-label="Page navigation example">
+            <ul className="pagination">
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                  <span aria-hidden="true">&laquo;</span>
+                </button>
+              </li>
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                  <button className="page-link" onClick={() => handlePageChange(index + 1)}>
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                  <span aria-hidden="true">&raquo;</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
               </div>
             </div>
           </div>

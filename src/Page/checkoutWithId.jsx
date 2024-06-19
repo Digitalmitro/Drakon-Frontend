@@ -1,44 +1,43 @@
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import moment from "moment";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Checkout = () => {
 
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const userId = decodedToken?._id;
-  const user = decodedToken?.email;
+  const { id }= useParams()
   const navigate = useNavigate()
   const [shippingData, setShippingData] = useState();
   const [billingData, setBillingData] = useState();
-  const [cartData, setCartData] = useState();
+  const [data, setData] = useState();
 
-  const [subtotal, setSubtotal] = useState(0); 
-  const [enableTax,setEnabletax]=useState()
-  const [tax, setTax] = useState(0);// State variable for subtotal
-  const [coupon, setCoupon] = useState([]);
-  const [couponName, setCouponName] = useState(""); // State variable for coupon percentage
-  const [couponDiscount,setCouponDiscount]=useState(0)
 
 
 
   const handleProduct = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist/${userId}`
+        `${import.meta.env.VITE_BACKEND_API}/products/${id}`
       );
 
-      console.log("response", response);
+      console.log("product response", response);
 
-      setCartData(response.data.wishlist);
+      setData(response.data);
     } catch (error) {
       console.error(error);
     }
+    console.log("data", data);
   };
-console.log("cartData", cartData)
+
+  useEffect(() => {
+    handleProduct()
+  })
+
   const getAddressData = async () => {
     try {
       const response1 = await axios.get(
@@ -56,93 +55,15 @@ console.log("cartData", cartData)
     // console.log("shipping response:", shippingData);
     // console.log("billing response:", billingData);
   };
- 
+  useEffect(() => {
+    getAddressData();
+    handleProduct();
+  }, []);
+
   const handleAddAddress = () => {
     navigate('/profile?tab=1');
  
   };
-
- 
-  const getTax=async()=>{
-    const res=await axios.get(`${import.meta.env.VITE_SOME_KEY}/general-settings`)
-    const ress=await axios.get(`${import.meta.env.VITE_SOME_KEY}/coupon`)
-    setEnabletax(res.data[0].EnableTax)
-    setTax(res.data[0].TaxRate)
-    setCoupon(ress.data)
-  }
-  
-  function applyCoupon() {
-    const cpName = coupon?.find((e) => e.couponName === couponName);
-    setCouponDiscount(cpName ? cpName?.discount : 0);
-    message.success("Coupon applied");
-  }
-  console.log(couponDiscount);
-
-
-  async function handleOrderPlaced() {
-    try {
-      const res = await axios.get("https://api.ipify.org");
-      // Iterate through each item in the cart
-      for (const item of cartData) {
-        const payload = {
-          image: item.image?.map((img) => img),
-          title: item.title,
-          price: item.price,
-          qty: item.qty,
-          billing: billingData,
-          shipping: shippingData,
-          product_id: item.product_id,
-          user: "#" + Math.floor(Math.random() * 1000) + " " + user,
-          user_id: userId,
-          ip: res.data,
-          createdDate: moment().format("MMM Do YY"),
-          status: "Processing",
-          totalPay : subtotal,
-        };
-        // Send a request to place the order
-        await axios.post(
-          `${import.meta.env.VITE_BACKEND_API}/order`,
-          payload
-        );
-
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth", 
-        });
-        // setLoaderPlacingOrder(true);
-        // setTimeout(() => {
-        //   setLoaderPlacingOrder(false);
-        //   setCardOrderPlaced(true);
-        // }, 5100);
-
-        const rescartdelete = await axios.delete(
-          `${import.meta.env.VITE_BACKEND_API}/wishlist/${item._id}`
-        );
-        // console.log(rescartdelete.data);
-        // getCartData();
-      }
-    } catch (error) {
-      console.error("Error placing order:", error);
-    }
-  }
-
-  useEffect(() => {
-    // Calculate subtotal whenever cartData changes
-    const subTotal = cartData?.reduce(
-      (acc, item) => acc + item.price * item.qty,
-      0
-    );
-    setSubtotal(subTotal);
-    getTax()
-  }, [cartData]);
-
-
-  useEffect(() => {
-    getAddressData();
-    handleProduct();
-    // handleOrderPlaced()
-    
-  }, []);
 
   return (
     <>
@@ -172,7 +93,9 @@ console.log("cartData", cartData)
                 <p>
                   <strong>ZIPCODE: </strong> {billingData?.billingzipcode}
                 </p>
-               
+                <button type="btn" className="btn-select ">
+                  SELECT ADDRESS
+                </button>
               </div>
 
               <div className="address-box">
@@ -185,7 +108,9 @@ console.log("cartData", cartData)
                 <p>
                   <strong>ZIPCODE :</strong> {shippingData?.shippingzipcode}
                 </p>
-               
+                <button type="btn" className="btn-select ">
+                  SELECT ADDRESS
+                </button>
               </div>
             </div>
           </div>
@@ -213,22 +138,19 @@ console.log("cartData", cartData)
               </thead>
 
               <tbody className="p-4 m-6 px-7 border-b-4">
-                {cartData?.map((info) => {
-                  return (
+             
                     <tr className="p-4 m-4 px-7 border-b-4">
                       <td className="p-4 m-4 px-7 border-b-4 w-1/2" colspan="2">
-                        {info.title}
+                        {data?.title}
                       </td>
                       <td className="p-4 m-4 px-7 border-b-4"></td>
-                      <td className="p-4 m-4 px-7 border-b-4">{info.qty}</td>
-                      <td className="p-4 m-4 px-7 border-b-4">${info.price}</td>
+                      <td className="p-4 m-4 px-7 border-b-4">{data?.qty}</td>
+                      <td className="p-4 m-4 px-7 border-b-4">${data?.price}</td>
                     </tr>
-                  );
-                })}
+
                 <tr className="p-4 m-4 px-7 border-b-4">
                   <td className="p-4 m-4 px-7 border-b-4 w-1/2" colspan="2">
-                    <p className="text-orange-600">Coupon : </p>
-                   
+                    <p className="text-orange-600">Coupon(0%)</p>
                     <p className="text-green-600">tax</p>
                   </td>
                   <td className="p-4 m-4 px-7 border-b-4"></td>
@@ -246,28 +168,6 @@ console.log("cartData", cartData)
                   <td className="p-4 m-4 px-7"></td>
                   <td className="p-4 m-4 px-7 border-b-4">-$123456</td>
                 </tr>
-                <tr>
-                    <td>
-                    <div
-          className="login-box w-100"
-          style={{ display: "flex", gap: "20px" }}
-        >
-          <input
-            type="text"
-            className="form-control  h-10"
-            id="exampleFormControlInput1"
-            placeholder=" Enter coupon code"
-          />
-          <button
-            type="sumbit"
-            className="btn btn-primary coupon-btn"
-            style={{ backgroundColor: "coral" }}
-          >
-            Apply coupon
-          </button>
-        </div>
-                    </td>
-                </tr>
               </tbody>
             </table>
 
@@ -276,11 +176,7 @@ console.log("cartData", cartData)
                 Your personal details will be used to process your order,
                 support your experience throughout this website
               </p>
-              <button className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white"
-              disabled={!shippingData && !billingData}
-              style={{color:  !shippingData && !billingData ? "grey" : "orange"}}
-              onClick={handleOrderPlaced}
-              >
+              <button className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white">
                 Place Order
               </button>
             </div>

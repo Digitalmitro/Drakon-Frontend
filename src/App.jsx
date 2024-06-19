@@ -20,6 +20,7 @@ import Account from "./Page/Account";
 import Contact from "./Page/Contact";
 import About from "./Page/About";
 import Checkout from "./Page/Checkout"
+import CheckoutWithId from "./Page/checkoutWithId"
 import Category from "./Page/Category"
 import Product from "./Component/Product";
 import Faq from "./Page/NavPolicies/Faq";
@@ -43,10 +44,11 @@ function App() {
           <Route path="/" element={<Home />}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/account" element={<Account/>}/>
-          <Route path="/productdetails" element={<Productdetails/>}/>
+          <Route path="/productdetails/:id" element={<Productdetails/>}/>
           <Route path="/contact" element={<Contact/>}/>
           <Route path="/about" element={<About/>}/>
           <Route path="/checkout" element={<Checkout/>}/>
+          <Route path="/checkout/:id" element={<CheckoutWithId/>}/>
           <Route path="/cart" element={<Cart />}/>
           <Route path ="/tab" element={<Tab/>}/>
           <Route path="/product" element={<Product/>}/>
