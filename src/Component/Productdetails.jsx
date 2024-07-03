@@ -11,82 +11,114 @@ import { message } from "antd";
 
 const Productdetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+    const token = Cookies.get("token");
+  const decodedToken = token && jwtDecode(token);
+  const user = decodedToken?.email;
+  const user_id = decodedToken?._id;
   const [data, setData] = useState();
+  // const [allProduct, setAllProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
+
+
 
   const ratingChanged = (newRating) => {
     setRating(newRating);
     console.log("newRating", newRating);
   };
 
-  const token = Cookies.get("token");
-  const decodedToken = token && jwtDecode(token);
-  const user = decodedToken?.email;
-  const user_id = decodedToken?._id;
-  
 
-  const handleSubmit = async () => {
+  const getAllProductData = async () => {
     try {
-      const response = await axios.get(
+      const invRes = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API}/feature-products/${id}`
+      );
+      // fetchProducts = invRes.data
+      console.log(invRes.data);
+      setData(invRes.data);
+      // console.log("invRes", data);
+    } catch (err) {
+      console.log(err);
+    }
+
+    try {
+      const productRes = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/products/${id}`
       );
-      // console.log(response);
 
-      setData(response.data);
-    } catch (error) {
-      console.error(error);
+      setData(productRes.data);
+      // console.log("productRes", data);
+    } catch (err) {
+      console.log(err);
     }
+
+    try {
+      const featuredRes = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API}/inv-products/${id}`
+      );
+      
+      setData(featuredRes.data);
+      console.log("featuredRes", data);
+    } catch (err) {
+      console.log(err);
+    }
+
+    // setData(res.data);
   };
+  // console.log("allProduct", allProduct);
 
   const handleCart = async () => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist`, {
+        `${import.meta.env.VITE_BACKEND_API}/wishlist`,
+        {
           image: data?.image,
           title: data?.title,
           price: data?.price,
-          qty: quantity, 
+          qty: quantity,
           product_id: id,
           user_id: user_id,
         }
       );
-     message.success("Added to Cart")
+      message.success("Added to Cart");
 
-      navigate(`/cart`)
-      // console.log("wishlist", response);
+      navigate(`/cart`);
+      console.log("cart data post", response);
     } catch (error) {
       console.error(error);
-     message.success("cartItem not added")
-
+      message.success("cartItem not added");
     }
   };
-  
-  
+
   useEffect(() => {
-    handleSubmit();
- 
+    getAllProductData();
   }, []);
 
-  
+
   const [cartData, setCartData] = useState([]);
   async function getCartData() {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_SOME_KEY}/wishlist/${user_id}`
+        `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
       );
       setCartData(data.wishlist);
+      console.log("get cart data", cartData);
     } catch (error) {
       console.log(error);
     }
   }
-  let isProductInCart 
+
+  let isProductInCart;
+
   useEffect(() => {
-    getCartData()
-     isProductInCart = cartData?.find((e) => e.product_id === id);
+    getCartData();
+    isProductInCart = cartData?.find((e) => e.product_id === id);
     // console.log("isProductInCart", isProductInCart)
   }, [data]);
 
+
+  console.log("duct", data);
 
   return (
     <>
@@ -125,29 +157,54 @@ const Productdetails = () => {
             />
 
             <div class="product-counter d-flex gap-3 py-4">
-              <button id="decrease" onClick={() => setQuantity(prev => prev-1)} disabled={quantity === 1}>-</button>
+              <button
+                id="decrease"
+                onClick={() => setQuantity((prev) => prev - 1)}
+                disabled={quantity === 1}
+              >
+                -
+              </button>
 
-              <span id="count" >{quantity}</span>
-              <button id="increase" onClick={() => setQuantity(prev => prev+1)}>+</button>
+              <span id="count">{quantity}</span>
+              <button
+                id="increase"
+                onClick={() => setQuantity((prev) => prev + 1)}
+              >
+                +
+              </button>
 
               <div className="d-flex" style={{ gap: "25px" }}>
-                <button type="submit" className="btn btn-primary orange" onClick={() => navigate(`/checkout/${id}`)}>
+                <button
+                  type="submit"
+                  className="btn btn-primary orange"
+                  onClick={() => navigate(`/checkout/${id}`)}
+                >
                   Buy Now
                 </button>
 
-               {isProductInCart ? 
-                <button type="submit" className="btn btn-primary black" onClick={() => navigate("/cart")}>
-                Add to whishlist
-              </button> : 
-               <button type="submit" className="btn btn-primary black" onClick={
-                user_id
-                  ? handleCart
-                  : () => {
-                      navigate("/Login");
+                {isProductInCart ? (
+                  <button
+                    type="submit"
+                    className="btn btn-primary black"
+                    onClick={() => navigate("/cart")}
+                  >
+                    Add to whishlist
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="btn btn-primary black"
+                    onClick={
+                      user_id
+                        ? handleCart
+                        : () => {
+                            navigate("/Login");
+                          }
                     }
-              }>
-               Add to whishlist
-             </button>}
+                  >
+                    Add to whishlist
+                  </button>
+                )}
               </div>
             </div>
             <div className="method">
@@ -206,7 +263,6 @@ const Productdetails = () => {
           >
             <h2 className="fs-2 text">DESCRIPTION</h2>
             <p className="pb-4"> {data?.description}</p>
-
           </div>
           <div
             className="tab-pane fade"
@@ -215,9 +271,7 @@ const Productdetails = () => {
             aria-labelledby="nav-profile-tab"
           >
             <h2 className="fs-2 text">REVIEWS</h2>
-            <p>
-              {data?.review[0] || "No Reviews yet"}
-            </p>
+            <p>{data?.review[0] || "No Reviews yet"}</p>
           </div>
         </div>
       </section>

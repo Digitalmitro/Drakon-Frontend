@@ -22,6 +22,7 @@ import About from "./Page/About";
 import Checkout from "./Page/Checkout"
 import CheckoutWithId from "./Page/checkoutWithId"
 import Category from "./Page/Category"
+import Orders from "./Page/Orders"
 import Product from "./Component/Product";
 import Faq from "./Page/NavPolicies/Faq";
 import ShippingPolicy from "./Page/NavPolicies/ShippingPolicy";
@@ -58,6 +59,7 @@ function App() {
           <Route path="/returnrefund" element={<ReturnAndRefund/>}/>
           <Route path="/faq" element={<Faq/>}/>
           <Route path="/category" element={<Category/>}/>
+          <Route path="/orders" element={<Orders/>}/>
 
           <Route path="/termscondition" element={<TermsAndCondition/>}/>
         </Routes>
