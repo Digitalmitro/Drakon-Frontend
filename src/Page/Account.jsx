@@ -8,6 +8,8 @@ const Account = () => {
     const token = Cookies.get("token");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
+
+  
   const handelRegiste = async (e) => {
     e.preventDefault();
     const payload = {
@@ -26,6 +28,7 @@ const Account = () => {
       message.error(error.response.data);
     }
   };
+
   const [logEmail, setLogEmail] = useState("");
   const [logPass, setLogPass] = useState("");
   const handelLogin = async (e) => {
@@ -53,6 +56,7 @@ const Account = () => {
       message.error(error.response.data.status);
     }
   };
+  
   useEffect(()=>{
     if (token) {
         return navigate("/profile");

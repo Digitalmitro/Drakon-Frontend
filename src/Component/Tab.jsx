@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import product1 from "../assets/product1.png";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import OrdersTabPanel from '../Component/tabsPanel/orders'
 import axios from "axios";
 import {
   Link,
@@ -53,6 +54,19 @@ export default function VerticalTabs() {
   const [value, setValue] = React.useState(0);
 
   const [searchParams] = useSearchParams();
+  const token = Cookies.get("token");
+  const decodedToken = token && jwtDecode(token);
+  const userId = decodedToken?._id;
+  const [formData, setFormData] = React.useState({
+    firstName: "",
+    lastName: "",
+    displayName: "",
+    email: "",
+    oldPassword: "",
+    newPassword: "",
+    user_id: userId,
+  });
+
 
   useEffect(() => {
     const tabIndex = searchParams.get("tab");
@@ -116,8 +130,8 @@ export default function VerticalTabs() {
 
   const saveAddressesToDatabase = async (e) => {
     e.preventDefault();
-    console.log("billingFormData", billingFormData);
-    console.log("shippingFormData", shippingFormData);
+    // console.log("billingFormData", billingFormData);
+    // console.log("shippingFormData", shippingFormData);
 
     try {
       const payload = {
@@ -146,20 +160,20 @@ export default function VerticalTabs() {
         },
         userId,
       };
-      console.log("payload", payload);
+      // console.log("payload", payload);
       if (payload.billingAddress.billingcountry !== "") {
         const response1 = await axios.post(
           `${import.meta.env.VITE_BACKEND_API}/addressbookbilling`,
           payload.billingAddress
         );
-        console.log("Billing response:", response1);
+        // console.log("Billing response:", response1);
         // window.location.href = "/my-account";
       } else {
         const response2 = await axios.post(
           `${import.meta.env.VITE_BACKEND_API}/addressbookshipping`,
           payload.shippingAddress
         );
-        console.log("Billing response:", response1);
+        // console.log("Billing response:", response1);
         // window.location.href = "/my-account";
       }
 
@@ -186,7 +200,7 @@ export default function VerticalTabs() {
         zipcode: null,
         phone: null,
       });
-      console.log("after postData", billingFormData, shippingFormData);
+      // console.log("after postData", billingFormData, shippingFormData);
     } catch (error) {
       console.error("Error saving addresses:", error);
     }
@@ -200,14 +214,14 @@ export default function VerticalTabs() {
       const billing = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
       );
-      console.log("billing", billing);
+      // console.log("billing", billing);
 
       setBillingAddresses(billing.data.addressbookbilling);
 
       const shipping = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookshipping/${userId}`
       );
-      console.log("shipping", shipping);
+      // console.log("shipping", shipping);
 
       setShippingAddresses(shipping.data.addressbookShipping);
     } catch (error) {
@@ -247,18 +261,7 @@ export default function VerticalTabs() {
       console.log(error);
     }
   }
-  const token = Cookies.get("token");
-  const decodedToken = token && jwtDecode(token);
-  const userId = decodedToken?._id;
-  const [formData, setFormData] = React.useState({
-    firstName: "",
-    lastName: "",
-    displayName: "",
-    email: "",
-    oldPassword: "",
-    newPassword: "",
-    user_id: userId,
-  });
+
   // console.log("formData", billingFormData)
 
   const handleAccountDetailsChange = (e) => {
@@ -283,7 +286,7 @@ export default function VerticalTabs() {
     );
     if (statusText === "OK") {
       // Handle successful response
-      console.log("Update successful");
+      // console.log("Update successful");
     } else {
       // Handle error response
       console.error("Update failed");
@@ -297,7 +300,7 @@ export default function VerticalTabs() {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/order`
       );
-      console.log(" order", data);
+      // console.log(" order", data);
       setData(data);
     } catch (error) {}
   };
@@ -855,7 +858,7 @@ export default function VerticalTabs() {
       </TabPanel>
 
       <TabPanel value={value} index={3}>
-        <div className="text-center">
+        {/* <div className="text-center">
           <h2 className="fs-1 text my-3">Past Orders</h2>
         </div>
         <div className="past-order d-flex justify-content-center">
@@ -913,7 +916,8 @@ export default function VerticalTabs() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
+        <OrdersTabPanel/>
       </TabPanel>
       <TabPanel value={value} index={5}></TabPanel>
     </Box>

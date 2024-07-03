@@ -80,9 +80,9 @@ const Cart = () => {
     <>
       <div className="container mx-auto flex flex-col lg:flex-row lg:gap-10">
         <div className="flex-1 p-14 mt-2">
-          <div className=" container p-2 pt-4 mb-5 border ">
-          <table className="table-auto w-full text-left py-2">
-            <thead>
+          <div className=" container p-2 pt-4 mb-5  border">
+          <table className="table-auto w-full text-left p-2 m-2 ">
+            <thead className="m-2" style={{padding: "12px"}}>
               <tr>
                 <th></th>
                 <th></th>
@@ -130,30 +130,29 @@ const Cart = () => {
               ))}
             </tbody>
           </table>
-
-          <ul className="pagination mt-2 d-flex justify-content-center">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <li
-                key={index}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
-                  style={{  backgroundColor: "#F5743B",}}
-                  onClick={() => paginate(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
+          {(data?.length > 3)  && 
+           <ul className="pagination mt-5 d-flex justify-content-center">
+           {Array.from({ length: totalPages }, (_, index) => (
+             <li
+               key={index}
+               className={`page-item ${
+                 currentPage === index + 1 ? "active" : ""
+               }`}
+             >
+               <button
+                 className="page-link"
+                 style={{  backgroundColor: "#F5743B",}}
+                 onClick={() => paginate(index + 1)}
+               >
+                 {index + 1}
+               </button>
+             </li>
+           ))}
+         </ul>}
           </div>
 
-
-
-          <div className="container ">
+{/* Coupon */}
+          {/* <div className="container ">
         <div
           className="login-box"
           style={{ display: "flex", gap: "40px" }}
@@ -172,26 +171,24 @@ const Cart = () => {
             Apply coupon
           </button>
         </div>
-      </div>
-
+      </div> */}
         </div>
-        
         <div className="flex-1 p-14 lg:my-20 border">
           <h2 className="text-3xl font-bold mb-5">Cart Total</h2>
           <div className="flex justify-between mb-5">
-            <h3 className="text-xl font-bold text-gray-400">Subtotal</h3>
+            <h3 className="text-xl font-bold text-gray-800">Subtotal</h3>
             <h3 className="text-xl font-bold text-gray-400">${totalPrice}</h3>
           </div>
-          <div className="flex justify-between mb-10">
+          {/* <div className="flex justify-between mb-10">
             <h3 className="text-xl font-bold text-red-400">(-) Tax</h3>
             <h3 className="text-xl font-bold text-red-400">3%</h3>
-          </div>
+          </div> */}
           <hr />
           <div className="flex justify-between my-10">
-            <h3 className="text-xl font-bold text-gray-400">You Pay</h3>
-            <h3 className="text-xl font-bold text-gray-400">
+            {/* <h3 className="text-xl font-bold text-gray-400">You Pay</h3> */}
+            {/* <h3 className="text-xl font-bold text-gray-400">
               $ {netPayable.toFixed(2)}
-            </h3>
+            </h3> */}
           </div>
           <Button
            onClick={() => navigate(`/checkout`)}

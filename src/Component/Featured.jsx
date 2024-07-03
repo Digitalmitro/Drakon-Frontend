@@ -35,7 +35,7 @@ const Featured = ({closeCart}) => {
         </h2>
         <div className="flex flex-col lg:flex-row gap-10 justify-between py-20">
           {feature?.map((e) => (
-           <Link to={"/productDetails"}>
+           <Link to={`/productDetails/${e._id}`}>
              <div className="shadow-lg lg:h-[600px] lg:w-[400px] lg:p-20 flex flex-col justify-between items-center gap-6 lg:gap-0 bg-white p-10">
               <div className="lg:w-[200px] h-[200px] flex justify-center">
                 <img

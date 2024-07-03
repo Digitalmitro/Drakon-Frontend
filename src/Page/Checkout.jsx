@@ -4,41 +4,43 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-
+import { message } from "antd";
 const Checkout = () => {
-
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const userId = decodedToken?._id;
   const user = decodedToken?.email;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [shippingData, setShippingData] = useState();
   const [billingData, setBillingData] = useState();
   const [cartData, setCartData] = useState();
 
-  const [subtotal, setSubtotal] = useState(0); 
-  const [enableTax,setEnabletax]=useState()
-  const [tax, setTax] = useState(0);// State variable for subtotal
+  const [subtotal, setSubtotal] = useState(0);
+  const [enableTax, setEnabletax] = useState();
+  const [tax, setTax] = useState(0); 
+  const [taxValue, setTaxValue] = useState(0); 
   const [coupon, setCoupon] = useState([]);
   const [couponName, setCouponName] = useState(""); // State variable for coupon percentage
-  const [couponDiscount,setCouponDiscount]=useState(0)
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [finalPayment, setFinalPayment] = useState(0);
 
-
-
+  // wishlist
   const handleProduct = async () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/wishlist/${userId}`
       );
 
-      console.log("response", response);
+      // console.log("response", response);
 
       setCartData(response.data.wishlist);
     } catch (error) {
       console.error(error);
     }
   };
-console.log("cartData", cartData)
+  // console.log("cartData", cartData);
+
+  // Addrress
   const getAddressData = async () => {
     try {
       const response1 = await axios.get(
@@ -56,27 +58,71 @@ console.log("cartData", cartData)
     // console.log("shipping response:", shippingData);
     // console.log("billing response:", billingData);
   };
- 
   const handleAddAddress = () => {
-    navigate('/profile?tab=1');
- 
+    navigate("/profile?tab=1");
   };
 
- 
-  const getTax=async()=>{
-    const res=await axios.get(`${import.meta.env.VITE_SOME_KEY}/general-settings`)
-    const ress=await axios.get(`${import.meta.env.VITE_SOME_KEY}/coupon`)
-    setEnabletax(res.data[0].EnableTax)
-    setTax(res.data[0].TaxRate)
-    setCoupon(ress.data)
-  }
-  
-  function applyCoupon() {
+  useEffect(() => {
+    getAddressData();
+    handleProduct();
+    // handleOrderPlaced()
+  }, []);
+
+
+  // Tax
+  const getTax = async () => {
+    const res = await axios.get(
+      `${import.meta.env.VITE_BACKEND_API}/general-settings`
+    );
+    const ress = await axios.get(`${import.meta.env.VITE_BACKEND_API}/coupon`);
+    setEnabletax(res.data[0].EnableTax);
+    await setTax(res.data[0].TaxRate);
+    setCoupon(ress.data);
+
+      let taxAmount =  (subtotal * tax)/100
+      let youPay  =  subtotal + taxAmount 
+      setTaxValue(taxAmount)
+      setFinalPayment(youPay)
+  };
+
+  const  applyCoupon = async() => {
     const cpName = coupon?.find((e) => e.couponName === couponName);
-    setCouponDiscount(cpName ? cpName?.discount : 0);
-    message.success("Coupon applied");
+    if (cpName) {
+      let discoundAmount = await  cpName?.discount 
+      // await setCouponDiscount(cpName ? cpName?.discount : 0);
+
+        
+          if(discoundAmount) {
+            let taxAmount = await (subtotal * tax)/100
+           let couponAmount = await (subtotal * discoundAmount)/100
+           let youPay  =  await subtotal + taxAmount - couponAmount
+
+           setCouponDiscount( couponAmount)
+           setFinalPayment(youPay)
+            message.success("Coupon applied");
+          } else{
+        message.error("Discount is not Applied");  
+    }
+   }else {
+      message.error("Coupon Name is Invalid");
+   }
+  
   }
-  console.log(couponDiscount);
+  console.log("couponDiscount", couponDiscount);
+
+ 
+
+  useEffect(() => {
+    // Calculate subtotal whenever cartData changes
+    const subTotal = cartData?.reduce(
+      (acc, item) => acc + item.price * item.qty,
+      0
+    );
+    setSubtotal(subTotal);
+    getTax();
+
+ 
+  }, [cartData]);
 
 
   async function handleOrderPlaced() {
@@ -97,27 +143,28 @@ console.log("cartData", cartData)
           ip: res.data,
           createdDate: moment().format("MMM Do YY"),
           status: "Processing",
-          totalPay : subtotal,
+          totalpay: Number(finalPayment),
         };
+        
+        console.log("payload", payload)
         // Send a request to place the order
-        await axios.post(
-          `${import.meta.env.VITE_BACKEND_API}/order`,
-          payload
-        );
+        await axios.post(`${import.meta.env.VITE_BACKEND_API}/order`, payload);
 
         window.scrollTo({
           top: 0,
-          behavior: "smooth", 
+          behavior: "smooth",
         });
         // setLoaderPlacingOrder(true);
         // setTimeout(() => {
         //   setLoaderPlacingOrder(false);
         //   setCardOrderPlaced(true);
         // }, 5100);
+        message.success(" Product ordered")
 
         const rescartdelete = await axios.delete(
           `${import.meta.env.VITE_BACKEND_API}/wishlist/${item._id}`
         );
+        navigate('/tab')
         // console.log(rescartdelete.data);
         // getCartData();
       }
@@ -126,23 +173,8 @@ console.log("cartData", cartData)
     }
   }
 
-  useEffect(() => {
-    // Calculate subtotal whenever cartData changes
-    const subTotal = cartData?.reduce(
-      (acc, item) => acc + item.price * item.qty,
-      0
-    );
-    setSubtotal(subTotal);
-    getTax()
-  }, [cartData]);
 
 
-  useEffect(() => {
-    getAddressData();
-    handleProduct();
-    // handleOrderPlaced()
-    
-  }, []);
 
   return (
     <>
@@ -155,37 +187,39 @@ console.log("cartData", cartData)
           style={{ display: "flex", gap: "7rem" }}
         >
           <div className="col-md-4">
-            <h2 className="fs-2 text pb-3 ">
-                 ADDRESSES</h2>
+            <h2 className="fs-2 text pb-3 ">ADDRESSES</h2>
             <div className="login-box">
               <button type="btn" className="btn-add" onClick={handleAddAddress}>
                 ADD ADDRESS
               </button>
 
               <div className="address-box">
+                <p><strong>BILLING ADDRESS: </strong>{" "}</p>
                 <p>
-                  <strong>BILLING ADDRESS: </strong>{" "}
-                  {billingData?.billingstreetAddress || " Chicago, USA"},{" "}
-                  {billingData?.billingcity} ,{billingData?.billingstate},{" "}
-                  {billingData?.billingcountry}
+                  
+                  {billingData
+                    ? `${billingData?.billingstreetAddress}, 
+                  ${billingData?.billingcity} ,${billingData?.billingstate}, 
+                  ${billingData?.billingcountry}`
+                    : "Add your billing  Address"}
                 </p>
                 <p>
                   <strong>ZIPCODE: </strong> {billingData?.billingzipcode}
                 </p>
-               
               </div>
 
               <div className="address-box">
                 <p>
                   <strong>SHIPPING ADDRESS :</strong>{" "}
-                  {shippingData?.shippingstreetAddress || " Chicago, USA"},{" "}
-                  {shippingData?.shippingcity} ,{shippingData?.shippingstate},{" "}
-                  {shippingData?.shippingcountry}
+                  {shippingData
+                    ? `${shippingData?.shippingstreetAddress}, 
+                  ${shippingData?.shippingcity} ,${shippingData?.shippingstate}, 
+                  ${shippingData?.shippingcountry}`
+                    : " Add your shipping address"}
                 </p>
                 <p>
                   <strong>ZIPCODE :</strong> {shippingData?.shippingzipcode}
                 </p>
-               
               </div>
             </div>
           </div>
@@ -227,15 +261,17 @@ console.log("cartData", cartData)
                 })}
                 <tr className="p-4 m-4 px-7 border-b-4">
                   <td className="p-4 m-4 px-7 border-b-4 w-1/2" colspan="2">
-                    <p className="text-orange-600">Coupon : </p>
-                   
-                    <p className="text-green-600">tax</p>
+                  <p className="pb-2 mb-4 ">Sub Total : </p>
+                    <p className="text-orange-600  mb-2">Coupon : </p>
+
+                    <p className="text-green-600  mb-2">tax</p>
                   </td>
                   <td className="p-4 m-4 px-7 border-b-4"></td>
                   <td className="p-4 m-4 px-7 border-b-4"></td>
-                  <td className="p-4 m-4 px-7 border-b-4 text-green-600">
-                    <p className="text-orange-600">-$0</p>
-                    <p className="text-green-600">+$24</p>
+                  <td className="p-4 m-4 px-7 border-b-4">
+                    <p className="pb-2 mb-4">${subtotal}</p>
+                    <p className="text-orange-600  mb-2">-${couponDiscount}</p>
+                    <p className="text-green-600  mb-2">+${taxValue}</p>
                   </td>
                 </tr>
                 <tr className="p-4 m-4 px-7 mb-8 border-b-4">
@@ -244,29 +280,32 @@ console.log("cartData", cartData)
                   </td>
                   <td className="p-4 m-4 px-7 border-b-4"></td>
                   <td className="p-4 m-4 px-7"></td>
-                  <td className="p-4 m-4 px-7 border-b-4">-$123456</td>
+                  <td className="p-4 m-4 px-7 border-b-4">${(finalPayment) || (subtotal)}</td>
                 </tr>
                 <tr>
-                    <td>
+                  <td>
                     <div
-          className="login-box w-100"
-          style={{ display: "flex", gap: "20px" }}
-        >
-          <input
-            type="text"
-            className="form-control  h-10"
-            id="exampleFormControlInput1"
-            placeholder=" Enter coupon code"
-          />
-          <button
-            type="sumbit"
-            className="btn btn-primary coupon-btn"
-            style={{ backgroundColor: "coral" }}
-          >
-            Apply coupon
-          </button>
-        </div>
-                    </td>
+                      className="login-box w-100"
+                      style={{ display: "flex", gap: "20px" }}
+                    >
+                      <input
+                        type="text"
+                        className="form-control  h-10"
+                        id="exampleFormControlInput1"
+                        placeholder=" Coupon Name "
+                        value={couponName}
+                        onChange={(e) => setCouponName(e.target.value)}
+                      />
+                      <button
+                        type="sumbit"
+                        className="btn btn-primary coupon-btn"
+                        style={{ backgroundColor: "coral" }}
+                        onClick={applyCoupon}
+                      >
+                        Apply coupon
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -276,10 +315,15 @@ console.log("cartData", cartData)
                 Your personal details will be used to process your order,
                 support your experience throughout this website
               </p>
-              <button className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white"
-              disabled={!shippingData && !billingData}
-              style={{color:  !shippingData && !billingData ? "grey" : "orange"}}
-              onClick={handleOrderPlaced}
+              <button
+                className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white"
+
+             
+                disabled={!shippingData && !billingData}
+                style={{
+                  backgroundColor: !shippingData && !billingData ? "grey" : "coral",
+                }}
+                onClick={handleOrderPlaced}
               >
                 Place Order
               </button>
