@@ -44,9 +44,23 @@ const Contact = () => {
         `${import.meta.env.VITE_BACKEND_API}/message`,
         payload
       );
-      message.success("Message sent successfully");
-      navigate(`/cart`);
-      console.log("Message data post", response);
+
+      if (response.status === 200) {
+        message.success("Message sent successfully");
+
+        // Send email after message is successfully sent
+        const emailPayload = {
+          to: formData.email,
+          subject: "Thank you for your message",
+          text: `Dear ${formData.name},\n\nThank you for reaching out to us. We have received your message and will get back to you shortly.\n\nBest regards,\nDrakon`,
+        };
+
+        await axios.post(`${import.meta.env.VITE_BACKEND_API}/send-email`, emailPayload);
+
+        // navigate(`/cart`);
+      } else {
+        message.error("Message not sent");
+      }
     } catch (error) {
       console.error(error);
       message.error("Message not sent");

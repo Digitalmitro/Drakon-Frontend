@@ -113,14 +113,18 @@ const Orders = () => {
                 Get HELP
               </button>
               <br />
-              <div className="pagination-controlsborder d-flex justify-content-center">
+              <div className="pagination-controlsborder ">
                 {Array.from({ length: totalPages }, (_, index) => (
                   <button
                     key={index}
                     onClick={() => paginate(index + 1)}
-                    className={`p-2 border  pagination-button ${
+                    className={` border  pagination-button  p-2 px-3 m-1 mx-2 rounded-circle ${
                       currentPage === index + 1 ? "active" : ""
                     }`}
+                    style={{borderColor:"coral", 
+                      backgroundColor: currentPage === index + 1 ? "coral" : "transparent",
+                     color: currentPage === index + 1 ? "white" : "coral"
+                  }}
                   >
                     {index + 1}
                   </button>

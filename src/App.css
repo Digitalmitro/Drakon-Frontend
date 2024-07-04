@@ -11,6 +11,10 @@
 .nav-tabs{
   border: 0px !important;
 }
+.MuiToolbar-root{
+  height:100px;
+  text-align: center;
+}
 .hero-bg-img {
   background-image: url("./assets/banner.jpg");
   background-position: center;
@@ -318,13 +322,13 @@
   background-color: transparent;
   border: 2px solid #F9AC25;
   padding: 10px 25px;
-  border-radius: 10px;
+  border-radius: 5px;
   color:#F9AC25;
 }
 .btn-add:active{
-  background-color: #F9AC25;
+  background-color: coral;
   padding: 10px 25px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   color: #fff;
 }
 .tab-btn:hover{

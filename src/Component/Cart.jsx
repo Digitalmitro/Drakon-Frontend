@@ -9,12 +9,14 @@ import { message } from "antd";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 
+
 const Cart = () => {
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const user = decodedToken?.email;
   const user_id = decodedToken?._id;
-  
+  const dispatch = useDispatch();
+
   const { id } = useParams();
   const navigate = useNavigate()
   const [data, setData] = useState();
@@ -34,7 +36,7 @@ const Cart = () => {
 
 
   console.log("data", data);
-  const totalPrice = data?.reduce((acc, curr) => acc + curr.price, 0);
+  const totalPrice = data?.reduce((acc, curr) => acc + (curr.price* curr.qty), 0);
   const netPayable = totalPrice - (totalPrice * 0.3);
 
   useEffect(() => {
@@ -61,12 +63,13 @@ const Cart = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
-  async function removedProductFromCart(productId) {
+  async function removedProductFromCart(wishlistId, productId) {
+    console.log(productId)
+    dispatch(removeItem(productId))
     try {
       const  data  = await axios.delete(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist/${productId}`
+        `${import.meta.env.VITE_BACKEND_API}/wishlist/${wishlistId}`
       );
-      
       handleProduct();
       
       console.log(data);
@@ -74,7 +77,6 @@ const Cart = () => {
       console.log(error);
     }
   }
-
 
   return (
     <>
@@ -87,6 +89,7 @@ const Cart = () => {
                 <th></th>
                 <th></th>
                 <th>Product</th>
+                <th>Quantity</th>
                 <th>Price</th>
               </tr>
             </thead>
@@ -95,7 +98,10 @@ const Cart = () => {
                 <tr key={product._id} className="border-b-2 ">
                   <td
                     className="cursor-pointer"
-                    onClick={() => removedProductFromCart(product._id)}
+                    onClick={() => 
+                      // dispatch(removeItem(product._id))
+                      removedProductFromCart(product._id, product.product_id)
+                    }
                   >
                     <svg
                       width={40}
@@ -125,6 +131,7 @@ const Cart = () => {
                     <img className="w-24 h-24" src={product.image} alt="" />
                   </td>
                   <td>{product.title}</td>
+                  <td className="text-center"><p>{product.qty}</p></td>
                   <td>$ {product.price}</td>
                 </tr>
               ))}
@@ -140,8 +147,11 @@ const Cart = () => {
                }`}
              >
                <button
-                 className="page-link"
-                 style={{  backgroundColor: "#F5743B",}}
+                 className="page-link p-2 px-3 m-1 mx-2 rounded-circle"
+                   style={{borderColor:"coral", 
+                  backgroundColor: currentPage === index + 1 ? "coral" : "transparent",
+                 color: currentPage === index + 1 ? "white" : "coral"
+                   }}
                  onClick={() => paginate(index + 1)}
                >
                  {index + 1}

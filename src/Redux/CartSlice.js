@@ -16,6 +16,7 @@ const cartSlice = createSlice({
     removeItem(state, action) {
       const itemIdToRemove = action.payload;
       state.items = state.items.filter(item => item._id !== itemIdToRemove);
+      console.log("item removed")
     },
     // Clear all items from the cart
     clearCart(state) {
