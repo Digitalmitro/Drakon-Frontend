@@ -47,10 +47,10 @@ const Featured = ({closeCart}) => {
               <h3 className="font-bold text-3xl">{e.title}</h3>
               <h4 className="text-[#959595] font-bold text-2xl">$ {e.price}</h4>
               <Button
-                onClick={() => {
-                  dispatch(addItem(e))
-                  message.success("Item added to cart")
-                }}
+                // onClick={() => {
+                //   dispatch(addItem(e))
+                //   message.success("Item added to cart")
+                // }}
                 sx={{
                   borderRadius: "100vw",
                   paddingY: "10px",
@@ -62,6 +62,7 @@ const Featured = ({closeCart}) => {
                   },
                 }}
                 variant="contained"
+                onClick={() => navigate(`/checkout/${id}`)}
               >
                 Buy now
               </Button>

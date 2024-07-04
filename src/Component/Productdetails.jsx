@@ -8,12 +8,15 @@ import product1 from "../assets/pad.png";
 import { useEffect } from "react";
 import { useState } from "react";
 import { message } from "antd";
+import { useDispatch } from "react-redux";
+import { addItem } from "../Redux/CartSlice";
 
 const Productdetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const token = Cookies.get("token");
+  const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const user = decodedToken?.email;
   const user_id = decodedToken?._id;
@@ -21,6 +24,9 @@ const Productdetails = () => {
   // const [allProduct, setAllProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
 
   const ratingChanged = (newRating) => {
@@ -28,6 +34,13 @@ const Productdetails = () => {
     console.log("newRating", newRating);
   };
 
+
+  const navigateToLogin = () => {
+    navigate("/account")
+
+    message.success("please Login")
+
+  }
 
   const getAllProductData = async () => {
     try {
@@ -57,7 +70,7 @@ const Productdetails = () => {
       const featuredRes = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/inv-products/${id}`
       );
-      
+
       setData(featuredRes.data);
       console.log("featuredRes", data);
     } catch (err) {
@@ -68,7 +81,8 @@ const Productdetails = () => {
   };
   // console.log("allProduct", allProduct);
 
-  const handleCart = async () => {
+  const handleCart = async (e) => {
+    dispatch(addItem(e))
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/wishlist`,
@@ -82,8 +96,10 @@ const Productdetails = () => {
         }
       );
       message.success("Added to Cart");
-
-      navigate(`/cart`);
+     
+      setTimeout(() => {
+        navigate(`/cart`)
+      }, 500)
       console.log("cart data post", response);
     } catch (error) {
       console.error(error);
@@ -94,7 +110,6 @@ const Productdetails = () => {
   useEffect(() => {
     getAllProductData();
   }, []);
-
 
   const [cartData, setCartData] = useState([]);
   async function getCartData() {
@@ -116,7 +131,6 @@ const Productdetails = () => {
     isProductInCart = cartData?.find((e) => e.product_id === id);
     // console.log("isProductInCart", isProductInCart)
   }, [data]);
-
 
   console.log("duct", data);
 
@@ -186,9 +200,10 @@ const Productdetails = () => {
                   <button
                     type="submit"
                     className="btn btn-primary black"
+                   
                     onClick={() => navigate("/cart")}
                   >
-                    Add to whishlist
+                    Add to Cart
                   </button>
                 ) : (
                   <button
@@ -196,13 +211,12 @@ const Productdetails = () => {
                     className="btn btn-primary black"
                     onClick={
                       user_id
-                        ? handleCart
-                        : () => {
-                            navigate("/Login");
-                          }
+                        ? () => handleCart(data)
+                        : 
+                         navigateToLogin 
                     }
                   >
-                    Add to whishlist
+                    Add to Cart
                   </button>
                 )}
               </div>

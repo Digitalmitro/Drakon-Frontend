@@ -324,41 +324,41 @@ export default function VerticalTabs() {
   const toggleShippingForm = () => {
     setShowShippingForm((prev) => !prev);
   };
-  const pastOrders = [
-    {
-      id: 1,
-      img: product1,
-      deliveredDate: "Sat, Mar 25, 2024 07:15 pm",
-      orderDate: "Sat, Mar 22, 2024, 5:00 pm",
-      title: "Full Sleeve Jacket",
-      orderNumber: "14524156451268",
-      totalPaid: 142,
-    },
-    {
-      id: 2,
-      img: product1,
-      deliveredDate: "Sat, ",
-      orderDate: "Sat, Mar 22, 2024, 5:00 pm",
-      title: "  Jacket",
-      orderNumber: "14524156451268",
-      totalPaid: 142,
-    },
+  // const pastOrders = [
+  //   {
+  //     id: 1,
+  //     img: product1,
+  //     deliveredDate: "Sat, Mar 25, 2024 07:15 pm",
+  //     orderDate: "Sat, Mar 22, 2024, 5:00 pm",
+  //     title: "Full Sleeve Jacket",
+  //     orderNumber: "14524156451268",
+  //     totalPaid: 142,
+  //   },
+  //   {
+  //     id: 2,
+  //     img: product1,
+  //     deliveredDate: "Sat, ",
+  //     orderDate: "Sat, Mar 22, 2024, 5:00 pm",
+  //     title: "  Jacket",
+  //     orderNumber: "14524156451268",
+  //     totalPaid: 142,
+  //   },
 
-    // Add more orders as needed
-  ];
+  //   // Add more orders as needed
+  // ];
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 1; // You can adjust this value
-  const totalPages = Math.ceil(pastOrders.length / productsPerPage);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const productsPerPage = 1; // You can adjust this value
+  // const totalPages = Math.ceil(pastOrders.length / productsPerPage);
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = pastOrders.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  // const indexOfLastProduct = currentPage * productsPerPage;
+  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  // const currentProducts = pastOrders.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <Box

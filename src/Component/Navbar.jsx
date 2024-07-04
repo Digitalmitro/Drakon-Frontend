@@ -55,10 +55,10 @@ function Navbar(props) {
         />
       </div>
       <Divider />
-      <List>
+      <List >
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemButton sx={{ textAlign: "center" }} >
               <ListItemText
                 onClick={() =>
                   navigate(
@@ -90,7 +90,7 @@ function Navbar(props) {
     dispatch(cartModal(!isOpenCart));
   };
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex"}}>
       <CssBaseline />
       <AppBar component="nav" sx={{ background: "#F3F3F3", boxShadow: "none" }}>
         <Box className="bg-black">

@@ -4,8 +4,10 @@ import gloves from "../assets/8.png";
 import elbowGuard from "../assets/7.png";
 import tshirt from "../assets/6.png";
 import sunglass from "../assets/9.png";
+import { useNavigate, Link } from "react-router-dom";
 
 const Hero = ({ closeCart }) => {
+  const navigate = useNavigate()
   const isMobile = useMediaQuery("(max-width:900px)");
   return (
     <>
@@ -33,6 +35,7 @@ const Hero = ({ closeCart }) => {
                 zoom: isMobile ? "0.7" : ""
               }}
               variant="contained"
+              onClick={() => navigate('/product')}
             >
               shop men
             </Button>
@@ -51,6 +54,7 @@ const Hero = ({ closeCart }) => {
                 zoom: isMobile ? "0.7" : ""
               }}
               variant="contained"
+              onClick={() => navigate('/product')}
             >
               shop women
             </Button>
@@ -70,7 +74,8 @@ const Hero = ({ closeCart }) => {
             <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
             <p className="text-xl lg:text-lg">Drakon Sports elbow guard...</p>
           </div> */}
-          <div className="w-full flex flex-col items-center justify-center">
+        <Link to={'/product'}>
+        <div className="w-full flex flex-col items-center justify-center">
             <img src={tshirt} alt="" className="lg:mb-[0px] lg:h-[400px]" />
             <h3 className="text-4xl lg:text-3xl font-bold">Drakon Hoodie</h3>
             <h3 className="text-3xl lg:text-2xl font-bold my-3">$ 125</h3>
@@ -78,12 +83,15 @@ const Hero = ({ closeCart }) => {
             Drakon Sports Apparel hoodie...
             </p>
           </div>
+        </Link>
+        <Link to={'/product'}>
           <div className="w-full flex flex-col items-center justify-center">
             <img src={sunglass} alt="" className="lg:w-64" />
             <h3 className="text-4xl lg:text-3xl font-bold">Sunglass</h3>
             <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
             <p className="text-xl lg:text-lg">Drakon Sports sunglass...</p>
           </div>
+          </Link>
         </div>
       </div>
     </>
