@@ -70,9 +70,9 @@ const Product = () => {
       <section>
         <div className="container-fliud">
           <div className="row">
-            <div className="col-md-2">
+            <div className="col-md-2 col-sm-10">
               <div className="sidebar p-3 bg-light">
-                <div className="mb-3">
+                <div className=" searchBar mb-3">
                   <label
                     htmlFor="searchBox"
                     className="form-label"

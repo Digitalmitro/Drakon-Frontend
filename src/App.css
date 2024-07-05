@@ -11,8 +11,12 @@
 .nav-tabs{
   border: 0px !important;
 }
+.MuiPaper-root{
+  /* height:200px; */
+  text-align: center;
+}
+
 .MuiToolbar-root{
-  height:100px;
   text-align: center;
 }
 .hero-bg-img {
@@ -62,6 +66,70 @@
   height: 400px;
 
 }
+
+/* Nav Search  */
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  position: relative;
+}
+
+.inputSeacrh {
+  border-style: none;
+  height: 35px;
+  width: 35px;
+  padding: 5px;
+  outline: none;
+  border-radius: 50%;
+  transition: .5s ease-in-out;
+  background-color: black;
+  box-shadow: 0px 0px 3px #f3f3f3;
+  padding-right: 30px;
+  color: #fff;
+}
+
+.inputSeacrh::placeholder,
+.inputSeacrh {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 15px;
+}
+
+.inputSeacrh::placeholder {
+  color: #8f8f8f;
+}
+
+.searchIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0px;
+  cursor: pointer;
+  width: 23px;
+  height: 23px;
+  margin: 5px;
+  outline: none;
+  border-style: none;
+  border-radius: 50%;
+  pointer-events: painted;
+  background-color: transparent;
+  transition: .2s linear;
+}
+
+.searchIcon:focus ~ .inputSeacrh,
+.inputSeacrh:focus {
+  box-shadow: none;
+  width: 200px;
+  border-radius: 0px;
+  background-color: transparent;
+  border-bottom: 3px solid black;
+  transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+
 
 .return-refund-banner{
   background-color: black;
@@ -537,10 +605,6 @@ form p{
 
 
 
-
-
-
-
 .Category {
   display: flex;
 }
@@ -567,19 +631,11 @@ form p{
   max-width: 100%;
 }
 
-
-.price-input-container { 
-  /* width: 100%;  */
-} 
-
 .price-input  { 
   display: flex; 
-
   justify-content: space-between;
-  margin: 22px 10px; 
+  margin:  5px 0px; 
 } 
-
-
 
 .price-field input { 
   flex: 1; 
@@ -589,7 +645,7 @@ form p{
   border-radius: 9px; 
   text-align: center; 
   border: 0px; 
-  width: 55px;
+  width: 45px;
   background: #e4e4e4; 
 } 
 
@@ -621,6 +677,7 @@ input::-webkit-inner-spin-button {
   height: 100%; 
   left: 25%; 
   right: 15%; 
+
   position: absolute; 
   border-radius: 5px; 
   background: #eb6a2e; 
@@ -650,31 +707,6 @@ input[type="range"]::-webkit-slider-thumb {
   pointer-events: auto; 
   -webkit-appearance: none; 
 } 
-/* 
-.footer .logo{
-    margin-top: -2.4rem;
-}
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @media screen and (max-width: 768px) { 
@@ -682,25 +714,68 @@ input[type="range"]::-webkit-slider-thumb {
       width: 80%; 
       margin-right: 5px; 
   } 
-
+  .price-input-container{
+     margin-top: 10px;
+     /* margin-left: ; */
+  }
   .custom-wrapper { 
       width: 100%; 
       left: 0; 
       padding: 0 10px; 
   } 
-
+  .searchBar{
+    /* margin-top: 10px; */
+    align-items: center;
+    display: flex;
+    gap: 18px;
+  }
   .projtitle { 
       width: 100%; 
       position: relative; 
       right: 26px; 
   } 
 
-  .price-input { 
+  /* .price-input { 
       flex-direction: column; 
       align-items: center; 
-  } 
+  }  */
 
   .price-field { 
-      margin-bottom: 10px; 
+      margin: 10px; 
   } 
+  .sidebar{
+    width: 100%;
+    margin-top: 2.5rem;
+    /* display: flex;
+    gap:2rem;
+    justify-content: center; */
+  }
+
+  /* .price-input  { 
+    display: flex; 
+    justify-content: space-between;
+    margin:  5px 0px; 
+  } 
+   */
+
+  .price-field input { 
+    flex: 2; 
+
+    border-radius: 9px; 
+    text-align: center; 
+    border: 0px; 
+    width: 45px;
+    background: #f0efef; 
+  } 
+  .productCategories{
+    /* margin-top: 1.2rem; */
+  }
+  .card {
+    width: 100% !important;
+}
+ 
+  .price-input { 
+   margin-top: .7rem;
+  }  
+
 }
