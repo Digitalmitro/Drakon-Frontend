@@ -55,10 +55,10 @@ function Navbar(props) {
         />
       </div>
       <Divider />
-      <List >
+      <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }} >
+          <ListItem key={item} disablePadding  >
+            <ListItemButton sx={{ textAlign: "center"  }}   >
               <ListItemText
                 onClick={() =>
                   navigate(
@@ -71,6 +71,7 @@ function Navbar(props) {
                   )
                 }
                 primary={item}
+               
               />
             </ListItemButton>
           </ListItem>
@@ -81,7 +82,7 @@ function Navbar(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-  const isMobile = useMediaQuery("(max-width:900px)");
+  const isMobile = useMediaQuery("(max-width:90px)");
 
   const products = useSelector((state) => state.cartReducer.items);
   const isOpenCart = useSelector((state) => state.cartReducer.openCartModal);
@@ -90,12 +91,12 @@ function Navbar(props) {
     dispatch(cartModal(!isOpenCart));
   };
   return (
-    <Box sx={{ display: "flex"}}>
+    <Box sx={{ display: "flex", alignItems:"center" }}>
       <CssBaseline />
       <AppBar component="nav" sx={{ background: "#F3F3F3", boxShadow: "none" }}>
         <Box className="bg-black">
           <Box
-            className="lg:max-w-full px-10 py-1 mx-auto gap-[30px] hidden lg:flex justify-between items-center"
+            className="lg:max-w-full px-10 py-1 mx-auto gap-[3px] hidden lg:flex justify-between items-center"
             sx={{
               zoom: isMobile ? "0.2" : "0.5",
             }}
@@ -145,8 +146,8 @@ function Navbar(props) {
           </Box>
         </Box>
         <Toolbar
-          className="h-[90px] lg:h-0"
-          sx={{ justifyContent: "space-between" }}
+          className="h-[100px] lg:h-10"
+          sx={{ justifyContent: "space-between" ,  margin:".8rem" }}
         >
           <IconButton
             color="inherit"
@@ -189,8 +190,43 @@ function Navbar(props) {
               ""
             ) : (
               <>
-                <img src={search} width={""} className="cursor-pointer w-7" />
-                <img src={heart} width={""} className="cursor-pointer w-7" />
+                {/* <img src={search} width={""} className="cursor-pointer w-7" /> */}
+                {/* search */}
+
+                <div class="search-wrapper">
+                  <button class="searchIcon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      height="25px"
+                      width="25px"
+                    >
+                      <path
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="1.5"
+                        stroke="#fff"
+                        d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                      ></path>
+                      <path
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="1.5"
+                        stroke="#fff"
+                        d="M22 22L20 20"
+                      ></path>
+                    </svg>
+                  </button>
+                  <input
+                    placeholder="search.."
+                    class="inputSeacrh"
+                    name="text"
+                    type="text"
+                  />
+                </div>
+
+                <img src={heart} width={""} className="cursor-pointer w-9" />
               </>
             )}
             <div className="toggleFloatingCart">
@@ -202,7 +238,8 @@ function Navbar(props) {
                   onClick={() => navigate("/cart")}
                   src={shoppingBag}
                   width={""}
-                  className="cursor-pointer w-10 lg:w-7"
+                  className="cursor-pointer w-14 lg:w-7"
+                  style={{width:"2.3rem"}}
                 />
               </Badge>
               <div className="floatingCart cart-container h-[300px] w-80 overflow-y-auto absolute right-5 top-11 z-[1000] bg-black opacity-80 rounded-md">
@@ -247,7 +284,7 @@ function Navbar(props) {
               src={profile}
               onClick={() => navigate("/account")}
               width={""}
-              className="cursor-pointer w-10 lg:w-7"
+              className="cursor-pointer w-11 lg:w-9"
             />
           </Box>
           {/* {isOpenCart && (
@@ -291,7 +328,9 @@ function Navbar(props) {
               boxSizing: "border-box",
               width: drawerWidth,
             },
+            
           }}
+          
         >
           {drawer}
         </Drawer>
