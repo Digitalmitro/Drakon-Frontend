@@ -26,10 +26,7 @@ const Cart = () => {
   const handleProduct = async () => {
     try {
 
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/general-settings`
-      );
-
+    
       setEnableCurrency(res.data[0].Currency)
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
@@ -45,8 +42,7 @@ const Cart = () => {
   console.log("cartData", data)
 
   console.log("data", data);
-  const totalPrice = data?.reduce((acc, curr) => acc + (curr.price* curr.qty), 0);
-  const netPayable = totalPrice - (totalPrice * 0.3);
+
 
   useEffect(() => {
     handleProduct();
@@ -86,8 +82,6 @@ const Cart = () => {
       console.log(error);
     }
   }
-
-
 
 
   return (
@@ -173,60 +167,9 @@ const Cart = () => {
          </ul>}
           </div>
 
-{/* Coupon */}
-          {/* <div className="container ">
-        <div
-          className="login-box"
-          style={{ display: "flex", gap: "40px" }}
-        >
-          <input
-            type="text"
-            className="form-control w-80"
-            id="exampleFormControlInput1"
-            placeholder=" Enter coupon code"
-          />
-          <button
-            type="sumbit"
-            className="btn btn-primary coupon-btn"
-            style={{ backgroundColor: "coral" }}
-          >
-            Apply coupon
-          </button>
+
         </div>
-      </div> */}
-        </div>
-        <div className="flex-1 p-14 lg:my-20 border">
-          <h2 className="text-3xl font-bold mb-5">Cart Total</h2>
-          <div className="flex justify-between mb-5">
-            <h3 className="text-xl font-bold text-gray-800">Subtotal</h3>
-            <h3 className="text-xl font-bold text-gray-400">{enableCurrency} {totalPrice}</h3>
-          </div>
-          {/* <div className="flex justify-between mb-10">
-            <h3 className="text-xl font-bold text-red-400">(-) Tax</h3>
-            <h3 className="text-xl font-bold text-red-400">3%</h3>
-          </div> */}
-          <hr />
-          <div className="flex justify-between my-10">
-            {/* <h3 className="text-xl font-bold text-gray-400">You Pay</h3> */}
-            {/* <h3 className="text-xl font-bold text-gray-400">
-              $ {netPayable.toFixed(2)}
-            </h3> */}
-          </div>
-          <Button
-           onClick={() => navigate(`/checkout`)}
-            sx={{
-              paddingY: "10px",
-              width: "100%",
-              background: "#F5743B",
-              "&:hover": {
-                backgroundColor: "#be410c", 
-              },
-            }}
-            variant={"contained"}
-          >
-            Proceed To Checkout
-          </Button>
-        </div>
+      
       </div>
       
     </>

@@ -44,12 +44,12 @@ const Productdetails = () => {
 
   const getAllProductData = async () => {
     try {
-      const invRes = await axios.get(
+      const feature = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/feature-products/${id}`
       );
       // fetchProducts = invRes.data
-      console.log(invRes.data);
-      setData(invRes.data);
+      console.log(feature.data);
+      setData(feature.data);
       // console.log("invRes", data);
     } catch (err) {
       console.log(err);
@@ -67,12 +67,12 @@ const Productdetails = () => {
     }
 
     try {
-      const featuredRes = await axios.get(
+      const inventory = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/inv-products/${id}`
       );
 
-      setData(featuredRes.data);
-      console.log("featuredRes", data);
+      setData(inventory.data);
+      console.log("inventory", data);
     } catch (err) {
       console.log(err);
     }
@@ -98,7 +98,8 @@ const Productdetails = () => {
       message.success("Added to Cart");
      
       setTimeout(() => {
-        navigate(`/cart`)
+        window.location.href = '/cart'
+        // navigate(`/cart`)
       }, 500)
       console.log("cart data post", response);
     } catch (error) {
@@ -136,9 +137,9 @@ const Productdetails = () => {
 
   return (
     <>
-      <div className="container my-5">
-        <div className="row">
-          <div className="col-6">
+      <div className="container productContainer my-5">
+        <div className="row productDetails">
+          <div className="col-6 py-4 sm-py-1">
             <img src={data?.image[0]} />
           </div>
           <div className="col-6">
@@ -157,7 +158,7 @@ const Productdetails = () => {
                 >
                   ${data?.price}
                 </span>{" "}
-                IN STOCK
+               {(data?.stock) > 0 ? <p>IN STOCK</p> : <p style={{color:"grey"}}>OUT OF STOCK</p>}
               </p>
             </div>
             <ReactStars
@@ -170,8 +171,9 @@ const Productdetails = () => {
               activeColor="#ffd700"
             />
 
-            <div class="product-counter d-flex gap-3 py-4">
-              <button
+           {( data?.stock || data?.stock > 0) &&  <div class="product-counter d-flex  gap-3 py-4">
+             <div className="d-flex gap-3 ">
+               <button
                 id="decrease"
                 onClick={() => setQuantity((prev) => prev - 1)}
                 disabled={quantity === 1}
@@ -186,6 +188,7 @@ const Productdetails = () => {
               >
                 +
               </button>
+              </div>
 
               <div className="d-flex" style={{ gap: "25px" }}>
                 <button
@@ -220,7 +223,8 @@ const Productdetails = () => {
                   </button>
                 )}
               </div>
-            </div>
+            </div>}
+            
             <div className="method">
               <img src={Payment} style={{ zoom: "1.1" }} />
             </div>

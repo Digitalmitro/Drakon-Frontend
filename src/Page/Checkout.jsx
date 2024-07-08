@@ -13,13 +13,16 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [shippingData, setShippingData] = useState();
   const [billingData, setBillingData] = useState();
-  const [cartData, setCartData] = useState();
 
+  const [cartData, setCartData] = useState();
+  const [allProductData, setAllProductData] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [enableTax, setEnabletax] = useState();
+  const [enableCurrency, setEnableCurrency] = useState();
   const [tax, setTax] = useState(0);
   const [taxValue, setTaxValue] = useState(0);
   const [coupon, setCoupon] = useState([]);
+  const [enableCoupon, setEnableCoupon] = useState([]);
   const [couponName, setCouponName] = useState(""); // State variable for coupon percentage
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [finalPayment, setFinalPayment] = useState(0);
@@ -55,7 +58,44 @@ const Checkout = () => {
 
   const DeliveryAddressbill = async () => {};
 
-  // wishlist
+  const getAllProductData = async () => {
+    try {
+      const res1 = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API}/feature-products`
+      );
+      const featureProduct = res1.data;
+      // fetchProducts = featureRes.data
+      console.log("feature-data", featureProduct);
+
+      const res2 = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API}/products`
+      );
+      const prodData = res2.data;
+
+      const res3 = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API}/inv-products`
+      );
+      const invProduct = res3.data;
+      setAllProductData([
+        
+        ...featureProduct,
+        ...invProduct,
+        ...prodData,
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
+
+
+  };
+  // console.log("productDatat", allProductData);
+
+  useEffect(() => {
+    getAllProductData();
+  }, []);
+
+
+  // wishlist Products
   const handleProduct = async () => {
     try {
       const response = await axios.get(
@@ -77,38 +117,46 @@ const Checkout = () => {
     );
     const ress = await axios.get(`${import.meta.env.VITE_BACKEND_API}/coupon`);
     setEnabletax(res.data[0].EnableTax);
-    await setTax(res.data[0].TaxRate);
+    setEnableCoupon(res.data[0].EnableCoupon);
+    setTax(res.data[0].TaxRate);
     setCoupon(ress.data);
-
-    let taxAmount = (subtotal * tax) / 100;
-    let youPay = subtotal + taxAmount;
-    setTaxValue(taxAmount);
-    setFinalPayment(youPay);
+    setEnableCurrency(res.data[0].Currency);
+    if (enableTax) {
+      let taxAmount = (subtotal * tax) / 100;
+      let youPay = subtotal + taxAmount;
+      setTaxValue(taxAmount);
+      setFinalPayment(youPay);
+    }
   };
 
   const applyCoupon = async () => {
-    const cpName = coupon?.find((e) => e.couponName === couponName);
-    if (cpName) {
-      let discoundAmount = await cpName?.discount;
-      // await setCouponDiscount(cpName ? cpName?.discount : 0);
-
-      if (discoundAmount) {
-        let taxAmount = (subtotal * tax) / 100;
-
-        let couponAmount = (subtotal * discoundAmount) / 100;
-        let youPay = subtotal + taxAmount - couponAmount;
-
-        setCouponDiscount(couponAmount);
-        setFinalPayment(youPay);
-        message.success("Coupon applied");
-      } else {
-        message.error("Discount is not Applied");
-      }
+    if (!enableCoupon) {
+      message.error("coupon is not applicable");
+      return;
     } else {
-      message.error("Coupon Name is Invalid");
+      const cpName = coupon?.find((e) => e.couponName === couponName);
+      if (cpName) {
+        let discoundAmount = await cpName?.discount;
+        // await setCouponDiscount(cpName ? cpName?.discount : 0);
+
+        if (discoundAmount) {
+          let taxAmount = (subtotal * tax) / 100;
+
+          let couponAmount = (subtotal * discoundAmount) / 100;
+          let youPay = subtotal + taxAmount - couponAmount;
+
+          setCouponDiscount(couponAmount);
+          setFinalPayment(youPay);
+          message.success("Coupon applied");
+        } else {
+          message.error("Discount is not Applied");
+        }
+      } else {
+        message.error("Coupon Name is Invalid");
+      }
     }
   };
-  console.log("couponDiscount", couponDiscount);
+  // console.log("couponDiscount", couponDiscount);
 
   // subtotal
   useEffect(() => {
@@ -121,10 +169,15 @@ const Checkout = () => {
     getTax();
   }, [cartData]);
 
+  // console.log("cartData", cartData);
+
   async function handleOrderPlaced() {
+    await getAllProductData();
+
     try {
       const res = await axios.get("https://api.ipify.org");
       // Iterate through each item in the cart
+
       for (const item of cartData) {
         const payload = {
           image: item.image?.map((img) => img),
@@ -142,32 +195,65 @@ const Checkout = () => {
           totalpay: Number(finalPayment),
         };
 
+        const orderedStock = allProductData.filter(
+          (info) => info._id === item.product_id
+        );
+
+
+        console.log("orderedStock", orderedStock[0]._id);
+        if(orderedStock[0].stock){
+          const productPayload = {
+            stock: orderedStock[0].stock - item.qty
+         }
+        if(orderedStock[0].type === 'products'){
+          const productRes = await axios.put(
+            `${import.meta.env.VITE_BACKEND_API}/products/${item.product_id}` , productPayload
+          );
+        }
+        else  if(orderedStock[0].type === 'inventory'){
+          const inventory = await axios.put(
+            `${import.meta.env.VITE_BACKEND_API}/inv-products/${item.product_id}`, productPayload
+          );
+        }
+        else{
+          const feature = await axios.put(
+            `${import.meta.env.VITE_BACKEND_API}/feature-products/${item.product_id}`, productPayload
+          );
+        }
+        }
+
+   
         console.log("payload", payload);
-        // Send a request to place the order
+        // // Send a request to place the order
         await axios.post(`${import.meta.env.VITE_BACKEND_API}/order`, payload);
 
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+       
         // setLoaderPlacingOrder(true);
         // setTimeout(() => {
         //   setLoaderPlacingOrder(false);
         //   setCardOrderPlaced(true);
         // }, 5100);
-        message.success("Product ordered");
+
 
         const rescartdelete = await axios.delete(
           `${import.meta.env.VITE_BACKEND_API}/wishlist/${item._id}`
         );
-        navigate("/tab");
-        // console.log(rescartdelete.data);
-        // getCartData();
+
+        // navigate("/tab");
+        console.log(rescartdelete.data);
+        handleProduct();
       }
+        message.success("Product ordered");
+         window.location.href = "/profile?tab=3";
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
     } catch (error) {
       console.error("Error placing order:", error);
     }
   }
+
 
   return (
     <>
@@ -222,7 +308,7 @@ const Checkout = () => {
                 </button> */}
               </div>
             </div>
-            
+
             <div
               className="login-box w-100 my-4"
               style={{ display: "flex", gap: "20px" }}
@@ -244,10 +330,7 @@ const Checkout = () => {
                 Apply coupon
               </button>
             </div>
-
-            
           </div>
-
 
           <div className="col-md-6">
             <h2 className="fs-2 text ">YOUR ORDER</h2>
@@ -282,7 +365,7 @@ const Checkout = () => {
                       <td className="p-4 m-4 px-7 border-b-4"></td>
                       <td className="p-4 m-4 px-7 border-b-4">{info.qty}</td>
                       <td className="p-4 m-4 px-7 border-b-4">
-                        ${info.price * info.qty}
+                        {enableCurrency} {info.price * info.qty}
                       </td>
                     </tr>
                   );
@@ -297,9 +380,15 @@ const Checkout = () => {
                   <td className="p-4 m-4 px-7 border-b-4"></td>
                   <td className="p-4 m-4 px-7 border-b-4"></td>
                   <td className="p-4 m-4 px-7 border-b-4">
-                    <p className="pb-2 mb-4">${subtotal}</p>
-                    <p className="text-orange-600  mb-2">-${couponDiscount}</p>
-                    <p className="text-green-600  mb-2">+${taxValue}</p>
+                    <p className="pb-2 mb-4">
+                      {enableCurrency} {subtotal}
+                    </p>
+                    <p className="text-orange-600  mb-2">
+                      -{enableCurrency} {couponDiscount}
+                    </p>
+                    <p className="text-green-600  mb-2">
+                      +{enableCurrency} {taxValue}
+                    </p>
                   </td>
                 </tr>
                 <tr className="p-4 m-4 px-7 mb-8 border-b-4">
@@ -309,7 +398,7 @@ const Checkout = () => {
                   <td className="p-4 m-4 px-7 border-b-4"></td>
                   <td className="p-4 m-4 px-7"></td>
                   <td className="p-4 m-4 px-7 border-b-4">
-                    ${finalPayment || subtotal}
+                    {enableCurrency} {finalPayment || subtotal}
                   </td>
                 </tr>
               </tbody>
@@ -324,11 +413,12 @@ const Checkout = () => {
                   {" "}
                   ! Please Add Shipping Address
                 </span>
-              ) : `${shippingData?.shippingstreetAddress} ${shippingData?.shippingzipcode}, 
+              ) : (
+                `${shippingData?.shippingstreetAddress} ${shippingData?.shippingzipcode}, 
                   ${shippingData?.shippingcity} ,${shippingData?.shippingstate}, 
-                  ${shippingData?.shippingcountry}`}
+                  ${shippingData?.shippingcountry}`
+              )}
             </p>
-
 
             <div className="text-center border-4">
               <p>

@@ -166,7 +166,12 @@
   background-position: center;
   background-size: cover;
   height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.abou
 .bg-women-running {
   background-image: url("./assets/7.png");
   background-position: center;
@@ -357,6 +362,12 @@
    height:auto ;
    padding: 20px 20px;
  }
+
+ .pastOrderImg{
+  width: 200px;
+  height: 200px;
+}
+
  .login-box{
   border: 1px solid #d4d4d4;
   background-color: #ffffff;
@@ -778,4 +789,134 @@ input[type="range"]::-webkit-slider-thumb {
    margin-top: .7rem;
   }  
 
+
+
+  /*  order panel */
+  .fit-content{
+    width: fit-content;
+    margin: .1rem;
+  }
+  .productwrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .burger-text{
+
+  }
+  .order-response{
+    /* zoom: 0.8; */
+  }
+  .tabSection{
+    zoom:.8;
+  }
+
+  /* .pastOrderImg{
+    width: 200px;
+    height: 200px;
+  } */
+  /* .profile-banner {
+     width: 100%;
+     height
+  } */
+
+  .myAccount{
+    font-size: 60px;
+    margin: 4rem 0;
+  }
+
+  .profile-banner{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .pastOrderHead{
+    display: none;
+  }
+
+
+  /* profile details panel*/
+
+.profile{
+  width: 100%;
+  zoom : .8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileDetails{
+  width:100% !important;
+  display: flex !important;
+  justify-content: start !important;
+  flex-direction: column !important;
+  align-items: start !important;
+  margin:.2rem !important;
+  /* padding: .1rem !important; */
+  gap:.1rem !important;
+}
+
+/* addresses */
+.adressess{
+  display :flex !important;
+  flex-direction: column !important;
+}
+.addressForm{
+  width: fit-content !important;
+
+}
+.addressForm h2{
+ width: 100%;
+}
+.navHeart{
+  display: none;
+}
+.logoMobile{
+  display: none;
+}
+
+
+
+.productDetails{
+  width: fit-content !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+.product-counter{
+ display: flex;
+ flex-direction: column;
+}
+
+
+/* about */
+.about-banner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.about-banner h2{
+  font-size: 5rem;
+}
+.footer .wrapper .wrapped{
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+}
+
+.footer .wrapper .banner{
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+}
+.footer .wrapper .contact{
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+}
 }
