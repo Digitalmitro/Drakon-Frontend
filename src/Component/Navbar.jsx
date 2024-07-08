@@ -1,4 +1,4 @@
-import * as React from "react";
+import  React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -30,27 +30,86 @@ import { Badge, useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { CancelOutlined } from "@mui/icons-material";
 import { cartModal, removeItem } from "../Redux/CartSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { message } from "antd";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
+
 
 const drawerWidth = 240;
 const navItems = ["Home", "Equipment", "Apparel", "About", "Contact"];
 
 function Navbar(props) {
   const navigate = useNavigate();
+ const location = useLocation()
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const token = Cookies.get("token");
+  const decodedToken = token && jwtDecode(token);
+  const user = decodedToken?.email;
+  const user_id = decodedToken?._id;
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [data, setData] = useState();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+// CART PRODUCTS
+  const products = useSelector((state) => state.cartReducer.items);
+  const isOpenCart = useSelector((state) => state.cartReducer.openCartModal);
+  const dispatch = useDispatch();
+  // const pathname = window.location
+  console.log("products", products)
+console.log("loaction ",  location.pathname)
+  const handleOpenChange = () => {
+    dispatch(cartModal(!isOpenCart));
+  };
 
+  // cartData
+  const handleProduct = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
+      );
+
+      setData(response.data.wishlist.reverse());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  console.log("NAV CART DATA", data );
+  
+  useEffect(() => {
+    handleProduct();
+
+  }, []);
+
+
+  const handleDeleteCart = async(wishlistId, productId) => {
+    dispatch(removeItem(productId))
+    try {
+      const  deletedData  = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_API}/wishlist/${wishlistId}`
+      );
+      handleProduct();
+      
+      console.log("deletedData", deletedData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+// NAV Items
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <div className="flex justify-center p-5">
+      <div className="flex justify-center p-5 ">
         <img
           onClick={() => navigate("/")}
           src={logo}
           alt="logo"
+          className=""
           style={{ zoom: "0.7", cursor: "pointer" }}
         />
       </div>
@@ -83,13 +142,7 @@ function Navbar(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
   const isMobile = useMediaQuery("(max-width:90px)");
-
-  const products = useSelector((state) => state.cartReducer.items);
-  const isOpenCart = useSelector((state) => state.cartReducer.openCartModal);
-  const dispatch = useDispatch();
-  const handleOpenChange = () => {
-    dispatch(cartModal(!isOpenCart));
-  };
+ 
   return (
     <Box sx={{ display: "flex", alignItems:"center" }}>
       <CssBaseline />
@@ -163,7 +216,7 @@ function Navbar(props) {
             src={logo}
             alt="logo"
             width={""}
-            className="w-36 cursor-pointer"
+            className="w-36 cursor-pointer logoMobile"
           />
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item, index) => (
@@ -226,12 +279,13 @@ function Navbar(props) {
                   />
                 </div>
 
-                <img src={heart} width={""} className="cursor-pointer w-9" />
+                <img src={heart} width={""} className="cursor-pointer navHeart w-9" />
               </>
             )}
             <div className="toggleFloatingCart">
-              <Badge
-                badgeContent={products.length > 0 ? products.length : 0}
+             <a href="/cart">
+             <Badge
+                badgeContent={data?.length > 0 ? data?.length : 0}
                 color="primary"
               >
                 <img
@@ -242,8 +296,9 @@ function Navbar(props) {
                   style={{width:"2.3rem"}}
                 />
               </Badge>
-              <div className="floatingCart cart-container h-[300px] w-80 overflow-y-auto absolute right-5 top-11 z-[1000] bg-black opacity-80 rounded-md">
-                {products?.map((e) => (
+             </a>
+             { (location.pathname !== "/cart" ) && ( location.pathname !== "/checkout") && <div className="floatingCart cart-container h-[300px] w-80 overflow-y-auto absolute right-5 top-11 z-[1000] bg-black opacity-80 rounded-md">
+                {   data?.map((e) => (
                   <>
                     <div className="cursor-pointer flex justify-between items-center p-5">
                       <div>
@@ -267,7 +322,7 @@ function Navbar(props) {
                         $ {e.price}
                       </h3>
                       <CancelOutlined
-                        onClick={() => dispatch(removeItem(e._id))}
+                        onClick={() => handleDeleteCart(e._id, e.product_id)}
                         fontSize="1.5rem"
                         className="cursor-pointer"
                       />
@@ -279,6 +334,8 @@ function Navbar(props) {
                   <p className="text-white">No items in cart</p>
                 )}
               </div>
+
+             }
             </div>
             <img
               src={profile}

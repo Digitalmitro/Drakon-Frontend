@@ -57,6 +57,7 @@ export default function VerticalTabs() {
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const userId = decodedToken?._id;
+
   const [formData, setFormData] = React.useState({
     firstName: "",
     lastName: "",
@@ -94,7 +95,6 @@ export default function VerticalTabs() {
     streetAddress: "",
     city: "",
     state: "",
-   
     zipcode: null,
     phone: null,
   });
@@ -362,6 +362,7 @@ export default function VerticalTabs() {
 
   return (
     <Box
+    className="tabSection"
       sx={{
         flexGrow: 1,
         bgcolor: "background.paper",
@@ -373,6 +374,7 @@ export default function VerticalTabs() {
         orientation="vertical"
         variant="scrollable"
         value={value}
+        
         onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{
@@ -400,7 +402,7 @@ export default function VerticalTabs() {
           className="profile d-flex justify-content-around w-full "
           style={{ margin: "10px" }}
         >
-          <div className="gap-5 my-5 w-1/3 text-center border p-5">
+          <div className=" profileDetails gap-5 md:w-full  my-5 w-1/3 w-sm-full text-center border p-5">
             <h1>PROFILE DETAILS</h1>
             <div className=" d-flex justify-content-between  items-center my-5 py-2">
               <h4>Name: </h4>
@@ -469,9 +471,9 @@ export default function VerticalTabs() {
         </div>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <div className="d-flex m-3 gap-5">
+        <div className="d-flex m-3 gap-5 adressess sm:flex-column">
           <div className="w-1/2 p-2 addressForm">
-            <h2 className="w-1/2 pb-3">Billing Address</h2>
+            <h2 className="w-1/2  pb-3">Billing Address</h2>
             <div className="mb-3 border p-4">
               <div className="m-3">
                 <button

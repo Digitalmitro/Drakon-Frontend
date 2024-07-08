@@ -7,7 +7,7 @@ const Profile=() =>{
         <section >
        <div className="container-fluid profile-banner">
        
-       <h3 className="text-center size">MY ACCOUNT</h3>
+       <h3 className="text-center size myAccount">MY ACCOUNT</h3>
        </div>
     </section>
 

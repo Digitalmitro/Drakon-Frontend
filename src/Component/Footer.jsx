@@ -18,9 +18,9 @@ const Footer = ({ closeCart }) => {
       style={{ zoom: isMobile ? "0.7" : "" }}
     >
       <div className="footer container mx-auto py-10">
-        <div className="flex items-center  lg:p-0 h-full">
-          <div className="lg:grid grid-cols-4 justify-items-center lg:text-left">
-            <div className="flex flex-col items-center lg:items-start gap-6 mb-5 lg:mb-0">
+        <div className="flex wrapper lg:items-center sm:items-start  lg:p-0 h-full">
+          <div className="lg:grid  wrapped grid-cols-4 justify-items-center lg:text-left">
+            <div className="flex flex-col banner items-center lg:items-start gap-6 mb-5 lg:mb-0">
               <div className="logo">
                 <img src={logoFooter} alt="" />
               </div>
@@ -44,7 +44,7 @@ const Footer = ({ closeCart }) => {
                 </div>
               </div>
             </div>
-            <div className="flex py-5 flex-col items-center lg:items-start gap-2 text-white mb-5 lg:mb-0">
+            <div className="flex py-5 flex-col banner items-center lg:items-start gap-2 text-white mb-5 lg:mb-0">
               <h3 className="text-2xl font-bold">Services</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col gap-7 text-xl">
@@ -64,32 +64,32 @@ const Footer = ({ closeCart }) => {
                 <li>Contact Us</li>
               </ul>
             </div>
-            <div className="flex flex-col items-center lg:items-start gap-2 py-5 text-white">
-              <h3 className="text-2xl font-bold">Contact</h3>
+            <div className="flex flex-col contact items-center lg:items-start gap-2 py-5 text-white">
+              <h3 className="text-2xl  font-bold">Contact</h3>
               <hr className="border-red-500 w-36 mb-4" />
-              <ul className="flex flex-col items-center lg:items-start gap-7 text-xl">
+              <ul className="flex flex-col  contact items-center lg:items-start gap-7 text-xl">
                 <li className="flex items-center gap-5">
                   <img src={phone} alt="" className="object-cover w-10" />
                   <p>+1 858-997-3098</p>
                 </li>
-                <li className="flex items-center gap-5">
+                <li className="flex  items-center gap-5">
                   <img src={mail} alt="" className="object-cover w-8" />
                   <p>info@drakon-sports.com</p>
                 </li>
-                <li className="flex items-center gap-5">
+                <li className="flex items-center  gap-5">
                   <img
                     src={locationFooter}
                     alt=""
-                    className="object-cover w-12"
+                    className="object-cover w-10 py-3"
                   />
-                  <p>2001 Timberloch Pl The Woodlands TX 77380</p>
+                  <p className="">2001 Timberloch Pl The Woodlands TX 77380</p>
                 </li>
               </ul>
             </div>
           </div>
         </div>
         {/* <hr className="my-5" /> */}
-        <p className="text-white text-center">
+        <p className="text-white text-center ">
           Copyright by SPORT APPAREL @ 2024. All rights reserved
         </p>
       </div>
