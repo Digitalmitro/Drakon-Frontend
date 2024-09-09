@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import logo4 from "../../assets/logo4.jpg";
 
@@ -85,16 +86,16 @@ const Navbar = () => {
             </div>
             <div className="second">
                 <img src={logo4} style={{width:"40px",height:"30px"}} alt="" />
-              <a className="mx-2" href="#home">CUSTOM</a>
-              <a className="mx-2" href="#contact">GLOVES</a>
-              <a className="mx-2" href="#profile">BATS</a>
-              <a className="mx-2" href="#home">BALLS</a>
-              <a className="mx-2" href="#contact">PROTECTIVE</a>
-              <a className="mx-2" href="#profile">BAGS</a>
-              <a className="mx-2" href="#home">APPAREL</a>
-              <a className="mx-2" href="#contact">BATTING GLOVES</a>
-              <a className="mx-2" href="#profile">ACCESSORIES</a>
-              <a className="mx-2" href="#profile">CLEARANCE</a>
+              <Link className="mx-2" to="/shop">CUSTOM</Link>
+              <Link className="mx-2" to="/shop">GLOVES</Link>
+              <Link className="mx-2" to="/shop">BATS</Link>
+              <Link className="mx-2" to="/shop">BALLS</Link>
+              <Link className="mx-2" to="/shop">PROTECTIVE</Link>
+              <Link className="mx-2" to="/shop">BAGS</Link>
+              <Link className="mx-2" to="/shop">APPAREL</Link>
+              <Link className="mx-2" to="/shop">BATTING GLOVES</Link>
+              <Link className="mx-2" to="/shop">ACCESSORIES</Link>
+              <Link className="mx-2" to="/shop">CLEARANCE</Link>
 
               <a className="mx-2" href="#profile">TEAM RAWLINGS</a>
 

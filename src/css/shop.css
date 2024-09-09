@@ -1,0 +1,120 @@
+/* General Shop Page Styling */
+.shop-page {
+  padding: 20px;
+  margin-top: 10rem; /* Ensure the top padding is large enough to clear the navbar */
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+/* Filter Bar Styling */
+.filter-bar {
+  display: flex;
+  gap: 10px; /* Space between filter items */
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.filter-bar select {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Product Grid Styling */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column; /* Arrange children vertically */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+  height: 100%; /* Ensure the card takes up full height of its container */
+}
+
+.product-image img {
+  width: 100%;
+  height: auto;
+}
+
+.new-label,
+.discount-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  padding: 5px;
+  font-size: 0.8em;
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+.new-label {
+  background-color: #ff0000;
+}
+
+.discount-label {
+  background-color: #ffa500;
+}
+
+.original-price {
+  text-decoration: line-through;
+  margin-right: 5px;
+  color: #888;
+}
+
+.discount-price {
+  color: #f00;
+}
+
+.view-details-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: auto; /* Pushes the button to the bottom of the card */
+  display: inline-block;
+}
+
+/* Load More Button Styling */
+.load-more {
+  margin-top: 30px;
+  padding: 10px 20px;
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  text-align: center;
+}
+
+/* Responsive Design for Product Grid */
+@media (max-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
