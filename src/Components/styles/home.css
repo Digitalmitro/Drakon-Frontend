@@ -1,0 +1,25 @@
+.offers-1{
+    text-align: center;
+}
+.special-offers h5{
+    font-weight: 700;
+    font-size: 1.8rem;
+    line-height: 2rem;
+    margin-top: -15px;
+    transform: scale(.8, 1);
+}
+.golden{
+    color:#F1CE7C;
+}
+.theme{
+  color:  var(--themeColor);
+}
+
+.overlay-4 h5{
+    margin-top: -12px;
+    font-size: 2.2rem;
+    font-weight:700;
+    filter: brightness(100%);
+    color:#333;
+    text-transform:uppercase;
+}
