@@ -36,16 +36,37 @@ font-size: 1.2rem;
   text-align: center;
   align-self: center;
 }
+.menuImage{
+  width: 50px;
+  height: 30px;
+  padding-right:15px;
+}
+.mobileView{
+  font-size: 1.2rem;
+  margin-top: -10px;
+  display:none;
+  overflow-y: scroll;
+  zoom: 0.8;
+}
+.desktopView{
+  display: block;
+}
 
 .top-heading {
 
   /* background-color: #f5733b; */
+
+  padding-top: 12px;
   background-color: var(--themeColor);
-  height: 5vh;
+  height: 6vh;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+.top-heading p{
+  transform: scale(1.1, .9);
+
 }
 
 .navbar.show {
@@ -64,11 +85,12 @@ font-size: 1.2rem;
 .navbar-left img {
   width: 120px !important;
   height: 40px;
+  padding-left: 10px;
 }
 
 .navbar-logo {
   height: 40px;
-  width: 100% !important;
+  /* width: 100% !important; */
 }
 
 .navbar-right {
@@ -122,7 +144,9 @@ font-size: 1.2rem;
   font-size: 1.2rem;
   /* margin: 10px; */
 }
-
+.navbar-right .first p {
+  margin-bottom: -2px;
+}
 .input-nav-search {
   width: 300px;
   border: 1px solid #2D2D2D;
@@ -436,7 +460,7 @@ font-size: 1.2rem;
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
   max-width: 320px;
   margin: auto 0.6rem;
   text-align: start;
@@ -467,6 +491,7 @@ font-size: 1.2rem;
 
 .card .prod-name {
   font-size: 0.9rem !important;
+  padding: 5px;
 }
 
 .card button {
@@ -774,6 +799,11 @@ font-size: 1.2rem;
   margin: 5px;
   font-weight: 300;
 }
+.line{
+  background-color: black;
+  height: 1px;
+  width: 100%;
+}
 
 @media screen and (max-width:1280px) {
   .footer-container {
@@ -788,11 +818,21 @@ font-size: 1.2rem;
     align-items: center;
   }
 
+
+
 }
 
 @media screen and (max-width:538px) {
   .input-boxes {
     width: 40%;
+  }
+  .mobileView{
+    display:block;
+  border-radius: 1px solid red ;
+
+  }
+  .overlay-3{
+    width: 70vw;
   }
 }
 
@@ -926,9 +966,6 @@ font-size: 1.2rem;
 .login-signup-btn .active {
   padding-bottom: 8px;
   border-bottom: 2px solid red;
-  /* background-color: #222; */
-  /* text-decoration: underline; */
-  /* color: white; */
 }
 
 .login-signup-btn h6:hover {
@@ -973,24 +1010,7 @@ font-size: 1.2rem;
 }
 
 @media screen and (max-width:768px) {
-  .login-container {
-
-    border: 1px solid red;
-    width: 100%;
-    margin-top: 15rem;
-    gap: 1rem;
-    padding: 0px;
-    flex-wrap: wrap;
-    height: auto;
-    /* border: 1px solid red; */
-    /* height: 100vh; */
-  }
-
-  .login-left,
-  .login-right {
-    width: 370px !important;
-    /* height: auto; */
-  }
+ 
 }
 
 /* --------addtocart------- */
@@ -1275,6 +1295,7 @@ font-size: 1.2rem;
   font-size: 1.2rem;
   font-weight: bold;
   opacity: 0.8;
+  padding: 5px;
 }
 
 /* Styles for the stock status */
@@ -1346,6 +1367,27 @@ font-size: 1.2rem;
 
 }
 
+.address-box{
+  border: 1px solid #a1a1a1;
+  padding: 20px 20px;
+ line-height:35px;
+  width: 90% ;
+  margin-top: 20px ;
+}
+
+.login-box{
+  border: 1px solid #d4d4d4;
+  background-color: #ffffff;
+  width: 100%;
+  height:auto ;
+  padding: 20px ;
+ }
+ .addressDetails .form-control{
+  padding: 1rem;
+  margin-bottom: 1.4rem;
+  font-size: 20px;
+}
+
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -1404,53 +1446,98 @@ font-size: 1.2rem;
     height: 3vh !important;
     font-size: 0.9rem;
   }
+
+  .mobileView{
+    display:block;
+  border-radius: 1px solid red ;
+
+  }
+.mobileView p{
+  line-height: 5px;
+}
+.mobileView a{
+  margin-top: 25px !important;
+}
+
+.login-container {
+
+  border: 1px solid red;
+  width: 100%;
+  margin-top: 15rem;
+  gap: 1rem;
+  padding: 0px;
+  flex-wrap: wrap;
+  height: auto;
+  /* border: 1px solid red; */
+  /* height: 100vh; */
+}
+
+.desktopView{
+  display: none;
+}
+.mobileView{
+border-radius: 1px solid red ;
+display:block;
 }
 
 
+.overlay-3{
+  width: 70vw;
+}
+.cart-container {
+  width: 100%;
+  padding: 5px;
+}
+
+.left-cart {
+  width: 100%;
+  zoom: 0.7;
+  border: 1px solid green;
+
+}
+
+.right-cart {
+  width: 100%;
+  zoom: 0.8;
+  border: 1px solid green;
+
+}
+.little-league {
+    height: 50vh;
+   
+}
+.overlay-4{
+  text-align: center;
+  width: 80%;
+  left: 45%;
+}
+.overlay-4 h5{
+  color: white;
+  margin-top: 2px;
+  font-size: 1.5rem;
+  font-weight:700;
+}
+.card{
+  max-width: 100%;
+}
+.little-league h5,  .overlay-4 h5{
+  color: white;
+  font-size: 1rem;
+}
+.little-league img{
+  height: 38vh;
+}
+.mobileView{
+border-radius: 1px solid red ;
+display:block;
+}
+.limitedAddition{
+  margin-top: 6rem;
+}
+
+.limitedAddition h1{
+  font-size: 2rem;
+}
 
 
-
-@media screen and (max-width:780px) {
-  .cart-container {
-    width: 100%;
-    padding: 5px;
-  }
-
-  .left-cart {
-    width: 100%;
-    zoom: 0.7;
-    border: 1px solid green;
-
-  }
-
-  .right-cart {
-    width: 100%;
-    zoom: 0.8;
-    border: 1px solid green;
-
-  }
-  .little-league {
-      height: 50vh;
-     
-  }
-  .overlay-4{
-    text-align: center;
-    width: 80%;
-    left: 40%;
-  }
-  .overlay-4 h5{
-    margin-top: 2px;
-    font-size: 1.5rem;
-    font-weight:700;
-  }
-  .card{
-    max-width: 120%;
-  }
-  .little-league h5,  .overlay-4 h5{
-    font-size: 1rem;
-  }
-  .little-league img{
-    height: 60vh;
-  }
-  
 }

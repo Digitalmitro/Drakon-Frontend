@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Layout from './Layout';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import base1 from "../assets/base-1.jpg";
 // import './AddToCart.css'; // Assuming CSS file for styling
 
 const AddToCart = () => {
+    const navigate = useNavigate()
     const [cartLen, setCartLen] = useState(1);  // Number of items in cart
     const [quantity, setQuantity] = useState(1); // Quantity for the product
     const pricePerItem = 399.95;  // Price per item
@@ -116,7 +117,7 @@ const AddToCart = () => {
         <span>${estimatedTotal.toFixed(2)}</span>
         
     </div>
-    <button className='button-5' style={{height:"20px"}}>CHECK OUT</button>
+    <button className='button-5' style={{height:"20px"}} onClick={()=> navigate(`/checkout`)}>CHECK OUT</button>
 </div>
 
                                 </div>

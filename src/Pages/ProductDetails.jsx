@@ -4,6 +4,7 @@ import axios from 'axios';
 import DotLoader from 'react-spinners/DotLoader'; // Import DotLoader
 import Layout from './Layout';
 import paypic from '../assets/paypic.png'
+import "../Components/styles/products.css"
 
 
 const ProductDetails = () => {
@@ -43,7 +44,7 @@ const ProductDetails = () => {
 
   return (
     <Layout>
-      <div className="container">
+      <div className=" productDetails container">
       {/* Left Div */}
       <div className="left-div">
         <img

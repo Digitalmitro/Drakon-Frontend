@@ -176,10 +176,10 @@ const CategoryPage = () => {
                 <DotLoader color="#ff5722" size={60} />
               </div>
             ) : (
-              currentProducts.length === 0 ? (
+              products.length === 0 ? (
                 <p>No products found within the selected price range.</p>
               ) : (
-                currentProducts.map(product => (
+                products.map(product => (
                   <NavLink key={product._id} to={`/product-details/${product._id}`} style={{ textDecoration: 'none', flexBasis: 'calc(30% - 20px)' }}>
                     <div className='prod-card'>
                       <img

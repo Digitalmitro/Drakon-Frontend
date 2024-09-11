@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from './Layout';
-import { NavLink } from 'react-router-dom';
-
+import { NavLink, useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
 
@@ -13,6 +13,67 @@ const Login = () => {
     window.scrollTo(0, 0);
   }, []);
 
+
+  const navigate=useNavigate()
+  const token = Cookies.get("token");
+const [regEmail, setRegEmail] = useState("");
+const [regPassword, setRegPassword] = useState("");
+
+
+const handelRegiste = async (e) => {
+  e.preventDefault();
+  const payload = {
+    email: regEmail,
+    password: regPassword,
+  };
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_BACKEND_API}/registerclient`,
+      payload
+    );
+    message.success(res.data);
+    setRegEmail("");
+    setRegPassword("");
+  } catch (error) {
+    message.error(error.response.data);
+  }
+};
+
+const [logEmail, setLogEmail] = useState("");
+const [logPass, setLogPass] = useState("");
+const handelLogin = async (e) => {
+  e.preventDefault();
+  const payload = {
+    email: logEmail,
+    password: logPass,
+  };
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_BACKEND_API}/loginclient`,
+      payload
+    );
+    console.log(res.data)
+
+    message.success(res.data.status);
+    Cookies.set("token", res.data.token);
+    setLogEmail("");
+    setLogPass("");
+    setTimeout(() => {
+      window.location.href = "/profile";
+    }, 1200);
+  } catch (error) {
+      console.log(error.response.data.status)
+    message.error(error.response.data.status);
+  }
+};
+
+useEffect(()=>{
+  if (token) {
+      return navigate("/profile");
+    } else {
+      return navigate("/login");
+    }
+},[token])
   return (
     <Layout>
       <div className="login-container">
@@ -37,7 +98,7 @@ const Login = () => {
                
               </div>
               <div className="loginbtn">
-              <button className='button-5'>LOGIN</button>
+              <button className='button-5'  onClick={navigate('/profile')}>LOGIN</button>
               </div>
             </form>
           ) : (
@@ -91,30 +152,7 @@ const Login = () => {
           )}
         </div>
 
-        <div className="login-right">
-        <form style={{height:"auto",paddingBottom:"1rem",border:"1px solid #dedede"}}>
-            <h4 style={{fontWeight:"400",width:"100%",borderBottom:"1px solid rgb(194, 189, 189)",paddingBottom:"10px"}}>Check Order</h4>
-
-            <p style={{fontSize:"0.8rem",letterSpacing:"0.6px"}}>See your order even if you are not a registered user. Enter the order number and the billing address ZIP code.</p>
-
-              <label className='my-3' htmlFor="email"><small style={{color:"red"}}>*</small> 
-              Order number</label>
-              <input type="text" id="email" className="mb-4 my-2" />
-
-              <label htmlFor="password"><small style={{color:"red"}}>*</small> 
-              Order Email</label>
-              <input type="email" id="password" className="mb-4 my-2" />
-
-              <label htmlFor="password"><small style={{color:"red"}}>*</small> 
-              
-Billing ZIP code</label>
-              <input type="email" id="password" className="mb-4 my-2" />
-             
-              <div className="loginbtn">
-              <button className='button-5'>Check Status</button>
-              </div>
-            </form>
-        </div>
+      
       </div>
     </Layout>
   );

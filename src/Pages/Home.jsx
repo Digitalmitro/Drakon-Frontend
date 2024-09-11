@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect}from "react";
 import '../Components/styles/home.css'
 
 import AOS from 'aos';
@@ -113,7 +113,12 @@ const Home = () => {
     />
   ));
 
-
+  useEffect(() => {
+    AOS.init({
+      duration: 1200, 
+      once: true,    
+    });
+  }, []);
   return (
     <Layout>
 <div>
@@ -372,7 +377,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div style={{ marginTop: "7rem", margin: "4rem" }}>
+      <div className="limitedAddition"style={{ marginTop: "7rem", margin: "4rem" }}>
         <h1
           style={{
             fontWeight:"700px",
