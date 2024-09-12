@@ -118,7 +118,15 @@ const CategoryPage = () => {
     <Layout>
       <div className='category-page-container my-3 flex'>
         {/* Left Sidebar */}
-        <div className='search-func' style={{ width: '15%', padding: '10px', borderRight: '1px solid #ddd' }}>
+        <div
+          className="search-func"
+          style={{
+            width: "20%",
+            padding: "20px",
+            marginTop: "20px",
+            borderRight: "1px solid #ddd",
+          }}
+        >
           {/* Filter UI */}
           <div>
             <h5>Search</h5>
@@ -126,46 +134,71 @@ const CategoryPage = () => {
               type="text"
               value={searchQuery}
               placeholder="Search products..."
-              style={{ width: '100%', padding: '8px', marginBottom: '20px', height: "5vh" }}
+              style={{
+                width: "100%",
+                padding: "8px",
+                marginBottom: "20px",
+                height: "5vh",
+              }}
               onChange={handleSearchChange}
             />
           </div>
-
-          <div className="fetch-all-products" onClick={getData} style={{ cursor: 'pointer' }}>
-            <h6>All Products</h6>
+          <hr />
+          <div
+            className="fetch-all-products"
+            onClick={getData}
+            style={{ cursor: "pointer" }}
+          >
+            <h5>All Products</h5>
+            <hr />
           </div>
-          
+
           <div>
-            <h6>Categories</h6>
-            <ul style={{ listStyle: 'none', padding: 0 }}>
+            <h5 className="my-3">Categories</h5><hr/>
+            <ul style={{ listStyle: "none", padding: 0 }}>
               {categories?.map((category, index) => (
-                <li key={index}>
-                  <NavLink to={`/category/${encodeURIComponent(category)}`} className="mx-2">
+                <li key={index} className="my-2 mx-3">
+                  <NavLink
+                    to={`/category/${encodeURIComponent(category)}`}
+                    className="mx-2"
+                  >
                     {category}
                   </NavLink>
+                  <hr/>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <h6>Filter by Price</h6>
-            <div style={{ marginBottom: '20px' }}>
+          <div className="my-4">
+            <h5 className="my-4">Filter by Price</h5>
+            <div style={{ marginBottom: "20px" }}>
               <Slider
                 range
                 min={0}
                 max={30000}
                 value={priceRange}
                 onChange={handlePriceRangeChange}
-                renderTrack={(props, state) => <div {...props} className="slider-track" />}
-                renderThumb={(props, state) => <div {...props} className="slider-thumb" />}
+                renderTrack={(props, state) => (
+                  <div {...props} className="slider-track" />
+                )}
+                renderThumb={(props, state) => (
+                  <div {...props} className="slider-thumb" />
+                )}
               />
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '15px' }}>
-                <span className='my-2'>₹{priceRange[0]}</span>
-                <span className='my-2'>₹{priceRange[1]}</span>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: "15px",
+                }}
+              >
+                <span className="my-2">₹{priceRange[0]}</span>
+                <span className="my-2">₹{priceRange[1]}</span>
               </div>
             </div>
           </div>
+          <hr/>
         </div>
 
         {/* Right Product Display */}
@@ -180,7 +213,7 @@ const CategoryPage = () => {
                 <p>No products found within the selected price range.</p>
               ) : (
                 products.map(product => (
-                  <NavLink key={product._id} to={`/product-details/${product._id}`} style={{ textDecoration: 'none', flexBasis: 'calc(30% - 20px)' }}>
+                  <NavLink key={product._id} to={`/product-details/${product._id}`} style={{ textDecoration: 'none'}}>
                     <div className='prod-card'>
                       <img
                         src={product.image[0]}

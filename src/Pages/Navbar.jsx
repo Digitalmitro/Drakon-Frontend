@@ -11,7 +11,7 @@ const Navbar = () => {
   const [categories, setCategories] = useState([]);
   const [load, setLoad] = useState(false);
   const [modal, setModal] = useState(false);
-
+const [toggle, setToggle] = useState(false)
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 

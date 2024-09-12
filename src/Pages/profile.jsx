@@ -1,68 +1,124 @@
 import React from "react";
-import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Space } from 'antd';
-import Layout from './Layout';
-
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Space } from "antd";
+import Layout from "./Layout";
+import "../Components/styles/profile.css";
 const profile = () => {
   return (
-    <Layout>  
-    <div className="container justify-content-between mt-5" style={{marginTop:"15rem"}}>
-      <div className="d-flex align-itmes-center justify-content-center gap-4 mt-5">
-      <Avatar size={64} icon={<UserOutlined />} />
-      <div>
-      <h5 className="mt-2">Kajal Gupta</h5>
-      <h6  className="grey" style={{color:"grey"}}>k1@gmail.com</h6>
-      </div>
+    <Layout>
+      <div className="profile" style={{ marginTop: "10rem" }}>
+        <p className="myAccount">My Account</p>
+        <div className="container">
+          <div>
+            <p className="my-5">
+              <a className="aLink " href="/">
+                {" "}
+                --- home{" "}
+              </a>{" "}
+            </p>
+            <h3 className="mt-4 welcome">
+              WELCOME Kajal Gupta 
+            </h3>
+            <div className="d-flex justify-content-between gap-4 mt-3 text-end">
+              <div className="left">
+                <div className="profile-info">
+                  <div className=" profile-heading flex justify-content-between">
+                    <div className=" d-flex gap-3 align-items-center m-3">
+                      <Avatar size={50} icon={<UserOutlined />} />
 
-      </div>
-      <div className="login-right">
-        <form
-          style={{
-            height: "auto",
-            paddingBottom: "1rem",
-            border: "1px solid #dedede",
-          }}
-        >
-          <h4
-            style={{
-              fontWeight: "400",
-              width: "100%",
-              borderBottom: "1px solid rgb(194, 189, 189)",
-              paddingBottom: "10px",
-            }}
-          >
-            My Order
-          </h4>
+                      <h3 className="mt-2">Profile</h3>
+                    </div>
+                    <a href="" className="m-3 ">
+                      {" "}
+                      Edit
+                    </a>
+                  </div>
+                  <div className="profile-section m-4 text-start">
+                    <p>
+                      {" "}
+                      <b>First Name</b>
+                    </p>
+                    <p>kajal</p>
+                    <br />
+                    <p>
+                      <b> Last Name</b>
+                    </p>
+                    <p>Gupta</p>
+                    <br />
+                    <p>
+                      <b> Email</b>
+                    </p>
+                    <p>Kajalg123@gmail.com</p>
+                    <br />
+                    <p>
+                      <b> Phone </b>
+                    </p>
+                    <p>1234567890</p>
+                    <br />
+                  </div>
+                </div>
 
-          <p style={{ fontSize: "0.8rem", letterSpacing: "0.6px" }}>
-            See your order even if you are not a registered user. Enter the
-            order number and the billing address ZIP code.
-          </p>
+                <div className="password-info">
+                  <div className=" password-heading flex justify-content-between">
+                    <h3 className="mt-2">Password</h3>
+                    <a href="m-4"> Edit</a>
+                  </div>
+                  <div className="profile-section m-4 text-start">
+                    <p>
+                      <b>Password</b>
+                    </p>
+                    <p>*********</p>
+                  </div>
+                </div>
+               
+                
+              </div>
+              <div className="right">
+              <div className="profile-info mb-3">
+                  <div className=" password-heading flex justify-content-between ">
+                    <h3>Address Book</h3>
 
-          <label className="my-3" htmlFor="email">
-            <small style={{ color: "red" }}>*</small>
-            Order number
-          </label>
-          <input type="text" id="email" className="mb-4 my-2" />
+                    <a href="m-4"  className=""> Edit</a>
+                  </div>
+                  <div className="profile-section  text-center d-flex align-items-center justify-content-center mb-4" 
+                  > 
+                    <a href="" className="aLink mt-3">
+                      Add New
+                    </a>
+                  </div>
+                </div>
+                <div className="profile-info">
+                  <div className=" password-heading flex justify-content-between">
+                    <h3 className="mt-2">Order History</h3>
+                    <a href="m-4" className="">
+                      {" "}
+                      View
+                    </a>
+                  </div>
+                  <div className="profile-section m-4 text-start">
+                    <p>No Orders yet</p>
+                  </div>
+                </div>
 
-          <label htmlFor="password">
-            <small style={{ color: "red" }}>*</small>
-            Order Email
-          </label>
-          <input type="email" id="password" className="mb-4 my-2" />
+                <div className="password-info">
+                  <div className=" password-heading flex justify-content-between">
+                    <h3 className="mt-2">Payment </h3>
+                  </div>
+                  <div className="profile-section m-4 text-center">
+                    <a href="" className="aLink">
+                      Add New
+                    </a>
+                  </div>
+                </div>
 
-          <label htmlFor="password">
-            <small style={{ color: "red" }}>*</small>
-            Billing ZIP code
-          </label>
-          <input type="email" id="password" className="mb-4 my-2" />
+             
 
-          <div className="loginbtn">
-            <button className="button-5">Check Status</button>
+              </div>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
-    </div> </Layout>
+    </Layout>
   );
 };
 

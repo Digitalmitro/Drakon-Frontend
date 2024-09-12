@@ -1,0 +1,44 @@
+.profile{
+    height: auto;
+}
+
+.myAccount{
+    margin-top: 180px;
+    font-size: 3rem;
+    background-color: var(--themeColor);
+    width: fit-content;
+    color: white;
+    padding: 40px;
+    text-align: end;
+    padding-left: 130px;
+    /* margin: 180px 10px 0px 30px !important; */
+}
+.profile-info, .password-info{
+    border: 1px solid rgb(194, 191, 191) ;
+}
+.password-info{
+    height: 20vh;
+    margin-top: 20px ;
+}
+.password-heading{
+padding: 10px;
+}
+.profile .left , .profile .right {
+ width: 40vw;
+}
+.profile{
+    line-height: 15px;
+}
+.profile-heading, .password-heading{
+    background-color:#F7F7F7;
+    border-bottom: 1px solid rgb(221, 220, 220);
+}
+.profile .aLink{
+    text-align: center;
+}
+
+.profile .welcome{
+  transform: scale(1.2, 1);
+  align-items: center;
+  margin-left: 130px;
+}
