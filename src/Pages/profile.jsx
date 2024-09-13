@@ -12,9 +12,9 @@ const profile = () => {
           <div>
             <p className="my-5">
               <a className="aLink " href="/">
-                {" "}
-                --- home{" "}
-              </a>{" "}
+               
+                --- home
+              </a>
             </p>
             <h3 className="mt-4 welcome">
               WELCOME Kajal Gupta 

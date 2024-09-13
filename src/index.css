@@ -78,3 +78,21 @@ ul li{
     color: coral;
     border-bottom: 1px solid coral;
   }
+  .boxshadow{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    backface-visibility: hidden;
+    padding: 65px 45px;
+    border-radius: 7px;
+    box-shadow: inset 2px 2px 10px rgb(131, 128, 128),
+    inset -1px -1px 5px rgba(167, 163, 163, 0.6);
+  }
+  .cursor {
+    cursor: pointer;
+  }

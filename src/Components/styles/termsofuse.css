@@ -1,0 +1,42 @@
+.sideContent{
+    margin: 20px;
+    margin-top: 45px;
+}
+.sideContent h1{
+    padding: 10px 20px;
+    background-color: #726D83;
+    color: white;
+    border-radius: 10px;
+}
+.termsofuse p{
+    font-size: 22px;
+    padding: 10px;
+}
+.termsofuse  .head{
+    margin-top: 100px;
+}
+.termsofuse  header {
+text-align: center;
+}
+.custom-collapse-label {
+  }
+  :where(.css-dev-only-do-not-override-1c0na6j).ant-collapse>.ant-collapse-item >.ant-collapse-header .ant-collapse-header-text:focus{
+
+  }
+
+  :where(.css-dev-only-do-not-override-1c0na6j).ant-collapse>.ant-collapse-item >.ant-collapse-header .ant-collapse-header-text{
+    background-color: #E8E5EE;
+    padding: 20px;
+/* color: white; */
+border-radius: 20px;
+  }
+.termsofuse li{
+    list-style: disc !important;
+    font-size: 22px;
+}
+  /* :where(.css-dev-only-do-not-override-1c0na6j).ant-collapse>.ant-collapse-item >.ant-collapse-header{
+    background-color: #726D83 !important;
+
+  } */
+
+  
