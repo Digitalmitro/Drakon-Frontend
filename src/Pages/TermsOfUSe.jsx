@@ -1,228 +1,103 @@
 import React from 'react'
-import { CaretRightOutlined } from '@ant-design/icons';
-import { Collapse, theme } from 'antd';
-import '../Components/styles/termsofuse.css'
-const text = `
-A dog is a type of domesticated animal.
-Known for its loyalty and faithfulness,
-it can be found as a welcome guest in many households across the world.
-`;
-const getItems = (panelStyle) => [
-{
-  key: '1',
-  label: <span style={{ fontSize: '35px' }}>Introduction</span>,
-  children: <Introduction/>,
-  style: panelStyle,
-},
-{
-  key: '2',
-  label: <span style={{ fontSize: '35px' }}>Information You Provide To Us</span>,
-  children:<ProvideInformation/>,
-  style: panelStyle,
-},
-{
-  key: '3',
-  label: <span style={{ fontSize: '35px' }}>How we disclose your information</span>,
-  children: <DiscloseInfo/>,
-  style: panelStyle,
-},
-];
 
- export default function  (){
- 
-const { token } = theme.useToken();
-const panelStyle = {
-  marginBottom: 24,
-  background: token.colorFillAlter,
-  borderRadius: token.borderRadiusLG,
-  border: 'none',
-};
+const PrivacyPolicy = () => {
   return (
+    <div className='m-5 d-flex flex-column gap-3'>
 
-    <div  className='termsofuse flex'>  
-    <SideContent/>
-    <div style={{width:"65%"}}>
-        <header className='head'>
-            <h1>Our Privacy Policy</h1>
-            <p>last update june 4 2024</p>
+        <header>
+            <h1> Terms of Use</h1>
+            <p>These terms are effective as of December 1, 2016</p>
         </header>
-        <Collapse
-      bordered={false}
-      defaultActiveKey={['1']}
-      expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-      style={{
-        background: token.colorBgContainer,
-      }}
-      items={getItems(panelStyle)}
-    />
-    </div> </div>
+        <h2>Introduction</h2>
+        <p>Welcome to the Rawlings website ("Site"). By accessing or using any features of this site ("Site"), owned and operated by Rawlings on behalf of itself and its subsidiaries ("Rawlings"), you agree to be bound by these terms of use ("Terms of Use"). All visitors to and users of any aspects of the Site ("Users") are bound by these Terms of Use. Rawlings expressly reserves the right to modify the Terms of Use at any time and from time to time without prior notice to you, and therefore, Rawlings recommends that you read these Terms of Use carefully each time you use the Site. Your access to and use of the Site constitutes your acceptance of all the provisions of these Terms of Use. If you are unwilling to be bound by these Terms of Use, you should not access or use the Site.</p>
+        <p>Please note that the guidelines, policies and other terms and conditions of service and use of other web sites affiliated with Rawlings may vary from these Terms of Use. If a Rawlings subsidiary has separate terms of use for its website(s), or a separate agreement governing its use, the provisions of the subsidiaries' site's terms shall control in the event of a conflict with these Terms of Use. Except in the event of a conflict, as described in this paragraph, these Terms of Use apply in addition to any other policies or agreements that may apply to you related to any contests, sweepstakes, rewards or loyalty programs, surveys, transactions or purchases of goods or services, or other engagements you have with the Site</p>
+        <p>Some of the services may be subject to additional posted conditions. Your use of those services is subject to those conditions, which are incorporated into these Terms of Use by reference. In the event of a conflict between the additional conditions and these Terms of Use, the additional conditions will apply.</p>
+        <p>Use of the Site is subject to all applicable laws and regulations. Nothing contained in these Terms of Use shall limit Rawlings' right to comply with governmental, judicial, and law-enforcement requests or requirements relating to your use of the Site.</p>
+        <h2>Privacy</h2>
+        <p>Rawlings believes strongly in the protection of the privacy of Users. Data collection and the use of data collected from the Site is governed by our Privacy Policy which we encourage you to review. Learn more about the Rawlings privacy policy.</p>
+        <h2>Earning and Redeeming Promotional Points</h2>
+        <p>Users of certain Rawlings special progams can earn promotional points (or “Bases”) by completing certain training modules in the platform. Following completion of each training module, users will take a short quiz to verify their knowledge of content in the module. Following successful completion of such quizzes, users will earn Bases, which can be redeemed for rewards. To redeem rewards, a user must access their user page and view the balance of their earned Bases. Rewards may include, but are not limited to, discounts on products from Rawlings brands. Rawlings reserves the right to remove, exchange, or otherwise modify available promotional rewards at any time without notice or further obligations to users. Bases are used for promotional purposes only and have no cash value. Bases cannot be transferred, sold or conveyed by any means to any other person. Accrued Bases do not constitute property to the user.</p>
+        <br/>
+        <p>Other Rawlings special programs may award certain rewards based on information you include in your profile. Profile updates may take up to 60 days before changes are reflected within a member's account.</p>
+        <h2>Copyright Notice</h2>
+        <p>All pages on this Site are subject to Rawlings copyright notices and intellectual property rights. All materials, including images, text, illustrations, graphics, designs, icons, photographs, programs, video clips and written and other materials that are part of this Site and any compilation thereof ("Content(s)") are copyrights, trademarks, trade dress and/or other intellectual property owned, controlled or licensed by Rawlings, one of its subsidiaries or affiliates, or by third parties who have licensed their materials to Rawlings. The Content(s) are protected by U.S. and international copyright laws and Rawlings and its licensors expressly reserve all intellectual property rights in the Content(s). Access to this Site does not confer and shall not be considered as conferring upon anyone any license, assignment, or grant of any intellectual property rights except as expressly stated in these Terms of Use. You may not reproduce, publish, transmit, distribute, display, modify, create derivative works from, sell or participate in any sale of or exploit in any way, in whole or in part, any of the Content(s), the Site or any related software. All software used on this Site is the property of Rawlings or its software suppliers and is also protected by U.S. and international copyright laws.</p><br/>
+        <p>Any unauthorized use of the Content(s) is subject to all applicable penalties available to the copyright owner under the applicable copyright laws.</p>
+        <h2>Content</h2>
+        <p>The Site contains Content(s) that Rawlings creates and may also include Content(s) provided by third parties, including, if applicable, users that register or provide comments, ratings and reviews. It also contains product information provided to Rawlings by third parties about products that are manufactured by or for people other than Rawlings. Rawlings does not accept responsibility for the accuracy, veracity or the quality of any third party content ("User Generated Content"). Specifically, User Generated Content contains information that may not reflect the opinions or beliefs of Rawlings. While Rawlings believes this content to represent the beliefs of those that submit it, you are advised not to rely on third party content without independent analysis.</p>
+        <h2>SMS Marketing</h2>
+        <p>Rawlings utilizes SMS marketing services to inform users of new product offerings and other exciting company news. Individuals who receive SMS texts may get access to special promotions and discounts. Individuals may opt-in to SMS marketing messages via an online registration form, and will receive messages from each brand they opted in to (Rawlings messages will come from 98521, Easton from code 72473, Miken from 73192, and Worth from 79834, Combat MFG from 62191, and My Locker 360 from 67154). Message and data rates may apply. Message frequency will vary.</p>
+        <p>By opting-in to this service, you consent to receive mobile text alerts using an automatic telephone dialing system. Consent to receive marketing text messages is not required as a condition of purchasing any goods or services. Message and data rates may apply..</p>
+        <p>By opting-in, you are confirming you are over the age of 13.</p>
+        <h3>STOP Information</h3>
+        <p>To stop receiving SMS messages from Rawlings, you may can text STOP to 98521. You will receive one final confirmation SMS message of your opt-out request. To stop receiving SMS messages from Easton, you may can text STOP to 72473. You will receive one final confirmation SMS message of your opt-out request. To stop receiving SMS messages from Miken, you may can text STOP to 73192. You will receive one final confirmation SMS message of your opt-out request. To stop receiving SMS messages from Worth, you may can text STOP to 79834. You will receive one final confirmation SMS message of your opt-out request. To stop receiving SMS messages from My Locker 360, you may can text STOP to 67154. You will receive one final confirmation SMS message of your opt-out request. To stop receiving SMS messages from Combat MFG, you may can text STOP to 62191. You will receive one final confirmation SMS message of your opt-out request.</p>
+        <h3>HELP Information</h3>
+        <p>For additional information or to receive help for Rawlings, you can text HELP to 98521. For additional information or to receive help for Easton, you can text HELP to 72473. For additional information or to receive help for Miken, you can text HELP to 73192. For additional information or to receive help for Worth, you can text HELP to 79834. For additional information or to receive help for My Locker 360, you can text HELP to 67154. For additional information or to receive help for Combat MFG, you can text HELP to 62191. You can also contact Rawlings customer support by email service@rawlings.com, calling 1-866-678-4327, or utilizing the live chat feature on our website. </p>
+        <h3>Supported carriers are:</h3>
+        <p>AT&T, Sprint, T-Mobile®, Verizon Wireless, Boost, Cricket, MetroPCS, U.S. Cellular, Virgin Mobile, ACS Wireless, Appalachian Wireless, Bluegrass Cellular, Carolina West Wireless, Cellcom, C-Spire Wireless (formerly Cellsouth), Cellular One of East Central Illinois, Cincinnati Bell Wireless, Cross (dba Sprocket), Duet IP, Element Mobile, EpicTouch, GCI Communications, Golden State, Hawkeye (Chat Mobility), Hawkeye (NW Missouri Cellular), Illinois Valley Cellular, Immix (Keystone Wireless / PC Management), Inland Cellular, iWireless, Mobi PCS (Coral Wireless LLC), Mosaic, MTPCS / Cellular One (Cellone Nation), Nex-Tech Wireless, nTelos, Panhandle Telecommunications, Peoples Wireless, Pioneer, Plateau, Revol Wireless, Rina - Custer, Rina - All West, Rina - Cambridge Telecom Coop, Rina - Eagle Valley Comm, Rina - Farmers Mutual Telephone Co, Rina - Nucla Nutria Telephone Co, Rina - Silver Star, Rina - South Central Comm, Rina - Syringa, Rina - UBET, Rina - Manti, South Canaan / CellularOne of NEPA, Thumb Cellular, Union Wireless, United, Viaero Wireless, West Central Wireless, Leaco, Nemont/Sagebrush. T-Mobile is not liable for delayed or undelivered messages.</p>
+        <p>We take your privacy seriously. Review our<a href='/privacyPolicy'> privacy policy</a> to learn more about how we collect and use consumer data.</p>
+        <h3>Eligibility</h3>
+        <p>The Site is not targeted towards, nor intended for use by, anyone under the age of 18. By using the Site, you represent and warrant that you are 18 years of age or older. If you are not at least 18 years of age, do not access, use or register on the Site.</p>
+        <h3>Trademark Notice</h3>
+        <p>The Rawlings name and logos and all related product and service names, design marks and slogans are the trademarks or service marks of Rawlings. All other marks are the property of their respective owners. No trademark or service mark license is granted in connection with the Content(s). Access to this Site does not authorize anyone to use any name, logo or mark in any manner whatsoever.</p>
+        <p>EASTON, the “SCREAMIN’ E” design, and the “SCREAMIN’ E” design together with EASTON are registered trademarks of Easton Diamond Sports, LLC. 3500 Willow Lane.; Thousand Oaks, CA 91361. All rights reserved.</p>
+        <h2>Accuracy of Information</h2>
+        <p>While Rawlings uses reasonable efforts to ensure the Content(s) are accurate and up-to-date, Rawlings makes no warranties or representations as to the accuracy or completeness of the Content(s) or the reliability of any advice, opinions, statements, articles, recipes, or other information displayed or distributed through this Site. YOU ACKNOWLEDGE THAT ANY RELIANCE ON ANY SUCH ADVICE, OPINIONS STATEMENTS, ARTICLES, RECIPES, OR OTHER INFORMATION SHALL BE AT YOUR SOLE RISK. RAWLINGS RESERVES THE RIGHT, IN ITS SOLE DISCRETION, TO CORRECT ANY ERRORS OR OMISSIONS IN ANY PORTION OF THIS SITE. This provision may be void, inapplicable, and unenforceable within the State of New Jersey.</p>
+        <h2>Pricing; Order Acceptance; Payment; Sales Tax</h2>
+        <p>While Rawlings strives to provide accurate product and pricing information, pricing or typographical errors may occur. Rawlings cannot confirm the price of an item until after you order. In the event that an item is listed at an incorrect price or with incorrect information due to an error in pricing or product information, Rawlings shall have the right, at Rawlings' sole discretion, to refuse or cancel any orders placed for that item. In the event that an item is mispriced, Rawlings may, at Rawlings' sole discretion, either contact you for instructions or cancel your order and notify you of such cancellation. Prices and availability are subject to change without notice. While it is the Rawlings practice to confirm orders by email, the receipt of an email order confirmation does not constitute the acceptance of an order or the Rawlings confirmation of an offer to sell a product or service. Rawlings may also require verification of information prior to the acceptance and/or shipment of any order. Please note that there may be certain orders that Rawlings is unable to accept and must cancel. Rawlings reserves the right, at Rawlings sole discretion, to refuse service to any customer or cancel any order for any reason. Some situations that may result in your order being canceled include limitations on quantities available for purchase, inaccuracies or errors in product or pricing information, or problems identified by Rawlings' credit department. Rawlings will contact you if all or any portion of your order is canceled or if additional information is required to accept your order. For your convenience, you will not be charged until your payment method is authorized and your order is shipped but if your order is canceled after your credit card has been charged, Rawlings will issue a credit to your credit card in the amount of the charge. You are responsible for all sales taxes on your purchase. Tax exemption certificates cannot be accepted on these orders.</p>
+        <h2>Shipping Charges</h2>
+        <p>When an order is placed, it will be shipped to the address designated by the purchaser as long as that shipping address is compliant with the shipping restrictions contained on the Site. Rawlings offers shipping within the United States, U.S. territories, and to APO/FPO. All purchases from this Site are made pursuant to a shipment contract. As a result, risk of loss and title for items purchased from this Site pass to you upon delivery of the items to the carrier. You are responsible for filing any claims with carriers for damaged and/or lost shipments. The purchaser is responsible for all shipping costs, unless otherwise stated. Upon shipment, Rawlings may, but is not obligated to, email to you a tracking number.</p>
+
+<h2>Products, Services and Specifications</h2>
+<p>All features, content, specifications, products and services described or depicted on this Site are subject to change at any time without notice. All reasonable measures are taken to accurately display the attributes of our products, including the colors; however, the actual color you see will depend on your computer monitor. Rawlings cannot guarantee that your monitor will accurately display such colors. The inclusion of any products or services on this Site at a particular time does not imply or warrant that these products or services will be available at any time. It is your responsibility to ascertain and obey all applicable local, state, federal and international laws (including minimum age requirements) in regard to the possession, use and sale of any item purchased from this Site. By placing an order, you represent that the products ordered will be used only in a lawful manner.</p>
+
+<h2>Exchanges, Refunds, and Returns</h2>
+<p>Merchandise must be returned within 30 days of receiving the order. Refunds will be credited for the purchased price along with any applicable taxes. Please contact the Rawlings Customer Service department via email at service@Rawlings.com if you have any questions regarding on-line purchases or require warranty service.</p>
+
+
+<h2>Product Warranty</h2>
+<p>Please refer to your product or its packaging for the terms and conditions of any limited warranty for your purchase. If a warranty is offered, the warranty is valid for the original retail purchaser from the date of initial retail purchase and is not transferable. Keep the original sales receipt. Proof of purchase is required to obtain warranty performance. No dealer, service center, retail store or other third party has the right to alter, modify or in any way change the terms and conditions of the warranty. The warranty, if any, included with your purchased product is your exclusive warranty. This provision may be void, inapplicable, and unenforceable within the State of New Jersey.</p>
+
+<h2>Disclaimer</h2>
+<p>THIS SITE IS PROVIDED BY RAWLINGS ON AN "AS IS" AND "AS AVAILABLE" BASIS. RAWLINGS MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THIS SITE OR THE INFORMATION, CONTENT(S), SERVICES OR MATERIALS INCLUDED ON THIS SITE. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, RAWLINGS DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. YOU ACKNOWLEDGE, BY YOUR USE OF THIS SITE, THAT SUCH USE IS AT YOUR SOLE RISK. THIS DISCLAIMER DOES NOT APPLY TO ANY PRODUCT WARRANTY OFFERED BY THE ITEM. THIS DISCLAIMER CONSTITUTES AN ESSENTIAL PART OF THESE TERMS OF USE. SOME STATES DO NOT ALLOW SUCH LIMITATIONS, SO THE FOREGOING LIMITATIONS MAY NOT APPLY TO YOU. This provision is void, inapplicable, and unenforceable within the State of New Jersey.</p>
+
+<h2>Limitation of Liability</h2>
+<p>UNDER NO CIRCUMSTANCES WHATSOEVER AND UNDER NO LEGAL OR EQUITABLE THEORY, WHETHER IN TORT, CONTRACT, STRICT LIABILITY OR OTHERWISE, SHALL RAWLINGS OR ANY OF ITS EMPLOYEES, DIRECTORS, OFFICERS, AGENTS, VENDORS OR SUPPLIERS BE LIABLE TO YOU OR TO ANY OTHER PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSSES OR PUNITIVE DAMAGES OF ANY NATURE ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THIS SITE AND THE CONTENTS, INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF GOODWILL, LOSS OF DATA, WORK STOPPAGE, ACCURACY OF RESULTS, OR COMPUTER FAILURE OR MALFUNCTION, EVEN IF RAWLINGS HAS BEEN ADVISED OF OR SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES. IN NO EVENT WILL RAWLINGS BE LIABLE FOR ANY DAMAGES. YOUR SOLE AND EXCLUSIVE REMEDY IS TO DISCONTINUE USING THIS SITE. ANY CAUSE OF ACTION YOU MAY HAVE WITH RESPECT TO YOUR USE OF THIS SITE AND THE CONTENT(S) OF EACH MUST BE COMMENCED WITHIN ONE (1) YEAR AFTER THE CLAIM OR CAUSE OF ACTION ARISES. THIS PROVISION IS VOID, INAPPLICABLE, AND UNENFORCEABLE WITHIN THE STATE OF NEW JERSEY.</p>
+
+
+<h2>Links to Third Party Websites</h2>
+<p>References on this Site to any names, marks, products or services of third parties or hypertext links to third party sites or information are provided solely as a convenience to you and do not in any way constitute or imply the Rawlings endorsement, sponsorship or recommendation of the third party, information, product or service. If you use those websites, you will leave this Site. If you decide to visit any linked website, you do so at your own risk and it is your responsibility to take all protective measures to guard against viruses or other destructive elements. Rawlings makes no warranty or representation regarding any linked website.
+
+</p>
+
+<h2>Linking to the Rawlings Site</h2>
+<p>All links to the Rawlings Site must be approved in writing by Rawlings, except that Rawlings consents to links in which: (i) the link is a text-only link containing only the name "Rawlings"; (ii) the link "points" only to www.Rawlings.com and not to deeper pages;(iii) the link, when activated by a user, displays that page full-screen in a fully operable and navigable browser window and not within a "frame" on the linked website; and, (iv) the appearance, position, and other aspects of the link may neither create the false appearance that an entity or its activities or products are associated with, endorsed by, or sponsored by Rawlings nor be such as to damage or dilute the goodwill associated with the name and trademarks of Rawlings. Rawlings reserves the right to revoke this consent to link at any time in its sole discretion.</p>
+
+<h2>Revisions to Terms of Use and Website</h2>
+<p>Rawlings reserves the right, at its sole discretion, to change, modify, revise, add or remove any portion of these Terms of Use in whole or in part, at any time and from time to time. Changes to these Terms of Use will be effective when such changes are posted to the Site. Your continued use of this Site after any change will be considered acceptance of those changes. Rawlings may terminate, change, suspend or discontinue any aspect of the Site, including the availability of any features of the Site, at any time and from time to time. Rawlings may also impose limits on certain features and services or restrict your access to parts or all of the Site without notice or liability. Rawlings may terminate the authorization, rights and license given above and, upon such termination you shall immediately destroy all Content(s) which you may have downloaded.</p>
+
+
+<h2>
+Restrictions on Rights to Use
+</h2>
+<p>Without limiting the generality of any other provisions of these Terms of Use, you agree you shall not (and you agree not to allow any other individual or entity to):</p>
+<ul>
+  <li>download, modify, reproduce, adapt, translate, reverse engineer, create derivative works based upon, publicly display, sell, rent, license, or in any way commercially exploit any portion of the Site, except and to the extent expressly permitted under these Terms of Use;</li>
+  <li>submit to the Site any content that falsely states or implies that such content is sponsored or endorsed by Rawlings</li>
+  <li>transmit or upload to the Site any item containing or embodying any virus, worm, defect, Trojan horse, software bomb or other feature designed to damage or degrade in any manner the performance of the Site, any other Web site, or any computer or other device or system, or the enjoyment of the Site by any user;</li>
+  <li>use the Site to violate the security of or gain unauthorized access to any computer or computer network or other device or system (including unauthorized attempts to discover passwords or security encryption codes);</li>
+  <li>submit to the Site any content that is unlawful or facilitates, constitutes, promotes or encourages illegal activity; or otherwise use the Site to transfer or store illegal material, including any material deemed threatening or obscene;</li>
+  <li>use the Site to, intentionally or unintentionally, violate any applicable local, state, federal or international law; or,</li>
+  <li>collect or store personal data about other users of the Site.</li>
+</ul>
+<h2>International Users</h2>
+<p>This Site is controlled, operated and administered by Rawlings from its offices within the United States of America. Rawlings makes no representation that materials at this Site is appropriate or available for use at other locations outside of the United States and access to them from territories where their contents are illegal is prohibited. You may not use the Site or export the Content(s) in violation of U.S. export laws and regulations. If you access this Site from a location outside of the United States, you are responsible for compliance with all local laws, rules and regulations. Products purchased through Rawlings will not be shipped to any location outside of the United States, U.S. territories, or APO/FPO.</p>
+
+<h2>Copyright Violation Notice
+</h2>
+<p>Your notice must include (i) a physical or electronic signature of a person authorized to act on behalf of the owner of an exclusive right that is allegedly infringed, (ii) identification of the copyrighted work claimed to have been infringed, or, if multiple copyrighted works at a single online site are covered by a single notification, a representative list of such works at that site, (iii) identification of the material that is claimed to be infringing or to be the subject of infringing activity and that is to be removed or access to which is to be disabled, and information reasonably sufficient to permit the service provider to locate the material, (iv) information reasonably sufficient to permit the service provider to contact the complaining party, such as an address, telephone number, and, if available, an electronic mail address at which the complaining party may be contacted, (v) a statement that the complaining party has a good faith belief that use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law; and, (vi) a statement that the information in the notification is accurate, and under penalty of perjury, that the complaining party is authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.</p>
+<p>Upon receipt of a notice of claimed infringement that satisfies these requirements (or any statement in conformance with 17 U.S.C. § 512(c)(3)), Rawlings will act expeditiously to remove or disable access to any Content(s) that is claimed to be infringing upon the copyright of any person under the laws of the United States.</p>
+    </div>
   )
 }
 
-
-const SideContent = ()=> {
-    return(
-        <div className='sideContent' style={{width:"30%",  paddingRight: '20px'}}>
-        <header className='side-header'>
-           <h1> Privacy Policy</h1>
-        </header>
-        <p>Information you provide to us</p>
-        <p>How we disclose your information</p>
-        <p><b>US State Privacy Notices</b></p>
-        <p><b>Make a Privacy Request</b></p>
-        </div>
-    )
-}
-const Introduction =()=> {
-    return(
-<>
-
-<p>Rawlings Sporting Goods Company, Inc. and our affiliates <b> (together Drakon,” “we” or “us”)</b> are committed to protecting the privacy of our users’ Personal Information (as defined below). This policy (the <b>“Privacy Policy” </b> or this “Policy”) describes how we collect, use, retain, disclose, and otherwise process personal information. This Privacy Policy applies to all personal information we collect:</p>
-<ul>
-    <li>
-    Through our websites and apps (collectively, the “websites” or “website”), including:<a href='www.rawlings.com'> www.rawlings.com</a>, <a href='www.easton.com'>www.easton.com</a>,<a href='www.mikensports.com'>www.mikensports.com</a>, <a href='www.mikensports.com'>www.mikensports.com</a>  ,  social media sites such as Facebook, Instagram, YouTube, Pinterest, WhatsApp and Twitter provided or sponsored by Rawlings.
-    </li>
-    <li>In email, text, chat, and other electronic messages between you and the websites.</li>
-    <p>
-    We do not collect credit or debit card information directly; we rely on third parties to process credit and debit card transactions, and those transactions are subject to those third parties’ own privacy policies.
-    </p><br/>
-    <br/>
-    <p>We collect information from you to operate our websites, to offer products and services to you, and to increase the effectiveness of our advertising and promotion of products and services. The type of information we collect depends on the specific products and services being provided when you are visiting or interacting with our websites.</p><br/><br/>
-    <p>If we decide to change our Privacy Policy, we will update our Policy with those changes and update the Privacy Policy modification date. Please check back regularly to review any changes to this Privacy Policy and each time you submit personal information to us. If you do not agree with this Privacy Policy or any changes to it, you should not use or access the Websites.</p>
-    <br/>
-    <br/>
-    <p>This Privacy Policy does not apply to information collected by any third party, including through any application or content, including advertising, that may link to or be accessible from or on the Website. Please note that this Policy does not apply to our processing of information about job applicants, employees or contractors. It also does not cover the processing of information in connection with buy now pay later (“<b> BNPL” </b>) payment options, and any privacy inquiries related to BNPL payment options should be directed to the BNPL provider</p>
-</ul>
-</>
-    )
-}
-
-const ProvideInformation = () => {
-
-    return(
-        <>
-        <p>We collect the personal information you provide to us when you purchase our products or visit our website. The categories of information we may collect include:</p>
-        <ul>
-
-            <li>
-            Personal Identifiers, including name, email address, postal address, telephone number, and online Identifiers
-            </li>
-            <li>Internet Activity</li>
-            <li>Commercial Information, including purchases</li>
-            <li>Financial Information, including credit or debit card number</li>
-            <li>Location Information, including general location data</li>
-            <li>Inferences from Other Data, including inferences created from other personal information collected</li>
-        </ul>
-        <br/>
-       
-
-        <h2>Browser Cookies</h2>
-        <p>We use cookies to create a better experience for you on our site. For example, cookies prevent you from having to login repeatedly, and they help us remember items you've added to your cart. We also use third-party cookies, which are cookies placed by third parties for advertising and analytics purposes. You can control these cookies through your browser settings.</p>
-
-        
-        <h2>Information from other sources</h2>
-        <p>We may collect personal information about you from third-party sources, including Ad Networks and Retail Partners.</p>
-
-        <p>The categories of information we may collect include:</p>
-       
-        <p>Ad Networks</p>
-        <ul>
-            <li>
-            Personal Identifiers, including Name, Email address, and Telephone number
-            </li>
-        </ul>
-        
-        <p>Retailer Partners</p>
-        <ul>
-            <li>
-            Personal Identifiers, including Name and Postal address
-            </li>
-            <li>
-            Commercial Information, including Purchases
-            </li>
-        </ul>
-       
-       <h2>How long we keep your data</h2>
-      <p>
-      We retain information for as long as necessary to carry out the purposes for which we originally collected it and for other business purposes explained in this Policy (including to satisfy our legal, accounting or reporting requirements), unless a longer retention period is required or allowed under law.
-      </p><br/>
-      <h2>Why we process your information</h2>
-      <p>We process personal information for the following business and commercial purposes:</p>
-      <ul>
-        <li>
-        Analyzing Data
-        </li>
-        <li>Conducting Surveys</li>
-        <li>Creating Customer Profiles</li>
-        <li>Delivering Targeted Ads</li>
-        <li>Fulfilling Customer Orders</li>
-        <li>Improving our Products & Services</li>
-        <li>Managing Event & Guest Data</li>
-        <li>Meeting Compliance & Legal Requirements</li>
-        <li>Operating Our Website or Mobile Apps</li>
-        <li>Preventing Fraud</li>
-        <li>Processing Payments</li>
-        <li>Providing Customer Support</li>
-        <li>Sending Promotional Communications</li>
-        <li>Storing and Managing Data</li>
-        <li>Tracking Purchases & Customer Data</li>
-      </ul>
-        </>
-    )
-}
-
-
-const DiscloseInfo = () => {
-  return (
-    <>
-      <p>We may disclose personal information about you for business and commercial purposes when you purchase our products or visit our website:</p>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Personal Information Category</th>
-            <th>Categories of Service Providers</th>
-            <th>Categories of Third Parties</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Personal Identifiers</td>
-            <td>
-              Ad Networks, Business Operations Tool, Commerce Software Tools, Customer Support Tools, Data Analytics Providers, Governance, Risk & Compliance Software, IT Contractors, IT Infrastructure Services, Payment Processors, Sales & Marketing Contractors, and Sales & Marketing Tools
-            </td>
-            <td>Ad Networks, Payment Processors, Sales & Marketing Tools, and Shipping Services</td>
-          </tr>
-          <tr>
-            <td>Internet Activity</td>
-            <td>
-              Ad Networks, Commerce Software Tools, Customer Support Tools, Data Analytics Providers, IT Contractors, IT Infrastructure Services, Sales & Marketing Contractors, and Sales & Marketing Tools
-            </td>
-            <td>Ad Networks and Sales & Marketing Tools</td>
-          </tr>
-          <tr>
-            <td>Commercial Information</td>
-            <td>
-              Ad Networks, Business Operations Tool, Commerce Software Tools, IT Contractors, Payment Processors, Sales & Marketing Contractors, and Sales & Marketing Tools
-            </td>
-            <td>Ad Networks and Payment Processors</td>
-          </tr>
-          <tr>
-            <td>Location Information</td>
-            <td>
-              Ad Networks, Commerce Software Tools, Customer Support Tools, Data Analytics Providers, IT Contractors, Sales & Marketing Contractors, and Sales & Marketing Tools
-            </td>
-            <td>Ad Networks and Sales & Marketing Tools</td>
-          </tr>
-          <tr>
-            <td>Inferences from Other Data</td>
-            <td>
-              Ad Networks, Sales & Marketing Contractors, and Sales & Marketing Tools
-            </td>
-            <td>Ad Networks and Sales & Marketing Tools</td>
-          </tr>
-        </tbody>
-      </table>
-    </>
-  );
-};
-
+export default PrivacyPolicy

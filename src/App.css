@@ -1386,6 +1386,7 @@ body {
   background-color: #ffffff;
   width: 100%;
   height: auto;
+  box-shadow: 0 0 5px ;
   padding: 20px;
 }
 
@@ -1411,6 +1412,8 @@ body {
   text-decoration: none;
   color: #222;
 }
+
+
 
 @media (max-width: 768px) {
   .container {

@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Layout from './Layout';
-
+import '../Components/styles/checkout.css'
 import { message } from "antd";
 const Checkout = () => {
   const token = Cookies.get("token");
@@ -327,7 +327,7 @@ const Checkout = () => {
               />
               <button
                 type="sumbit"
-                className="btn btn-primary coupon-btn"
+                className=" btn-primary coupon-btn"
                 style={{ backgroundColor: "coral" }}
                 onClick={applyCoupon}
               >
@@ -336,7 +336,7 @@ const Checkout = () => {
             </div>
           </div>
 
-          <div className="col-md-6">
+          <div className="your-order col-md-6">
             <h2 className="fs-2 text ">YOUR ORDER</h2>
 
             <table className="table w-full ">

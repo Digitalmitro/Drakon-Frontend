@@ -4,8 +4,10 @@ import freeshipping from '../assets/free-shipping.webp'
 import easyreturn from '../assets/easy-returns.webp'
 import securecheckout from '../assets/secure-checkout.webp'
 import payovertime from '../assets/pay-overtime.webp'
+import { useNavigate } from 'react-router-dom'
 
 const Footer = () => {
+  const navigate = useNavigate()
   return (
     <>
      <div className="shippment">
@@ -137,8 +139,8 @@ Safe and Secure Checkout</h4>
             <li>Transparency in Coverage</li>
             <li>Supplier Code of Conduct</li>
             <li>Patents</li>
-            <li>Terms of Use</li>
-            <li>Privacy</li>
+            <li  onClick={()=> navigate('/termsofuse')}>Terms of Use</li>
+            <li  onClick={()=> navigate('/policy')}>Privacy</li>
 
         </ul>
 

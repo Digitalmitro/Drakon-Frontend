@@ -1,6 +1,6 @@
 .sideContent{
     margin: 20px;
-    margin-top: 45px;
+    margin-top: 10%;
 }
 .sideContent h1{
     padding: 10px 20px;
@@ -34,9 +34,8 @@ border-radius: 20px;
     list-style: disc !important;
     font-size: 22px;
 }
-  /* :where(.css-dev-only-do-not-override-1c0na6j).ant-collapse>.ant-collapse-item >.ant-collapse-header{
-    background-color: #726D83 !important;
-
-  } */
+:where(.css-dev-only-do-not-override-1c0na6j).ant-collapse-borderless >.ant-collapse-item>.ant-collapse-content>.ant-collapse-content-box {
+padding: 30px;
+}
 
   

@@ -10,7 +10,8 @@ import CategoryPage from "./Pages/CategoryPage";
 import ProductsPage from "./Pages/ProductsPage";
 import Checkout from "./Pages/CheckoutPage";
 import Profile from "./Pages/profile"
-import TermsOfUse from "./Pages/TermsOfUSe"
+import PrivacyPolicy  from "./Pages/PrivacyPolicyy"
+import  TermsOfUse from "./Pages/TermsOfUse"
 import {SvgProvider} from "./Components/context/svgContext"
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
 
       <Route path="/login" element={<Login/>}/>
       <Route path="/termsofuse" element={<TermsOfUse/>}/>
+      <Route path="/policy" element={<PrivacyPolicy/>}/>
       <Route path="/profile" element={<Profile/>}/>
 
       <Route path="/cart" element={<AddToCart/>}/>

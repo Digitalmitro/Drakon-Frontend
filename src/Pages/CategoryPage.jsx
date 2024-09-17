@@ -144,7 +144,7 @@ const CategoryPage = () => {
           style={{
             width: "20%",
             padding: "20px",
-            marginTop: "20px",
+            marginTop: "2.6rem",
             borderRight: "1px solid #ddd",
           }}
         >
