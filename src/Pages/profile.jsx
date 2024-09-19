@@ -7,58 +7,71 @@ const profile = () => {
   return (
     <Layout>
       <div className="profile" style={{ marginTop: "10rem" }}>
-        <p className="myAccount">My Account</p>
-        <div className="container">
-          <div>
-            <p className="my-5">
-              <a className="aLink " href="/">
-               
-                --- home
+        <div className="profile-sidebar">
+          {/* <p className="myAccount">My Account</p> */}
+          <div className="profile-info">
+            <div className="text-end mx-2">
+              <h5 >
+              <a href="" className="text-end aLink ">
+                {" "}
+                Edit
               </a>
-            </p>
-            <h3 className="mt-4 welcome">
-              WELCOME Kajal Gupta 
-            </h3>
-            <div className="d-flex justify-content-between gap-4 mt-3 text-end">
-              <div className="left">
-                <div className="profile-info">
-                  <div className=" profile-heading flex justify-content-between">
-                    <div className=" d-flex gap-3 align-items-center m-3">
-                      <Avatar size={50} icon={<UserOutlined />} />
+              </h5>
+          
+            </div>
+        
+            <div className=" profile-heading flex justify-content-between">
+          
+              <div className=" d-flex gap-3 align-items-center m-3">
+                <Avatar size={50} icon={<UserOutlined />} />
 
-                      <h3 className="mt-2">Profile</h3>
-                    </div>
-                    <a href="" className="m-3 ">
-                      {" "}
-                      Edit
-                    </a>
-                  </div>
-                  <div className="profile-section m-4 text-start">
-                    <p>
-                      {" "}
-                      <b>First Name</b>
-                    </p>
-                    <p>kajal</p>
-                    <br />
-                    <p>
-                      <b> Last Name</b>
-                    </p>
-                    <p>Gupta</p>
-                    <br />
-                    <p>
-                      <b> Email</b>
-                    </p>
-                    <p>Kajalg123@gmail.com</p>
-                    <br />
-                    <p>
-                      <b> Phone </b>
-                    </p>
-                    <p>1234567890</p>
-                    <br />
-                  </div>
-                </div>
+                <h3 className="mt-2">Profile</h3>
+              </div>
+            
+            </div>
+            <div className="profile-section m-4 text-start">
+              <p>
+                {" "}
+                <b>First Name</b>
+              </p>
+              <p>kajal</p>
+              <br />
+              <p>
+                <b> Last Name</b>
+              </p>
+              <p>Gupta</p>
+              <br />
+              <p>
+                <b> Email</b>
+              </p>
+              <p>Kajalg123@gmail.com</p>
+              <br />
+              <p>
+                <b> Phone </b>
+              </p>
+              <p>1234567890</p>
+              <br />
+            </div>
+          </div>
+        </div>
+        <div className="profile-container  pt-5">
+          <div className="">
+            <div className="flex justify-content-between  align-items-center mx-4">
+            <h5 className="">
+              <a className="aLink " href="/">
+                --- HOME
+              </a>
+            </h5>
+            {/* <h3 className=" welcome text-center">WELCOME KAJAL GUPTA</h3> */}
 
-                <div className="password-info">
+            <p className="logout-btn">LOGOUT</p>
+            </div>
+            <h3 className=" welcome text-center">WELCOME KAJAL GUPTA</h3>
+
+            <div className="d-flex justify-content-center gap-4 mt-4 pt-1 text-end">
+
+              <div className="right text-center">
+                <div className="info-container ">
                   <div className=" password-heading flex justify-content-between">
                     <h3 className="mt-2">Password</h3>
                     <a href="m-4"> Edit</a>
@@ -70,24 +83,23 @@ const profile = () => {
                     <p>*********</p>
                   </div>
                 </div>
-               
-                
-              </div>
-              <div className="right">
-              <div className="profile-info mb-3">
+
+                <div className="info-container mb-3">
                   <div className=" password-heading flex justify-content-between ">
                     <h3>Address Book</h3>
 
-                    <a href="m-4"  className=""> Edit</a>
+                    <a href="m-4" className="">
+                      {" "}
+                      Edit
+                    </a>
                   </div>
-                  <div className="profile-section  text-center d-flex align-items-center justify-content-center mb-4" 
-                  > 
+                  <div className="profile-section  text-center d-flex align-items-center justify-content-center mb-4">
                     <a href="" className="aLink mt-3">
                       Add New
                     </a>
                   </div>
                 </div>
-                <div className="profile-info">
+                <div className="info-container">
                   <div className=" password-heading flex justify-content-between">
                     <h3 className="mt-2">Order History</h3>
                     <a href="m-4" className="">
@@ -100,7 +112,7 @@ const profile = () => {
                   </div>
                 </div>
 
-                <div className="password-info">
+                <div className="info-container">
                   <div className=" password-heading flex justify-content-between">
                     <h3 className="mt-2">Payment </h3>
                   </div>
@@ -110,9 +122,6 @@ const profile = () => {
                     </a>
                   </div>
                 </div>
-
-             
-
               </div>
             </div>
           </div>

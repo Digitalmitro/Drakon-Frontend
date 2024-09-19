@@ -1,44 +1,107 @@
-.profile{
+.profile-sidebar {
+    position: absolute;
+    padding: 8px;
     height: auto;
+    border-right: 1px solid rgb(177, 173, 173);
+    width: 18rem;
+    box-shadow: inset 2px 2px 10px rgb(131, 128, 128), inset -1px -1px 5px rgba(167, 163, 163, 0.6);
 }
 
-.myAccount{
-    margin-top: 180px;
-    font-size: 3rem;
-    background-color: var(--themeColor);
+.profile-container {
+    margin-left: 18rem;
+}
+
+.profile-section p {
+    border-bottom: 2px solid rgb(224, 221, 221);
+    padding-bottom: .8rem;
+}
+
+.myAccount {
+    font-size: 2.5rem;
+    /* background-color: var(--themeColor); */
     width: fit-content;
     color: white;
-    padding: 40px;
-    text-align: end;
-    padding-left: 130px;
+    margin-top: 1rem;
+    padding: 30px;
+    white-space: nowrap;
+    /* padding-left: 7vw;
+     */
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    width: 102%;
     /* margin: 180px 10px 0px 30px !important; */
 }
-.profile-info, .password-info{
-    border: 1px solid rgb(194, 191, 191) ;
-}
-.password-info{
-    height: 20vh;
-    margin-top: 20px ;
-}
-.password-heading{
-padding: 10px;
-}
-.profile .left , .profile .right {
- width: 40vw;
-}
-.profile{
-    line-height: 15px;
-}
-.profile-heading, .password-heading{
-    background-color:#F7F7F7;
-    border-bottom: 1px solid rgb(221, 220, 220);
-}
-.profile .aLink{
-    text-align: center;
+
+.profile-info {
+    margin-top: 1.8rem;
 }
 
-.profile .welcome{
-  transform: scale(1.2, 1);
-  align-items: center;
-  margin-left: 130px;
+.info-container {
+    border: 1px solid rgb(199, 199, 199);
+    margin: .5rem 0rem;
+    border-radius: 1rem;
+    backface-visibility: hidden;
+    padding: 2%;
+    border-radius: 7px;
+    box-shadow: inset 2px 2px 10px rgb(131, 128, 128), inset -1px -1px 5px rgba(167, 163, 163, 0.6);
+}
+
+.password-info {
+    height: 20vh;
+    margin-top: 20px;
+}
+
+.password-heading {
+    padding: 10px;
+    background-color: #F7F7F7;
+}
+
+.profile .right {
+    width: 60vw;
+}
+
+.profile {
+    line-height: 15px;
+}
+
+.profile-heading,
+.password-heading {
+    /* background-color:#F7F7F7; */
+    /* border-bottom: 1px solid rgb(221, 220, 220); */
+}
+
+.profile .aLink {
+    text-align: center;
+    
+}
+
+.profile .welcome {
+    transform: scale(1.2, 1);
+    align-items: center;
+}
+
+.logout-btn {
+    padding: 1.2rem 3.5rem;
+    background-color: var(--themeColor);
+    color: white;
+}
+
+@media (max-width:817px) {
+    .profile {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        position: absolute;
+        border-right: 1px solid rgb(177, 173, 173);
+        width: 98vw;
+        height: 37rem;
+    }
+
+    .profile-container {
+        width: 100vw;
+        margin-top: 40rem;
+        margin-left: 0rem;
+    }
 }

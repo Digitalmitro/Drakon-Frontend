@@ -1,193 +1,125 @@
-import React, { useEffect, useState } from 'react';
-import Layout from './Layout';
-import { NavLink, useNavigate } from 'react-router-dom';
-import Cookies from "js-cookie";
-import axios from 'axios';
-import '../Components/styles/login.css'
-const Login = () => {
-  const navigate=useNavigate()
-  // const token = Cookies.get("token");
-  const [isLogin, setIsLogin] = useState(true);
-  const [logEmail, setLogEmail] = useState("");
-  const [logPass, setLogPass] = useState("");
-const [regEmail, setRegEmail] = useState("");
-const [regPassword, setRegPassword] = useState("");
-
-// login code
-const [formData, setFormData] = useState({
-  email: "",
-  password: "",
-  remember: false,
-});
-
-const handleChange = (e) => {
-  const { id, value, type, checked } = e.target;
-  setFormData((prevData) => ({
-    ...prevData,
-    [id]: type === "checkbox" ? checked : value,
-  }));
-};
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  // Handle form submission logic here
-  console.log(formData);
-  navigate('/profile'); // Navigates to the profile page after login
-};
-
-
-  const handleFormToggle = () => {
-    setIsLogin(!isLogin);
-  };
-  useEffect(() => {
-    // Scroll to the top when the component mounts
-    window.scrollTo(0, 0);
-  }, []);
-
-
-const handelRegiste = async (e) => {
-  e.preventDefault();
-  const payload = {
-    email: regEmail,
-    password: regPassword,
-  };
-  try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_BACKEND_API}/registerclient`,
-      payload
-    );
-    message.success(res.data);
-    setRegEmail("");
-    setRegPassword("");
-  } catch (error) {
-    message.error(error.response.data);
-  }
-};
-
-
+import React from "react";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Space } from "antd";
+import Layout from "./Layout";
+import "../Components/styles/profile.css";
+const profile = () => {
   return (
     <Layout>
-      <div className="login-container">
-        <div className="login-left">
-          <div className="login-signup-btn">
-            <h6 onClick={() => setIsLogin(true)} className={isLogin ? 'active' : ''}>Login</h6>
-            <h6 onClick={() => setIsLogin(false)} className={!isLogin ? 'active' : ''}>Create Account</h6>
+      <div className="profile" style={{ marginTop: "10rem" }}>
+        <p className="myAccount">My Account</p>
+        <div className="container">
+          <div>
+            <p className="my-5">
+              <a className="aLink " href="/">
+               
+                --- home
+              </a>
+            </p>
+            <h3 className="mt-4 welcome">
+              WELCOME Kajal Gupta 
+            </h3>
+            <div className="d-flex justify-content-between gap-4 mt-3 text-end">
+              <div className="left">
+                <div className="profile-info">
+                  <div className=" profile-heading flex justify-content-between">
+                    <div className=" d-flex gap-3 align-items-center m-3">
+                      <Avatar size={50} icon={<UserOutlined />} />
+
+                      <h3 className="mt-2">Profile</h3>
+                    </div>
+                    <a href="" className="m-3 ">
+                      {" "}
+                      Edit
+                    </a>
+                  </div>
+                  <div className="profile-section m-4 text-start">
+                    <p>
+                      {" "}
+                      <b>First Name</b>
+                    </p>
+                    <p>kajal</p>
+                    <br />
+                    <p>
+                      <b> Last Name</b>
+                    </p>
+                    <p>Gupta</p>
+                    <br />
+                    <p>
+                      <b> Email</b>
+                    </p>
+                    <p>Kajalg123@gmail.com</p>
+                    <br />
+                    <p>
+                      <b> Phone </b>
+                    </p>
+                    <p>1234567890</p>
+                    <br />
+                  </div>
+                </div>
+
+                <div className="password-info">
+                  <div className=" password-heading flex justify-content-between">
+                    <h3 className="mt-2">Password</h3>
+                    <a href="m-4"> Edit</a>
+                  </div>
+                  <div className="profile-section m-4 text-start">
+                    <p>
+                      <b>Password</b>
+                    </p>
+                    <p>*********</p>
+                  </div>
+                </div>
+               
+                
+              </div>
+              <div className="right">
+              <div className="profile-info mb-3">
+                  <div className=" password-heading flex justify-content-between ">
+                    <h3>Address Book</h3>
+
+                    <a href="m-4"  className=""> Edit</a>
+                  </div>
+                  <div className="profile-section  text-center d-flex align-items-center justify-content-center mb-4" 
+                  > 
+                    <a href="" className="aLink mt-3">
+                      Add New
+                    </a>
+                  </div>
+                </div>
+                <div className="profile-info">
+                  <div className=" password-heading flex justify-content-between">
+                    <h3 className="mt-2">Order History</h3>
+                    <a href="m-4" className="">
+                      {" "}
+                      View
+                    </a>
+                  </div>
+                  <div className="profile-section m-4 text-start">
+                    <p>No Orders yet</p>
+                  </div>
+                </div>
+
+                <div className="password-info">
+                  <div className=" password-heading flex justify-content-between">
+                    <h3 className="mt-2">Payment </h3>
+                  </div>
+                  <div className="profile-section m-4 text-center">
+                    <a href="" className="aLink">
+                      Add New
+                    </a>
+                  </div>
+                </div>
+
+             
+
+              </div>
+            </div>
           </div>
-
-          {isLogin ? (
-          <div className="container">
-          <div className="heading">Sign In to your account</div>
-          <form className="form" onSubmit={handleSubmit}>
-            <div className="input-field">
-              <label htmlFor="email">
-                <small style={{ color: "red" }}>*</small> Email
-              </label>
-              <input
-                required
-                autoComplete="off"
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="mb-4 my-2"
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="password">
-                <small style={{ color: "red" }}>*</small> Password
-              </label>
-              <input
-                required
-                autoComplete="off"
-                type="password"
-                id="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="mb-4 my-2"
-              />
-            </div>
-    
-            <div className="login-checkbox">
-              <div className="check-div">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={formData.remember}
-                  onChange={handleChange}
-                />
-                <label htmlFor="remember" className="mx-2">
-                  Remember me
-                </label>
-              </div>
-              <NavLink to="#" className="forget-password">
-                Forget Password?
-              </NavLink>
-            </div>
-    
-            <div className="loginbtn">
-              <button className="button-5" type="submit">
-                LOGIN
-              </button>
-            </div>
-          </form>
         </div>
-          ) : (
-            <form>
-
-            <label htmlFor="new-email"><small style={{color:"red"}}>*</small> First Name</label>
-            <input type="text" id="new-email" className="mb-4 my-2" />
-
-            <label htmlFor="new-email"><small style={{color:"red"}}>*</small> Last Name</label>
-            <input type="text" id="new-email" className="mb-4 my-2" />
-
-            <label htmlFor="new-email"><small style={{color:"red"}}>*</small> Phone</label>
-            <input type="number" id="new-email" className="mb-4 my-2" />
-
-              <label htmlFor="new-email"><small style={{color:"red"}}>*</small> Email</label>
-              <input type="text" id="new-email" className="mb-4 my-2" />
-
-              <label htmlFor="new-email"><small style={{color:"red"}}>*</small>Confirm Email</label>
-              <input type="text" id="new-email" className="mb-4 my-2" />
-
-              <label htmlFor="new-password"><small style={{color:"red"}}>*</small> Password</label>
-              <input type="password" id="new-password" className="mb-4 my-2" />
-              <label htmlFor="confirm-password"><small style={{color:"red"}}>*</small> Confirm Password</label>
-              <input type="password" id="confirm-password" className="mb-4 my-2" />
-              
-
-            <div className="check-boxes-signup">
-            <div className="check-div">
-                  <input type="checkbox" id="remember" />
-                  <label htmlFor="remember" className="mx-2">Drakon</label>
-                </div>
-
-                <div className="check-div">
-                  <input type="checkbox" id="remember" />
-                  <label htmlFor="remember" className="mx-2">Easton</label>
-                </div>
-                <div className="check-div">
-                  <input type="checkbox" id="remember" />
-                  <label htmlFor="remember" className="mx-2">Miken</label>
-                </div>
-                <div className="check-div">
-                  <input type="checkbox" id="remember" />
-                  <label htmlFor="remember" className="mx-2">Worth</label>
-                </div>
-            </div>
-
-              <div className="loginbtn">
-              <button className='button-5'>CREATE ACCOUNT</button>
-              </div>
-            </form>
-          )}
-        </div>
-
-      
       </div>
     </Layout>
   );
 };
 
-export default Login;
-
-
+export default profile;
