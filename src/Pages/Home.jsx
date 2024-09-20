@@ -136,12 +136,11 @@ const Home = () => {
     />
   ));
 
-  useEffect(() => {
     AOS.init({
       delay:200,
       duration: 1000,
     });
-  }, []);
+
 
   return (
     <Layout>
@@ -473,7 +472,7 @@ const Home = () => {
           <Carousels className="pb-5" showDots={true} responsive={responsive}
             data-aos="fade-up"
             data-aos-delay="400"
-            data-aos-duration="2000" autoplay>
+            data-aos-duration="3000" autoplay>
             {product}
           </Carousels>
         </div>

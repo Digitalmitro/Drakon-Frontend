@@ -660,7 +660,7 @@ body {
   /* border: 1px solid blue; */
   height: auto;
   display: flex;
-  flex-wrap: wrap;
+ 
   align-items: center;
   justify-content: center;
   gap: 15px;
@@ -1571,5 +1571,9 @@ padding-top: 1rem;
     justify-content: start;
     padding-left: 3rem;
   }
+  .footer-upward {
+    flex-wrap: wrap;
+  }
+  
 
 }

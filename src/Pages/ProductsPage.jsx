@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import Layout from './Layout';
 import DotLoader from 'react-spinners/DotLoader';
 import Slider from 'react-slider'; 
+import productImage from '../assets/slide-img4.jpg'
 import "../Components/styles/products.css"
 const CategoryPage = () => {
   const { categoryName } = useParams();
@@ -121,9 +122,9 @@ const CategoryPage = () => {
         <div
           className="search-func"
           style={{
-            width: "20%",
+            width: "18%",
             padding: "20px",
-            marginTop: "20px",
+            marginTop: "45px",
             borderRight: "1px solid #ddd",
           }}
         >
@@ -210,7 +211,33 @@ const CategoryPage = () => {
               </div>
             ) : (
               products.length === 0 ? (
-                <p>No products found within the selected price range.</p>
+                <NavLink  to={`/product-details/123`} style={{ textDecoration: 'none'}}>
+                <div className='prod-card'>
+                  <img
+                    src={productImage}
+                    alt="productImage"
+                    style={{ width: "150px", height: '21vh', borderRadius: '5px', marginBottom: '10px' }}
+                  />
+                  <h4 style={{ fontSize: '0.9rem', marginBottom: '10px' }}>Sports Gloves </h4>
+                  <p style={{ textAlign: 'center', marginBottom: '10px',fontSize:"0.8rem" }}>Products Golves for good grip...</p>
+                  <p style={{ fontSize: '1.1rem', fontWeight: 'bold', opacity:"0.8" }}>₹7000</p>
+                  <button
+                    style={{
+                      backgroundColor: '#ff5722',
+                      color: '#fff',
+                      border: 'none',
+                      width:"100%",
+                      padding: '5px 10px',
+                      borderRadius: '5px',
+                      cursor: 'pointer',
+                      fontSize:"0.8rem"
+                    }}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </NavLink>
+                // <p>No products found within the selected price range.</p>
               ) : (
                 products.map(product => (
                   <NavLink key={product._id} to={`/product-details/${product._id}`} style={{ textDecoration: 'none'}}>

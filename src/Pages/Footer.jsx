@@ -5,18 +5,28 @@ import easyreturn from '../assets/easy-returns.webp'
 import securecheckout from '../assets/secure-checkout.webp'
 import payovertime from '../assets/pay-overtime.webp'
 import { useNavigate } from 'react-router-dom'
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 const Footer = () => {
   const navigate = useNavigate()
+
+  AOS.init( );
+
+
   return (
     <>
      <div className="shippment">
-          <div className="free-shipping">
+          <div className="free-shipping" 
+          data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="1000">
             <div><img src={freeshipping} alt="" /></div>
             <h4>FREE SHIPPING</h4>
             <p>On all orders over $35</p>
           </div>
-          <div className="returns">
+          <div className="returns"  data-aos="fade-up"
+            data-aos-delay="300"
+            data-aos-duration="2000">
            <div>
            <img src={easyreturn} alt="" />
            </div>
@@ -25,7 +35,9 @@ const Footer = () => {
            <p>
            No fuss, no hassle.</p>
           </div>
-          <div className="checkout">
+          <div className="checkout"  data-aos="fade-up"
+            data-aos-delay="400"
+            data-aos-duration="2000">
             <div><img src={securecheckout} alt="" /></div>
             <h4>
             
@@ -34,7 +46,9 @@ Safe and Secure Checkout</h4>
             Safe and Secure Checkout</p>
             
           </div>
-          <div className="payovertime">
+          <div className="payovertime"  data-aos="fade-up"
+            data-aos-delay="400"
+            data-aos-duration="3000">
             <div>
 
             <img src={payovertime} alt="" style={{width:"40%"}} />
