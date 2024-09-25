@@ -11,7 +11,7 @@ import ProductsPage from "./Pages/ProductsPage";
 import Checkout from "./Pages/CheckoutPage";
 import Profile from "./Pages/profile"
 import PrivacyPolicy  from "./Pages/PrivacyPolicyy"
-import  TermsOfUse from "./Pages/TermsOfUse_temp"
+import  TermsOfUse from "./Pages/TermsOfUse"
 import {SvgProvider} from "./Components/context/svgContext"
 function App() {
   return (
