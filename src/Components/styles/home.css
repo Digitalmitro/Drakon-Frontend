@@ -87,7 +87,7 @@
         height: 60vh;
     }
     .crousal-container img{
-        height: 15rem;
+        /* height: 15rem; */
     }
     .limitedAddition{
         margin: 1rem !important;

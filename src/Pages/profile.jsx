@@ -11,23 +11,20 @@ const profile = () => {
           {/* <p className="myAccount">My Account</p> */}
           <div className="profile-info">
             <div className="text-end mx-2">
-              <h5 >
-              <a href="" className="text-end aLink ">
-                {" "}
-                Edit
-              </a>
+              <h5>
+                <a href="" className="text-end aLink ">
+                  {" "}
+                  Edit
+                </a>
               </h5>
-          
             </div>
-        
+
             <div className=" profile-heading flex justify-content-between">
-          
               <div className=" d-flex gap-3 align-items-center m-3">
                 <Avatar size={50} icon={<UserOutlined />} />
 
                 <h3 className="mt-2">Profile</h3>
               </div>
-            
             </div>
             <div className="profile-section m-4 text-start">
               <p>
@@ -52,24 +49,24 @@ const profile = () => {
               <p>1234567890</p>
               <br />
             </div>
+            <p className="logout-btn">LOGOUT</p>
           </div>
         </div>
+
+
         <div className="profile-container  pt-5">
           <div className="">
-            <div className="flex justify-content-between  align-items-center mx-4">
-            <h5 className="">
-              <a className="aLink " href="/">
-                --- HOME
-              </a>
-            </h5>
-            {/* <h3 className=" welcome text-center">WELCOME KAJAL GUPTA</h3> */}
+            <div className="info-card flex justify-content-between  align-items-center mx-4">
+             
+              {/* <h3 className=" welcome text-center">WELCOME KAJAL GUPTA</h3> */}
 
-            <p className="logout-btn">LOGOUT</p>
+             
             </div>
+           
             <h3 className=" welcome text-center">WELCOME KAJAL GUPTA</h3>
 
-            <div className="d-flex justify-content-center gap-4 mt-4 pt-1 text-end">
-
+        
+            <div className="d-flex justify-content-center gap-4 mt-3 pt-1 text-end">
               <div className="right text-center">
                 <div className="info-container ">
                   <div className=" password-heading flex justify-content-between">
@@ -124,6 +121,7 @@ const profile = () => {
                 </div>
               </div>
             </div>
+            
           </div>
         </div>
       </div>

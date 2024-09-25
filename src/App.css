@@ -188,6 +188,7 @@ body {
   height: 105vh;
   overflow: hidden;
   position: relative;
+  margin-top: 15rem;
 }
 
 .overlay-2 {
@@ -533,7 +534,7 @@ body {
   gap: 20px;
   flex-wrap: wrap;
   margin-top: 5rem;
-  margin-bottom: 10rem;
+  /* margin-bottom: 10rem; */
 
 }
 
