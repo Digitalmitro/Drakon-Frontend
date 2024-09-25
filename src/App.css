@@ -33,7 +33,7 @@ body {
 }
 
 .navbar p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -140,7 +140,7 @@ body {
 }
 
 .navbar-right .second a {
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-transform: uppercase;
   font-weight: 500;
   padding: 0px 12px;
@@ -154,7 +154,7 @@ body {
 }
 
 .navbar-right .first a {
-  font-size: 1.2rem;
+  font-size: 1rem;
   /* margin: 10px; */
 }
 
@@ -1213,12 +1213,12 @@ padding-top: 1rem;
 .prod-card {
   border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 10px;
+  padding: 40px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 240px;
+  width: 260px;
   transition: 0.3s all ease-in-out;
 }
 
@@ -1400,14 +1400,18 @@ padding-top: 1rem;
   text-decoration: none;
   color: #222;
 }
-
+.search-func{
+  margin-right: 1rem !important;
+}
 
 
 @media (max-width: 917px) {
   .container {
     flex-direction: column;
   }
-
+.right-cart {
+  zoom: 0.9;
+}
   .left-div,
   .right-div {
     width: 100%;
@@ -1454,6 +1458,8 @@ padding-top: 1rem;
     margin-top: 1rem;
     /* border: 1px solid red; */
     width: 90% !important;
+    height: 100vh;
+    overflow-y: scroll;
   }
 
   .search-func input {
@@ -1511,17 +1517,10 @@ padding-top: 1rem;
   }
 
   .left-cart .product-info {
-    width: 100%;
-    /* zoom: 0.7; */
+    zoom: 0.9;
 
   }
 
-  .right-cart {
-    width: 100%;
-    /* zoom: 0.8; */
-    border: 1px solid green;
-
-  }
 
   .little-league {
     height: 50vh;
@@ -1576,5 +1575,8 @@ padding-top: 1rem;
     flex-wrap: wrap;
   }
   
+.search-func input {
 
+  padding: 20px !important;
+}
 }

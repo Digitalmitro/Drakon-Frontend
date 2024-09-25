@@ -54,6 +54,7 @@ import demoimg from "../assets/demo-img.jpg";
 import ProductBtn from "./ProductBtn.jsx";
 import Footer from "./Footer.jsx";
 import Layout from "./Layout.jsx";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const contentStyle = {
   height: "105vh",
@@ -65,6 +66,8 @@ const contentStyle = {
 };
 
 const Home = () => {
+
+  const navigate = useNavigate()
   const product = productData.map((item) => (
     <Products
       name={item.name}
@@ -345,6 +348,7 @@ const Home = () => {
                     width: "180px",
                   }}
                   className="shop-now-button "
+                  onClick={() => navigate('/products')}
                 >
                   SHOP NOW{" "}
                   <span>

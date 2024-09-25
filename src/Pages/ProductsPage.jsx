@@ -120,7 +120,7 @@ const CategoryPage = () => {
       <div className='category-page-container my-3 flex'>
         {/* Left Sidebar */}
         <div
-          className="search-func"
+          className="search-func "
           style={{
             width: "18%",
             padding: "20px",
@@ -130,7 +130,7 @@ const CategoryPage = () => {
         >
           {/* Filter UI */}
           <div>
-            <h5>Search</h5>
+            {/* <h5>Search</h5> */}
             <input
               type="text"
               value={searchQuery}
@@ -138,7 +138,7 @@ const CategoryPage = () => {
               style={{
                 width: "100%",
                 padding: "8px",
-                marginBottom: "20px",
+                margin: "20px 0px",
                 height: "5vh",
               }}
               onChange={handleSearchChange}
@@ -157,7 +157,7 @@ const CategoryPage = () => {
           <div>
             <h5 className="my-3">Categories</h5><hr/>
             <ul style={{ listStyle: "none", padding: 0 }}>
-              {categories?.map((category, index) => (
+              {categories.length >0  ? categories?.map((category, index) => (
                 <li key={index} className="my-2 mx-3">
                   <NavLink
                     to={`/category/${encodeURIComponent(category)}`}
@@ -167,7 +167,15 @@ const CategoryPage = () => {
                   </NavLink>
                   <hr/>
                 </li>
-              ))}
+              )) : (
+                <div className='px-3'>
+                <p>Watches</p>
+                <p>Shoes</p>
+                <p>Sport Wear</p>
+                <p>Batminton</p>
+                <p>Gloves</p>
+                </div>
+              )}
             </ul>
           </div>
 
