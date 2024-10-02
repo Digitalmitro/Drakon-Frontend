@@ -54,7 +54,7 @@ import demoimg from "../assets/demo-img.jpg";
 import ProductBtn from "./ProductBtn.jsx";
 import Footer from "./Footer.jsx";
 import Layout from "./Layout.jsx";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const contentStyle = {
   height: "105vh",
@@ -66,8 +66,7 @@ const contentStyle = {
 };
 
 const Home = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const product = productData.map((item) => (
     <Products
       name={item.name}
@@ -139,18 +138,15 @@ const Home = () => {
     />
   ));
 
-    AOS.init({
-      delay:200,
-      duration: 1000,
-    });
-
+  AOS.init({
+    delay: 200,
+    duration: 1000,
+  });
 
   return (
     <Layout>
       <div className="home-container">
-        <div className="crousal-container"
-       
-        >
+        <div className="crousal-container">
           <Carousel autoplay>
             {/* <Carousel > */}
 
@@ -159,13 +155,13 @@ const Home = () => {
 
               <div className="overlay banner-Crousal">
                 <p
-                 data-aos="fade-right"
-                 data-aos-delay="200"
-                 data-aos-duration="1000"
+                  data-aos="fade-right"
+                  data-aos-delay="200"
+                  data-aos-duration="1000"
                   style={{
                     fontSize: "1.2rem",
-                    marginBottom:"2rem",
-                    lineHeight:"1.3rem",
+                    marginBottom: "2rem",
+                    lineHeight: "1.3rem",
                     color: "#f0cd7d",
                     fontWeight: "500",
                   }}
@@ -173,9 +169,9 @@ const Home = () => {
                   THE BALANCE OF POWER
                 </p>
                 <h5
-                 data-aos="fade-left"
-                 data-aos-delay="200"
-                 data-aos-duration="1000"
+                  data-aos="fade-left"
+                  data-aos-delay="200"
+                  data-aos-duration="1000"
                   style={{
                     // marginTop: "-12px",
                     fontSize: "2rem",
@@ -185,45 +181,51 @@ const Home = () => {
                 >
                   ALL NEW USSSA ICON{" "}
                 </h5>
-                <p style={{ fontSize: "1rem", letterSpacing: "0.7px" }}
-                 data-aos="fade-right"
-                 data-aos-delay="200"
-                 data-aos-duration="1000">
+                <p
+                  style={{ fontSize: "1rem", letterSpacing: "0.7px" }}
+                  data-aos="fade-right"
+                  data-aos-delay="200"
+                  data-aos-duration="1000"
+                >
                   Now Available In All Drops{" "}
                 </p>
-                <button className="shop-now-button"
-                style={{marginTop:"6px"}}
-                 data-aos="fade-up"
-                 data-aos-delay="200"
-                 data-aos-duration="1000">
-                  BUY NOW{" "}
-                  <span>
-                    <svg
-                      width="25px"
-                      height="25px"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <path
-                          d="M6 12H18M18 12L13 7M18 12L13 17"
-                          stroke="#fff"
-                          stroke-width="2"
+                <Link to="/products">
+                  <button
+                    className="shop-now-button"
+                    style={{ marginTop: "6px" }}
+                    data-aos="fade-up"
+                    data-aos-delay="200"
+                    data-aos-duration="1000"
+                  >
+                    BUY NOW{" "}
+                    <span>
+                      <svg
+                        width="25px"
+                        height="25px"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
                           stroke-linecap="round"
                           stroke-linejoin="round"
-                        ></path>{" "}
-                      </g>
-                    </svg>
-                  </span>
-                </button>
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M6 12H18M18 12L13 7M18 12L13 17"
+                            stroke="#fff"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </span>
+                  </button>
+                </Link>
               </div>
             </div>
             <div className="carousel-item">
@@ -267,16 +269,20 @@ const Home = () => {
                 >
                   PLAYERS{" "}
                 </h5>
-                <p style={{ fontSize: "1.1rem", letterSpacing: "0.7px" }}
+                <p
+                  style={{ fontSize: "1.1rem", letterSpacing: "0.7px" }}
                   data-aos="fade-left"
                   data-aos-delay="200"
-                  data-aos-duration="1000">
+                  data-aos-duration="1000"
+                >
                   contoUR Wrist, Pro Patterns
                 </p>
-                <button className="shop-now-button "
+                <button
+                  className="shop-now-button "
                   data-aos="fade-up"
                   data-aos-delay="200"
-                  data-aos-duration="1000">
+                  data-aos-duration="1000"
+                >
                   SHOP NOW{" "}
                   <span>
                     <svg
@@ -348,7 +354,7 @@ const Home = () => {
                     width: "180px",
                   }}
                   className="shop-now-button "
-                  onClick={() => navigate('/products')}
+                  onClick={() => navigate("/products")}
                 >
                   SHOP NOW{" "}
                   <span>
@@ -388,10 +394,12 @@ const Home = () => {
           </Carousel>
         </div>
 
-        <div className="little-league"
+        <div
+          className="little-league"
           data-aos="fade-up"
           data-aos-delay="400"
-          data-aos-duration="3000">
+          data-aos-duration="3000"
+        >
           <img src={image5} style={{ width: "100%" }} alt="" />
           <div className="overlay-3">
             <h5
@@ -407,44 +415,50 @@ const Home = () => {
             >
               LITTLE LEAGUE BASEBALL X RAWLINGS
             </h5>
-            <p style={{ fontSize: "1rem", letterSpacing: "0.7px" }}
+            <p
+              style={{ fontSize: "1rem", letterSpacing: "0.7px" }}
               data-aos="fade-up"
               data-aos-delay="400"
-              data-aos-duration="1000">
+              data-aos-duration="1000"
+            >
               The Official Glove Of THe LLWS{" "}
             </p>
-            <button className="shop-now-button"
-              data-aos="fade-up"
-              data-aos-delay="600"
-              data-aos-duration="2000">
-              BUY NOW{" "}
-              <span>
-                <svg
-                  width="25px"
-                  height="25px"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <path
-                      d="M6 12H18M18 12L13 7M18 12L13 17"
-                      stroke="#fff"
-                      stroke-width="2"
+            <Link to="/products">
+              <button
+                className="shop-now-button"
+                data-aos="fade-up"
+                data-aos-delay="600"
+                data-aos-duration="2000"
+              >
+                BUY NOW{" "}
+                <span>
+                  <svg
+                    width="25px"
+                    height="25px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                    ></path>{" "}
-                  </g>
-                </svg>
-              </span>
-            </button>
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <path
+                        d="M6 12H18M18 12L13 7M18 12L13 17"
+                        stroke="#fff"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>{" "}
+                    </g>
+                  </svg>
+                </span>
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -473,49 +487,61 @@ const Home = () => {
             LIMITED EDITION DROPS
           </h1>
 
-          <Carousels className="pb-5" showDots={true} responsive={responsive}
+          <Carousels
+            className="pb-5"
+            showDots={true}
+            responsive={responsive}
             data-aos="fade-up"
             data-aos-delay="400"
-            data-aos-duration="3000" autoplay>
+            data-aos-duration="3000"
+            autoplay
+          >
             {product}
           </Carousels>
         </div>
 
         <div className="special-offers">
-          <div className="offers-1"   
-          data-aos="fade-right"
-      data-aos-delay="400"
-      data-aos-duration="2000"
-      >
+          <div
+            className="offers-1"
+            data-aos="fade-right"
+            data-aos-delay="400"
+            data-aos-duration="2000"
+          >
             <img src={offer1} alt="" />
             <p className="my-3 golden">NUMBERED LIMITED ADDITION</p>
             <h5>GAMEDAY '57 SERIES</h5>
             <p className="">Get Exclusive Gold Glover's Gamer</p>
           </div>
-          <div className="offers-1"
+          <div
+            className="offers-1"
             data-aos="fade-up"
             data-aos-delay="400"
-            data-aos-duration="2000">
+            data-aos-duration="2000"
+          >
             <img src={offer2} alt="" />
             <p className="theme mt-3">EXCLUSIVE NEW BAT</p>
             <h5 className="">GAMEDAY '57 SERIES LUIS ROBERT JR</h5>
             <p>Get Exclusive GOld GLover's Gamer</p>
           </div>
 
-          <div className="offers-1"
+          <div
+            className="offers-1"
             data-aos="fade-left"
             data-aos-delay="400"
-            data-aos-duration="2000">
+            data-aos-duration="2000"
+          >
             <img src={offer3} alt="" />
             <h5 className="my-3">GAMEDAY '57 SERIES LUIS ROBERT JR</h5>
             <p>Get Exclusive GOld GLover's Gamer</p>
           </div>
         </div>
 
-        <div className="crousal-container"
+        <div
+          className="crousal-container"
           data-aos="zoom-in"
           data-aos-delay="400"
-          data-aos-duration="2000">
+          data-aos-duration="2000"
+        >
           <h3
             style={{
               textAlign: "center",
@@ -529,7 +555,7 @@ const Home = () => {
           <Carousel autoplay>
             {/* <Carousel > */}
 
-            <div className="carousel-item" >
+            <div className="carousel-item">
               <img src={crousal5} alt="" className="carousel-image" />
 
               <div className="overlay-common">
@@ -703,20 +729,30 @@ const Home = () => {
           </Carousel>
         </div>
 
-        <div style={{ marginTop: "7rem", margin: "4rem" }}   data-aos="fade-up"
-            data-aos-delay="400"
-            data-aos-duration="4000">
-          <Carousels className="pb-5" showDots={true} responsive={responsive} data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="3000">
+        <div
+          style={{ marginTop: "7rem", margin: "4rem" }}
+          data-aos="fade-up"
+          data-aos-delay="400"
+          data-aos-duration="4000"
+        >
+          <Carousels
+            className="pb-5"
+            showDots={true}
+            responsive={responsive}
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="3000"
+          >
             {product2}
           </Carousels>
         </div>
 
-        <div className="little-league  banner" data-aos="fade-up"
-            data-aos-delay="200"
-            data-aos-duration="1000"
-            >
+        <div
+          className="little-league  banner"
+          data-aos="fade-up"
+          data-aos-delay="200"
+          data-aos-duration="1000"
+        >
           <h5
             style={{
               marginBottom: "3rem",
@@ -727,106 +763,130 @@ const Home = () => {
             data-aos="fade-up"
             data-aos-delay="200"
             data-aos-duration="2000"
-            >
-          
+          >
             SHOP THE GAME’S HOTTEST BATS
           </h5>
-          <img src={league2} style={{ width: "100%" }} alt="" data-aos="fade-up"
-            data-aos-delay="200"
-            data-aos-duration="1000"/>
-
-          <div className="overlay-4 shoptheGames"   data-aos="fade-up"
+          <img
+            src={league2}
+            style={{ width: "100%" }}
+            alt=""
+            data-aos="fade-up"
             data-aos-delay="200"
             data-aos-duration="1000"
-            >
-              
+          />
+
+          <div
+            className="overlay-4 shoptheGames"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="1000"
+          >
             <h5
               style={{
                 marginTop: "-12px",
                 fontSize: "2.2rem",
                 filter: "brightness(100%)",
                 textShadow: " 0 2px 5px #000",
-              }} data-aos="fade-up"
+              }}
+              data-aos="fade-up"
               data-aos-delay="200"
               data-aos-duration="2000"
             >
               LITTLE LEAGUE BASEBALL X RAWLINGS
             </h5>
-            <p style={{ fontSize: "1rem", letterSpacing: "0.7px" }}
-            data-aos="fade-up"
-            data-aos-delay="200"
-            data-aos-duration="2000">
+            <p
+              style={{ fontSize: "1rem", letterSpacing: "0.7px" }}
+              data-aos="fade-up"
+              data-aos-delay="200"
+              data-aos-duration="2000"
+            >
               The Official Glove Of THe LLWS{" "}
             </p>
-            <button className="shop-now-button"
-            aata-aos="fade-up"
-            data-aos-delay="400"
-            data-aos-duration="2000">
-              BUY NOW{" "}
-              <span>
-                <svg
-                  width="25px"
-                  height="25px"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <path
-                      d="M6 12H18M18 12L13 7M18 12L13 17"
-                      stroke="#fff"
-                      stroke-width="2"
+            <Link to="/products">
+              <button
+                className="shop-now-button"
+                aata-aos="fade-up"
+                data-aos-delay="400"
+                data-aos-duration="2000"
+              >
+                BUY NOW{" "}
+                <span>
+                  <svg
+                    width="25px"
+                    height="25px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                    ></path>{" "}
-                  </g>
-                </svg>
-              </span>
-            </button>
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <path
+                        d="M6 12H18M18 12L13 7M18 12L13 17"
+                        stroke="#fff"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>{" "}
+                    </g>
+                  </svg>
+                </span>
+              </button>
+            </Link>
           </div>
         </div>
 
-        <div style={{ marginTop: "7rem", margin: "4rem" }}
-           data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="2000" 
+        <div
+          style={{ marginTop: "7rem", margin: "4rem" }}
+          data-aos="fade-up"
+          data-aos-delay="200"
+          data-aos-duration="2000"
         >
-          <Carousels className="pb-5" showDots={true} responsive={responsive} data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="2000">
+          <Carousels
+            className="pb-5"
+            showDots={true}
+            responsive={responsive}
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="2000"
+          >
             {product3}
           </Carousels>
         </div>
 
-        <div className="special-offers2" style={{ marginBottom: "0px" }}
-          
-        >
-          <div className="offers-2"  data-aos="fade-up"
-           data-aos-duration="1000">
+        <div className="special-offers2" style={{ marginBottom: "0px" }}>
+          <div className="offers-2" data-aos="fade-up" data-aos-duration="1000">
             <img src={cat1} alt="" />
           </div>
-          <div className="offers-2"  data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="1000">
+          <div
+            className="offers-2"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="1000"
+          >
             <img src={cat2} alt="" />
           </div>
 
-          <div className="offers-2"  data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="2000">
+          <div
+            className="offers-2"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="2000"
+          >
             <img src={cat3} alt="" />
           </div>
 
-          <div className="offers-2"  data-aos="fade-up"
-           data-aos-delay="400"
-           data-aos-duration="2000">
+          <div
+            className="offers-2"
+            data-aos="fade-up"
+            data-aos-delay="400"
+            data-aos-duration="2000"
+          >
             <img src={cat4} alt="" />
           </div>
         </div>
@@ -847,18 +907,24 @@ const Home = () => {
             TOP PRODUCTS
           </h1>
 
-          <Carousels className="pb-5" showDots={true} responsive={responsive}
-             data-aos="fade-up"
-             data-aos-delay="200"
-             data-aos-duration="2000"
-             >
+          <Carousels
+            className="pb-5"
+            showDots={true}
+            responsive={responsive}
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="2000"
+          >
             {product4}
           </Carousels>
         </div>
 
-        <div className="little-league banner-3"  data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="2000">
+        <div
+          className="little-league banner-3"
+          data-aos="fade-up"
+          data-aos-delay="200"
+          data-aos-duration="2000"
+        >
           <img src={majorleague} style={{ width: "100%" }} alt="" />
 
           <div className="overlay-4" style={{}}>
@@ -868,20 +934,28 @@ const Home = () => {
                 fontSize: "2.2rem",
                 filter: "brightness(100%)",
                 textShadow: " 0 2px 5px #000",
-              }}  data-aos="fade-left"
+              }}
+              data-aos="fade-left"
               data-aos-delay="200"
               data-aos-duration="2000"
             >
               The Official Baseball Glove of Major League Baseball
             </h5>
-            <p style={{ fontSize: "1rem", letterSpacing: "0.7px" }}  data-aos="fade-right"
-           data-aos-delay="200"
-           data-aos-duration="2000">
+            <p
+              style={{ fontSize: "1rem", letterSpacing: "0.7px" }}
+              data-aos="fade-right"
+              data-aos-delay="200"
+              data-aos-duration="2000"
+            >
               Fernando Tatis Jr - San Diego Padres
             </p>
-            <button className="shop-now-button" style={{ width: "160px" }}  data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="2000">
+            <button
+              className="shop-now-button"
+              style={{ width: "160px" }}
+              data-aos="fade-up"
+              data-aos-delay="200"
+              data-aos-duration="2000"
+            >
               SHOP NOW{" "}
               <span>
                 <svg
@@ -914,35 +988,42 @@ const Home = () => {
         </div>
 
         <div className="special-offers2">
-          <div className="offers-2"  data-aos="fade-up"
-          
-           data-aos-duration="1000">
+          <div className="offers-2" data-aos="fade-up" data-aos-duration="1000">
             <img src={img5} alt="" />
             <h5 className="my-2">Custom Gloves</h5>
 
             <p style={{ color: "#222" }}>Customize Like A Pro</p>
           </div>
-          <div className="offers-2"  data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="2000">
+          <div
+            className="offers-2"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="2000"
+          >
             <img src={img6} alt="" />
             <h5 className="my-2">Heart Of The Hide</h5>
 
             <p style={{ color: "#222" }}>Legendary Performance</p>
           </div>
 
-          <div className="offers-2"  data-aos="fade-up"
-           data-aos-delay="400"
-           data-aos-duration="2000">
+          <div
+            className="offers-2"
+            data-aos="fade-up"
+            data-aos-delay="400"
+            data-aos-duration="2000"
+          >
             <img src={img7} alt="" />
             <h5 className="my-2">Pro Preferred</h5>
 
             <p style={{ color: "#222" }}>Flawless Craftsmanship</p>
           </div>
 
-          <div className="offers-2"  data-aos="fade-up"
-           data-aos-delay="400"
-           data-aos-duration="3000">
+          <div
+            className="offers-2"
+            data-aos="fade-up"
+            data-aos-delay="400"
+            data-aos-duration="3000"
+          >
             <img src={img8} alt="" />
 
             <h5 className="my-2">Exclusives</h5>
@@ -951,7 +1032,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div style={{ marginTop: "7rem", margin: "4rem" }}  >
+        <div style={{ marginTop: "7rem", margin: "4rem" }}>
           <h1
             style={{
               textAlign: "center",
@@ -965,8 +1046,8 @@ const Home = () => {
               fontWeight: "700",
             }}
             data-aos="zoom-in"
-           data-aos-delay="200"
-           data-aos-duration="2000"
+            data-aos-delay="200"
+            data-aos-duration="2000"
           >
             Featured Pro Gameday Models
             <p
@@ -978,17 +1059,22 @@ const Home = () => {
                 marginTop: "1rem",
               }}
               data-aos="zoom-in"
-           data-aos-delay="200"
-           data-aos-duration="2000"
+              data-aos-delay="200"
+              data-aos-duration="2000"
             >
               Choose a player and start customizing their gameday glove to make
               it your own
             </p>
           </h1>
 
-          <Carousels className="pb-5" showDots={true} responsive={responsive} data-aos="fade-up"
-           data-aos-delay="300"
-           data-aos-duration="3000">
+          <Carousels
+            className="pb-5"
+            showDots={true}
+            responsive={responsive}
+            data-aos="fade-up"
+            data-aos-delay="300"
+            data-aos-duration="3000"
+          >
             {product5}
           </Carousels>
         </div>
@@ -1003,35 +1089,47 @@ const Home = () => {
               fontWeight: "700",
             }}
             data-aos="zoom-in"
-           data-aos-delay="200"
-           data-aos-duration="2000"
+            data-aos-delay="200"
+            data-aos-duration="2000"
           >
             SHOP THE GAME’S HOTTEST BATS
           </h5>
-          <img src={demoimg} style={{ width: "100%" }} alt="" data-aos="zoom-in"
-           data-aos-delay="200"
-           data-aos-duration="2000"/>
+          <img
+            src={demoimg}
+            style={{ width: "100%" }}
+            alt=""
+            data-aos="zoom-in"
+            data-aos-delay="200"
+            data-aos-duration="2000"
+          />
 
           <div className="overlay-4">
-            <h5 style={{}}
-             data-aos="fade-left"
-             data-aos-delay="200"
-             data-aos-duration="2000"
-             >Demo the Latest Rawlings Bats</h5>
+            <h5
+              style={{}}
+              data-aos="fade-left"
+              data-aos-delay="200"
+              data-aos-duration="2000"
+            >
+              Demo the Latest Rawlings Bats
+            </h5>
             <p
               style={{
                 fontSize: "1rem",
                 color: "#fff",
               }}
               data-aos="fade-right"
-           data-aos-delay="200"
-           data-aos-duration="2000"
+              data-aos-delay="200"
+              data-aos-duration="2000"
             >
               Find Your Local D-BAT Store Today{" "}
             </p>
-            <button className="shop-now-button" style={{ width: "190px" }} data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="2000">
+            <button
+              className="shop-now-button"
+              style={{ width: "190px" }}
+              data-aos="fade-up"
+              data-aos-delay="200"
+              data-aos-duration="2000"
+            >
               LEARN MORE{" "}
               <span>
                 <svg
@@ -1074,18 +1172,22 @@ const Home = () => {
               fontSize: "2rem",
               fontWeight: "700",
               letterSpacing: "0.7px",
-              
             }}
             data-aos="zoom-in"
-           data-aos-delay="200"
-           data-aos-duration="2000"
+            data-aos-delay="200"
+            data-aos-duration="2000"
           >
             PRODUCTS RECOMMENDED FOR YOU{" "}
           </h1>
 
-          <Carousels className="pb-5" showDots={true} responsive={responsive} data-aos="fade-up"
-           data-aos-delay="200"
-           data-aos-duration="3000">
+          <Carousels
+            className="pb-5"
+            showDots={true}
+            responsive={responsive}
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="3000"
+          >
             {product6}
           </Carousels>
         </div>

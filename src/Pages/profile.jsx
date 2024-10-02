@@ -3,7 +3,47 @@ import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Space } from "antd";
 import Layout from "./Layout";
 import "../Components/styles/profile.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
 const profile = () => {
+  const token = localStorage.getItem("token");
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const logout = async () => {
+    await axios
+      .get(`${import.meta.env.VITE_BACKEND_API}/logout-client`, {
+        headers: { token },
+      })
+      .then((res) => {
+        console.log(res.data);
+        localStorage.clear();
+        navigate("/");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const getUser = async () => {
+    await axios
+      .get(`${import.meta.env.VITE_BACKEND_API}/get-client-basic-details`, {
+        headers: { token },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data.user);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+   getUser()
+  }, [])
+  
   return (
     <Layout>
       <div className="profile" style={{ marginTop: "10rem" }}>
@@ -26,46 +66,50 @@ const profile = () => {
                 <h3 className="mt-2">Profile</h3>
               </div>
             </div>
-            <div className="profile-section m-4 text-start">
+            <div
+              className="profile-section m-4 text-start"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
               <p>
                 {" "}
                 <b>First Name</b>
               </p>
-              <p>kajal</p>
+              <p>{user?.firstname}</p>
               <br />
               <p>
                 <b> Last Name</b>
               </p>
-              <p>Gupta</p>
+              <p>{user?.lastname}</p>
               <br />
               <p>
                 <b> Email</b>
               </p>
-              <p>Kajalg123@gmail.com</p>
+              <p>{user?.email}</p>
               <br />
               <p>
                 <b> Phone </b>
               </p>
-              <p>1234567890</p>
+              <p>{user?.phone}</p>
               <br />
             </div>
-            <p className="logout-btn">LOGOUT</p>
+            <button className="logout-btn" onClick={logout}>
+              LOGOUT
+            </button>
           </div>
         </div>
-
 
         <div className="profile-container  pt-5">
           <div className="">
             <div className="info-card flex justify-content-between  align-items-center mx-4">
-             
               {/* <h3 className=" welcome text-center">WELCOME KAJAL GUPTA</h3> */}
-
-             
             </div>
-           
-            <h3 className=" welcome text-center">WELCOME KAJAL GUPTA</h3>
 
-        
+            <h3 className=" welcome text-center text-uppercase">WELCOME, {user?.firstname} {user?.lastname}</h3>
+
             <div className="d-flex justify-content-center gap-4 mt-3 pt-1 text-end">
               <div className="right text-center">
                 <div className="info-container ">
@@ -121,7 +165,6 @@ const profile = () => {
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       </div>

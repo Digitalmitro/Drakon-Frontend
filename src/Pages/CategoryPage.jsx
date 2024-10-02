@@ -214,8 +214,8 @@ const CategoryPage = () => {
                   marginTop: "15px",
                 }}
               >
-                <span className="my-2">₹{priceRange[0]}</span>
-                <span className="my-2">₹{priceRange[1]}</span>
+                <span className="my-2">${priceRange[0]}</span>
+                <span className="my-2">${priceRange[1]}</span>
               </div>
             </div>
           </div>
@@ -275,7 +275,7 @@ const CategoryPage = () => {
                         opacity: "0.8",
                       }}
                     >
-                      ₹{product.price}
+                      ${product.price}
                     </p>
                     <button
                       style={{

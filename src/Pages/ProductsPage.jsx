@@ -202,8 +202,8 @@ const CategoryPage = () => {
                   marginTop: "15px",
                 }}
               >
-                <span className="my-2">₹{priceRange[0]}</span>
-                <span className="my-2">₹{priceRange[1]}</span>
+                <span className="my-2">${priceRange[0]}</span>
+                <span className="my-2">${priceRange[1]}</span>
               </div>
             </div>
           </div>
@@ -228,7 +228,7 @@ const CategoryPage = () => {
                   />
                   <h4 style={{ fontSize: '0.9rem', marginBottom: '10px' }}>Sports Gloves </h4>
                   <p style={{ textAlign: 'center', marginBottom: '10px',fontSize:"0.8rem" }}>Products Golves for good grip...</p>
-                  <p style={{ fontSize: '1.1rem', fontWeight: 'bold', opacity:"0.8" }}>₹7000</p>
+                  <p style={{ fontSize: '1.1rem', fontWeight: 'bold', opacity:"0.8" }}>$7000</p>
                   <button
                     style={{
                       backgroundColor: '#ff5722',
@@ -257,7 +257,7 @@ const CategoryPage = () => {
                       />
                       <h4 style={{ fontSize: '0.9rem', marginBottom: '10px' }}>{product.title.substring(0,18)}</h4>
                       <p style={{ textAlign: 'center', marginBottom: '10px',fontSize:"0.8rem" }}>{product.description.substring(0,32)}...</p>
-                      <p style={{ fontSize: '1.1rem', fontWeight: 'bold', opacity:"0.8" }}>₹{product.price}</p>
+                      <p style={{ fontSize: '1.1rem', fontWeight: 'bold', opacity:"0.8" }}>${product.price}</p>
                       <button
                         style={{
                           backgroundColor: '#ff5722',
