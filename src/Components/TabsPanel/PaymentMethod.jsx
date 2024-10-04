@@ -40,14 +40,13 @@ export const PaymentPanel = () => {
     // Handle the checkout logic
     console.log('Checkout with:', formData);
   };
-
-
   return (
     <>
       <div className="d-flex  justify-content-between gap-2 addresses sm:flex-column">
         <div className=" p-2 addressForm">
-          <h3 className=" heading pb-3">Payment Details</h3>
           <div className="address-shadow mb-3 p-4">
+          <h3 className=" heading pb-3">Payment Details</h3>
+
             <div className="">
               <button
                 type="button"
@@ -136,12 +135,12 @@ export const PaymentPanel = () => {
           {showPayment &&
 
             <div class={styles.card}>
-
-              <h6><b> Card holder Name</b></h6>
+              <div className="border">
+              <h6><b>Card holder Name</b></h6>
               <p>John Doe</p>
+                </div>
               <h6><b>Card Number</b></h6>
               <p> ****  **** **** 1234</p>
-
               <div>
                 <h6><b>Expiration Date</b></h6>
                 <p>12/24</p>

@@ -9,6 +9,7 @@
   }
   .addressBtn{
     border: 1px solid orangered !important;
+    
   }
   .addressForm{
     width: 500px;
@@ -20,10 +21,19 @@
   .address-btn{
     background-color: white;
     color: #0056b3;
+background: linear-gradient(to top, black, white);
+
     border: 0px;
     padding: 20px;
     font-weight: 600;
     font-size: 15px;
+  }
+  .addresses {
+    background-image: url('../../assets/crousal-1.jpg'); /* Replace with your image URL */
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    // height: 100vh; /* Set height if necessary (optional) */
   }
 .addresses h3{
     text-transform: uppercase;
@@ -36,7 +46,9 @@
     width: 110%;
 }
 .address-form{
+margin: 2rem;
 margin-top: 4rem;
+
 }
 .address-form label{
     margin-top: 1.3rem;
@@ -48,7 +60,8 @@ margin-top: 4rem;
     // background-color: #faf6e9;
     width: fit-content;
     zoom: .9;
-    box-shadow: 0 5px 10px 2px rgb(218, 218, 218);
+    background-color: white;
+    // box-shadow: 0 5px 10px 2px rgb(218, 218, 218);
 }
 
 @media (max-width:1200px){

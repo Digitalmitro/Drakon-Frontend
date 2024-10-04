@@ -1,23 +1,21 @@
 .profile .profile-btn{
-// background-color: #f33900;
-padding: 5px 35px;
+background-color: #313131;
+padding: 5px 30px;
 // width: 250px !important;
 border-radius: 5px;
-color: rgb(0, 0, 0);
+color: rgb(255, 255, 255);
 font-size: 18px;
 white-space: nowrap;
 font-weight: 600;
- border : 1px solid orangered;
+ border : 1px solid rgb(245, 159, 131);
 }
 .profile-btn:hover{
     background-color: white;
-   
-    border: 2px solid rgb(255, 51, 0);
+   color: black;
+    border: 2px solid rgb(0, 0, 0);
     box-shadow: inset 0px 0px 10px rgb(148, 148, 148);
 }
-.profile-grid{
-    // left: %;
-}
+
 .profile img{
 border: .5rem solid white ;
 border-radius: 50%;
@@ -27,18 +25,18 @@ margin-top: -2.8rem;
     padding-left: 0rem;
 }
 .profile-grid{
-    border: 2px solid #f1dc8f ;
+    border: 2px solid #f8d0b9 ;
     box-shadow: 0 8px 10px 2px rgb(199, 195, 195);
-    background-color: #faf6e9;
-    // height: 40vh;
+    background: linear-gradient(to bottom, rgb(0, 0, 0), white);
     margin-left: 20vw;
-    // width: ;
+    color: white;
     padding: 10px;
     border-radius: 10px;
     align-content: center;
     align-self: center;
    
 }
+
 .profile-info{
     display: flex;
  justify-content: start;

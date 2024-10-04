@@ -161,12 +161,13 @@ export const AddressPanel = () => {
     <>
       <div className="d-flex m-3 gap-2 addresses sm:flex-column">
         <div className="w-1/2 p-2 addressForm">
-          <h3 className="w-1/2  pb-3">Billing Address</h3>
-          <div className=" address-shadow mb-3 border p-4">
+          <div className="address-shadow mb-3 border">
+          <h3 className="w-1/2  px-3 pt-3">Billing Address</h3>
+
             <div className="m-3">
               <button
                 type="button"
-                className="btn addressBtn mx-1 my-4"
+                className="btn addressBtn mx-1 "
                 onClick={toggleBillingForm}
               >
                 ADD
@@ -314,7 +315,7 @@ export const AddressPanel = () => {
                   />
 
                   <div>
-                    <button className="btn " type="submit">
+                    <button className="btn my-3 " type="submit">
                       Save Address
                     </button>
                   </div>
@@ -325,12 +326,13 @@ export const AddressPanel = () => {
         </div>
 
         <div className="mb-3 w-1/2 p-2 addressForm">
-          <h3 className="w-1/2 pb-3">Shipping Address</h3>
-          <div className="address-shadow mb-3 border p-4">
+          <div className="address-shadow  border">
+          <h3 className="w-1/2 px-3 pt-3">Shipping Address</h3>
+
             <div className="m-3">
               <button
                 type="button"
-                className="btn   mx-1 my-4"
+                className="btn addressBtn mx-1 "
                 onClick={toggleShippingForm}
               >
                 ADD
