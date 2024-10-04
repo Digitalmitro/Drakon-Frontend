@@ -478,7 +478,7 @@ export default function VerticalTabs() {
               <div className="m-3">
                 <button
                   type="button"
-                  className="btn btn-outline-danger m-1"
+                  className="btn m-1"
                   onClick={toggleBillingForm}
                 >
                   ADD
@@ -628,7 +628,7 @@ export default function VerticalTabs() {
                     />
 
                     <div>
-                      <button className="btn btn-outline-danger" type="submit">
+                      <button className="btn " type="submit">
                         Save Address
                       </button>
                     </div>
@@ -644,7 +644,7 @@ export default function VerticalTabs() {
               <div className="m-3">
                 <button
                   type="button"
-                  className="btn btn-outline-danger m-1"
+                  className="btn  m-1"
                   onClick={toggleShippingForm}
                 >
                   ADD
@@ -790,7 +790,7 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <button className="btn btn-outline-danger" type="submit">
+                    <button className="btn " type="submit">
                       Save Address
                     </button>
                   </>

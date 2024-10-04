@@ -1,5 +1,5 @@
 /* Ui verse styling codes  */
-.signin-container {
+.signinContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,8 +17,8 @@ margin-bottom: 70px;
     /* height: auto; */
   }
   
-  .form .form_front,
-  .form .form_back {
+  .form .formFront,
+  .form .formBack {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -34,11 +34,11 @@ margin-bottom: 70px;
     inset -1px -1px 5px rgba(167, 163, 163, 0.6);
   }
   
-  .form .form_back {
+  .form .formBack {
     transform: rotateY(-180deg);
   }
   
-  .form_details {
+  .formDetails {
     font-size: 25px;
     font-weight: 600;
     padding-bottom: 10px;
@@ -115,33 +115,31 @@ margin-bottom: 70px;
     color: black;
   }
   
-  .form .switch .signup_tog {
+  .form .switch .signupTog {
     font-weight: 700;
     color: coral;
     cursor: pointer;
     text-decoration: underline;
   }
   
-  .signin-container #signup_toggle {
+  .signinContainer #signupToggle {
     display: none;
   }
   
-  .signin-container #signup_toggle:checked ~ .form {
+  .signinContainer #signupToggle:checked ~ .form {
     transform: rotateY(-180deg);
   }
 
   @media screen and (max-width:768px) {
-    .form .form_front,
-    .form .form_back {
-
-     
+    .form .formFront,
+    .form .formBack {
       gap: 26px;
       width: 330px;
       height: 500px;
       position: absolute;
       padding: 35px 25px;
     }
-    .signin-container input{
+    .signinContainer input{
         width: 280px;
         min-height: 35px;
         color: #000;
@@ -149,10 +147,10 @@ margin-bottom: 70px;
         transition: 0.35s;
         padding: 12px 17px;
     }
-    .signin-container .btn {
+    .signinContainer .btn {
         padding: 10px 122px;
     }
-    .signin-container {
+    .signinContainer {
         display: flex;
        
         margin-top: 150px;

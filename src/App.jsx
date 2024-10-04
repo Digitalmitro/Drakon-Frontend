@@ -9,7 +9,7 @@ import ProductDetails from "./Pages/ProductDetails";
 import CategoryPage from "./Pages/CategoryPage";
 import ProductsPage from "./Pages/ProductsPage";
 import Checkout from "./Pages/CheckoutPage";
-import Profile from "./Pages/profile"
+import Profile from "./Pages/Profile"
 import PrivacyPolicy  from "./Pages/PrivacyPolicyy"
 import  TermsOfUse from "./Pages/TermsOfUse"
 import {SvgProvider} from "./Components/context/svgContext"

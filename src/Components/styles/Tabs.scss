@@ -1,0 +1,55 @@
+
+#vertical-tabpanel-1, #vertical-tabpanel-2{
+    width: 100%;
+}
+
+.orderPagination {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+.css-19kzrtu{
+padding:.5rem
+}
+.past-order-box{
+    zoom : 0.9 !important;
+    padding: .2rem;
+    zoom: 0.9;
+    padding: 1rem;
+    border: 1px solid rgb(185, 184, 184);
+    border-radius: 10px;
+    box-shadow: 0px 8px 10px 2px #d7d4d4;
+}
+
+@media (max-width: 768px) {
+    .tab-text {
+      display: none;
+    }
+    .profile{
+        zoom: 0.8;
+    }
+    .addresses {
+        zoom: 0.9;
+        margin: 5px;
+    }
+    .past-order-box{
+        zoom : 0.9 !important;
+        padding: .2rem;
+        zoom: 0.9;
+        padding: 1rem;
+        border: 1px solid rgb(185, 184, 184);
+        border-radius: 10px;
+    }
+    
+    .address-shadow{
+        padding: 19px 7px !important;
+
+    }
+  }
+  @media (max-width:578px){
+    .past-order-box{
+        zoom : 0.7 !important;
+        padding: .2rem;
+    }
+  }

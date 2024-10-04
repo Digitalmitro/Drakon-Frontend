@@ -275,25 +275,7 @@ const Checkout = () => {
               <button type="btn" className="btn-add" onClick={handleAddAddress}>
                 ADD ADDRESS
               </button>
-              {/* 
-              <div className="address-box">
-                <p>
-                  <strong>BILLING ADDRESS: </strong>{" "}
-                </p>
-                <p>
-                  {billingData
-                    ? `${billingData?.billingstreetAddress}, 
-                  ${billingData?.billingcity} ,${billingData?.billingstate}, 
-                  ${billingData?.billingcountry}`
-                    : "Add your billing  Address"}
-                </p>
-                <p>
-                  <strong>ZIPCODE: </strong> {billingData?.billingzipcode}
-                </p>
-                <button type="btn" className="btn-select ">
-                  SELECT ADDRESS
-                </button>
-              </div> */}
+             
 
               <div className="address-box">
                 <p>

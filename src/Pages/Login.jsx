@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { NavLink, useNavigate } from "react-router-dom";
+import styles from "../Components/styles/login.module.css"
 import Cookies from "js-cookie";
 import axios from "axios";
-import "../Components/styles/login.css";
+
 
 const LoginSignUpForm = () => {
   const navigate = useNavigate();
@@ -80,9 +81,7 @@ const LoginSignUpForm = () => {
       navigate("/");
       setLogEmail("");
       setLogPass("");
-      // setTimeout(() => {
-      //   window.location.href = "/profile";
-      // }, 1200);
+     
     } catch (error) {
       if (error.response.data.status) {
         console.log("error.response.data.status", error.response.data.status);
@@ -112,55 +111,55 @@ const LoginSignUpForm = () => {
 
   return (
     <Layout>
-      <div className="signin-container">
+      <div className={styles.signinContainer}>
         {/* Toggle checkbox */}
         <input
-          id="signup_toggle"
+          id={styles.signupToggle}
           type="checkbox"
           checked={isSignUp}
           onChange={handleToggle}
-          style={{ display: "none" }} // Hide the checkbox if you don't need it visible
+          style={{ display: "none" }}
         />
 
         {/* Form */}
         <form
-          className="form"
+          className={styles.form}
           onSubmit={isSignUp ? handleRegister : handelLogin}
         >
           {/* Login Form */}
-          <div className={`form_front ${isSignUp ? "hidden" : ""}`}>
-            <div className="form_details text-start">LOGIN</div>
+          <div className={`${styles.formFront} ${isSignUp ? styles.hidden : ""}`}>
+            <div className={`${styles.formDetails} ${styles.textStart}`}>LOGIN</div>
             <input
               type="text"
-              className="input"
+              className={styles.input}
               placeholder="Username"
               value={logEmail}
               onChange={(e) => setLogEmail(e.target.value)}
             />
             <input
               type="password"
-              className="input"
+              className={styles.input}
               placeholder="Password"
               value={logPass}
               onChange={(e) => setLogPass(e.target.value)}
             />
-            <button className="btn" type="submit">
+            <button className={styles.btn} type="submit">
               Login
             </button>
-            <span className="switch">
+            <span className={styles.switch}>
               Don't have an account?{" "}
-              <label className="signup_tog" onClick={handleToggle}>
+              <label className={styles.signupTog} onClick={handleToggle}>
                 Sign Up
               </label>
             </span>
           </div>
 
           {/* Signup Form */}
-          <div className={`form_back ${isSignUp ? "" : "hidden"}`}>
-            <div className="form_details">Sign Up</div>
+          <div className={`${styles.formBack} ${isSignUp ? "" : styles.hidden}`}>
+            <div className={styles.formDetails}>Sign Up</div>
             <input
               type="text"
-              className="input"
+              className={styles.input}
               onChange={(e) =>
                 setRegisterUser({ ...registerUser, firstname: e.target.value })
               }
@@ -168,7 +167,7 @@ const LoginSignUpForm = () => {
             />
             <input
               type="text"
-              className="input"
+              className={styles.input}
               onChange={(e) =>
                 setRegisterUser({ ...registerUser, lastname: e.target.value })
               }
@@ -176,7 +175,7 @@ const LoginSignUpForm = () => {
             />
             <input
               type="text"
-              className="input"
+              className={styles.input}
               onChange={(e) =>
                 setRegisterUser({ ...registerUser, username: e.target.value })
               }
@@ -184,7 +183,7 @@ const LoginSignUpForm = () => {
             />
             <input
               type="email"
-              className="input"
+              className={styles.input}
               onChange={(e) =>
                 setRegisterUser({ ...registerUser, email: e.target.value })
               }
@@ -192,7 +191,7 @@ const LoginSignUpForm = () => {
             />
             <input
               type="password"
-              className="input"
+              className={styles.input}
               onChange={(e) =>
                 setRegisterUser({ ...registerUser, password: e.target.value })
               }
@@ -200,19 +199,19 @@ const LoginSignUpForm = () => {
             />
             <input
               type="password"
-              className="input"
+              className={styles.input}
               placeholder="Confirm Password"
               onChange={(e) =>
                 setRegisterUser({ ...registerUser, cpassword: e.target.value })
               }
             />
             {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            <button className="btn" type="submit">
+            <button className={styles.btn} type="submit">
               Signup
             </button>
-            <span className="switch">
+            <span className={styles.switch}>
               Already have an account?{" "}
-              <label className="signup_tog" onClick={handleToggle}>
+              <label className={styles.signupTog} onClick={handleToggle}>
                 Sign In
               </label>
             </span>

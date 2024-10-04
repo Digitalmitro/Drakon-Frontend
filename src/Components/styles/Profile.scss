@@ -1,0 +1,102 @@
+.profile .profile-btn{
+// background-color: #f33900;
+padding: 5px 35px;
+// width: 250px !important;
+border-radius: 5px;
+color: rgb(0, 0, 0);
+font-size: 18px;
+white-space: nowrap;
+font-weight: 600;
+ border : 1px solid orangered;
+}
+.profile-btn:hover{
+    background-color: white;
+   
+    border: 2px solid rgb(255, 51, 0);
+    box-shadow: inset 0px 0px 10px rgb(148, 148, 148);
+}
+.profile-grid{
+    // left: %;
+}
+.profile img{
+border: .5rem solid white ;
+border-radius: 50%;
+margin-top: -2.8rem;
+}
+.profile ul{
+    padding-left: 0rem;
+}
+.profile-grid{
+    border: 2px solid #f1dc8f ;
+    box-shadow: 0 8px 10px 2px rgb(199, 195, 195);
+    background-color: #faf6e9;
+    // height: 40vh;
+    margin-left: 20vw;
+    // width: ;
+    padding: 10px;
+    border-radius: 10px;
+    align-content: center;
+    align-self: center;
+   
+}
+.profile-info{
+    display: flex;
+ justify-content: start;
+    flex-direction: column;
+    align-items: center;
+}
+.profile-info .info{
+    text-align: center;
+    margin-top: 1rem;
+    margin-left: 1.3rem;
+}
+.profile-info li{
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.8rem;
+}
+
+
+@media (max-width:1200px){
+    .profile-grid{
+        margin-left:10vw ;
+    }
+   
+}
+@media (max-width:978px){
+    .profile-grid{
+        margin-left:7vw !important;
+    }
+    .profile .profile-btn{
+        width: 150px;
+    }
+    .css-lfwcke-MuiTabs-flexContainer{
+        width: 100% !important;
+    }
+    .vertical-tabpanel-0{
+        width: 100vw;
+    }
+    .css-19kzrtu {
+    
+    width: 100vw;
+    }
+}
+
+@media (max-width:578px){
+    .profile-grid {
+        margin-left: 1vw;
+      }
+      .css-19kzrtu {
+       padding: 2px;
+      }
+      .profile .profile-btn {
+        padding: 5px 10px;
+        width: 150px !important;
+        font-size: 10px;
+      }
+     
+      
+      .profile{
+        margin-bottom: 21px;
+      }
+}

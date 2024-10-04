@@ -714,12 +714,13 @@ padding-top: 1rem;
 }
 
 .input-boxes button:hover {
-  background-color: #b90319;
+  background-color: white;
+  border: 1px solid rgb(241, 62, 7);
 }
 
 .footer-upward-left button:hover {
   cursor: pointer;
-  background-color: #cf4a5a;
+  background-color: #ec4d25;
 }
 
 .footer-upward-left h6 {
@@ -932,6 +933,15 @@ padding-top: 1rem;
 .login-signup-btn h6:hover {
   cursor: pointer;
 }
+.orderBtn{
+  padding: .5rem 2.4rem;
+  border: 1px solid orangered;
+  /* background-color: orangered; */
+  /* color: white; */
+}
+.orderBtn:hover{
+  border: 1px solid black;
+}
 
 .login-left form input,
 .login-right form input {
@@ -1097,6 +1107,31 @@ padding-top: 1rem;
   height: auto;
   width: 100%;
   zoom: .9;
+}
+.orderDetails {
+  display: flex !important;
+ justify-content: center;
+ align-items: center;
+ flex-wrap: wrap;
+ gap: 1.5rem;
+
+}
+
+
+.BannerImage{
+  position: relative;
+  object-fit: cover;
+  height: 300px;
+  padding: 30px 0px;
+  width: 100%;
+  z-index: 2;
+  background-blend-mode: multiply;
+}
+
+.profile{
+  position:relative;
+  padding-top: 3rem;
+  z-index: 3;
 }
 
 .left-cart .product-info {
