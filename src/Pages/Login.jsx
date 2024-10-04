@@ -46,17 +46,20 @@ const LoginSignUpForm = () => {
       username: registerUser.username,
     };
 
-    await axios
-      .post(`${import.meta.env.VITE_BACKEND_API}/registerclient`, payload)
-      .then((res) => {
-        console.log("RESPONSE ==> ", res.data);
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        navigate("/");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    // await axios
+    //   .post(`${import.meta.env.VITE_BACKEND_API}/registerclient`, payload)
+    //   .then((res) => {
+    //     console.log("RESPONSE ==> ", res.data);
+    //     localStorage.setItem("token", res.data.token);
+    //     localStorage.setItem("user", JSON.stringify(res.data.user));
+    //     // navigate("/");
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
+
+    navigate('/profile')
+
   };
 
   const [logEmail, setLogEmail] = useState("");
@@ -68,37 +71,38 @@ const LoginSignUpForm = () => {
       email: logEmail,
       password: logPass,
     };
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/loginclient`,
-        payload
-      );
-      // console.log(res.data);
+    // try {
+    //   const res = await axios.post(
+    //     `${import.meta.env.VITE_BACKEND_API}/loginclient`,
+    //     payload
+    //   );
+    //   // console.log(res.data);
 
-      // message.success(res.data.status);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", res.data.user);
-      navigate("/");
-      setLogEmail("");
-      setLogPass("");
+    //   // message.success(res.data.status);
+    //   localStorage.setItem("token", res.data.token);
+    //   localStorage.setItem("user", res.data.user);
+    //   navigate("/");
+    //   setLogEmail("");
+    //   setLogPass("");
      
-    } catch (error) {
-      if (error.response.data.status) {
-        console.log("error.response.data.status", error.response.data.status);
-        message.error(error.response.data.status);
-      } else {
-        message.error("register uncsuccessfull");
-      }
-    }
+    // } catch (error) {
+    //   if (error.response.data.status) {
+    //     console.log("error.response.data.status", error.response.data.status);
+    //     message.error(error.response.data.status);
+    //   } else {
+    //     message.error("register uncsuccessfull");
+    //   }
+    // }
+    navigate('/profile')
   };
 
-  useEffect(() => {
-    if (token) {
-      return navigate("/profile");
-    } else {
-      return navigate("/login");
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     return navigate("/profile");
+  //   } else {
+  //     return navigate("/login");
+  //   }
+  // }, [token]);
 
   const handleToggle = () => {
     setIsSignUp(!isSignUp);
