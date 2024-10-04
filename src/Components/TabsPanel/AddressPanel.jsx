@@ -166,7 +166,7 @@ export const AddressPanel = () => {
             <div className="m-3">
               <button
                 type="button"
-                className="btn addressBtn "
+                className="btn addressBtn mx-1 my-4"
                 onClick={toggleBillingForm}
               >
                 ADD
@@ -330,7 +330,7 @@ export const AddressPanel = () => {
             <div className="m-3">
               <button
                 type="button"
-                className="btn addressBtn "
+                className="btn   mx-1 my-4"
                 onClick={toggleShippingForm}
               >
                 ADD

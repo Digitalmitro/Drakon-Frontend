@@ -45,9 +45,10 @@ margin-top: 4rem;
 
 .address-shadow{
     border: 2px solid #f1dc8f ;
-    background-color: #faf6e9;
+    // background-color: #faf6e9;
+    width: fit-content;
     zoom: .9;
-    box-shadow: 0 8px 10px 2px rgb(199, 195, 195);
+    box-shadow: 0 5px 10px 2px rgb(218, 218, 218);
 }
 
 @media (max-width:1200px){

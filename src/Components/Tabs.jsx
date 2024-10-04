@@ -14,7 +14,7 @@ import './Styles/Tabs.scss'
 import { LogoutModal } from "../Pages/modals/Logoutmodals";
 import { AddressPanel } from "./TabsPanel/AddressPanel"
 import { ProfilePanel } from "./TabsPanel/ProfilePanel"
-
+import { PaymentPanel } from "./TabsPanel/PaymentMethod";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -348,11 +348,8 @@ export default function VerticalTabs() {
           </div>
         </TabPanel>
         <TabPanel value={value} index={3}>
-
-
+          <PaymentPanel/>
         </TabPanel>
-
-
         <LogoutModal handelLogout={handelLogout} closeLogoutModal={closeLogoutModal} showLogoutModal={showLogoutModal} />
       </Box>
 
