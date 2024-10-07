@@ -135,7 +135,7 @@ export const PaymentPanel = () => {
           {showPayment &&
 
             <div class={styles.card}>
-              <div className="border">
+              <div className="">
               <h6><b>Card holder Name</b></h6>
               <p>John Doe</p>
                 </div>

@@ -3,6 +3,10 @@
     width: 100%;
 }
 
+.sidenav .tab-text {
+    font-style: normal; /* Set font style to normal */
+    font-weight: 400;   /* Optional: Adjust font weight if needed */
+  }
 .orderPagination {
     text-align: center;
     display: flex;

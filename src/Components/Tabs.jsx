@@ -163,7 +163,7 @@ export default function VerticalTabs() {
             <Tab
             style={{ marginBottom: "20px", height: "100px" }}
             className="sidenav"
-            label={<i className="fa-solid fa-bag-shopping"> <span className="tab-text">Payment Method</span> </i>}
+            label={<i className="fa-solid fa-bag-shopping"> <span className="tab-text">Payment</span> </i>}
             {...a11yProps(3)}
           />
           <Tab
