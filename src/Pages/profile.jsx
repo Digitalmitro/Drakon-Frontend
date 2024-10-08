@@ -9,9 +9,7 @@ import profile from "../assets/profile1.png";
 import BannerImage from "../assets/BannerImage2.png";
 
 const Profile = () => {
-  const token = Cookies.get("token");
-  const decodedToken = token && jwtDecode(token);
-  const userId = decodedToken?._id;
+
   const navigate = useNavigate();
   const [orderDetails, setOrderDetails] = useState();
   const [firstName, setFirstName] = useState();
@@ -19,6 +17,10 @@ const Profile = () => {
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
   const [zipCode, setZipCode] = useState();
+
+  const token = localStorage.getItem("token");
+  const USER = localStorage.getItem("user");
+  const userId = USER?._id;
 
   // useEffect(() => {
   //   if (token) {
@@ -56,6 +58,13 @@ const Profile = () => {
     };
     console.log(orderDetails);
   }, []);
+
+  useEffect(() => {
+    if (token) {
+    } else {
+      return navigate("/login");
+    }
+  }, [token]);
 
   return (
     <>

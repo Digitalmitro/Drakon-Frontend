@@ -49,9 +49,9 @@ function a11yProps(index) {
 export default function VerticalTabs() {
   const [value, setValue] = React.useState(0);
 
-  const token = Cookies.get("token");
-  const decodedToken = token && jwtDecode(token);
-  const user_id = decodedToken?._id;
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+  const user_id = user?._id;
   const navigate = useNavigate();
   const [orderDetails, setOrderDetails] = useState();
 
@@ -59,9 +59,14 @@ export default function VerticalTabs() {
   const [clientDetails, setClientDetails] = useState();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const handelLogout = () => {
-    Cookies.remove("token");
-    window.location.href = "/login";
+  const handelLogout = async () => {
+    await axios.get(`${import.meta.env.VITE_BACKEND_API}/logout-client`, {headers: {token}}).then((res) => {
+      console.log("Logged Out")
+      localStorage.clear()
+      navigate('/')
+    }).catch((e) => {
+      console.log(e)
+    })
   };
 
   const openLogoutModal = () => {
