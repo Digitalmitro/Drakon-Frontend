@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { message } from "antd";
-import './Styles/Tabs.scss'
+import './styles/Tabs.scss'
 import { LogoutModal } from "../Pages/modals/Logoutmodals";
 import { AddressPanel } from "./TabsPanel/AddressPanel"
 import { ProfilePanel } from "./TabsPanel/ProfilePanel"
