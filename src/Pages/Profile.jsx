@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import VerticalTabs from "../Components/Tabs";
+// import VerticalTabs from "../components/Tabs";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import Layout from "./Layout";
 
 import profile from "../assets/profile1.png";
 import BannerImage from "../assets/BannerImage2.png";
+import VerticalTabs from "../Components/Tabs";
 
 const Profile = () => {
 
