@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import VerticalTabs from "../components/Tabs";
+import VerticalTabs from "../Components/Tabs";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Navigate, useNavigate } from "react-router-dom";
