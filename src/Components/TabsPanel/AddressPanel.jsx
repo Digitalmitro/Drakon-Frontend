@@ -1,6 +1,6 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../Styles/AddressPanel.scss"
+import "../styles/AddressPanel.scss";
 export const AddressPanel = () => {
   const navigate = useNavigate();
   const [showBillingForm, setShowBillingForm] = useState(false);
@@ -156,13 +156,12 @@ export const AddressPanel = () => {
     getAddresses();
   }, []);
 
-
   return (
     <>
       <div className="d-flex m-3 gap-2 addresses sm:flex-column">
         <div className="w-1/2 p-2 addressForm">
           <div className="address-shadow mb-3 border">
-          <h3 className="w-1/2  px-3 pt-3">Billing Address</h3>
+            <h3 className="w-1/2  px-3 pt-3">Billing Address</h3>
 
             <div className="m-3">
               <button
@@ -327,7 +326,7 @@ export const AddressPanel = () => {
 
         <div className="mb-3 w-1/2 p-2 addressForm">
           <div className="address-shadow  border">
-          <h3 className="w-1/2 px-3 pt-3">Shipping Address</h3>
+            <h3 className="w-1/2 px-3 pt-3">Shipping Address</h3>
 
             <div className="m-3">
               <button
@@ -361,7 +360,10 @@ export const AddressPanel = () => {
             {showShippingForm && (
               <form className="address-form" onSubmit={saveAddressesToDatabase}>
                 <>
-                  <label htmlFor="shippingFirstName pt-3" className="form-label">
+                  <label
+                    htmlFor="shippingFirstName pt-3"
+                    className="form-label"
+                  >
                     First Name*
                   </label>
                   <input
@@ -488,5 +490,3 @@ export const AddressPanel = () => {
     </>
   );
 };
-
-

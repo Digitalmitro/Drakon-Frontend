@@ -2,7 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import profile from "../../assets/profile1.png";
-import "../Styles/Profile.scss";
+import "../styles/Profile.scss";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -15,7 +15,7 @@ export const ProfilePanel = () => {
   const [oldPassword, setOldPassword] = useState();
   const [newPassword, setNewPassword] = useState();
   const [toggleUpdate, settoggleUpdate] = useState(false);
-  const [callApi, setCallApi] = useState(false)
+  const [callApi, setCallApi] = useState(false);
 
   const [user, setUser] = useState({
     firstname: "",
@@ -57,13 +57,14 @@ export const ProfilePanel = () => {
       };
       const response = await axios.put(
         `${import.meta.env.VITE_BACKEND_API}/updateclient`,
-        payload, {headers: {token}}
+        payload,
+        { headers: { token } }
       );
 
       console.log(response);
 
       if (response.status === 200) {
-        setCallApi(!callApi)
+        setCallApi(!callApi);
         message.success("Profile Updated successfully");
         // setTimeout(() => {
         //   window.location.reload();
@@ -102,7 +103,7 @@ export const ProfilePanel = () => {
                   }}
                 >
                   <li>{user?.email || "james@gmail.com"}</li>
-                  {user.phone&& <li>{user?.phone || "8765543432"}</li>}
+                  {user.phone && <li>{user?.phone || "8765543432"}</li>}
                 </ul>
               </div>
             </div>
@@ -152,7 +153,9 @@ export const ProfilePanel = () => {
                     class="form-control"
                     id="inputEmail4"
                     value={user.firstname}
-                    onChange={(e) => setUser({...user, firstname: e.target.value})}
+                    onChange={(e) =>
+                      setUser({ ...user, firstname: e.target.value })
+                    }
                   />
                 </div>
                 <div class="col-md-6">
@@ -164,7 +167,9 @@ export const ProfilePanel = () => {
                     class="form-control"
                     id="inputPassword4"
                     value={user.lastname}
-                    onChange={(e) => setUser({...user, lastname: e.target.value})}
+                    onChange={(e) =>
+                      setUser({ ...user, lastname: e.target.value })
+                    }
                   />
                 </div>
                 <div class="col-md-6">
@@ -176,7 +181,9 @@ export const ProfilePanel = () => {
                     class="form-control"
                     id="inputCity"
                     value={user.email}
-                    onChange={(e) => setUser({...user, email: e.target.value})}
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -190,7 +197,9 @@ export const ProfilePanel = () => {
                     class="form-control"
                     id="inputCity"
                     value={user.phone}
-                    onChange={(e) => setUser({...user, phone: e.target.value})}
+                    onChange={(e) =>
+                      setUser({ ...user, phone: e.target.value })
+                    }
                   />
                 </div>
                 <div class="col-md-2">
@@ -202,7 +211,9 @@ export const ProfilePanel = () => {
                     class="form-control"
                     id="inputZip"
                     value={user.zipcode}
-                    onChange={(e) => setUser({...user, zipcode: e.target.value})}
+                    onChange={(e) =>
+                      setUser({ ...user, zipcode: e.target.value })
+                    }
                   />
                 </div>
               </form>
