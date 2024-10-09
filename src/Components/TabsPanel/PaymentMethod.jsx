@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../Styles/AddressPanel.scss"
+import "../Styles/PaymentPanel.scss"
 import styles from "../styles/payment.module.scss"
 export const PaymentPanel = () => {
   const navigate = useNavigate();
