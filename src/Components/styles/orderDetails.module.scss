@@ -1,0 +1,41 @@
+.orderPanel{
+    padding: 1rem;
+    h4{
+        font-weight: 600;
+    }
+    table th, td{
+      padding: 10px 20px;
+    }
+        p{
+            margin: 0;
+            font-size: .9rem;
+        }
+        .buttonList{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        button{
+            // height: 2rem;
+            border: none;
+            padding: .2rem 1rem ;
+            color: white;
+        text-align: end;
+        background:linear-gradient(to right, rgb(163, 54, 46) , #EA4824);
+            border-radius: 1rem;
+        }
+        }
+
+
+    .newAddress{
+        text-align: end;
+        margin-top: 3.2rem;
+        .newAddressBtn{
+            padding: 0.5rem 2rem;
+            border: none;
+            background:linear-gradient(to right, rgb(189, 54, 44) , #f75a36);
+           color: white;
+        }
+    }
+}
+
+

@@ -15,6 +15,7 @@ import { LogoutModal } from "../Pages/modals/Logoutmodals";
 import { AddressPanel } from "./TabsPanel/AddressPanel"
 import { ProfilePanel } from "./TabsPanel/ProfilePanel"
 import { PaymentPanel } from "./TabsPanel/PaymentMethod";
+import { OrderPanel } from "./TabsPanel/OrderPanel";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -181,7 +182,8 @@ export default function VerticalTabs() {
           <AddressPanel />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <div className="past-order" style={{ textAlign: "center" }}>
+          <OrderPanel/>
+          {/* <div className="past-order" style={{ textAlign: "center" }}>
             <h2 className="py-3">Orders</h2>
             <div className="orderDetails">
               {currentOrderDetails.length > 0 ?
@@ -345,7 +347,7 @@ export default function VerticalTabs() {
                 </ul>
               </nav>
             </div>
-          </div>
+          </div> */}
         </TabPanel>
         <TabPanel value={value} index={3}>
           <PaymentPanel/>
