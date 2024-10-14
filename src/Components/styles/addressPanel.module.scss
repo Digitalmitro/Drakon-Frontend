@@ -41,3 +41,64 @@
 }
 
 
+
+    :where(.css-dev-only-do-not-override-1c0na6j).ant-drawer .ant-drawer-header{
+    border: 1px solid black;
+
+
+
+}
+:where(.css-dev-only-do-not-override-1c0na6j).ant-drawer .ant-drawer-header{
+background:linear-gradient(to right, rgb(163, 54, 46) , #EA4824);
+border: 1px solid black;
+
+}
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-form-item .ant-form-item-label >label{
+    border: 11px solid rgb(146, 15, 37);
+    font-size: 28px  !important;
+    }
+
+    :where(.css-dev-only-do-not-override-1c0na6j).ant-input-outlined {
+        border-color:rgb(189, 54, 44) !important;
+    }
+    .drawerHeaders{
+        
+    }
+.columns{
+label{
+        font-size: 18px  !important;
+   text-align: center !important;
+   font-weight: 600;
+        }
+    input{
+        border-color:rgb(189, 54, 44) !important;
+        height: 42px;
+        border-radius: 0px !important;
+    }
+}
+.cancelButton{
+    margin: 3px;
+    margin-top: 20px;
+    width: 150px;
+    height: 43px !important;
+}
+.submitButton{
+    background:linear-gradient(to right, rgb(163, 54, 46) , #EA4824);
+    border-radius: none;
+    margin: 3px;
+    margin-top: 20px;
+    width: 150px;
+    height: 43px !important;
+    &:hover{
+        background: transparent !important;
+        color: black  !important;
+        border: 2px solid  black;
+        border-image-slice: 1;
+        border-width: 2px;
+        border-image-source: linear-gradient(to right, rgb(163, 54, 46) , #EA4824);
+        border-radius: 20px !important;
+    }
+}
+
+

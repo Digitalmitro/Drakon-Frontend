@@ -9,7 +9,6 @@ export const PaymentPanel = () => {
   const [billingAddresses, setBillingAddresses] = useState([]);
   const [shippingAddresses, setShippingAddresses] = useState([]);
 
-
   const togglePaymentForm = () => {
     setAddPayment((prev) => !prev);
     setShowPayment(false);
@@ -18,34 +17,33 @@ export const PaymentPanel = () => {
   const toggleShowPayment = () => {
     setShowPayment((prev) => !prev);
     setAddPayment(false);
-
   };
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: ''
+    fullName: "",
+    cardNumber: "",
+    expiryDate: "",
+    cvv: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleCheckout = () => {
     // Handle the checkout logic
-    console.log('Checkout with:', formData);
+    console.log("Checkout with:", formData);
   };
   return (
     <>
       <div className="d-flex  justify-content-between gap-2 addresses sm:flex-column">
         <div className=" p-2 addressForm">
           <div className="address-shadow mb-3 p-4">
-          <h3 className=" heading pb-3">Payment Details</h3>
+            <h3 className=" heading pb-3">Payment Details</h3>
 
             <div className="">
               <button
@@ -63,17 +61,18 @@ export const PaymentPanel = () => {
               >
                 Show
               </button>
-
             </div>
-
           </div>
-          {addPayment &&
-            (<section className={`${styles.page} ${styles['add-card']}`}>
-              <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+          {addPayment && (
+            <section className={`${styles.page} ${styles["add-card"]}`}>
+              <form
+                className={styles.form}
+                onSubmit={(e) => e.preventDefault()}
+              >
                 <label htmlFor="fullName" className={styles.label}>
                   <span className={styles.title}>Card holder full name</span>
                   <input
-                    className={styles['input-field']}
+                    className={styles["input-field"]}
                     type="text"
                     name="fullName"
                     title="Input title"
@@ -86,7 +85,7 @@ export const PaymentPanel = () => {
                   <span className={styles.title}>Card Number</span>
                   <input
                     id="cardNumber"
-                    className={styles['input-field']}
+                    className={styles["input-field"]}
                     type="number"
                     name="cardNumber"
                     title="Input title"
@@ -100,7 +99,7 @@ export const PaymentPanel = () => {
                     <span className={styles.title}>Expiry Date</span>
                     <input
                       id="expiryDate"
-                      className={styles['input-field']}
+                      className={styles["input-field"]}
                       type="text"
                       name="expiryDate"
                       title="Expiry Date"
@@ -113,7 +112,7 @@ export const PaymentPanel = () => {
                     <span className={styles.title}>CVV</span>
                     <input
                       id="cvv"
-                      className={styles['input-field']}
+                      className={styles["input-field"]}
                       type="number"
                       name="cvv"
                       title="CVV"
@@ -124,48 +123,43 @@ export const PaymentPanel = () => {
                   </label>
                 </div>
                 <input
-                  className={styles['checkout-btn']}
+                  className={styles["checkout-btn"]}
                   type="button"
                   value="Checkout"
                   onClick={handleCheckout}
                 />
               </form>
-            </section>)}
+            </section>
+          )}
 
-          {showPayment &&
-
+          {showPayment && (
             <div class={styles.card}>
               <div className="">
-              <h6><b>Card holder Name</b></h6>
-              <p>John Doe</p>
-                </div>
-              <h6><b>Card Number</b></h6>
-              <p> ****  **** **** 1234</p>
+                <h6>
+                  <b>Card holder Name</b>
+                </h6>
+                <p>John Doe</p>
+              </div>
+              <h6>
+                <b>Card Number</b>
+              </h6>
+              <p> **** **** **** 1234</p>
               <div>
-                <h6><b>Expiration Date</b></h6>
+                <h6>
+                  <b>Expiration Date</b>
+                </h6>
                 <p>12/24</p>
               </div>
               <div>
-                <h6><b>CVV</b></h6>
+                <h6>
+                  <b>CVV</b>
+                </h6>
                 <p>***</p>
               </div>
-
-
-
-
-
-
             </div>
-
-
-
-          }
+          )}
         </div>
-
-
       </div>
     </>
   );
 };
-
-

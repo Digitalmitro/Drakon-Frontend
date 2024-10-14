@@ -4,8 +4,8 @@
     justify-content: center;
     align-items: center;
     margin-top: 250px;
-min-height: 500px;
-margin-bottom: 70px;
+min-height: 550px;
+margin-bottom: 120px;
   }
   
   .form {
@@ -25,7 +25,7 @@ margin-bottom: 70px;
     align-items: center;
     gap: 30px;
     width: 600px;
-    height: 600px;
+    height: 720px;
     position: absolute;
     backface-visibility: hidden;
     padding: 65px 45px;

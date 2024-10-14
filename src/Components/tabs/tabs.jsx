@@ -310,8 +310,14 @@ export default function VerticalTabs() {
   }, []);
 
   const handelLogout = () => {
-    Cookies.remove("token");
-    window.location.href = "/account";
+    console.log("LOGGING OUT....")
+    await axios.get(`${import.meta.env.VITE_BACKEND_API}/logout-client`, {headers: {token}}).then((res) => {
+      console.log("Logged Out")
+      localStorage.clear()
+      navigate('/')
+    }).catch((e) => {
+      console.log(e)
+    })
   };
 
   const [showBillingForm, setShowBillingForm] = useState(false);

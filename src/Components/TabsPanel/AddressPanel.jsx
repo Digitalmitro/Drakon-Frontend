@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from '../styles/addressPanel.module.scss'
@@ -12,7 +13,6 @@ export const AddressPanel = () => {
     setOpen(true);
   };
 
- 
   return (
     <>
       <div className={styles.addressPanel}>
@@ -28,7 +28,7 @@ export const AddressPanel = () => {
           </div>
           <div className={styles.buttonList}>
 
-            <button  onClick={showDrawer} icon={<PlusOutlined />}>Edit</button>
+            <button onClick={showDrawer} icon={<PlusOutlined />}>Edit</button>
             <button>Delete</button>
             <input type="radio" name="address" id="address1" />
           </div>
@@ -45,7 +45,7 @@ export const AddressPanel = () => {
           </div>
           <div className={styles.buttonList}>
 
-            <button  onClick={showDrawer} icon={<PlusOutlined />}>Edit</button>
+            <button onClick={showDrawer} icon={<PlusOutlined />}>Edit</button>
             <button>Delete</button>
             <input type="radio" name="address" id="address2" />
           </div>
@@ -62,7 +62,7 @@ export const AddressPanel = () => {
           </div>
           <div className={styles.buttonList}>
 
-            <button  onClick={showDrawer} icon={<PlusOutlined />}>Edit</button>
+            <button onClick={showDrawer} icon={<PlusOutlined />}>Edit</button>
             <button>Delete</button>
             <input type="radio" name="address" id="address3" />
           </div>
@@ -79,72 +79,73 @@ export const AddressPanel = () => {
           </div>
           <div className={styles.buttonList}>
 
-            <button  onClick={showDrawer} icon={<PlusOutlined />}>Edit</button>
+            <button onClick={showDrawer} icon={<PlusOutlined />}>Edit</button>
             <button>Delete</button>
             <input type="radio" name="address" id="address4" />
           </div>
         </div>
 
         <div className={styles.newAddress}>
-          <button className={styles.newAddressBtn}  onClick={showDrawer} icon={<PlusOutlined />} >New address</button>
+          <button className={styles.newAddressBtn} onClick={showDrawer} icon={<PlusOutlined />} >New address</button>
 
         </div>
-<AntDrawer setOpen={setOpen} open={open}/>
-      
+        <AntDrawer setOpen={setOpen} open={open} />
+
       </div>
     </>
   );
 };
 
-const AntDrawer = ({setOpen, open}) => {
+
+
+
+const AntDrawer = ({ setOpen, open }) => {
   const onClose = () => {
     setOpen(false);
   };
-  return(
+
+  return (
     <div>
-       <Drawer
-        title="Create a new account"
+      <Drawer
+        title="Address"
         width={520}
         onClose={onClose}
         open={open}
+        className={styles.drawerHeaders}
         styles={{
           body: {
             paddingBottom: 100,
           },
         }}
-        extra={
-          <Space>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={onClose} type="primary">
-              Submit
-            </Button>
-          </Space>
-        }
-      >
+        
+      > 
         <Form layout="vertical" hideRequiredMark>
-          <Row gutter={16}>
-            <Col span={10}>
+        <Row gutter={20}>
+            <Col span={20} className={styles.columns}>
               <Form.Item
                 name="name"
                 label="Name"
+                className={styles.labels}
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter user name',
+                    message: 'Enter Name',
                   },
                 ]}
               >
-                <Input placeholder="Please enter user name" />
+                <Input placeholder="Enter Name" />
               </Form.Item>
             </Col>
-            <Col span={10}>
+          </Row>
+          <Row gutter={20}>
+            <Col span={20} className={styles.columns}>
               <Form.Item
                 name="Country/Region"
                 label="Country/Region"
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter Country/Region',
+                    message: 'Enter Country/Region',
                   },
                 ]}
               >
@@ -152,63 +153,21 @@ const AntDrawer = ({setOpen, open}) => {
                   style={{
                     width: '100%',
                   }}
-                
-                  placeholder="Please enter Country/Region"
+
+                  placeholder="Enter Country/Region"
                 />
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={16}>
-            <Col span={10}>
+          <Row gutter={20}>
+            <Col span={20 } className={styles.columns}>
               <Form.Item
                 name="Street Address"
                 label="Street Address"
                 rules={[
                   {
                     required: true,
-                    message: 'Please select an Street Address',
-                  },
-                ]}
-              >
-                 <Input
-                  style={{
-                    width: '100%',
-                  }}
-                
-                  placeholder="Please enter Street Address"
-                />
-              </Form.Item>
-            </Col>
-            <Col span={10}>
-              <Form.Item
-                name="town/city"
-                label="town/city"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please choose the town/city',
-                  },
-                ]}
-              >
-               <Input
-                  style={{
-                    width: '100%',
-                  }}
-                
-                  placeholder="Please enter town/city"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={10}>
-              <Form.Item
-                name="state"
-                label="state"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please choose the state',
+                    message: 'Eelect an Street Address',
                   },
                 ]}
               >
@@ -216,77 +175,127 @@ const AntDrawer = ({setOpen, open}) => {
                   style={{
                     width: '100%',
                   }}
-                
-                  placeholder="Please enter state"
+
+                  placeholder="Enter Street Address"
                 />
               </Form.Item>
             </Col>
-            <Col span={10}>
+            <Col span={20} className={styles.columns}>
+              <Form.Item
+                name="town/city"
+                label="town/city"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ehoose the town/city',
+                  },
+                ]}
+              >
+                <Input
+                  style={{
+                    width: '100%',
+                  }}
+
+                  placeholder="Enter town/city"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={20}>
+            <Col span={20} className={styles.columns}>
+              <Form.Item
+                name="state"
+                label="state"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ehoose the state',
+                  },
+                ]}
+              >
+                <Input
+                  style={{
+                    width: '100%',
+                  }}
+
+                  placeholder="Enter state"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={20} className={styles.columns}>
               <Form.Item
                 name="pincode"
                 label="pincode"
                 rules={[
                   {
                     required: true,
-                    message: 'Please choose the pincode',
+                    message: 'Ehoose the pincode',
                   },
                 ]}
               >
-                 <Input
+                <Input
                   style={{
                     width: '100%',
                   }}
-                
-                  placeholder="Please enter pincode"
+
+                  placeholder="Enter pincode"
                 />
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={16}>
-            <Col span={10}>
+          <Row gutter={20} className={styles.columns}>
+            <Col span={20} className={styles.columns}>
               <Form.Item
                 name="phone"
                 label="phone"
                 rules={[
                   {
                     required: true,
-                    message: 'please enter phone',
+                    message: 'Enter phone',
                   },
                 ]}
               >
-                 <Input
+                <Input
                   style={{
                     width: '100%',
                   }}
-                
-                  placeholder="Please enter phone"
+
+                  placeholder="Enter phone"
                 />
-             
+
               </Form.Item>
             </Col>
 
-            <Col span={10}>
+            <Col span={20} className={styles.columns}>
               <Form.Item
                 name="Email Address"
                 label="Email Address"
                 rules={[
                   {
                     required: true,
-                    message: 'please enter Email Address',
+                    message: 'Enter Email Address',
                   },
                 ]}
               >
-                 <Input
+                <Input
                   style={{
                     width: '100%',
                   }}
-                
-                  placeholder="Please enter Email Address"
+
+                  placeholder="Enter Email Address"
                 />
-             
+
               </Form.Item>
             </Col>
           </Row>
+
+          <Space>
+            <Button onClick={onClose}  className={styles.cancelButton}>Cancel</Button>
+            <Button onClick={onClose} type="primary"
+              className={styles.submitButton}>
+              Submit
+            </Button>
+          </Space>
         </Form>
       </Drawer>
     </div>

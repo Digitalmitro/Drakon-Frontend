@@ -249,7 +249,7 @@ const Navbar = () => {
                 ))
               ) : (
                 <>
-                  <NavLink to={`/products`} className="mx-2">
+                  {/* <NavLink to={`/products`} className="mx-2">
                     Watches
                   </NavLink>
                   <NavLink to={`/products`} className="mx-2">
@@ -261,7 +261,7 @@ const Navbar = () => {
 
                   <NavLink to={`/products`} className="mx-2">
                     Sun Glasses
-                  </NavLink>
+                  </NavLink> */}
                 </>
               )}
             </div>
