@@ -20,7 +20,7 @@
   text-align: center;
 }
 .hero-bg-img {
-  background-image: url("./assets/banner.jpg");
+  background-image: url("./assets/carousel/crousal-1.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
