@@ -15,40 +15,40 @@ const Productdetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const user = decodedToken?.email;
   const user_id = decodedToken?._id;
   const [data, setData] = useState();
-  // const [allProduct, setAllProduct] = useState({});
+  let defaultImage=data?.image.map((img)=>(img?.[0]))
+console.log("ghtghytuh",data)
+  const [selectedImage, setSelectedImage] = useState(defaultImage);
+console.log("show the first image",defaultImage)
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    getAllProductData();
   }, []);
-
 
   const ratingChanged = (newRating) => {
     setRating(newRating);
     console.log("newRating", newRating);
   };
 
-
   const navigateToLogin = () => {
-    navigate("/account")
+    navigate("/account");
 
-    message.success("please Login")
-
-  }
+    message.success("please Login");
+  };
 
   const getAllProductData = async () => {
     try {
       const feature = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/feature-products/${id}`
+        `${import.meta.env.VITE_BACKEND_API}/products/${id}`
       );
       // fetchProducts = invRes.data
-      console.log(feature.data);
+      console.log("get product by id", feature);
       setData(feature.data);
       // console.log("invRes", data);
     } catch (err) {
@@ -82,7 +82,7 @@ const Productdetails = () => {
   // console.log("allProduct", allProduct);
 
   const handleCart = async (e) => {
-    dispatch(addItem(e))
+    dispatch(addItem(e));
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/wishlist`,
@@ -96,11 +96,11 @@ const Productdetails = () => {
         }
       );
       message.success("Added to Cart");
-     
+
       setTimeout(() => {
-        window.location.href = '/cart'
+        window.location.href = "/cart";
         // navigate(`/cart`)
-      }, 500)
+      }, 500);
       console.log("cart data post", response);
     } catch (error) {
       console.error(error);
@@ -108,9 +108,8 @@ const Productdetails = () => {
     }
   };
 
-  useEffect(() => {
-    getAllProductData();
-  }, []);
+  
+
 
   const [cartData, setCartData] = useState([]);
   async function getCartData() {
@@ -137,13 +136,34 @@ const Productdetails = () => {
 
   return (
     <>
-      <div className="container productContainer my-5">
+      <div className="pt-32 w-full max-w-1200 max-auto px-4">
         <div className="row productDetails">
-          <div className="col-6 py-4 sm-py-1">
-            <img src={data?.image[0]} />
+          <div className="col-6 flex flex-col items-center ">
+            {/* Centering the Main Image */}
+            <div className="w-[500px] h-[500px] flex justify-center items-center">
+              <img src={selectedImage || data?.image?.[0]} className="w-full h-full object-cover" />
+            </div>
+
+            {/* Thumbnail Images */}
+            <div className="flex gap-4">
+              {data?.image.map((img, i) => (
+                <div
+                  key={i}
+                  className="w-[100px] h-[100px]  p-2 flex justify-center items-center"
+                >
+                  <img
+                    src={img}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    onClick={() => setSelectedImage(img)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
+
           <div className="col-6">
-            <div className="details">
+            <div className="details ">
               <h3 className="fs-1 text fw-normal">{data?.title}</h3>
               <h5 className="pb-4 mt-1">
                 <b>Category: {data?.category}</b>
@@ -158,7 +178,11 @@ const Productdetails = () => {
                 >
                   ${data?.price}
                 </span>{" "}
-               {(data?.stock) > 0 ? <p>IN STOCK</p> : <p style={{color:"grey"}}>OUT OF STOCK</p>}
+                {data?.stock > 0 ? (
+                  <p>IN STOCK</p>
+                ) : (
+                  <p style={{ color: "grey" }}>OUT OF STOCK</p>
+                )}
               </p>
             </div>
             <ReactStars
@@ -171,60 +195,58 @@ const Productdetails = () => {
               activeColor="#ffd700"
             />
 
-           {( data?.stock || data?.stock > 0) &&  <div class="product-counter d-flex  gap-3 py-4">
-             <div className="d-flex gap-3 ">
-               <button
-                id="decrease"
-                onClick={() => setQuantity((prev) => prev - 1)}
-                disabled={quantity === 1}
-              >
-                -
-              </button>
+            {(data?.stock || data?.stock > 0) && (
+              <div class="product-counter d-flex  gap-3 py-4">
+                <div className="d-flex gap-3 ">
+                  <button
+                    id="decrease"
+                    onClick={() => setQuantity((prev) => prev - 1)}
+                    disabled={quantity === 1}
+                  >
+                    -
+                  </button>
 
-              <span id="count">{quantity}</span>
-              <button
-                id="increase"
-                onClick={() => setQuantity((prev) => prev + 1)}
-              >
-                +
-              </button>
-              </div>
+                  <span id="count">{quantity}</span>
+                  <button
+                    id="increase"
+                    onClick={() => setQuantity((prev) => prev + 1)}
+                  >
+                    +
+                  </button>
+                </div>
 
-              <div className="d-flex" style={{ gap: "25px" }}>
-                <button
-                  type="submit"
-                  className="btn btn-primary orange"
-                  onClick={() => navigate(`/checkout/${id}`)}
-                >
-                  Buy Now
-                </button>
-
-                {isProductInCart ? (
+                <div className="d-flex" style={{ gap: "25px" }}>
                   <button
                     type="submit"
-                    className="btn btn-primary black"
-                   
-                    onClick={() => navigate("/cart")}
+                    className="btn btn-primary orange"
+                    onClick={() => navigate(`/checkout/${id}`)}
                   >
-                    Add to Cart
+                    Buy Now
                   </button>
-                ) : (
-                  <button
-                    type="submit"
-                    className="btn btn-primary black"
-                    onClick={
-                      user_id
-                        ? () => handleCart(data)
-                        : 
-                         navigateToLogin 
-                    }
-                  >
-                    Add to Cart
-                  </button>
-                )}
+
+                  {isProductInCart ? (
+                    <button
+                      type="submit"
+                      className="btn btn-primary black"
+                      onClick={() => navigate("/cart")}
+                    >
+                      Add to Cart
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn btn-primary black"
+                      onClick={
+                        user_id ? () => handleCart(data) : navigateToLogin
+                      }
+                    >
+                      Add to Cart
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>}
-            
+            )}
+
             <div className="method">
               <img src={Payment} style={{ zoom: "1.1" }} />
             </div>
@@ -234,7 +256,7 @@ const Productdetails = () => {
 
       <section>
         <nav>
-          <div style={{ borderBottom: "1px solid #dee2e6" }}>
+          <div style={{ borderBottom: "1px solid #dee2e6" }} className="mt-4">
             <div
               className="nav nav-tabs"
               id="nav-tab"

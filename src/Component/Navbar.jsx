@@ -90,7 +90,6 @@ function Navbar(props) {
     }
   };
 
-
   useEffect(() => {
     handleProduct();
   }, []);
@@ -151,10 +150,10 @@ function Navbar(props) {
   const isMobile = useMediaQuery("(max-width:90px)");
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center"}}>
+    <Box sx={{ display: "flex", alignItems: "center" }}>
       <CssBaseline />
       <AppBar component="nav" sx={{ background: "#F3F3F3", boxShadow: "none" }}>
-        <Box className="bg-orange-700">
+        <Box className="bg-[#ff5B00]">
           <Box
             className="lg:max-w-full px-10 py-4 mx-auto gap-[3px] hidden lg:flex justify-center items-center"
             sx={{
@@ -227,7 +226,7 @@ function Navbar(props) {
                       >
                         <ListItemText
                           primary={item}
-                          className="text-black hover:transition hover:scale-105 hover:-translate-y-1 hover:delay-100 hover:ease-in-out hover:duration-300 hover:text-blue-700"
+                          className="text-black hover:transition hover:scale-105 hover:-translate-y-1 hover:delay-100 hover:ease-in-out hover:duration-300 hover:text-[#0024ff]"
                         />
                       </ListItemButton>
                     ))}
