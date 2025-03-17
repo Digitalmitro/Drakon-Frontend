@@ -70,7 +70,7 @@ const Featured = ({ closeCart, navigate }) => {
             600: { slidesPerView: 2 },
             375: { slidesPerView: 1 },
           }}
-          className="mt-10 lg:ml-20"
+          className="mt-10 lg:ml-20 mx-6 lg:mx-0"
         >
           {glass.map((e) => (
             <SwiperSlide key={e._id}>
@@ -79,7 +79,7 @@ const Featured = ({ closeCart, navigate }) => {
                   <div className="flex justify-center">
                     <img
                       src={e.image?.[0]}
-                      className="object-contain w-1/2 lg:w-full lg:h-[250px]"
+                      className="object-cover lg:h-[250px]"
                       alt="Product"
                     />
                   </div>
@@ -92,13 +92,13 @@ const Featured = ({ closeCart, navigate }) => {
                     <h4 className="text-[#959595] font-bold text-2xl text-center">
                       $ {e.price}
                     </h4>
-                    <div className="flex justify-center lg:w-[300px]">
+                    <div className="flex justify-center items-center w-[300px] px-20 lg:px-0">
                       <Button
                         sx={{
                           borderRadius: "100vw",
                           paddingY: "10px",
                           fontSize: "1rem",
-                          width: "80%",
+                          width: "100%",
                           backgroundColor: "#ff5B00",
                           "&:hover": { backgroundColor: "#ff0024" },
                         }}

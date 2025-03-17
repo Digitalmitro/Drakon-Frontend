@@ -140,16 +140,16 @@ console.log("show the first image",defaultImage)
         <div className="row productDetails">
           <div className="col-6 flex flex-col items-center ">
             {/* Centering the Main Image */}
-            <div className="w-[500px] h-[500px] flex justify-center items-center">
+            <div className="lg:w-[500px] lg:h-[500px] w-[300px] h-[300px] flex justify-center items-center ">
               <img src={selectedImage || data?.image?.[0]} className="w-full h-full object-cover" />
             </div>
 
             {/* Thumbnail Images */}
-            <div className="flex gap-4">
+            <div className="flex lg:gap-4 overflow-x-auto">
               {data?.image.map((img, i) => (
                 <div
                   key={i}
-                  className="w-[100px] h-[100px]  p-2 flex justify-center items-center"
+                  className="w-[100px] h-[100px]  p-2 flex justify-center items-center "
                 >
                   <img
                     src={img}
