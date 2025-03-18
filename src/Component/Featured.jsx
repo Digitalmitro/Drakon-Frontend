@@ -6,35 +6,24 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
-
-import glass1 from "../assets/glasses/glass1.jpg";
-import glass2 from "../assets/glasses/glass2.jpg";
-import glass3 from "../assets/glasses/glass3.jpg";
-import glass4 from "../assets/glasses/glass4.jpg";
+import { Carousel } from "antd";
+import glassbanner from "../assets/carousel/glass_banner/SUNGLASS.jpg";
+import glassbannerMobile from "../assets/carousel/glass_banner/Sunglass_Mobile.jpg";
+import batBanner from "../assets/carousel/bat_banner/Baseball-Bat.jpg";
+import batMobileBanner from "../assets/carousel/bat_banner/Baseball_Bat_Mobile.jpg";
 import { useEffect } from "react";
-const glassesProduct = [
+
+const topCatBanner=[
   {
-    img: glass1,
-    title: "Blue glasses",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    price: "99",
-    id: 1,
+    desktop_image:glassbanner,
+    mobile_image:glassbannerMobile,
   },
   {
-    img: glass2,
-    title: "Pink glasses",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    price: "150",
-    id: 2,
-  },
-  {
-    img: glass3,
-    title: "Black glasses",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    price: "122",
-    id: 3,
-  },
-];
+    desktop_image:batBanner,
+    mobile_image:batMobileBanner,
+  }
+]
+
 const Featured = ({ closeCart, navigate }) => {
   const [glass, setGlass] = useState([]);
   const getAllProducts = async () => {
@@ -55,9 +44,52 @@ const Featured = ({ closeCart, navigate }) => {
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
       <div className=" mx-auto py-40">
         <h2 className="font-bold text-4xl lg:text-5xl uppercase text-center">
-          Featured Products
+          Top Products
         </h2>
 
+        <Carousel autoplay effect="fade">
+        {
+          topCatBanner.map((ban,i)=>(
+            <div className="py-8 relative" key={i}>
+          
+          <div className="hidden sm:block relative">
+            <img
+              src={ban?.desktop_image}
+              alt="Large Banner"
+              className="w-full object-cover"
+            />
+           
+            <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/10">
+              <p className="text-2xl font-semibold">
+                VIEW ALL TOP CATEGORY PRODUCTS
+              </p>
+              <button className="mt-4  bg-[#ff5B00] text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
+                View
+              </button>
+            </div>
+          </div>
+
+      
+          <div className="block sm:hidden relative ">
+            <img
+              src={ban?.mobile_image}
+              alt="Small Banner"
+              className="w-full h-[500px]"
+            />
+    
+            <div className="absolute inset-0 flex flex-col pt-20 items-center text-white bg-black/50">
+              <p className="text-lg font-semibold text-center">
+                VIEW ALL TOP CATEGORY PRODUCTS
+              </p>
+              <button className="mt-2 bg-[#ff5B00] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
+                View
+              </button>
+            </div>
+          </div>
+        </div>
+          ))
+        }
+        </Carousel>
         <Swiper
           slidesPerView={3}
           spaceBetween={20}

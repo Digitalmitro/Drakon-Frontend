@@ -1,5 +1,5 @@
 import { Button, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import gloves from "../assets/8.png";
 import elbowGuard from "../assets/7.png";
 import tshirt from "../assets/6.png";
@@ -13,20 +13,33 @@ import carousel3 from "../assets/carousel/crousal-3.jpg";
 // import carousel4 from "../assets/carousel/crousal-4.jpg";
 const Hero = ({ closeCart }) => {
   const navigate = useNavigate();
-  const isMobile = useMediaQuery("(max-width:900px)");
+  const [banner,setBanner]=useState([])
 
-  const images = [carousel1, carousel2, carousel3];
+  // const images = [carousel1, carousel2, carousel3];
+  const fetchAllBanners=async()=>{
+    const response=await fetch(`${import.meta.env.VITE_BACKEND_API}/api/banners`);
+    if(response.ok){
+      const data=await response.json();
+      // console.log("show banners details",data)
+      setBanner(data)
+    }
+  }
+  useEffect(()=>{
+    fetchAllBanners()
+  },[])
   return (
     <>
       <div onClick={closeCart} className="bg-[#F3F3F3] lg:mt-16 ">
         <Carousel autoplay effect="fade">
-          {images.map((img, index) => (
+          {banner.map((img, index) => (
             <div key={index} className="relative w-full h-screen">
               <div
                 className={`w-full h-full bg-cover bg-center flex items-center  ${
                   index == 0 ? " justify-end pb-32" : "justify-start"
                 }`}
-                style={{ backgroundImage: `url(${img})` }}
+                style={{ backgroundImage: `url(${
+                  window.innerWidth < 1024 ? img.mobile_image : img.desktop_image
+                })`, }}
               >
                 <div
                   className={`text-white text-start   ${
@@ -35,10 +48,10 @@ const Hero = ({ closeCart }) => {
                 >
                   <h3 className="uppercase text-xl lg:text-4xl font-semibold mb-10 w-[600px]">
                     <span className="text-amber-500 text-lg ">
-                      NEW NEXT SERIES
+                      {img.title}
                     </span>
                     <br />
-                    <span>PERFECT GLOVES FOR TRAVEL BALL PLAYERS</span>
+                    <span>{img.description}</span>
                   </h3>
                   <div>
                     <Button

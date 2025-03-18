@@ -105,46 +105,7 @@ function App() {
 
           <Route path="/termscondition" element={<TermsAndCondition />} />
         </Routes>
-        <div
-          onClick={hideCartModal}
-          className="bg-[#F5743B] h-[200px]"
-          style={{}}
-        >
-          <div className="container mx-auto flex justify-between items-center h-full px-5">
-            <p className="text-white lg:text-2xl font-bold">
-              STAY TUNED WITH UPDATES
-            </p>
-            <form onSubmit={getSubscribed}>
-            <input
-              style={{ zoom: isMobile ? "0.5" : "" }}
-              type="text"
-              className="w-1/2 rounded-full px-5 py-4 mr-5 bg-transparent border-2 border-white outline-white text-white placeholder-white"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Button
-            type="submit"
-              sx={{
-                borderRadius: "100vw",
-                padding: "15px 40px",
-                fontSize: "1rem",
-                fontWeight: "bold",
-                backgroundColor: "white",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "#cccccc",
-                },
-                zoom: isMobile ? "0.5" : "",
-              }}
-              variant="contained"
-             
-            >
-              SUBSCRIBE
-            </Button>
-            </form>
-          </div>
-        </div>
+        
         <Footer closeCart={hideCartModal} />
       </div>
     </Router>
