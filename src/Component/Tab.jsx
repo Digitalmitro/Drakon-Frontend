@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import product1 from "../assets/product1.png";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import OrdersTabPanel from '../Component/tabsPanel/orders'
+import OrdersTabPanel from "../Component/tabsPanel/orders";
 import axios from "axios";
 import {
   Link,
@@ -57,6 +57,31 @@ export default function VerticalTabs() {
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const userId = decodedToken?._id;
+  // reset password
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleForgetPasswordSubmit = (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (newPassword !== confirmPassword) {
+      setError("New password and confirm password do not match.");
+      return;
+    }
+    setTimeout(() => {
+      setSuccess("Password changed successfully!");
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    }, 1000);
+  };
+
+  // reset password ends here
 
   const [formData, setFormData] = React.useState({
     firstName: "",
@@ -67,7 +92,6 @@ export default function VerticalTabs() {
     newPassword: "",
     user_id: userId,
   });
-
 
   useEffect(() => {
     const tabIndex = searchParams.get("tab");
@@ -189,7 +213,7 @@ export default function VerticalTabs() {
         phone: null,
         email: "",
       });
-
+      setShowBillingForm(false)
       setShippingFormData({
         firstName: "",
         lastName: "",
@@ -200,6 +224,7 @@ export default function VerticalTabs() {
         zipcode: null,
         phone: null,
       });
+      setShowShippingForm(false)
       // console.log("after postData", billingFormData, shippingFormData);
     } catch (error) {
       console.error("Error saving addresses:", error);
@@ -362,7 +387,7 @@ export default function VerticalTabs() {
 
   return (
     <Box
-    className="tabSection"
+      className="tabSection"
       sx={{
         flexGrow: 1,
         bgcolor: "background.paper",
@@ -374,10 +399,10 @@ export default function VerticalTabs() {
         orientation="vertical"
         variant="scrollable"
         value={value}
-        
         onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{
+          width: { xs: "auto", lg: "300px" },
           borderRight: 1,
           borderColor: "divider",
           color: "orangeline",
@@ -387,9 +412,9 @@ export default function VerticalTabs() {
         <Tab className="sidenav" label="Profile" {...a11yProps(0)} />
         <Tab className="sidenav" label="Address" {...a11yProps(3)} />
 
-        <Tab className="sidenav" label="account details" {...a11yProps(5)} />
+        <Tab className="sidenav" label="Reset Password" {...a11yProps(5)} />
         <Tab className="sidenav" label="Order" {...a11yProps(4)} />
-        {/* <Tab className="sidenav" label="BILLING DETAILS" {...a11yProps(1)} /> */}
+
         <Tab
           onClick={handelLogout}
           className="sidenav"
@@ -399,16 +424,16 @@ export default function VerticalTabs() {
       </Tabs>
       <TabPanel value={value} index={0}>
         <div
-          className="profile d-flex justify-content-around w-full "
+          className="profile flex justify-evenly flex-wrap w-full "
           style={{ margin: "10px" }}
         >
-          <div className=" profileDetails gap-5 md:w-full  my-5 w-1/3 w-sm-full text-center border p-5">
-            <h1>PROFILE DETAILS</h1>
-            <div className=" d-flex justify-content-between  items-center my-5 py-2">
+          <div className=" profileDetails  lg:w-[600px] my-3 text-center border p-5">
+            <h1 className="mb-8">PROFILE DETAILS</h1>
+            <div className=" flex space-x-4 mb-3 items-center">
               <h4>Name: </h4>
               <p> suvo suvo</p>
             </div>
-            <div className="d-flex justify-content-between items-center">
+            <div className="flex space-x-4  items-center">
               <h4>Email: </h4>
               <p>Suvo@gmail.com</p>
             </div>
@@ -498,50 +523,51 @@ export default function VerticalTabs() {
                         <strong>ZIPCODE: </strong>{" "}
                         {billingAddresses?.billingzipcode}
                       </p>
-                     
                     </div>
                   </>
-                ): <p>BillingAddress is not set</p>}
+                ) : (
+                  <p>BillingAddress is not set</p>
+                )}
               </div>
               {showBillingForm && (
                 <form
-                  className="address-form"
+                  className="address-form w-[89%] pl-3"
                   onSubmit={saveAddressesToDatabase}
                 >
                   <>
-                    <label htmlFor="billingFirstName" className="form-label">
-                      First Name*
+                    <label htmlFor="billingFirstName" className="form-label font-serif text-[18px]">
+                      First Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="firstName"
-                      className="form-control placeholder-left"
+                      className="form-control placeholder-left mb-3"
                       id="billingFirstName"
                       placeholder="Enter First Name"
                       value={billingFormData.firstName}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingLastName" className="form-label">
-                      Last Name*
+                    <label htmlFor="billingLastName" className="form-label font-serif text-[18px] ">
+                      Last Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="lastName"
-                      className="form-control placeholder-left"
+                      className="form-control placeholder-left mb-3"
                       id="billingLastName"
                       placeholder="Enter Last Name"
                       value={billingFormData.lastName}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingCountry" className="form-label">
-                      Country/Region *
+                    <label htmlFor="billingCountry" className="form-label font-serif text-[18px]">
+                      Country/Region <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="country"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingCountry"
                       placeholder="Enter Country/ Region"
                       value={billingFormData.country}
@@ -549,51 +575,51 @@ export default function VerticalTabs() {
                       required
                     />
 
-                    <label htmlFor="billingStreet" className="form-label">
+                    <label htmlFor="billingStreet" className="form-label font-serif text-[18px]">
                       Street address
                     </label>
                     <input
                       type="text"
                       name="streetAddress"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingStreet"
                       placeholder="Enter Street Address"
                       value={billingFormData.streetAddress}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingCity" className="form-label">
-                      Town / City*
+                    <label htmlFor="billingCity" className="form-label font-serif text-[18px]">
+                      Town / City <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="city"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingCity"
                       placeholder="Enter City / Town"
                       value={billingFormData.city}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingState" className="form-label">
+                    <label htmlFor="billingState" className="form-label font-serif text-[18px]">
                       State
                     </label>
                     <input
                       type="text"
                       name="state"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingState"
                       placeholder="Enter State"
                       value={billingFormData.state}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingZip" className="form-label">
-                      Zip Code
+                    <label htmlFor="billingZip" className="form-label font-serif text-[18px]">
+                      Zip Code <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="number"
-                      className="form-control"
+                      className="form-control mb-3"
                       name="zipcode"
                       id="billingZip"
                       placeholder="Enter Zipcode"
@@ -601,26 +627,26 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingPhone" className="form-label">
-                      Phone *
+                    <label htmlFor="billingPhone" className="form-label font-serif text-[18px]">
+                      Phone <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="number"
                       name="phone"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingPhone"
                       placeholder="Enter Phone no."
                       value={billingFormData.phone}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingEmail" className="form-label">
+                    <label htmlFor="billingEmail" className="form-label font-serif text-[18px]">
                       Email Address
                     </label>
                     <input
                       type="email"
                       name="email"
-                      className="form-control"
+                      className="form-control mb-3 "
                       id="billingEmail"
                       placeholder="Enter Email Address"
                       value={billingFormData.email}
@@ -651,11 +677,11 @@ export default function VerticalTabs() {
                 </button>
                 {shippingAddresses ? (
                   <>
-
                     <div className="address-box">
                       <p>
                         <strong>SHIPPING ADDRESS :</strong>{" "}
-                        {shippingAddresses?.shippingstreetAddress || " Chicago, USA"}
+                        {shippingAddresses?.shippingstreetAddress ||
+                          " Chicago, USA"}
                         , {shippingAddresses?.shippingcity} ,
                         {shippingAddresses?.shippingstate},{" "}
                         {shippingAddresses?.shippingcountry}
@@ -664,126 +690,127 @@ export default function VerticalTabs() {
                         <strong>ZIPCODE :</strong>{" "}
                         {shippingAddresses?.shippingzipcode}
                       </p>
-                     
                     </div>
                   </>
-                ): <p>Shipping Address is not set up yet.</p>}
+                ) : (
+                  <p>Shipping Address is not set up yet.</p>
+                )}
               </div>
               {showShippingForm && (
                 <form
-                  className="address-form"
+                  className="address-form px-3 w-[91%]"
                   onSubmit={saveAddressesToDatabase}
                 >
                   <>
-                    <label htmlFor="shippingFirstName" className="form-label">
-                      First Name*
+                    <label htmlFor="shippingFirstName" className="form-label font-serif text-[18px]">
+                      First Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="firstName"
-                      className="form-control placeholder-left"
+                      className="form-control placeholder-left mb-3"
                       id="shippingFirstName"
                       placeholder="Enter First Name"
                       value={shippingFormData.firstName}
                       onChange={handleShippingFormChange}
                     />
-                    <label htmlFor="shippingLastName" className="form-label">
-                      Last Name*
+                    <label htmlFor="shippingLastName" className="form-label font-serif text-[18px]">
+                      Last Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="lastName"
-                      className="form-control placeholder-left"
+                      className="form-control placeholder-left mb-3"
                       id="shippingLastName"
                       placeholder="Enter Last Name"
                       value={shippingFormData.lastName}
                       onChange={handleShippingFormChange}
                     />
-                    <label htmlFor="shippingCountry" className="form-label">
-                      Country/Region *
+                    <label htmlFor="shippingCountry" className="form-label font-serif text-[18px]">
+                      Country/Region <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="country"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingCountry"
                       placeholder="Enter Country/ Region"
                       value={shippingFormData.country}
                       onChange={handleShippingFormChange}
                       required
                     />
-                    <label htmlFor="shippingStreet" className="form-label">
+                    <label htmlFor="shippingStreet" className="form-label font-serif text-[18px]">
                       Street address
                     </label>
                     <input
                       type="text"
                       name="streetAddress"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingStreet"
                       placeholder="Enter Street Address"
                       value={shippingFormData.streetAddress}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingCity" className="form-label">
-                      Town / City*
+                    <label htmlFor="shippingCity" className="form-label font-serif text-[18px]">
+                      Town / City <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="city"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingCity"
                       placeholder="Enter City / Town"
                       value={shippingFormData.city}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingState" className="form-label">
-                      State
+                    <label htmlFor="shippingState" className="form-label font-serif text-[18px]">
+                      State <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="state"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingState"
                       placeholder="Enter State"
                       value={shippingFormData.state}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingZip" className="form-label">
-                      Zip Code
+                    <label htmlFor="shippingZip" className="form-label font-serif text-[18px]">
+                      Zip Code <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="number"
                       name="zipcode"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingZip"
                       placeholder="Enter Zipcode"
                       value={shippingFormData.zipcode}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingPhone" className="form-label">
-                      Phone *
+                    <label htmlFor="shippingPhone" className="form-label font-serif text-[18px]">
+                      Phone <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="number"
                       name="phone"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingPhone"
                       placeholder="Enter Phone no."
                       value={shippingFormData.phone}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingEmail" className="form-label">
+                    <label htmlFor="shippingEmail" className="form-label font-serif text-[18px]">
                       Email Address
                     </label>
                     <input
                       type="email"
                       name="email"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingEmail"
                       placeholder="Enter Email Address"
                       value={shippingFormData.email}
@@ -802,60 +829,52 @@ export default function VerticalTabs() {
       </TabPanel>
 
       <TabPanel value={value} index={2}>
-        <div class="d-flex justify-content-center align-items-center mt-5 addressDetails">
-          <form class="row g-3 m-3 d-flex justify-content-center align-items-center addressDetails">
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputCity"
-                placeholder="First Name"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputCity"
-                placeholder="Last Name"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputZip"
-                placeholder="Display Name"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputCity"
-                placeholder="Email Address"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputCity"
-                placeholder="Old Password"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputZip"
-                placeholder="New Password"
-              />
-            </div>
-            <button type="button" class="btn w-1/3">
-              Add Account
-            </button>
-          </form>
+        <div className="flex justify-center items-center pt-4">
+          <div className="bg-white p-6 rounded-lg  lg:w-[40%]">
+            
+            <form onSubmit={handleForgetPasswordSubmit} className="space-y-4">
+              <div>
+                <label className="block font-medium">Old Password</label>
+                <input
+                  type="password"
+                  className="w-full border rounded-md p-2"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block font-medium">New Password</label>
+                <input
+                  type="password"
+                  className="w-full border rounded-md p-2"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block font-medium">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  className="w-full border rounded-md p-2"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+              {success && <p className="text-green-500 text-sm">{success}</p>}
+              <button
+                type="submit"
+                className="w-full bg-[#ff5B00] text-white py-2 rounded-md hover:bg-blue-600"
+              >
+                Change Password
+              </button>
+            </form>
+          </div>
         </div>
       </TabPanel>
 
@@ -919,7 +938,7 @@ export default function VerticalTabs() {
             </div>
           ))}
         </div> */}
-        <OrdersTabPanel/>
+        <OrdersTabPanel />
       </TabPanel>
       <TabPanel value={value} index={5}></TabPanel>
     </Box>

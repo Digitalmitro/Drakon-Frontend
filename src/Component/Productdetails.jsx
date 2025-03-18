@@ -218,7 +218,7 @@ console.log("show the first image",defaultImage)
                 <div className="d-flex" style={{ gap: "25px" }}>
                   <button
                     type="submit"
-                    className="btn btn-primary orange"
+                    className="btn rounded-2xl text-white bg-[#ff5B00] "
                     onClick={() => navigate(`/checkout/${id}`)}
                   >
                     Buy Now
@@ -227,7 +227,7 @@ console.log("show the first image",defaultImage)
                   {isProductInCart ? (
                     <button
                       type="submit"
-                      className="btn btn-primary black"
+                      className="btn bg-[#ff0024] rounded-2xl text-white"
                       onClick={() => navigate("/cart")}
                     >
                       Add to Cart
@@ -235,7 +235,7 @@ console.log("show the first image",defaultImage)
                   ) : (
                     <button
                       type="submit"
-                      className="btn btn-primary black"
+                      className="btn bg-[#ff0024] rounded-2xl text-white"
                       onClick={
                         user_id ? () => handleCart(data) : navigateToLogin
                       }

@@ -200,14 +200,17 @@ function Navbar(props) {
                   <img src={search} alt="" className="h-8 p-1" />
                 </div>
 
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center cursor-pointer">
                   Our Brands
                 </div>
-                <div className="flex justify-center items-center">
+                <div
+                  className="flex justify-center items-center cursor-pointer"
+                  onClick={() => navigate("/account")}
+                >
                   <p>My Accounts</p>{" "}
                   <img src={profile} alt="" className="h-8 p-1 pb-2" />
                 </div>
-                <div className="flex justify-center space-x-1 items-center">
+                <div className="flex justify-center space-x-1 items-center cursor-pointer">
                   <p>Cart</p> <IoCart size={22} />
                 </div>
               </div>

@@ -1,21 +1,23 @@
 import VerticalTabs from "../Component/Tab";
+import { motion } from "framer-motion";
+const Profile = () => {
+  return (
+    <>
+       <div className="relative  flex items-center justify-center profile-banner">
+      <motion.h1
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="text-white text-5xl font-bold lg:pt-12"
+      >
+        MY ACCOUNT
+      </motion.h1>
+    </div>
 
-const Profile=() =>{
-
-    return(
-        <>
-        <section >
-       <div className="container-fluid profile-banner">
-       
-       <h3 className="text-center size myAccount">MY ACCOUNT</h3>
-       </div>
-    </section>
-
-    <section>
-    
-      <VerticalTabs />
-    </section>
-        </>
-    )
-}
+      <section>
+        <VerticalTabs />
+      </section>
+    </>
+  );
+};
 export default Profile;
