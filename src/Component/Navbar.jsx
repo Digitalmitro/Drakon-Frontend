@@ -188,7 +188,7 @@ function Navbar(props) {
             width={""}
             className="w-36 cursor-pointer logoMobile"
           />
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box >
             <div className="flex flex-col justify-end items-end">
               <div className="text-black pt-6  flex space-x-12">
                 <div className="flex bg-white rounded-lg">
@@ -207,7 +207,7 @@ function Navbar(props) {
                   className="flex justify-center items-center cursor-pointer"
                   onClick={() => navigate("/account")}
                 >
-                  <p>My Accounts</p>{" "}
+                  <p >My Accounts</p>{" "}
                   <img src={profile} alt="" className="h-8 p-1 pb-2" />
                 </div>
                 <div className="flex justify-center space-x-1 items-center cursor-pointer">
