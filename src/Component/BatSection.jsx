@@ -5,26 +5,23 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Pagination, Autoplay  } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 import { Carousel } from "antd";
 import glassbanner from "../assets/carousel/glass_banner/SUNGLASS.jpg";
 import glassbannerMobile from "../assets/carousel/glass_banner/Sunglass_Mobile.jpg";
 import batBanner from "../assets/carousel/bat_banner/Baseball-Bat.jpg";
 import batMobileBanner from "../assets/carousel/bat_banner/Baseball_Bat_Mobile.jpg";
 import { useEffect } from "react";
-import { useProduct } from "../context/ProductContext";
 
+const topCatBanner = [
+  {
+    desktop_image: batBanner,
+    mobile_image: batMobileBanner,
+  },
+];
 
-const Featured = ({ closeCart, navigate }) => {
+const BatSection = ({ closeCart, navigate }) => {
   const [glass, setGlass] = useState([]);
-  const { getAllCategoryBanner } = useProduct();
-  const [topProductBanner, setTopProductBanner] = useState([]);
-  const fetchAllGlassesBanner = async () => {
-    const response = await getAllCategoryBanner();
-      console.log("all gloves banner", response);
-      setTopProductBanner(response);
-    
-  };
   const getAllProducts = async () => {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_API}/products`
@@ -37,58 +34,53 @@ const Featured = ({ closeCart, navigate }) => {
   };
   useEffect(() => {
     getAllProducts();
-    fetchAllGlassesBanner();
   }, []);
 
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
-      <div className=" mx-auto py-40">
+      <div className=" mx-auto pb-40">
         <h2 className="font-bold text-4xl lg:text-5xl uppercase text-center">
-          Top Products
+          SHOP THE GAME’S HOTTEST BATS
         </h2>
 
         <Carousel autoplay effect="fade">
-        {
-          topProductBanner.map((ban,i)=>(
+          {topCatBanner.map((ban, i) => (
             <div className="py-8 relative" key={i}>
-          
-          <div className="hidden sm:block relative">
-            <img
-              src={ban?.desktop_image}
-              alt="Large Banner"
-              className="w-full object-cover"
-            />
-           
-            <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/10">
-              <p className="text-2xl font-semibold">
-                VIEW ALL TOP CATEGORY PRODUCTS
-              </p>
-              <button className="mt-4  bg-[#ff5B00] text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
-                View
-              </button>
-            </div>
-          </div>
+              <div className="hidden sm:block relative">
+                <img
+                  src={ban?.desktop_image}
+                  alt="Large Banner"
+                  className="w-full object-cover"
+                />
 
-      
-          <div className="block sm:hidden relative ">
-            <img
-              src={ban?.mobile_image}
-              alt="Small Banner"
-              className="w-full h-[500px]"
-            />
-    
-            <div className="absolute inset-0 flex flex-col pt-20 items-center text-white bg-black/50">
-              <p className="text-lg font-semibold text-center">
-                VIEW ALL TOP CATEGORY PRODUCTS
-              </p>
-              <button className="mt-2 bg-[#ff5B00] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
-                View
-              </button>
+                <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
+                  <p className="text-2xl font-semibold">
+                    VIEW ALL TOP CATEGORY PRODUCTS
+                  </p>
+                  <button className="mt-4 font-medium text-[18px] bg-[#ff5B00] text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
+                    View
+                  </button>
+                </div>
+              </div>
+
+              <div className="block sm:hidden relative ">
+                <img
+                  src={ban?.mobile_image}
+                  alt="Small Banner"
+                  className="w-full h-[500px]"
+                />
+
+                <div className="absolute inset-0 flex flex-col pt-20 items-center text-white bg-black/50">
+                  <p className="text-lg font-semibold text-center">
+                    VIEW ALL TOP CATEGORY PRODUCTS
+                  </p>
+                  <button className="mt-2 bg-[#ff5B00] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
+                    View
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-          ))
-        }
+          ))}
         </Carousel>
         <Swiper
           slidesPerView={3}
@@ -136,4 +128,4 @@ const Featured = ({ closeCart, navigate }) => {
   );
 };
 
-export default Featured;
+export default BatSection;

@@ -5,26 +5,31 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Pagination, Autoplay  } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 import { Carousel } from "antd";
 import glassbanner from "../assets/carousel/glass_banner/SUNGLASS.jpg";
 import glassbannerMobile from "../assets/carousel/glass_banner/Sunglass_Mobile.jpg";
-import batBanner from "../assets/carousel/bat_banner/Baseball-Bat.jpg";
-import batMobileBanner from "../assets/carousel/bat_banner/Baseball_Bat_Mobile.jpg";
+
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
 
+const topCatBanner = [
+  {
+    desktop_image: glassbanner,
+    mobile_image: glassbannerMobile,
+  },
+];
 
-const Featured = ({ closeCart, navigate }) => {
-  const [glass, setGlass] = useState([]);
+const GlovesSection = ({ closeCart, navigate }) => {
   const { getAllCategoryBanner } = useProduct();
-  const [topProductBanner, setTopProductBanner] = useState([]);
-  const fetchAllGlassesBanner = async () => {
-    const response = await getAllCategoryBanner();
+  const [glovesBanner, setGlovesBanner] = useState([]);
+  const fetchAllGlovesBanner = async () => {
+    const response = await getAllCategoryBanner("Batting Gloves");
       console.log("all gloves banner", response);
-      setTopProductBanner(response);
+      setGlovesBanner(data);
     
   };
+  const [glass, setGlass] = useState([]);
   const getAllProducts = async () => {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_API}/products`
@@ -37,58 +42,54 @@ const Featured = ({ closeCart, navigate }) => {
   };
   useEffect(() => {
     getAllProducts();
-    fetchAllGlassesBanner();
+    fetchAllGlovesBanner();
   }, []);
 
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
-      <div className=" mx-auto py-40">
-        <h2 className="font-bold text-4xl lg:text-5xl uppercase text-center">
-          Top Products
+      <div className=" mx-auto pb-40">
+        <h2 className="font-bold pb-4 text-4xl lg:text-5xl uppercase text-center">
+          Drakon Sports Leather Batting Gloves
         </h2>
 
         <Carousel autoplay effect="fade">
-        {
-          topProductBanner.map((ban,i)=>(
+          {glovesBanner.map((ban, i) => (
             <div className="py-8 relative" key={i}>
-          
-          <div className="hidden sm:block relative">
-            <img
-              src={ban?.desktop_image}
-              alt="Large Banner"
-              className="w-full object-cover"
-            />
-           
-            <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/10">
-              <p className="text-2xl font-semibold">
-                VIEW ALL TOP CATEGORY PRODUCTS
-              </p>
-              <button className="mt-4  bg-[#ff5B00] text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
-                View
-              </button>
-            </div>
-          </div>
+              <div className="hidden sm:block relative">
+                <img
+                  src={ban?.desktop_image}
+                  alt="Large Banner"
+                  className="w-full object-cover"
+                />
 
-      
-          <div className="block sm:hidden relative ">
-            <img
-              src={ban?.mobile_image}
-              alt="Small Banner"
-              className="w-full h-[500px]"
-            />
-    
-            <div className="absolute inset-0 flex flex-col pt-20 items-center text-white bg-black/50">
-              <p className="text-lg font-semibold text-center">
-                VIEW ALL TOP CATEGORY PRODUCTS
-              </p>
-              <button className="mt-2 bg-[#ff5B00] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
-                View
-              </button>
+                <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
+                  <p className="text-2xl font-semibold">
+                    VIEW ALL TOP CATEGORY PRODUCTS
+                  </p>
+                  <button className="mt-4 font-medium text-[18px] bg-[#ff5B00] text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
+                    View
+                  </button>
+                </div>
+              </div>
+
+              <div className="block sm:hidden relative ">
+                <img
+                  src={ban?.mobile_image}
+                  alt="Small Banner"
+                  className="w-full h-[500px]"
+                />
+
+                <div className="absolute inset-0 flex flex-col pt-20 items-center text-white bg-black/50">
+                  <p className="text-lg font-semibold text-center">
+                    VIEW ALL TOP CATEGORY PRODUCTS
+                  </p>
+                  <button className="mt-2 bg-[#ff5B00] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
+                    View
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-          ))
-        }
+          ))}
         </Carousel>
         <Swiper
           slidesPerView={3}
@@ -99,7 +100,7 @@ const Featured = ({ closeCart, navigate }) => {
             delay: 3000,
             disableOnInteraction: false,
           }}
-          modules={[Pagination,Autoplay]}
+          modules={[Pagination, Autoplay]}
           breakpoints={{
             1024: { slidesPerView: 3 },
             600: { slidesPerView: 2 },
@@ -112,7 +113,7 @@ const Featured = ({ closeCart, navigate }) => {
               <div className="h-[420px]">
                 <Link to={`/productDetails/${e._id}`}>
                   <div className="shadow-lg lg:h-[350px] rounded lg:w-[80%] flex flex-col justify-between gap-6 bg-white p-2 ">
-                    <div className="flex justify-center lg:w-full bg-[#dddfe0]"> 
+                    <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                       <img
                         src={e.image?.[0]}
                         className="object-contain h-[250px] w-[100%]"
@@ -136,4 +137,4 @@ const Featured = ({ closeCart, navigate }) => {
   );
 };
 
-export default Featured;
+export default GlovesSection;
