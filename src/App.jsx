@@ -8,7 +8,7 @@ import Hero from "./Component/Hero";
 import Navbar from "./Component/Navbar";
 import NewlyAvailable from "./Component/NewlyAvailable";
 import ShoesDisplay from "./Component/ShoesDisplay";
-import WhyChooseUs from "./Component/WhyChooseUs";
+import WhyChooseUs from "./Component/BatSection";
 import { useDispatch } from "react-redux";
 import { cartModal } from "./Redux/CartSlice";
 import Home from "./Page/Home";

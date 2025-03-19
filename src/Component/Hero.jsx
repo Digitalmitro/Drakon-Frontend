@@ -1,26 +1,14 @@
-import { Button, useMediaQuery } from "@mui/material";
+import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import gloves from "../assets/8.png";
-import elbowGuard from "../assets/7.png";
-import tshirt from "../assets/6.png";
-import sunglass from "../assets/9.png";
 import { useNavigate, Link } from "react-router-dom";
 import { Carousel } from "antd";
-import { motion } from "framer-motion";
-import carousel1 from "../assets/carousel/crousal-1.jpg";
-import carousel2 from "../assets/carousel/crousal-2.webp";
-import carousel3 from "../assets/carousel/crousal-3.jpg";
-// import carousel4 from "../assets/carousel/crousal-4.jpg";
 const Hero = ({ closeCart }) => {
   const navigate = useNavigate();
   const [banner,setBanner]=useState([])
-
-  // const images = [carousel1, carousel2, carousel3];
   const fetchAllBanners=async()=>{
     const response=await fetch(`${import.meta.env.VITE_BACKEND_API}/api/banners`);
     if(response.ok){
       const data=await response.json();
-      // console.log("show banners details",data)
       setBanner(data)
     }
   }
@@ -34,23 +22,19 @@ const Hero = ({ closeCart }) => {
           {banner.map((img, index) => (
             <div key={index} className="relative w-full h-screen">
               <div
-                className={`w-full h-full bg-cover bg-center flex items-center  ${
-                  index == 0 ? " justify-end pb-32" : "justify-start"
-                }`}
+                className={`w-full h-full bg-cover bg-center flex items-center justify-start`}
                 style={{ backgroundImage: `url(${
                   window.innerWidth < 1024 ? img.mobile_image : img.desktop_image
                 })`, }}
               >
                 <div
-                  className={`text-white text-start   ${
-                    index == 1 ? "pt-80 px-4" : "px-16"
-                  }`}
+                  className={`text-white px-4`}
                 >
                   <h3 className="uppercase text-xl lg:text-4xl font-semibold mb-10 w-[600px]">
                     <span className="text-amber-500 text-lg ">
                       {img.title}
                     </span>
-                    <br />
+                    <br/>
                     <span>{img.description}</span>
                   </h3>
                   <div>
