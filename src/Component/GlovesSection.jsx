@@ -26,7 +26,7 @@ const GlovesSection = ({ closeCart, navigate }) => {
   const fetchAllGlovesBanner = async () => {
     const response = await getAllCategoryBanner("Batting Gloves");
       console.log("all gloves banner", response);
-      setGlovesBanner(data);
+      setGlovesBanner(response);
     
   };
   const [glass, setGlass] = useState([]);
@@ -48,7 +48,7 @@ const GlovesSection = ({ closeCart, navigate }) => {
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
       <div className=" mx-auto pb-40">
-        <h2 className="font-bold pb-4 text-4xl lg:text-5xl uppercase text-center">
+        <h2 className="font-bold pb-4 text-4xl lg:text-5xl uppercase text-center px-0.5">
           Drakon Sports Leather Batting Gloves
         </h2>
 
@@ -121,7 +121,9 @@ const GlovesSection = ({ closeCart, navigate }) => {
                       />
                     </div>
                     <div className=" h-full space-y-1 px-2">
-                      <h3 className="font-semibold text-xl">{e.description}</h3>
+                      <h3 className="font-semibold text-xl">{e.description.length > 25
+                          ? `${e.description.slice(0, 35)}...`
+                          : e.description}</h3>
                       <h4 className="text-[#959595] font-bold text-2xl">
                         $ {e.price}
                       </h4>

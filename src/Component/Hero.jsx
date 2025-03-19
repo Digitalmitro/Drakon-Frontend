@@ -30,7 +30,7 @@ const Hero = ({ closeCart }) => {
                 <div
                   className={`text-white px-4`}
                 >
-                  <h3 className="uppercase text-xl lg:text-4xl font-semibold mb-10 w-[600px]">
+                  <h3 className="uppercase  text-xl lg:text-4xl font-semibold mb-10 w-[600px]">
                     <span className="text-amber-500 text-lg ">
                       {img.title}
                     </span>
