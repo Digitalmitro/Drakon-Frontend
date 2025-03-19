@@ -91,7 +91,7 @@ const BatSection = ({ closeCart, navigate }) => {
             delay: 3000,
             disableOnInteraction: false,
           }}
-          modules={[Pagination,Autoplay]}
+          modules={[Pagination, Autoplay]}
           breakpoints={{
             1024: { slidesPerView: 3 },
             600: { slidesPerView: 2 },
@@ -104,7 +104,7 @@ const BatSection = ({ closeCart, navigate }) => {
               <div className="h-[420px]">
                 <Link to={`/productDetails/${e._id}`}>
                   <div className="shadow-lg lg:h-[350px] rounded lg:w-[80%] flex flex-col justify-between gap-6 bg-white p-2 ">
-                    <div className="flex justify-center lg:w-full bg-[#dddfe0]"> 
+                    <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                       <img
                         src={e.image?.[0]}
                         className="object-contain h-[250px] w-[100%]"
@@ -112,7 +112,9 @@ const BatSection = ({ closeCart, navigate }) => {
                       />
                     </div>
                     <div className=" h-full space-y-1 px-2">
-                      <h3 className="font-semibold text-xl">{e.description}</h3>
+                      <h3 className="font-semibold text-xl">{e.description.length > 25
+                          ? `${e.description.slice(0, 35)}...`
+                          : e.description}</h3>
                       <h4 className="text-[#959595] font-bold text-2xl">
                         $ {e.price}
                       </h4>

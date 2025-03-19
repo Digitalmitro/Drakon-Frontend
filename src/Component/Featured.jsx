@@ -120,7 +120,9 @@ const Featured = ({ closeCart, navigate }) => {
                       />
                     </div>
                     <div className=" h-full space-y-1 px-2">
-                      <h3 className="font-semibold text-xl">{e.description}</h3>
+                      <h3 className="font-semibold text-xl">{e.description.length > 25
+                          ? `${e.description.slice(0, 35)}...`
+                          : e.description}</h3>
                       <h4 className="text-[#959595] font-bold text-2xl">
                         $ {e.price}
                       </h4>
