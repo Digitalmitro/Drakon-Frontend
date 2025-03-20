@@ -31,7 +31,7 @@ const Footer = ({ closeCart }) => {
                 including t-shirts, glasses, elbow guards, and hoodies. Shop
                 now!
               </p>
-              <div className="flex py-3 gap-6">
+              <div className="flex py-3 gap-6 text-[#ff5B00]">
                 <div>
                   <img src={fbFooter} alt="" />
                 </div>
