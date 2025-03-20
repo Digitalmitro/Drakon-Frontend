@@ -127,10 +127,10 @@ const Productdetails = () => {
         <div className="row productDetails">
           <div className="col-6 flex flex-col items-center ">
             {/* Centering the Main Image */}
-            <div className="lg:w-[500px] lg:h-[500px] w-[300px] h-[300px] flex justify-center items-center ">
+            <div className="lg:w-[500px] lg:h-[500px] w-[300px] h-[300px] flex justify-center items-center">
               <img
                 src={selectedImage || data?.image?.[0]}
-                className="w-full h-full object-cover"
+                className=" w-full h-full object-conatin"
               />
             </div>
 
@@ -144,7 +144,7 @@ const Productdetails = () => {
                   <img
                     src={img}
                     alt=""
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-conatin"
                     onClick={() => setSelectedImage(img)}
                   />
                 </div>

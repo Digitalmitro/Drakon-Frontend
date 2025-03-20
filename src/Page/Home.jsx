@@ -5,9 +5,8 @@ import BatSection from "../Component/BatSection";
 import GlassesSection from "../Component/GlassesSection";
 import GlovesSection from "../Component/GlovesSection";
 import Accessories from "../Component/Accessories";
+import AllCategories from "../Component/AllCategories";
 import Apparel from "../Component/Apparel";
-import NewlyAvailable from "../Component/NewlyAvailable";
-import ShoesDisplay from "../Component/ShoesDisplay";
 import { useMediaQuery } from "@mui/material";
 import { useDispatch } from "react-redux";
 
@@ -26,8 +25,7 @@ const Home = () => {
       <BatSection closeCart={hideCartModal} />
       <Accessories closeCart={hideCartModal} />
       <Apparel closeCart={hideCartModal} />
-      <NewlyAvailable closeCart={hideCartModal} />
-      {/* <ShoesDisplay closeCart={hideCartModal} /> */}
+      <AllCategories closeCart={hideCartModal} />
     </div>
   );
 };

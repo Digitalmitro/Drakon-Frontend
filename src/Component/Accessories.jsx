@@ -108,10 +108,10 @@ const Accessories = ({ closeCart, navigate }) => {
               <div className="h-[450px]">
                 <Link to={`/productDetails/${e._id}`}>
                   <div className="shadow-lg lg:h-[370px] rounded w-[80%]  lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
-                    <div className="flex justify-center lg:w-full bg-[#dddfe0]">
+                    <div className="flex justify-center  lg:w-full bg-[#dddfe0]">
                       <img
                         src={e.image?.[0]}
-                        className="object-contain h-[250px] w-[100%]"
+                        className="object-contain "
                         alt="Product"
                       />
                     </div>
