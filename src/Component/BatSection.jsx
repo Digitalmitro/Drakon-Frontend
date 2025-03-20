@@ -7,44 +7,49 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Autoplay } from "swiper/modules";
 import { Carousel } from "antd";
-import glassbanner from "../assets/carousel/glass_banner/SUNGLASS.jpg";
-import glassbannerMobile from "../assets/carousel/glass_banner/Sunglass_Mobile.jpg";
-import batBanner from "../assets/carousel/bat_banner/Baseball-Bat.jpg";
-import batMobileBanner from "../assets/carousel/bat_banner/Baseball_Bat_Mobile.jpg";
 import { useEffect } from "react";
-
-const topCatBanner = [
-  {
-    desktop_image: batBanner,
-    mobile_image: batMobileBanner,
-  },
-];
+import { useProduct } from "../context/ProductContext";
 
 const BatSection = ({ closeCart, navigate }) => {
-  const [glass, setGlass] = useState([]);
+  const { getAllCategoryBanner,getAllProductsByCategories } = useProduct();
+  const [eqBanner, setEqBanner] = useState([]);
+  const [eqProducts, setEqProducts] = useState([]);
+  const fetchAllGlassesBanner = async () => {
+    const response = await getAllCategoryBanner("Equipment");
+    // console.log("all gloves banner", response);
+    setEqBanner(response);
+  };
+
+  const allProductsByCategory=async()=>{
+    const response=await getAllProductsByCategories("Equipment")
+    console.log("respnse of equip",response)
+    setEqProducts(response)
+  }
   const getAllProducts = async () => {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_API}/products`
     );
     if (response.ok) {
       const data = await response.json();
-      console.log("show all products", data);
+      // console.log("show all products", data);
       setGlass(data);
     }
   };
   useEffect(() => {
     getAllProducts();
+    fetchAllGlassesBanner();
+    allProductsByCategory();
   }, []);
 
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
-      <div className=" mx-auto pb-40">
+      <div className=" mx-auto pb-10">
         <h2 className="font-bold text-4xl lg:text-5xl uppercase text-center">
-          SHOP THE GAME’S HOTTEST BATS
+          SHOP THE GAME’S EQUIPMENTS
         </h2>
 
         <Carousel autoplay effect="fade">
-          {topCatBanner.map((ban, i) => (
+          {eqBanner.map((ban, i) => (
             <div className="py-8 relative" key={i}>
               <div className="hidden sm:block relative">
                 <img
@@ -83,8 +88,7 @@ const BatSection = ({ closeCart, navigate }) => {
           ))}
         </Carousel>
         <Swiper
-          slidesPerView={3}
-          spaceBetween={20}
+          slidesPerView={4}
           loop={true}
           pagination={{ clickable: true }}
           autoplay={{
@@ -93,17 +97,17 @@ const BatSection = ({ closeCart, navigate }) => {
           }}
           modules={[Pagination, Autoplay]}
           breakpoints={{
-            1024: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
             600: { slidesPerView: 2 },
             375: { slidesPerView: 1 },
           }}
-          className="mt-10 lg:ml-20 mx-6 lg:mx-0"
+          className="mt-10 lg:ml-8 mx-6 lg:mx-0"
         >
-          {glass.map((e) => (
+          {eqProducts?.map((e) => (
             <SwiperSlide key={e._id}>
-              <div className="h-[420px]">
+              <div className="h-[450px]">
                 <Link to={`/productDetails/${e._id}`}>
-                  <div className="shadow-lg lg:h-[350px] rounded lg:w-[80%] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[370px] rounded w-[80%]  lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
                     <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                       <img
                         src={e.image?.[0]}
@@ -112,9 +116,11 @@ const BatSection = ({ closeCart, navigate }) => {
                       />
                     </div>
                     <div className=" h-full space-y-1 px-2">
-                      <h3 className="font-semibold text-xl">{e.description.length > 25
+                      <h3 className="font-semibold text-xl">
+                        {e.description.length > 25
                           ? `${e.description.slice(0, 35)}...`
-                          : e.description}</h3>
+                          : e.description}
+                      </h3>
                       <h4 className="text-[#959595] font-bold text-2xl">
                         $ {e.price}
                       </h4>

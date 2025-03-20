@@ -13,20 +13,11 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-// import Button from "@mui/material/Button";
 import { IoCart } from "react-icons/io5";
 import logo from "../assets/logo.png";
 import search from "../assets/search.png";
-// import heart from "../assets/heart.png";
-// import shoppingBag from "../assets/shopping_bag.png";
 import profile from "../assets/profile.png";
-// import location from "../assets/location.png";
-// import mail from "../assets/mail.png";
-// import twitter from "../assets/twitter.png";
-// import facebook from "../assets/facebook.png";
-// import pinterest from "../assets/pinterest.png";
 import logo1 from "../assets/logo4-remove.png";
-// import instagram from "../assets/instagram.png";
 import { Badge, useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { CancelOutlined } from "@mui/icons-material";
@@ -39,16 +30,15 @@ import Cookies from "js-cookie";
 
 const drawerWidth = 240;
 const navItems = [
-  "HOME",
-  "ABOUT",
-  "SHOP",
-  "SUNGLASSES",
-  "BATING GLOVES",
-  "EQUIPMENT",
-  "ACCESSORIES",
-  "APPAREL",
-  "CONTACT US",
-  
+  { name: "HOME", path: "/" },
+  { name: "ABOUT", path: "/about" },
+  { name: "SHOP", path: "/shop" },
+  { name: "SUNGLASSES", path: "/sunglasses" },
+  { name: "BATING GLOVES", path: "/bating-gloves" },
+  { name: "EQUIPMENT", path: "/product" },
+  { name: "ACCESSORIES", path: "/accessories" },
+  { name: "APPAREL", path: "/product" },
+  { name: "CONTACT US", path: "/contact-us" },
 ];
 
 function Navbar(props) {
@@ -122,21 +112,12 @@ function Navbar(props) {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText
-                onClick={() =>
-                  navigate(
-                    item.toLowerCase() === "home"
-                      ? "/"
-                      : item.toLowerCase() === "equipment" ||
-                        item.toLowerCase() === "apparel"
-                      ? `/product`
-                      : `/${item.toLowerCase()}`
-                  )
-                }
-                primary={item}
-              />
+          <ListItem key={item.name} disablePadding>
+            <ListItemButton
+              sx={{ textAlign: "center" }}
+              onClick={() => navigate(item.path)}
+            >
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -187,7 +168,7 @@ function Navbar(props) {
             width={""}
             className="w-36 cursor-pointer logoMobile"
           />
-          <Box >
+          <Box>
             <div className="flex flex-col justify-end items-end">
               <div className="text-black pt-6  flex space-x-12">
                 <div className="flex bg-white rounded-lg">
@@ -207,7 +188,7 @@ function Navbar(props) {
                   <img src={profile} alt="" className="h-8 p-1 pb-2 block" />
                 </div>
                 <div className="flex justify-center space-x-1 items-center cursor-pointer">
-                  <p className="hidden lg:block">Cart</p> 
+                  <p className="hidden lg:block">Cart</p>
                   <IoCart size={22} />
                 </div>
               </div>
@@ -215,17 +196,17 @@ function Navbar(props) {
               <div>
                 <List sx={{ display: { xs: "none", sm: "block" } }}>
                   <ListItem disablePadding>
-                    {/* <img src={logo1} alt="" /> */}
-                    {navItems.map((item, index) => (
+                    {navItems.map((item) => (
                       <ListItemButton
-                        key={index}
+                        key={item.name}
                         sx={{
                           textAlign: "center",
                           "&:hover": { backgroundColor: "transparent" },
                         }}
+                        onClick={() => navigate(item.path)}
                       >
                         <ListItemText
-                          primary={item}
+                          primary={item.name}
                           className="text-black hover:transition hover:scale-105 hover:-translate-y-1 hover:delay-100 hover:ease-in-out hover:duration-300 hover:text-[#0024ff]"
                         />
                       </ListItemButton>

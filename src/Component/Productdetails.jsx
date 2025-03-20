@@ -20,10 +20,10 @@ const Productdetails = () => {
   const user = decodedToken?.email;
   const user_id = decodedToken?._id;
   const [data, setData] = useState();
-  let defaultImage=data?.image.map((img)=>(img?.[0]))
-console.log("ghtghytuh",data)
+  let defaultImage = data?.image.map((img) => img?.[0]);
+  // console.log("ghtghytuh",data)
   const [selectedImage, setSelectedImage] = useState(defaultImage);
-console.log("show the first image",defaultImage)
+  // console.log("show the first image",defaultImage)
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ console.log("show the first image",defaultImage)
 
   const ratingChanged = (newRating) => {
     setRating(newRating);
-    console.log("newRating", newRating);
+    // console.log("newRating", newRating);
   };
 
   const navigateToLogin = () => {
@@ -43,17 +43,17 @@ console.log("show the first image",defaultImage)
   };
 
   const getAllProductData = async () => {
-    try {
-      const feature = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/products/${id}`
-      );
-      // fetchProducts = invRes.data
-      console.log("get product by id", feature);
-      setData(feature.data);
-      // console.log("invRes", data);
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   const feature = await axios.get(
+    //     `${import.meta.env.VITE_BACKEND_API}/products/${id}`
+    //   );
+    //   // fetchProducts = invRes.data
+    //   // console.log("get product by id", feature);
+    //   setData(feature.data);
+    //   // console.log("invRes", data);
+    // } catch (err) {
+    //   console.log(err);
+    // }
 
     try {
       const productRes = await axios.get(
@@ -68,12 +68,13 @@ console.log("show the first image",defaultImage)
 
     try {
       const inventory = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/inv-products/${id}`
+        `${import.meta.env.VITE_BACKEND_API}/products/${id}`
       );
 
       setData(inventory.data);
       console.log("inventory", data);
-    } catch (err) {
+    } 
+    catch (err) {
       console.log(err);
     }
 
@@ -81,58 +82,55 @@ console.log("show the first image",defaultImage)
   };
   // console.log("allProduct", allProduct);
 
-  const handleCart = async (e) => {
-    dispatch(addItem(e));
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist`,
-        {
-          image: data?.image,
-          title: data?.title,
-          price: data?.price,
-          qty: quantity,
-          product_id: id,
-          user_id: user_id,
-        }
-      );
-      message.success("Added to Cart");
+  // const handleCart = async (e) => {
+  //   dispatch(addItem(e));
+  //   try {
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_BACKEND_API}/wishlist`,
+  //       {
+  //         image: data?.image,
+  //         title: data?.title,
+  //         price: data?.price,
+  //         qty: quantity,
+  //         product_id: id,
+  //         user_id: user_id,
+  //       }
+  //     );
+  //     message.success("Added to Cart");
 
-      setTimeout(() => {
-        window.location.href = "/cart";
-        // navigate(`/cart`)
-      }, 500);
-      console.log("cart data post", response);
-    } catch (error) {
-      console.error(error);
-      message.success("cartItem not added");
-    }
-  };
+  //     setTimeout(() => {
+  //       window.location.href = "/cart";
+  //       // navigate(`/cart`)
+  //     }, 500);
+  //     console.log("cart data post", response);
+  //   } catch (error) {
+  //     console.error(error);
+  //     message.success("cartItem not added");
+  //   }
+  // };
 
-  
-
-
-  const [cartData, setCartData] = useState([]);
-  async function getCartData() {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
-      );
-      setCartData(data.wishlist);
-      console.log("get cart data", cartData);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const [cartData, setCartData] = useState([]);
+  // async function getCartData() {
+  //   try {
+  //     const { data } = await axios.get(
+  //       `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
+  //     );
+  //     setCartData(data.wishlist);
+  //     console.log("get cart data", cartData);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   let isProductInCart;
 
-  useEffect(() => {
-    getCartData();
-    isProductInCart = cartData?.find((e) => e.product_id === id);
-    // console.log("isProductInCart", isProductInCart)
-  }, [data]);
+  // useEffect(() => {
+  //   // getCartData();
+  //   isProductInCart = cartData?.find((e) => e.product_id === id);
+  //   // console.log("isProductInCart", isProductInCart)
+  // }, [data]);
 
-  console.log("duct", data);
+  // console.log("duct", data);
 
   return (
     <>
@@ -141,7 +139,10 @@ console.log("show the first image",defaultImage)
           <div className="col-6 flex flex-col items-center ">
             {/* Centering the Main Image */}
             <div className="lg:w-[500px] lg:h-[500px] w-[300px] h-[300px] flex justify-center items-center ">
-              <img src={selectedImage || data?.image?.[0]} className="w-full h-full object-cover" />
+              <img
+                src={selectedImage || data?.image?.[0]}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             {/* Thumbnail Images */}

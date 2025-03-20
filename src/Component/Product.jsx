@@ -69,10 +69,10 @@ const Product = () => {
     <>
       <section>
         <div className="container-fliud">
-          <div className="row">
-            <div className="col-md-2 col-sm-10">
-              <div className="sidebar p-3 bg-light">
-                <div className=" searchBar mb-3">
+          <div className="flex border">
+            <div className="w-[15%]">
+              <div className="sidebar w-full bg-light">
+                <div className=" searchBar my-20 mb-3">
                   <label
                     htmlFor="searchBox"
                     className="form-label"
@@ -173,20 +173,20 @@ const Product = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-10 my-5">
-              <div className="row">
+            <div className=" my-24 w-[85%] px-4">
+              <div className="flex flex-wrap gap-5">
                 {load ? (
                   paginatedData.length > 0 ? (
                     paginatedData.map((info) => (
-                      <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={info._id}>
+                      <div className=" mb-4" key={info._id}>
                         <Link to={`/productDetails/${info._id}`}>
-                          <div className="card h-100">
-                            <img src={info.image} alt={info.title} />
-                            <div className="card-body">
+                          <div className="flex flex-col justify-center items-center h-100 border rounded w-[300px]">
+                            <img src={info.image?.[0]} alt={info.title} className=" object-contain"/>
+                            <div className="">
                               <h5 className="card-title">{info.title}</h5>
                               <p className="card-text">${info.price}</p>
                               <p className="card-text">
-                                <span className="text-warning star">⭐⭐⭐⭐☆</span>
+                                {/* <span className="text-warning star">⭐⭐⭐⭐☆</span> */}
                               </p>
                             </div>
                           </div>
