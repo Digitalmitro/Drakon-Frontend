@@ -66,17 +66,6 @@ const Productdetails = () => {
       console.log(err);
     }
 
-    try {
-      const inventory = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/products/${id}`
-      );
-
-      setData(inventory.data);
-      console.log("inventory", data);
-    } 
-    catch (err) {
-      console.log(err);
-    }
 
     // setData(res.data);
   };
@@ -312,7 +301,6 @@ const Productdetails = () => {
             aria-labelledby="nav-profile-tab"
           >
             <h2 className="fs-2 text">REVIEWS</h2>
-            <p>{data?.review[0] || "No Reviews yet"}</p>
           </div>
         </div>
       </section>
