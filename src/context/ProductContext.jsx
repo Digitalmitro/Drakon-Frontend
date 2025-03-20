@@ -70,6 +70,21 @@ export const ProductProvider = ({ children }) => {
       return null;
     }
   };
+  const getAllShopProduct = async () =>{
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API}/feature-products`
+      );
+
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      const data = await response.json();
+      // console.log("all category banners", data);
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch category banners:", error);
+      return null;
+    }
+  }
 
   return (
     <ProductContext.Provider
@@ -78,6 +93,7 @@ export const ProductProvider = ({ children }) => {
         getAllProductsByCategories,
         getAllTopProducts,
         getCategory,
+        getAllShopProduct
       }}
     >
       {children}

@@ -26,7 +26,7 @@ import ReturnAndRefund from "./Page/NavPolicies/ReturnAndRefund";
 import TermsAndCondition from "./Page/NavPolicies/TermsAndCondition";
 import axios from "axios";
 import AllProductByCategory from "./Page/AllProductByCategory";
-
+import Shop from "./Page/Shop"
 function App() {
   const isMobile = useMediaQuery("(max-width:900px)");
   const dispatch = useDispatch();
@@ -103,6 +103,7 @@ function App() {
           <Route path="/category" element={<Category />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/termscondition" element={<TermsAndCondition />} />
+          <Route path="/shop" element={<Shop/>}/>
         </Routes>
         <Footer closeCart={hideCartModal} />
       </div>
