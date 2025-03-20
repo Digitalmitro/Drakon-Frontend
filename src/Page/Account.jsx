@@ -3,6 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
 const Account = () => {
   const navigate = useNavigate();
   const token = Cookies.get("token");
@@ -71,14 +73,21 @@ const Account = () => {
   }, [token]);
   return (
     <>
-      <div className="container-fluid profile-banner">
+      <div className="container-fluid relative flex justify-center items-center profile-banner">
+      <motion.h2
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="absolute  transform  -translate-x-1/2 -translate-y-1/2 text-white text-5xl font-semibold"
+        >
         <h2 className="text-center size">My Account</h2>
+        </motion.h2>
       </div>
 
       <section style={{ backgroundColor: "#F3F3F3" }}>
         <div className="container">
           <div
-            className="d-flex justify-content-start py-5"
+            className="d-flex justify-content-center py-5"
             style={{ gap: "50px" }}
           >
             {showLogin ? (
@@ -124,8 +133,8 @@ const Account = () => {
 
                     <button
                       type="submit"
-                      className="btn btn"
-                      style={{ backgroundColor: "#FF7F50 " }}
+                      className="btn text-white"
+                      style={{ backgroundColor: "#ff5B00 " }}
                     >
                       Log in
                     </button>
@@ -186,8 +195,8 @@ const Account = () => {
 
                     <button
                       type="submit"
-                      className="btn "
-                      style={{ backgroundColor: "#FF7F50 " }}
+                      className="btn text-white"
+                      style={{ backgroundColor: "#ff5B00 " }}
                     >
                       Register
                     </button>
