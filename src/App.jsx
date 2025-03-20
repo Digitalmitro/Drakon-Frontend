@@ -7,7 +7,7 @@ import Navbar from "./Component/Navbar";
 import { useDispatch } from "react-redux";
 import { cartModal } from "./Redux/CartSlice";
 import Home from "./Page/Home";
-import Cart from "./Component/Cart";
+// import Cart from "./Component/Cart";
 import Tab from "./Component/Tab";
 import Productdetails from "./Component/Productdetails";
 import Profile from "./Page/Profile";
@@ -27,6 +27,8 @@ import TermsAndCondition from "./Page/NavPolicies/TermsAndCondition";
 import axios from "axios";
 import AllProductByCategory from "./Page/AllProductByCategory";
 import Shop from "./Page/Shop"
+import Cart from "./Page/Cart"
+
 function App() {
   const isMobile = useMediaQuery("(max-width:900px)");
   const dispatch = useDispatch();
@@ -88,7 +90,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout/:id" element={<CheckoutWithId />} />
-          <Route path="/cart" element={<Cart />} />
+          {/* <Route path="/cart" element={<Cart />} /> */}
           <Route path="/tab" element={<Tab />} />
           <Route path="/product" element={<EqpProduct />} />
           <Route path="/shippingpolicy" element={<ShippingPolicy />} />
@@ -104,6 +106,8 @@ function App() {
           <Route path="/orders" element={<Orders />} />
           <Route path="/termscondition" element={<TermsAndCondition />} />
           <Route path="/shop" element={<Shop/>}/>
+          <Route path="/cart" element={<Cart/>}/>
+
         </Routes>
         <Footer closeCart={hideCartModal} />
       </div>
