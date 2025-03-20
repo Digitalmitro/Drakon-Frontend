@@ -34,11 +34,11 @@ const navItems = [
   { name: "ABOUT", path: "/about" },
   { name: "SHOP", path: "/shop" },
   { name: "SUNGLASSES", path: "/sunglasses" },
-  { name: "BATING GLOVES", path: "/bating-gloves" },
-  { name: "EQUIPMENT", path: "/product" },
+  { name: "BATING GLOVES", path: "/batting-gloves" },
+  { name: "EQUIPMENT", path: "/equipment" },
   { name: "ACCESSORIES", path: "/accessories" },
-  { name: "APPAREL", path: "/product" },
-  { name: "CONTACT US", path: "/contact-us" },
+  { name: "APPAREL", path: "/apparel" },
+  { name: "CONTACT US", path: "/contact" },
 ];
 
 function Navbar(props) {

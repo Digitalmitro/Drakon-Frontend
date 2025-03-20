@@ -8,8 +8,10 @@ import phone from "../assets/phone-telephone.png";
 import mail from "../assets/mail.png";
 import locationFooter from "../assets/location-footer.png";
 import { useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Footer = ({ closeCart }) => {
+  const navigate=useNavigate()
   const isMobile = useMediaQuery("(max-width:900px)");
   return (
     <div
@@ -45,30 +47,31 @@ const Footer = ({ closeCart }) => {
               </div>
             </div>
             <div className="flex py-5 flex-col banner items-center lg:items-start gap-2 text-white mb-5 lg:mb-0">
-              <h3 className="text-2xl font-bold">Services</h3>
+              <h3 className="text-2xl font-bold">Category</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col gap-7 text-xl">
+                <li>Sunglasses</li>
                 <li>Batting gloves</li>
-                <li>Sliding mitt</li>
-                <li>Elbow guard</li>
-                <li>Headband</li>
+                <li>Equipment</li>
+                <li>Accessories</li>
+                <li>Apparel</li>
               </ul>
             </div>
             <div className="flex flex-col items-center lg:items-start gap-2 py-5 text-white mb-5 lg:mb-0">
               <h3 className="text-2xl font-bold">Useful Links</h3>
               <hr className="border-red-500 w-36 mb-4" />
-              <ul className="flex flex-col gap-7 text-xl">
-                <li>Home</li>
-                <li>About us</li>
-                <li>Blog</li>
-                <li>Contact Us</li>
+              <ul className="flex flex-col gap-7 text-xl cursor-pointer">
+                <li onClick={()=>navigate("/termscondition")}>Terms and Conditions</li>
+                <li onClick={()=>navigate("/privacypolicy")}>Privacy Policy</li>
+                <li onClick={()=>navigate("/returnrefund")}>Return Policy</li>
+                <li onClick={()=>navigate("/faq")}>FAQ</li>
               </ul>
             </div>
             <div className="flex flex-col contact items-center lg:items-start gap-2 py-5 text-white">
-              <h3 className="text-2xl  font-bold">Contact</h3>
+              <h3 className="text-2xl font-bold">Contact</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col  contact items-center lg:items-start gap-7 text-xl">
-                <li className="flex items-center gap-5">
+                <li className="flex items-center gap-6">
                   <img src={phone} alt="" className="object-cover w-10" />
                   <p>+1 858-997-3098</p>
                 </li>
