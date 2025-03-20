@@ -36,7 +36,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
 
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
-      <div className=" mx-auto pb-40">
+      <div className=" mx-auto pb-10">
         <h2 className="font-bold pb-4 text-4xl lg:text-5xl uppercase text-center">
           Drakon Sports Performance Sunglasses
         </h2>
@@ -81,8 +81,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
           ))}
         </Carousel>
         <Swiper
-          slidesPerView={3}
-          spaceBetween={20}
+          slidesPerView={4}
           loop={true}
           pagination={{ clickable: true }}
           autoplay={{
@@ -95,13 +94,13 @@ const GlassesSection = ({ closeCart, navigate }) => {
             600: { slidesPerView: 2 },
             375: { slidesPerView: 1 },
           }}
-          className="mt-10 lg:ml-20 mx-6 lg:mx-0"
+          className="mt-10 lg:ml-8 mx-6 lg:mx-0"
         >
           {glass.map((e) => (
             <SwiperSlide key={e._id}>
-              <div className="h-[420px]">
+              <div className="h-[450px]">
                 <Link to={`/productDetails/${e._id}`}>
-                  <div className="shadow-lg  rounded lg:w-[80%] h-[350px] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[370px] rounded lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
                     <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                       <img
                         src={e.image?.[0]}

@@ -7,10 +7,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Autoplay  } from "swiper/modules";
 import { Carousel } from "antd";
-import glassbanner from "../assets/carousel/glass_banner/SUNGLASS.jpg";
-import glassbannerMobile from "../assets/carousel/glass_banner/Sunglass_Mobile.jpg";
-import batBanner from "../assets/carousel/bat_banner/Baseball-Bat.jpg";
-import batMobileBanner from "../assets/carousel/bat_banner/Baseball_Bat_Mobile.jpg";
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
 
@@ -42,7 +38,7 @@ const Featured = ({ closeCart, navigate }) => {
 
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
-      <div className=" mx-auto py-40">
+      <div className=" mx-auto py-10">
         <h2 className="font-bold text-4xl lg:text-5xl uppercase text-center">
           Top Products
         </h2>
@@ -50,7 +46,7 @@ const Featured = ({ closeCart, navigate }) => {
         <Carousel autoplay effect="fade">
         {
           topProductBanner.map((ban,i)=>(
-            <div className="py-8 relative" key={i}>
+            <div className=" relative" key={i}>
           
           <div className="hidden sm:block relative">
             <img
@@ -91,8 +87,7 @@ const Featured = ({ closeCart, navigate }) => {
         }
         </Carousel>
         <Swiper
-          slidesPerView={3}
-          spaceBetween={20}
+          slidesPerView={4}
           loop={true}
           pagination={{ clickable: true }}
           autoplay={{
@@ -105,13 +100,13 @@ const Featured = ({ closeCart, navigate }) => {
             600: { slidesPerView: 2 },
             375: { slidesPerView: 1 },
           }}
-          className="mt-10 lg:ml-20 mx-6 lg:mx-0"
+          className="mt-10 lg:ml-8 mx-6 lg:mx-0"
         >
           {glass.map((e) => (
             <SwiperSlide key={e._id}>
-              <div className="h-[420px]">
+              <div className="h-[450px]">
                 <Link to={`/productDetails/${e._id}`}>
-                  <div className="shadow-lg lg:h-[350px] rounded lg:w-[80%] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[370px] rounded lg:w-[85%] flex flex-col justify-between gap-6 bg-white p-2 ">
                     <div className="flex justify-center lg:w-full bg-[#dddfe0]"> 
                       <img
                         src={e.image?.[0]}
