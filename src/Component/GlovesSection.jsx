@@ -47,8 +47,8 @@ const GlovesSection = ({ closeCart, navigate }) => {
 
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
-      <div className=" mx-auto pb-40">
-        <h2 className="font-bold pb-4 text-4xl lg:text-5xl uppercase text-center px-0.5">
+      <div className=" mx-auto pb-10">
+        <h2 className="font-bold pb-2 text-4xl lg:text-5xl uppercase text-center px-0.5">
           Drakon Sports Leather Batting Gloves
         </h2>
 
@@ -92,8 +92,7 @@ const GlovesSection = ({ closeCart, navigate }) => {
           ))}
         </Carousel>
         <Swiper
-          slidesPerView={3}
-          spaceBetween={20}
+          slidesPerView={4}
           loop={true}
           pagination={{ clickable: true }}
           autoplay={{
@@ -106,13 +105,13 @@ const GlovesSection = ({ closeCart, navigate }) => {
             600: { slidesPerView: 2 },
             375: { slidesPerView: 1 },
           }}
-          className="mt-10 lg:ml-20 mx-6 lg:mx-0"
+          className="mt-10 lg:ml-8 mx-6 lg:mx-0"
         >
           {glass.map((e) => (
             <SwiperSlide key={e._id}>
-              <div className="h-[420px]">
+              <div className="h-[450px]">
                 <Link to={`/productDetails/${e._id}`}>
-                  <div className="shadow-lg lg:h-[350px] rounded lg:w-[80%] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[370px] rounded lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
                     <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                       <img
                         src={e.image?.[0]}
@@ -121,9 +120,11 @@ const GlovesSection = ({ closeCart, navigate }) => {
                       />
                     </div>
                     <div className=" h-full space-y-1 px-2">
-                      <h3 className="font-semibold text-xl">{e.description.length > 25
+                      <h3 className="font-semibold text-xl">
+                        {e.description.length > 25
                           ? `${e.description.slice(0, 35)}...`
-                          : e.description}</h3>
+                          : e.description}
+                      </h3>
                       <h4 className="text-[#959595] font-bold text-2xl">
                         $ {e.price}
                       </h4>

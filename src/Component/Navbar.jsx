@@ -39,17 +39,16 @@ import Cookies from "js-cookie";
 
 const drawerWidth = 240;
 const navItems = [
-  "CUSTOM",
-  "GLOVES",
-  "BATS",
-  "BALLS",
-  "PROTECTIVE",
-  "BAGS",
-  "APPAREL",
-  "BATTING GLOVES",
+  "HOME",
+  "ABOUT",
+  "SHOP",
+  "SUNGLASSES",
+  "BATING GLOVES",
+  "EQUIPMENT",
   "ACCESSORIES",
-  "CLEARANCE",
-  "TEAM RAWLINGS",
+  "APPAREL",
+  "CONTACT US",
+  
 ];
 
 function Navbar(props) {
@@ -216,7 +215,7 @@ function Navbar(props) {
               <div>
                 <List sx={{ display: { xs: "none", sm: "block" } }}>
                   <ListItem disablePadding>
-                    <img src={logo1} alt="" />
+                    {/* <img src={logo1} alt="" /> */}
                     {navItems.map((item, index) => (
                       <ListItemButton
                         key={index}
