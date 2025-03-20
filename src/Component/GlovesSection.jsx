@@ -21,14 +21,20 @@ const topCatBanner = [
 ];
 
 const GlovesSection = ({ closeCart, navigate }) => {
-  const { getAllCategoryBanner } = useProduct();
+  const { getAllCategoryBanner,getAllProductsByCategories } = useProduct();
   const [glovesBanner, setGlovesBanner] = useState([]);
+  const [glovesProducts, setGlovesProducts] = useState([]);
   const fetchAllGlovesBanner = async () => {
     const response = await getAllCategoryBanner("Batting Gloves");
-      console.log("all gloves banner", response);
+      // console.log("all gloves banner", response);
       setGlovesBanner(response);
     
   };
+  const allProductsByCategory=async()=>{
+    const response=await getAllProductsByCategories("Batting Gloves")
+    console.log("show all gloves products",response)
+    setGlovesProducts(response)
+  }
   const [glass, setGlass] = useState([]);
   const getAllProducts = async () => {
     const response = await fetch(
@@ -36,13 +42,13 @@ const GlovesSection = ({ closeCart, navigate }) => {
     );
     if (response.ok) {
       const data = await response.json();
-      console.log("show all products", data);
       setGlass(data);
     }
   };
   useEffect(() => {
     getAllProducts();
     fetchAllGlovesBanner();
+    allProductsByCategory();
   }, []);
 
   return (
@@ -101,17 +107,17 @@ const GlovesSection = ({ closeCart, navigate }) => {
           }}
           modules={[Pagination, Autoplay]}
           breakpoints={{
-            1024: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
             600: { slidesPerView: 2 },
             375: { slidesPerView: 1 },
           }}
           className="mt-10 lg:ml-8 mx-6 lg:mx-0"
         >
-          {glass.map((e) => (
+          {glovesProducts?.map((e) => (
             <SwiperSlide key={e._id}>
               <div className="h-[450px]">
                 <Link to={`/productDetails/${e._id}`}>
-                  <div className="shadow-lg lg:h-[370px] rounded lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[370px] rounded w-[80%]  lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
                     <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                       <img
                         src={e.image?.[0]}

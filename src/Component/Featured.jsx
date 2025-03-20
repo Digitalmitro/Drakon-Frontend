@@ -12,27 +12,15 @@ import { useProduct } from "../context/ProductContext";
 
 
 const Featured = ({ closeCart, navigate }) => {
-  const [glass, setGlass] = useState([]);
-  const { getAllCategoryBanner } = useProduct();
+  const { getAllTopProducts } = useProduct();
   const [topProductBanner, setTopProductBanner] = useState([]);
   const fetchAllGlassesBanner = async () => {
-    const response = await getAllCategoryBanner();
-      console.log("all gloves banner", response);
+    const response = await getAllTopProducts();
+      console.log("all products", response);
       setTopProductBanner(response);
     
   };
-  const getAllProducts = async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_API}/products`
-    );
-    if (response.ok) {
-      const data = await response.json();
-      console.log("show all products", data);
-      setGlass(data);
-    }
-  };
   useEffect(() => {
-    getAllProducts();
     fetchAllGlassesBanner();
   }, []);
 
@@ -43,7 +31,7 @@ const Featured = ({ closeCart, navigate }) => {
           Top Products
         </h2>
 
-        <Carousel autoplay effect="fade">
+        {/* <Carousel autoplay effect="fade">
         {
           topProductBanner.map((ban,i)=>(
             <div className=" relative" key={i}>
@@ -85,7 +73,7 @@ const Featured = ({ closeCart, navigate }) => {
         </div>
           ))
         }
-        </Carousel>
+        </Carousel> */}
         <Swiper
           slidesPerView={4}
           loop={true}
@@ -96,17 +84,17 @@ const Featured = ({ closeCart, navigate }) => {
           }}
           modules={[Pagination,Autoplay]}
           breakpoints={{
-            1024: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
             600: { slidesPerView: 2 },
             375: { slidesPerView: 1 },
           }}
           className="mt-10 lg:ml-8 mx-6 lg:mx-0"
         >
-          {glass.map((e) => (
+          {topProductBanner?.map((e) => (
             <SwiperSlide key={e._id}>
               <div className="h-[450px]">
                 <Link to={`/productDetails/${e._id}`}>
-                  <div className="shadow-lg lg:h-[370px] rounded lg:w-[85%] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[370px] rounded w-[80%] lg:w-[85%] flex flex-col justify-between gap-6 bg-white p-2 ">
                     <div className="flex justify-center lg:w-full bg-[#dddfe0]"> 
                       <img
                         src={e.image?.[0]}

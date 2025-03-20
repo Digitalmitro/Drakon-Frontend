@@ -4,6 +4,8 @@ import Featured from "../Component/Featured";
 import BatSection from "../Component/BatSection";
 import GlassesSection from "../Component/GlassesSection";
 import GlovesSection from "../Component/GlovesSection";
+import Accessories from "../Component/Accessories";
+import Apparel from "../Component/Apparel";
 import NewlyAvailable from "../Component/NewlyAvailable";
 import ShoesDisplay from "../Component/ShoesDisplay";
 import { useMediaQuery } from "@mui/material";
@@ -22,6 +24,8 @@ const Home = () => {
       <GlassesSection closeCart={hideCartModal} />
       <GlovesSection closeCart={hideCartModal} />
       <BatSection closeCart={hideCartModal} />
+      <Accessories closeCart={hideCartModal} />
+      <Apparel closeCart={hideCartModal} />
       <NewlyAvailable closeCart={hideCartModal} />
       {/* <ShoesDisplay closeCart={hideCartModal} /> */}
     </div>

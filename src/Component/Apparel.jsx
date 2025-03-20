@@ -10,26 +10,27 @@ import { Carousel } from "antd";
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
 
-const GlassesSection = ({ closeCart, navigate }) => {
-  const { getAllCategoryBanner,getAllProductsByCategories } = useProduct();
-  const [glassesBanner, setGlassesBanner] = useState([]);
-  const [glassesProducts, setGlassesProducts] = useState([]);
+const Apparel = ({ closeCart, navigate }) => {
+  const [glass, setGlass] = useState([]);
+  const { getAllCategoryBanner, getAllProductsByCategories } = useProduct();
+  const [apparelBanner, setApparelBanner] = useState([]);
+  const [apparelProducts, setApparelProducts] = useState([]);
   const fetchAllGlassesBanner = async () => {
-    const response = await getAllCategoryBanner("Sunglasses");
-    setGlassesBanner(response);
+    const response = await getAllCategoryBanner("Apparel");
+    // console.log("all gloves banner", response);
+    setApparelBanner(response);
   };
-
-  const allProductsByCategory=async()=>{
-    const response=await getAllProductsByCategories("Sunglasses")
-    console.log("show all glasses products",response)
-    setGlassesProducts(response)
-  }
+  const allProductsByCategory = async () => {
+    const response = await getAllProductsByCategories("Apparel");
+    setApparelProducts(response);
+  };
   const getAllProducts = async () => {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_API}/products`
     );
     if (response.ok) {
       const data = await response.json();
+      // console.log("show all products", data);
       setGlass(data);
     }
   };
@@ -42,12 +43,12 @@ const GlassesSection = ({ closeCart, navigate }) => {
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
       <div className=" mx-auto pb-10">
-        <h2 className="font-bold pb-4 text-4xl lg:text-5xl uppercase text-center">
-          Drakon Sports Performance Sunglasses
+        <h2 className="font-bold text-4xl lg:text-5xl uppercase text-center">
+          SHOP THE GAME’S APPAREL
         </h2>
 
         <Carousel autoplay effect="fade">
-          {glassesBanner.map((ban, i) => (
+          {apparelBanner.map((ban, i) => (
             <div className="py-8 relative" key={i}>
               <div className="hidden sm:block relative">
                 <img
@@ -101,7 +102,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
           }}
           className="mt-10 lg:ml-8 mx-6 lg:mx-0"
         >
-          {glassesProducts.map((e) => (
+          {apparelProducts?.map((e) => (
             <SwiperSlide key={e._id}>
               <div className="h-[450px]">
                 <Link to={`/productDetails/${e._id}`}>
@@ -134,4 +135,4 @@ const GlassesSection = ({ closeCart, navigate }) => {
   );
 };
 
-export default GlassesSection;
+export default Apparel;
