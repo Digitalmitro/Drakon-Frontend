@@ -63,7 +63,7 @@ const Footer = ({ closeCart }) => {
               <ul className="flex flex-col gap-7 text-xl cursor-pointer">
                 <li onClick={()=>navigate("/termscondition")}>Terms and Conditions</li>
                 <li onClick={()=>navigate("/privacypolicy")}>Privacy Policy</li>
-                <li onClick={()=>navigate("/returnrefund")}>Return Policy</li>
+                <li onClick={()=>navigate("/shippingpolicy")}>Shipping Policy</li>
                 <li onClick={()=>navigate("/faq")}>FAQ</li>
               </ul>
             </div>

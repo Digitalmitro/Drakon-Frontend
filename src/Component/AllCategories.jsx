@@ -60,9 +60,9 @@ const GlassesSection = ({ closeCart, navigate }) => {
         >
           {glassesProducts.map((e) => (
             <SwiperSlide key={e._id}>
-              <div className="h-[450px]">
+              <div className="h-[400px]">
                 <Link to={`/${e.description.toLowerCase()}`}>
-                  <div className="shadow-lg lg:h-[370px] rounded w-[80%]  lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[310px] rounded w-[80%]  lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
                     <div className="flex justify-center lg:w-full">
                       <img
                         src={e.image}

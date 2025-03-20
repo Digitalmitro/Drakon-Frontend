@@ -1,11 +1,16 @@
 import React from "react";
-
+import { motion } from "framer-motion";
 function shippingPolicy() {
   return (
     <section>
-      <div className="container-fluid shipping-banner p-3"></div>
+      <motion.div
+      className="container-fluid shipping-banner p-3"
+      initial={{ opacity: 0, y: -50 }} // Start faded out and moved up
+      animate={{ opacity: 1, y: 0 }}  // Animate to full opacity and original position
+      transition={{ duration: 0.8, ease: "easeOut" }} // Smooth transition
+    />
 
-      <div className="col-12  m-4 px-5">
+      <div className="col-11  m-4 px-5">
         <br/>
         <h3 className="m-0 fs-1 text " style={{ color: "#ff6702",  fontWeight:"500" }}>
           Shipping Policy

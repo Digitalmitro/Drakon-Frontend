@@ -5,7 +5,7 @@ function TermsAndCondition() {
     <section>
     <div className="container-fluid terms-condition-banner p-3"></div>
 
-    <div className="col-12  m-4 px-5">
+    <div className="col-11  m-4 px-5">
     <br/>  <br />
       <h3 className="m-0 fs-1 text " style={{ color: "#ff6702", fontWeight:"500" }}>
        Terms And Condition
