@@ -90,7 +90,15 @@ const Footer = ({ closeCart }) => {
         </div>
         {/* <hr className="my-5" /> */}
         <p className="text-white text-center ">
-          Copyright by SPORT APPAREL @ 2024. All rights reserved
+          Designed and developed by{" "}
+          <a
+            href="https://digitalmitro.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-100 underline"
+          >
+            Digital Mitro
+          </a>
         </p>
       </div>
     </div>
