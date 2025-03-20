@@ -187,7 +187,9 @@ function Navbar(props) {
                   <p className="hidden lg:block">My Accounts</p>{" "}
                   <img src={profile} alt="" className="h-8 p-1 pb-2 block" />
                 </div>
-                <div className="flex justify-center space-x-1 items-center cursor-pointer">
+                <div className="flex justify-center space-x-1 items-center cursor-pointer"
+                 onClick={() => navigate("/cart")}
+                >
                   <p className="hidden lg:block">Cart</p>
                   <IoCart size={22} />
                 </div>
