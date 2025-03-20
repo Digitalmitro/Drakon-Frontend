@@ -10,8 +10,7 @@ const CartPage = () => {
       brand: "Rawlings",
       price: 399.99,
       quantity: 1,
-      image:
-        "https://example.com/glove.jpg",
+      image: "https://example.com/glove.jpg",
       inStock: true,
       hand: "Right",
     },
@@ -20,7 +19,10 @@ const CartPage = () => {
   const [coupon, setCoupon] = useState("");
   const shippingCost = 6.99;
   const shippingDiscount = -6.99;
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
   const estimatedTotal = subtotal + shippingCost + shippingDiscount;
 
   // Handle Quantity Change
@@ -30,7 +32,10 @@ const CartPage = () => {
         item.id === id
           ? {
               ...item,
-              quantity: type === "increase" ? item.quantity + 1 : Math.max(1, item.quantity - 1),
+              quantity:
+                type === "increase"
+                  ? item.quantity + 1
+                  : Math.max(1, item.quantity - 1),
             }
           : item
       )
@@ -50,18 +55,40 @@ const CartPage = () => {
       ) : (
         <div className="bg-white p-4 rounded-md shadow-md mt-4">
           {cart.map((item) => (
-            <div key={item.id} className="flex items-center justify-between border-b pb-4 mb-4">
-              <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-md" />
-              <div className="flex-1 px-4">
+            <div
+              key={item.id}
+              className="flex items-center justify-between border-b pb-4 mb-4"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-20 h-20 object-cover rounded-md"
+              />
+              <div className="flex-1 space-y-2 px-4">
                 <h3 className="font-semibold">{item.name}</h3>
                 <p className="text-sm text-gray-500">SKU: {item.sku}</p>
                 <p className="text-sm text-gray-500">Brand: {item.brand}</p>
-                <p className="text-sm text-gray-500">Which hand do you throw with?: {item.hand}</p>
-                <p className={`text-sm ${item.inStock ? "text-green-500" : "text-red-500"}`}>
+                <p className="text-sm text-gray-500">
+                  Which hand do you throw with?: {item.hand}
+                </p>
+                <p
+                  className={`text-sm ${
+                    item.inStock ? "text-green-500" : "text-[#ff0024]"
+                  }`}
+                >
                   {item.inStock ? "In Stock" : "Out of Stock"}
                 </p>
               </div>
-              <div className="text-center">
+              <div className="text-center flex flex-col justify-around  h-[200px]">  
+                <div className="text-[#ff0024]">
+    
+                  <button
+                    onClick={() => removeItem(item.id)}
+                    className="text-[#ff0024]"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
                 <p className="font-semibold">${item.price.toFixed(2)}</p>
                 <div className="flex items-center justify-center mt-2">
                   <button
@@ -79,10 +106,7 @@ const CartPage = () => {
                   </button>
                 </div>
               </div>
-              <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
-              <button onClick={() => removeItem(item.id)} className="text-red-500">
-                <FaTrash />
-              </button>
+              {/* <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p> */}
             </div>
           ))}
         </div>
@@ -97,7 +121,7 @@ const CartPage = () => {
           onChange={(e) => setCoupon(e.target.value)}
           className="border p-2 flex-1"
         />
-        <button className="bg-red-500 text-white px-4 py-2 ml-2">APPLY</button>
+        <button className="bg-[#ff0024] text-white px-4 py-2 ml-2">APPLY</button>
       </div>
 
       {/* Price Summary */}
@@ -121,7 +145,7 @@ const CartPage = () => {
       </div>
 
       {/* Checkout Button */}
-      <button className="bg-red-600 text-white w-full py-3 mt-4 text-lg font-semibold rounded-md">
+      <button className="bg-[#ff0024] text-white w-full py-3 mt-4 text-lg font-semibold rounded-md">
         CHECKOUT
       </button>
     </div>
