@@ -1,14 +1,26 @@
-import React from "react";
+import banner from "../../assets/carousel/privacy_policy.jpg"
 import { motion } from "framer-motion";
 function PrivacyPolicy() {
   return (
     <section>
-      <motion.div
-      className="container-fluid privacy-banner p-3"
-      initial={{ opacity: 0, y: -50 }} // Start faded out and moved up
-      animate={{ opacity: 1, y: 0 }}  // Animate to full opacity and original position
-      transition={{ duration: 0.8, ease: "easeOut" }} // Smooth transition
-    />
+       <div
+      className="container-fluid privacy-banner d-flex align-items-center justify-content-center"
+      style={{
+        backgroundImage: `url(${banner})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "500px",
+      }}
+    >
+      <motion.h2
+        className="text-center text-white"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <p className="pt-20 text-5xl font-bold">PRIVACY POLICY</p>
+      </motion.h2>
+    </div>
 
       <div className="col-11  m-4 px-5">
       <br/>  <br />
