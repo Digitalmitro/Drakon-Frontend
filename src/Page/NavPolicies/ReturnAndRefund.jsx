@@ -1,11 +1,26 @@
-import React from "react";
-
+import banner from "../../assets/carousel/shipping.jpg"
+import { motion } from "framer-motion";
 function ReturnAndRefund() {
   return (
     <section>
-      <div className="container-fluid return-refund-banner p-3">
-        <h2 className="text-center size">Return and Refund </h2>
-      </div>
+      <div
+      className="container-fluid  d-flex align-items-center justify-content-center"
+      style={{
+        backgroundImage: `url(${banner})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "500px",
+      }}
+    >
+      <motion.h2
+        className="text-center text-white"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <p className="pt-20">Return and Refund</p>
+      </motion.h2>
+    </div>
 
       <div className="col-11  m-4 px-5">
         <br />

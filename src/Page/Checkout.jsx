@@ -76,24 +76,16 @@ const Checkout = () => {
         `${import.meta.env.VITE_BACKEND_API}/inv-products`
       );
       const invProduct = res3.data;
-      setAllProductData([
-        
-        ...featureProduct,
-        ...invProduct,
-        ...prodData,
-      ]);
+      setAllProductData([...featureProduct, ...invProduct, ...prodData]);
     } catch (err) {
       console.log(err);
     }
-
-
   };
   // console.log("productDatat", allProductData);
 
   useEffect(() => {
     getAllProductData();
   }, []);
-
 
   // wishlist Products
   const handleProduct = async () => {
@@ -199,41 +191,42 @@ const Checkout = () => {
           (info) => info._id === item.product_id
         );
 
-
         console.log("orderedStock", orderedStock[0]._id);
-        if(orderedStock[0].stock){
+        if (orderedStock[0].stock) {
           const productPayload = {
-            stock: orderedStock[0].stock - item.qty
-         }
-        if(orderedStock[0].type === 'products'){
-          const productRes = await axios.put(
-            `${import.meta.env.VITE_BACKEND_API}/products/${item.product_id}` , productPayload
-          );
-        }
-        else  if(orderedStock[0].type === 'inventory'){
-          const inventory = await axios.put(
-            `${import.meta.env.VITE_BACKEND_API}/inv-products/${item.product_id}`, productPayload
-          );
-        }
-        else{
-          const feature = await axios.put(
-            `${import.meta.env.VITE_BACKEND_API}/feature-products/${item.product_id}`, productPayload
-          );
-        }
+            stock: orderedStock[0].stock - item.qty,
+          };
+          if (orderedStock[0].type === "products") {
+            const productRes = await axios.put(
+              `${import.meta.env.VITE_BACKEND_API}/products/${item.product_id}`,
+              productPayload
+            );
+          } else if (orderedStock[0].type === "inventory") {
+            const inventory = await axios.put(
+              `${import.meta.env.VITE_BACKEND_API}/inv-products/${
+                item.product_id
+              }`,
+              productPayload
+            );
+          } else {
+            const feature = await axios.put(
+              `${import.meta.env.VITE_BACKEND_API}/feature-products/${
+                item.product_id
+              }`,
+              productPayload
+            );
+          }
         }
 
-   
         console.log("payload", payload);
         // // Send a request to place the order
         await axios.post(`${import.meta.env.VITE_BACKEND_API}/order`, payload);
 
-       
         // setLoaderPlacingOrder(true);
         // setTimeout(() => {
         //   setLoaderPlacingOrder(false);
         //   setCardOrderPlaced(true);
         // }, 5100);
-
 
         const rescartdelete = await axios.delete(
           `${import.meta.env.VITE_BACKEND_API}/wishlist/${item._id}`
@@ -243,22 +236,21 @@ const Checkout = () => {
         console.log(rescartdelete.data);
         handleProduct();
       }
-        message.success("Product ordered");
-         window.location.href = "/profile?tab=3";
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+      message.success("Product ordered");
+      window.location.href = "/profile?tab=3";
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     } catch (error) {
       console.error("Error placing order:", error);
     }
   }
 
-
   return (
     <>
       <div
-        className="container  d-flex align-items-center justify-content-center m-2"
+        className="container  d-flex align-items-center justify-content-center mt-20 "
         style={{ zoom: "1.1" }}
       >
         <div
@@ -271,26 +263,6 @@ const Checkout = () => {
               <button type="btn" className="btn-add" onClick={handleAddAddress}>
                 ADD ADDRESS
               </button>
-              {/* 
-              <div className="address-box">
-                <p>
-                  <strong>BILLING ADDRESS: </strong>{" "}
-                </p>
-                <p>
-                  {billingData
-                    ? `${billingData?.billingstreetAddress}, 
-                  ${billingData?.billingcity} ,${billingData?.billingstate}, 
-                  ${billingData?.billingcountry}`
-                    : "Add your billing  Address"}
-                </p>
-                <p>
-                  <strong>ZIPCODE: </strong> {billingData?.billingzipcode}
-                </p>
-                <button type="btn" className="btn-select ">
-                  SELECT ADDRESS
-                </button>
-              </div> */}
-
               <div className="address-box">
                 <p>
                   <strong>SHIPPING ADDRESS :</strong>{" "}

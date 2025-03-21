@@ -32,7 +32,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 500px;
+  height: 700px;
 }
 .bg-men-running {
   background-image: url("./assets/8.png");
@@ -47,7 +47,7 @@
   background-blend-mode: multiply;
   background-position: center;
   background-size: cover;
-  height: 300px;
+  height: 500px;
 }
 .faq-banner{
   background: url("./assets/image17.png"),rgba(0, 0, 0, 0.4);
@@ -55,7 +55,7 @@
   background-blend-mode: multiply;
   background-position: center;
   background-size: cover;
-  height: 300px;
+  height: 400px;
 }
 .shipping-banner{
   background: url("./assets/shipping.png");
@@ -156,7 +156,7 @@
  background-blend-mode: multiply;
  background-position: center; 
  background-size: cover;
- height: 400px;
+ height: 500px;
 }
 
 .about-banner{

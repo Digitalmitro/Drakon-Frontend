@@ -64,21 +64,37 @@ export default function VerticalTabs() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleForgetPasswordSubmit = (e) => {
+  const handleForgetPasswordSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      setError("All fields are required.");
+      return;
+    }
     if (newPassword !== confirmPassword) {
       setError("New password and confirm password do not match.");
       return;
     }
-    setTimeout(() => {
-      setSuccess("Password changed successfully!");
+    try {
+      const token = Cookies.get("token");
+      console.log(token)
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_API}/reset-password`,
+        { oldPassword, newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSuccess(response.data.message);
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    }, 1000);
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    }
   };
 
   // reset password ends here
@@ -213,7 +229,7 @@ export default function VerticalTabs() {
         phone: null,
         email: "",
       });
-      setShowBillingForm(false)
+      setShowBillingForm(false);
       setShippingFormData({
         firstName: "",
         lastName: "",
@@ -224,7 +240,7 @@ export default function VerticalTabs() {
         zipcode: null,
         phone: null,
       });
-      setShowShippingForm(false)
+      setShowShippingForm(false);
       // console.log("after postData", billingFormData, shippingFormData);
     } catch (error) {
       console.error("Error saving addresses:", error);
@@ -535,7 +551,10 @@ export default function VerticalTabs() {
                   onSubmit={saveAddressesToDatabase}
                 >
                   <>
-                    <label htmlFor="billingFirstName" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="billingFirstName"
+                      className="form-label font-serif text-[18px]"
+                    >
                       First Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -548,7 +567,10 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingLastName" className="form-label font-serif text-[18px] ">
+                    <label
+                      htmlFor="billingLastName"
+                      className="form-label font-serif text-[18px] "
+                    >
                       Last Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -561,7 +583,10 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingCountry" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="billingCountry"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Country/Region <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -575,7 +600,10 @@ export default function VerticalTabs() {
                       required
                     />
 
-                    <label htmlFor="billingStreet" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="billingStreet"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Street address
                     </label>
                     <input
@@ -588,7 +616,10 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingCity" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="billingCity"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Town / City <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -601,7 +632,10 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingState" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="billingState"
+                      className="form-label font-serif text-[18px]"
+                    >
                       State
                     </label>
                     <input
@@ -614,7 +648,10 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingZip" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="billingZip"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Zip Code <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -627,7 +664,10 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingPhone" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="billingPhone"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Phone <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -640,7 +680,10 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingEmail" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="billingEmail"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Email Address
                     </label>
                     <input
@@ -702,7 +745,10 @@ export default function VerticalTabs() {
                   onSubmit={saveAddressesToDatabase}
                 >
                   <>
-                    <label htmlFor="shippingFirstName" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingFirstName"
+                      className="form-label font-serif text-[18px]"
+                    >
                       First Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -714,7 +760,10 @@ export default function VerticalTabs() {
                       value={shippingFormData.firstName}
                       onChange={handleShippingFormChange}
                     />
-                    <label htmlFor="shippingLastName" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingLastName"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Last Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -726,7 +775,10 @@ export default function VerticalTabs() {
                       value={shippingFormData.lastName}
                       onChange={handleShippingFormChange}
                     />
-                    <label htmlFor="shippingCountry" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingCountry"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Country/Region <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -739,7 +791,10 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                       required
                     />
-                    <label htmlFor="shippingStreet" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingStreet"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Street address
                     </label>
                     <input
@@ -752,7 +807,10 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingCity" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingCity"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Town / City <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -765,7 +823,10 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingState" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingState"
+                      className="form-label font-serif text-[18px]"
+                    >
                       State <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -778,7 +839,10 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingZip" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingZip"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Zip Code <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -791,7 +855,10 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingPhone" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingPhone"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Phone <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
@@ -804,7 +871,10 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingEmail" className="form-label font-serif text-[18px]">
+                    <label
+                      htmlFor="shippingEmail"
+                      className="form-label font-serif text-[18px]"
+                    >
                       Email Address
                     </label>
                     <input
@@ -831,7 +901,6 @@ export default function VerticalTabs() {
       <TabPanel value={value} index={2}>
         <div className="flex justify-center items-center pt-4">
           <div className="bg-white p-6 rounded-lg  lg:w-[40%]">
-            
             <form onSubmit={handleForgetPasswordSubmit} className="space-y-4">
               <div>
                 <label className="block font-medium">Old Password</label>
