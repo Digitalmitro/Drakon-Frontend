@@ -63,8 +63,8 @@ function AllProductByCategory() {
     }, [minPrice, maxPrice]);
 
   return (
-    <div className='pt-20 flex'>
-      <div className="sidebar bg-light w-[20%]">
+    <div className='pt-20 flex flex-wrap lg:flex-row'>
+      <div className="sidebar bg-light lg:w-[20%] w-full px-10 lg:px-0 ">
         <div className="mb-3 py-2">
           <h3
             style={{
@@ -143,7 +143,7 @@ function AllProductByCategory() {
           </div>
         </div>
       </div>
-      <div className='flex flex-wrap gap-8 pt-4 w-[80%] px-4'>
+      <div className='flex flex-wrap justify-center lg:gap-8 pt-4 lg:px-24 lg:w-[80%] w-full'>
         {filteredProducts.length > 0 ? (
           filteredProducts.map((e) => (
             <div className="h-[450px]" key={e._id}>
