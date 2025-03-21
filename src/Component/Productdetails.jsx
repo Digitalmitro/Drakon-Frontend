@@ -71,32 +71,32 @@ const Productdetails = () => {
   };
   // console.log("allProduct", allProduct);
 
-  // const handleCart = async (e) => {
-  //   dispatch(addItem(e));
-  //   try {
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_BACKEND_API}/wishlist`,
-  //       {
-  //         image: data?.image,
-  //         title: data?.title,
-  //         price: data?.price,
-  //         qty: quantity,
-  //         product_id: id,
-  //         user_id: user_id,
-  //       }
-  //     );
-  //     message.success("Added to Cart");
+  const handleCart = async (e) => {
+    dispatch(addItem(e));
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/api/add`,
+        {
+          image: data?.image,
+          title: data?.title,
+          price: data?.price,
+          quantity: quantity,
+          productId: id,
+          userId: user_id,
+        }
+      );
+      message.success("Added to Cart");
 
-  //     setTimeout(() => {
-  //       window.location.href = "/cart";
-  //       // navigate(`/cart`)
-  //     }, 500);
-  //     console.log("cart data post", response);
-  //   } catch (error) {
-  //     console.error(error);
-  //     message.success("cartItem not added");
-  //   }
-  // };
+      setTimeout(() => {
+        window.location.href = "/cart";
+        // navigate(`/cart`)
+      }, 500);
+      console.log("cart data post", response);
+    } catch (error) {
+      console.error(error);
+      message.success("cartItem not added");
+    }
+  };
 
   // const [cartData, setCartData] = useState([]);
   // async function getCartData() {
@@ -209,7 +209,7 @@ const Productdetails = () => {
                   <button
                     type="submit"
                     className="btn rounded-2xl text-white bg-[#ff5B00] "
-                    onClick={() => navigate(`/checkout/${id}`)}
+                    onClick={() => navigate(`/checkout/${id}`,{ state: { quantity } })}
                   >
                     Buy Now
                   </button>
@@ -218,7 +218,7 @@ const Productdetails = () => {
                     <button
                       type="submit"
                       className="btn bg-[#ff0024] rounded-2xl text-white"
-                      onClick={() => navigate("/cart")}
+                      onClick={() => navigate(`/cart`)}
                     >
                       Add to Cart
                     </button>
