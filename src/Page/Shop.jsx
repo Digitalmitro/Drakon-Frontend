@@ -47,7 +47,7 @@ function Shop() {
 
   return (
     <div className="pt-20 flex flex-wrap lg:flex-row">
-      <div className="sidebar bg-light lg:w-[20%] w-full px-10 lg:px-0">
+      <div className="sidebar bg-light lg:w-[20%] w-full px-10 lg:px-0 lg:pl-4 ">
         <div className="mb-3 py-2">
           <h3
             style={{

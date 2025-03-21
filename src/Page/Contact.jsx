@@ -84,8 +84,8 @@ const Contact = () => {
         </div>
 
         <div className="container my-5 py-5">
-          <div className="d-flex m-3" style={{ gap: "80px" }}>
-            <div className="col-6 ms-1">
+          <div className="flex flex-col lg:flex-row  items-center m-3" style={{ gap: "80px" }}>
+            <div className="col-6 ">
               <h5 className="fs-6 text">Have a question? </h5>
               <h3 className="fs-2 text pb-4 fw-bold">Send Message</h3>
               <form onSubmit={handleContact}>
@@ -129,10 +129,10 @@ const Contact = () => {
               </form>
             </div>
 
-            <div className="col-6">
+            <div className="col-6  ">
               <h5 className="fs-6 text pb-4">Address</h5>
               <h3 className="fs-2 text pb-4 fw-bold">Find Us</h3>
-              <div style={{ lineHeight: "40px" }}>
+              <div style={{ lineHeight: "40px" }} className="text-[15px]">
                 <p>
                   <span>Location:</span>
                   <br></br> 123, New Lenox Chicago, IL 60606
