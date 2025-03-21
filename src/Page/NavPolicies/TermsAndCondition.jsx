@@ -1,9 +1,26 @@
-import React from 'react'
-
+import banner from "../../assets/carousel/terms.jpg"
+import { motion } from "framer-motion";
 function TermsAndCondition() {
   return (
     <section>
-    <div className="container-fluid terms-condition-banner p-3"></div>
+    <div
+      className="container-fluid privacy-banner d-flex align-items-center justify-content-center"
+      style={{
+        backgroundImage: `url(${banner})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "500px",
+      }}
+    >
+      <motion.h2
+        className="text-center text-white"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <p className="pt-20 text-5xl font-bold">TERMS AND CONDITIONS</p>
+      </motion.h2>
+    </div>
 
     <div className="col-11  m-4 px-5">
     <br/>  <br />

@@ -1,15 +1,16 @@
-import { Button } from "@mui/material";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Autoplay } from "swiper/modules";
-import { Carousel } from "antd";
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
-
+import img1 from "../assets/carousel/free-shipping.png"
+import img2 from "../assets/carousel/credit.png"
+import img3 from "../assets/carousel/return.png"
+import img4 from "../assets/carousel/secure-wallet.png"
 const GlassesSection = ({ closeCart, navigate }) => {
   const { getCategory } = useProduct();
   const [glassesBanner, setGlassesBanner] = useState([]);
@@ -60,13 +61,13 @@ const GlassesSection = ({ closeCart, navigate }) => {
         >
           {glassesProducts.map((e) => (
             <SwiperSlide key={e._id}>
-              <div className="h-[400px]">
+              <div className="h-[450px]">
                 <Link to={`/${e.description.toLowerCase()}`}>
-                  <div className="shadow-lg lg:h-[310px] rounded w-[80%]  lg:w-[88%] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[350px] rounded   lg:w-[90%] flex flex-col justify-between gap-6 bg-white p-2 ">
                     <div className="flex justify-center lg:w-full">
                       <img
                         src={e.image}
-                        className="object-cover h-[250px] w-[100%]"
+                        className="object-cover h-[300px] w-[100%]"
                         alt="Product"
                       />
                     </div>
@@ -81,6 +82,25 @@ const GlassesSection = ({ closeCart, navigate }) => {
             </SwiperSlide>
           ))}
         </Swiper>
+      </div>
+      <div className="bg-[#cacaca] lg:[200px] p-4 flex flex-col lg:flex-row justify-around">
+        <div className="flex flex-col justify-center items-center">
+          <img src={img1} alt="FREE SHIIPING" />
+          <h3 className="font-bold">FREE SHIIPING</h3>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <img src={img2} alt="SAFE AND SECURE CHECKOUT" />
+          <p className="font-bold">SAFE AND SECURE CHECKOUT</p>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <img src={img3} alt="EASY RETURN"/>
+          <p className="font-bold">EASY RETURN</p>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <img src={img4} alt="BUY NOW, PAY OVER TIME" />
+          <p className="font-bold">BUY NOW, PAY OVER TIME</p>
+        </div>
+
       </div>
     </div>
   );

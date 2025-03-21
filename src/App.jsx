@@ -28,6 +28,7 @@ import axios from "axios";
 import AllProductByCategory from "./Page/AllProductByCategory";
 import Shop from "./Page/Shop"
 import Cart from "./Page/Cart"
+import ScrollToTop from "./Component/ScrollToTop";
 
 function App() {
   const isMobile = useMediaQuery("(max-width:900px)");
@@ -79,6 +80,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop/>
       <div className="" style={{ zoom: "0.8" }}>
         <Navbar closeCart={hideCartModal} />
         <Routes>
