@@ -59,12 +59,11 @@ const BatSection = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
+                <div className="lg:w-[500px]">
                   <p className="text-2xl font-semibold">
-                    VIEW ALL TOP CATEGORY PRODUCTS
+                  Shop top-quality game equipment for peak performance
                   </p>
-                  <button className="mt-4 font-medium text-[18px] bg-[#ff5B00] text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
-                    View
-                  </button>
+                  </div>
                 </div>
               </div>
 
@@ -79,9 +78,6 @@ const BatSection = ({ closeCart, navigate }) => {
                   <p className="text-lg font-semibold text-center">
                     VIEW ALL TOP CATEGORY PRODUCTS
                   </p>
-                  <button className="mt-2 bg-[#ff5B00] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
-                    View
-                  </button>
                 </div>
               </div>
             </div>
