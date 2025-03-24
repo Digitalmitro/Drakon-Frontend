@@ -171,13 +171,13 @@ function Navbar(props) {
 
             <div className="flex flex-col lg:justify-end justify-center items-center lg:items-end">
               <div className="text-black lg:pt-6 flex lg:gap-12 gap-6">
-                <div className="lg:flex bg-white rounded-lg hidden">
+                <div className="flex bg-white rounded-lg ">
                   <input
                     type="text"
-                    className="outline-none border-none lg:px-2 lg:py-1 rounded-lg"
+                    className="outline-none border-none px-2 py-1 rounded-lg w-[200px] lg:w-full"
                     placeholder="Search..."
                   />
-                  <img src={search} alt="" className="lg:h-8 lg:p-1" />
+                  <img src={search} alt="" className="h-8 p-1 pt-2" />
                 </div>
 
                 <div
@@ -185,14 +185,14 @@ function Navbar(props) {
                   onClick={() => navigate("/account")}
                 >
                   <p className="hidden lg:block">My Accounts</p>{" "}
-                  <img src={profile} alt="" className="h-8 p-1 pb-2 block" />
+                  <img src={profile} alt="" className="h-10 p-1 pb-2 block" />
                 </div>
                 <div
                   className="flex justify-center space-x-1 items-center cursor-pointer"
                   onClick={() => navigate("/cart")}
                 >
                   <p className="hidden lg:block">Cart</p>
-                  <IoCart size={22} />
+                  <IoCart size={28} />
                 </div>
               </div>
               <Box>
