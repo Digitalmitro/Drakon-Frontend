@@ -169,7 +169,7 @@ function Navbar(props) {
             className="w-36 cursor-pointer logoMobile"
           />
 
-          <div className="flex flex-col justify-end items-end">
+          <div className="flex flex-col lg:justify-end justify-center items-center lg:items-end">
             <div className="text-black lg:pt-6 flex lg:space-x-12 space-x-5">
               <div className="flex bg-white rounded-lg">
                 <input
