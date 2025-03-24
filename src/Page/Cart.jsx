@@ -159,7 +159,7 @@ const CartPage = () => {
       )}
 
       {/* Coupon Section */}
-      <div className="flex justify-evenly lg:justify-between items-center bg-white px-4 pb-4 flex-wrap rounded-md shadow-md mt-4">
+      <div className="flex justify-evenly lg:justify-between items-center bg-white lg:px-4 pb-4 flex-wrap rounded-md shadow-md mt-4">
         <input
           type="text"
           placeholder="Coupon Code"
