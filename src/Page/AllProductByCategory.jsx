@@ -143,12 +143,12 @@ function AllProductByCategory() {
           </div>
         </div>
       </div>
-      <div className='flex flex-wrap lg:gap-8 pt-4 lg:px-24 lg:w-[80%] w-full'>
+      <div className='flex flex-wrap justify-center lg:gap-8 pt-4 lg:px-24 lg:w-[80%] w-full'>
         {filteredProducts.length > 0 ? (
           filteredProducts.map((e) => (
             <div className="h-[450px]" key={e._id}>
               <Link to={`/productDetails/${e._id}`}>
-                <div className="shadow-lg lg:h-[380px] lg:w-[350px] rounded flex flex-col justify-between gap-6 bg-white p-2">
+                <div className="shadow-lg lg:h-[380px] lg:w-[350px] w-[400px] rounded flex flex-col justify-between gap-6 bg-white p-2">
                   <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                     <img src={e.image?.[0]} className="object-contain h-[250px] w-[100%]" alt="Product" />
                   </div>

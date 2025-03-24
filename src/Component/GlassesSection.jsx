@@ -57,13 +57,12 @@ const GlassesSection = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
-                 <div className="lg:w-[500px]">
-                 <p className="text-2xl font-semibold">
-                    lightweight, durable,
-                    and UV-protected for peak athletic performance
-                  </p>
-                 </div>
-          
+                  <div className="lg:w-[500px]">
+                    <p className="text-2xl font-semibold">
+                      lightweight, durable, and UV-protected for peak athletic
+                      performance
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -97,34 +96,34 @@ const GlassesSection = ({ closeCart, navigate }) => {
             600: { slidesPerView: 2 },
             375: { slidesPerView: 1 },
           }}
-          className="mt-10 lg:ml-8 mx-6 lg:mx-0"
+          className="mt-10 lg:ml-8 mx-6 lg:mx-0 "
         >
           {glassesProducts.map((e) => (
-           <SwiperSlide key={e._id}>
-           <div className="lg:h-[500px] h-[420px]">
-             <Link to={`/productDetails/${e._id}`}>
-               <div className="shadow-lg lg:h-[410px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
-                 <div className="flex justify-center lg:w-full bg-[#dddfe0]">
-                   <img
-                     src={e.image?.[0]}
-                     className="object-contain h-[250px] lg:h-[323px] w-[100%]"
-                     alt="Product"
-                   />
-                 </div>
-                 <div className=" h-full space-y-1 px-2">
-                   <h3 className="font-semibold text-xl">
-                     {e.description.length > 30
-                       ? `${e.description.slice(0, 30)}...`
-                       : e.description}
-                   </h3>
-                   <h4 className="text-[#959595] font-bold text-2xl">
-                     $ {e.price}
-                   </h4>
-                 </div>
-               </div>
-             </Link>
-           </div>
-         </SwiperSlide>
+            <SwiperSlide key={e._id}>
+              <div className="lg:h-[500px] h-[420px]">
+                <Link to={`/productDetails/${e._id}`}>
+                  <div className="shadow-lg lg:h-[410px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
+                    <div className="flex justify-center lg:w-full bg-[#dddfe0]">
+                      <img
+                        src={e.image?.[0]}
+                        className="object-contain h-[250px] lg:h-[323px] w-[100%]"
+                        alt="Product"
+                      />
+                    </div>
+                    <div className=" h-full space-y-1 px-2">
+                      <h3 className="font-semibold text-xl">
+                        {e.description.length > 30
+                          ? `${e.description.slice(0, 30)}...`
+                          : e.description}
+                      </h3>
+                      <h4 className="text-[#959595] font-bold text-2xl">
+                        $ {e.price}
+                      </h4>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </SwiperSlide>
           ))}
         </Swiper>
       </div>

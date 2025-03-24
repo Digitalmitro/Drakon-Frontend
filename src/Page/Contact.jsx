@@ -4,10 +4,10 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { message } from "antd";
 import Cookies from "js-cookie";
-
+import { motion } from "framer-motion";
 const Contact = () => {
   const navigate = useNavigate();
-  
+
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const user = decodedToken?.email;
@@ -55,7 +55,10 @@ const Contact = () => {
           text: `Dear ${formData.name},\n\nThank you for reaching out to us. We have received your message and will get back to you shortly.\n\nBest regards,\nDrakon`,
         };
 
-        await axios.post(`${import.meta.env.VITE_BACKEND_API}/send-email`, emailPayload);
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_API}/send-email`,
+          emailPayload
+        );
 
         // navigate(`/cart`);
       } else {
@@ -70,7 +73,14 @@ const Contact = () => {
   return (
     <>
       <div className="container-fluid contact-banner d-flex items-center justify-content-center text-center">
-        <h2 className="text-center size">Contact</h2>
+      <motion.h2
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="absolute  transform  -translate-x-1/2 -translate-y-1/2 text-white font-semibold"
+        >
+        <h2 className="text-center text-7xl text-white">CONTACT</h2>
+        </motion.h2>
       </div>
 
       <section>
@@ -82,10 +92,12 @@ const Contact = () => {
             loading="lazy"
           ></iframe>
         </div>
-
         <div className="container my-5 py-5">
-          <div className="flex flex-col lg:flex-row  items-center m-3" style={{ gap: "80px" }}>
-            <div className="col-6 ">
+          <div
+            className="flex flex-col lg:flex-row justify-center items-center  m-3"
+            style={{ gap: "80px" }}
+          >
+            <div className="lg:col-span-6 col-span-10">
               <h5 className="fs-6 text">Have a question? </h5>
               <h3 className="fs-2 text pb-4 fw-bold">Send Message</h3>
               <form onSubmit={handleContact}>
@@ -129,7 +141,7 @@ const Contact = () => {
               </form>
             </div>
 
-            <div className="col-6  ">
+            <div className="lg:col-span-6 col-span-10">
               <h5 className="fs-6 text pb-4">Address</h5>
               <h3 className="fs-2 text pb-4 fw-bold">Find Us</h3>
               <div style={{ lineHeight: "40px" }} className="text-[15px]">

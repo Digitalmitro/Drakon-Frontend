@@ -78,9 +78,9 @@ const Account = () => {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="absolute  transform  -translate-x-1/2 -translate-y-1/2 text-white text-5xl font-semibold"
+          className="absolute  transform  -translate-x-1/2 -translate-y-1/2 text-white font-semibold"
         >
-        <h2 className="text-center size">My Account</h2>
+        <h2 className="text-center text-5xl">MY ACCOUNT</h2>
         </motion.h2>
       </div>
 
@@ -93,10 +93,10 @@ const Account = () => {
             {showLogin ? (
               <div className="col-md-6">
                 <h2 className="fs-2 text p-4">Login</h2>
-                <div className="login-box h-[350px]">
+                <div className="login-box h-[350px] w-[400px]">
                   <form onSubmit={handelLogin}>
                     <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">
+                      <label for="exampleInputEmail1" class="form-label text-[16px]">
                         Username or Email address *
                       </label>
                       <input
@@ -144,7 +144,7 @@ const Account = () => {
             ) : (
               <div className="col-md-6">
                 <h2 className="fs-2 text p-4">Register</h2>
-                <div className="login-box h-[450px]">
+                <div className="login-box h-[480px]">
                   <form onSubmit={handelRegiste}>
                     <div class="mb-3">
                       <label for="exampleInputName1" class="form-label">
