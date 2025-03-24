@@ -170,7 +170,7 @@ function Navbar(props) {
           />
           <Box>
             <div className="flex flex-col justify-end items-end">
-              <div className="text-black pt-6  flex space-x-12">
+              <div className="text-black lg:pt-6  flex lg:space-x-12 space-x-5">
                 <div className="flex bg-white rounded-lg">
                   <input
                     type="text"

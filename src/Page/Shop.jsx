@@ -148,7 +148,7 @@ function Shop() {
           filteredProducts.map((e) => (
             <div key={e._id} className="h-[450px]">
               <Link to={`/productDetails/${e._id}`}>
-                <div className="shadow-lg lg:h-[380px] w-full lg:w-[350px] rounded flex flex-col justify-between gap-6 bg-white p-2">
+                <div className="shadow-lg lg:h-[380px] w-[400px]  lg:w-[350px] rounded flex flex-col justify-between gap-6 bg-white p-2">
                   <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                     <img
                       src={e.image?.[0]}
