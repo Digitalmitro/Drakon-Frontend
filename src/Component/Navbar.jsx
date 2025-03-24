@@ -168,33 +168,34 @@ function Navbar(props) {
             width={""}
             className="w-36 cursor-pointer logoMobile"
           />
-          <Box>
-            <div className="flex flex-col justify-end items-end">
-              <div className="text-black lg:pt-6 flex lg:space-x-12 space-x-5">
-                <div className="flex bg-white rounded-lg">
-                  <input
-                    type="text"
-                    className="outline-none border-none px-2 py-1 rounded-lg"
-                    placeholder="Search..."
-                  />
-                  <img src={search} alt="" className="h-8 p-1" />
-                </div>
 
-                <div
-                  className="flex justify-center items-center cursor-pointer"
-                  onClick={() => navigate("/account")}
-                >
-                  <p className="hidden lg:block">My Accounts</p>{" "}
-                  <img src={profile} alt="" className="h-8 p-1 pb-2 block" />
-                </div>
-                <div className="flex justify-center space-x-1 items-center cursor-pointer"
-                 onClick={() => navigate("/cart")}
-                >
-                  <p className="hidden lg:block">Cart</p>
-                  <IoCart size={22} />
-                </div>
+          <div className="flex flex-col justify-end items-end">
+            <div className="text-black lg:pt-6 flex lg:space-x-12 space-x-5">
+              <div className="flex bg-white rounded-lg">
+                <input
+                  type="text"
+                  className="outline-none border-none px-2 py-1 rounded-lg"
+                  placeholder="Search..."
+                />
+                <img src={search} alt="" className="h-8 p-1" />
               </div>
 
+              <div
+                className="flex justify-center items-center cursor-pointer"
+                onClick={() => navigate("/account")}
+              >
+                <p className="hidden lg:block">My Accounts</p>{" "}
+                <img src={profile} alt="" className="h-8 p-1 pb-2 block" />
+              </div>
+              <div
+                className="flex justify-center space-x-1 items-center cursor-pointer"
+                onClick={() => navigate("/cart")}
+              >
+                <p className="hidden lg:block">Cart</p>
+                <IoCart size={22} />
+              </div>
+            </div>
+            <Box>
               <div>
                 <List sx={{ display: { xs: "none", sm: "block" } }}>
                   <ListItem disablePadding>
@@ -216,8 +217,8 @@ function Navbar(props) {
                   </ListItem>
                 </List>
               </div>
-            </div>
-          </Box>
+            </Box>
+          </div>
         </Toolbar>
       </AppBar>
       <nav>
