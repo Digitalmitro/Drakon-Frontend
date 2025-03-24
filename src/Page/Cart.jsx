@@ -159,13 +159,13 @@ const CartPage = () => {
       )}
 
       {/* Coupon Section */}
-      <div className="flex justify-between items-center bg-white p-4 rounded-md shadow-md mt-4">
+      <div className="flex justify-evenly lg:justify-between items-center bg-white px-4 pb-4 flex-wrap rounded-md shadow-md mt-4">
         <input
           type="text"
           placeholder="Coupon Code"
           value={coupon}
           onChange={(e) => setCoupon(e.target.value)}
-          className="border p-2 flex-1"
+          className="border p-2 lg:flex-1"
         />
         <button className="bg-red-500 text-white px-4 py-2 ml-2">APPLY</button>
       </div>

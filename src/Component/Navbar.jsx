@@ -177,7 +177,7 @@ function Navbar(props) {
                     className="outline-none border-none px-2 py-1 rounded-lg w-[200px] lg:w-full"
                     placeholder="Search..."
                   />
-                  <img src={search} alt="" className="h-8 p-1 pt-2" />
+                  <img src={search} alt="" className="h-8 p-1" />
                 </div>
 
                 <div
