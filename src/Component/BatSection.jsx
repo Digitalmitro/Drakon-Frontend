@@ -103,11 +103,11 @@ const BatSection = ({ closeCart, navigate }) => {
            <SwiperSlide key={e._id}>
            <div className="lg:h-[500px] h-[420px]">
              <Link to={`/productDetails/${e._id}`}>
-               <div className="shadow-lg lg:h-[410px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
+               <div className="shadow-lg lg:h-[410px] h-[370px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
                  <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                    <img
                      src={e.image?.[0]}
-                     className="object-contain h-[250px] lg:h-[323px] w-[100%]"
+                     className="object-contain h-[280px] lg:h-[323px] w-[100%]"
                      alt="Product"
                    />
                  </div>
