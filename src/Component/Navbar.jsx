@@ -171,13 +171,13 @@ function Navbar(props) {
 
             <div className="flex flex-col lg:justify-end justify-center items-center lg:items-end">
               <div className="text-black lg:pt-6 flex lg:gap-12 gap-6">
-                <div className="flex bg-white rounded-lg">
+                <div className="lg:flex bg-white rounded-lg hidden">
                   <input
                     type="text"
-                    className="outline-none border-none px-2 py-1 rounded-lg"
+                    className="outline-none border-none lg:px-2 lg:py-1 rounded-lg"
                     placeholder="Search..."
                   />
-                  <img src={search} alt="" className="h-8 p-1" />
+                  <img src={search} alt="" className="lg:h-8 lg:p-1" />
                 </div>
 
                 <div
