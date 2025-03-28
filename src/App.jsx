@@ -29,7 +29,7 @@ import AllProductByCategory from "./Page/AllProductByCategory";
 import Shop from "./Page/Shop"
 import Cart from "./Page/Cart"
 import ScrollToTop from "./Component/ScrollToTop";
-
+import StripeCheckout from "./Component/StripeCheckout";
 function App() {
   const isMobile = useMediaQuery("(max-width:900px)");
   const dispatch = useDispatch();
@@ -109,8 +109,8 @@ function App() {
           <Route path="/termscondition" element={<TermsAndCondition />} />
           <Route path="/shop" element={<Shop/>}/>
           <Route path="/cart" element={<Cart/>}/>
-
         </Routes>
+        {/* <StripeCheckout /> */}
         <Footer closeCart={hideCartModal} />
       </div>
     </Router>
