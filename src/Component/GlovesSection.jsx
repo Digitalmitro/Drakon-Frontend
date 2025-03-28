@@ -21,20 +21,19 @@ const topCatBanner = [
 ];
 
 const GlovesSection = ({ closeCart, navigate }) => {
-  const { getAllCategoryBanner,getAllProductsByCategories } = useProduct();
+  const { getAllCategoryBanner, getAllProductsByCategories } = useProduct();
   const [glovesBanner, setGlovesBanner] = useState([]);
   const [glovesProducts, setGlovesProducts] = useState([]);
   const fetchAllGlovesBanner = async () => {
     const response = await getAllCategoryBanner("Batting Gloves");
-      // console.log("all gloves banner", response);
-      setGlovesBanner(response);
-    
+    // console.log("all gloves banner", response);
+    setGlovesBanner(response);
   };
-  const allProductsByCategory=async()=>{
-    const response=await getAllProductsByCategories("Batting Gloves")
-    console.log("show all gloves products",response)
-    setGlovesProducts(response)
-  }
+  const allProductsByCategory = async () => {
+    const response = await getAllProductsByCategories("Batting Gloves");
+    console.log("show all gloves products", response);
+    setGlovesProducts(response);
+  };
   const [glass, setGlass] = useState([]);
   const getAllProducts = async () => {
     const response = await fetch(
@@ -69,13 +68,14 @@ const GlovesSection = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
+                <div className="lg:w-[500px]">
                   <p className="text-2xl font-semibold">
-                    VIEW ALL TOP CATEGORY PRODUCTS
+                    Drakon Sports Leather Batting Gloves offer superior grip,
+                    durability, and comfort for peak performance
                   </p>
-                  <button className="mt-4 font-medium text-[18px] bg-[#ff5B00] text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
-                    View
-                  </button>
+                  </div>
                 </div>
+                
               </div>
 
               <div className="block sm:hidden relative ">
@@ -89,9 +89,6 @@ const GlovesSection = ({ closeCart, navigate }) => {
                   <p className="text-lg font-semibold text-center">
                     VIEW ALL TOP CATEGORY PRODUCTS
                   </p>
-                  <button className="mt-2 bg-[#ff5B00] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
-                    View
-                  </button>
                 </div>
               </div>
             </div>
@@ -115,30 +112,30 @@ const GlovesSection = ({ closeCart, navigate }) => {
         >
           {glovesProducts?.map((e) => (
             <SwiperSlide key={e._id}>
-            <div className="lg:h-[500px] h-[420px]">
-              <Link to={`/productDetails/${e._id}`}>
-                <div className="shadow-lg lg:h-[410px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
-                  <div className="flex justify-center lg:w-full bg-[#dddfe0]">
-                    <img
-                      src={e.image?.[0]}
-                      className="object-contain h-[250px] lg:h-[323px] w-[100%]"
-                      alt="Product"
-                    />
+              <div className="lg:h-[500px] h-[420px]">
+                <Link to={`/productDetails/${e._id}`}>
+                  <div className="shadow-lg lg:h-[410px] h-[370px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
+                    <div className="flex justify-center lg:w-full bg-[#dddfe0]">
+                      <img
+                        src={e.image?.[0]}
+                        className="object-contain h-[280px] lg:h-[323px] w-[100%]"
+                        alt="Product"
+                      />
+                    </div>
+                    <div className=" h-full space-y-1 px-2">
+                      <h3 className="font-semibold text-xl">
+                        {e.description.length > 30
+                          ? `${e.description.slice(0, 30)}...`
+                          : e.description}
+                      </h3>
+                      <h4 className="text-[#959595] font-bold text-2xl">
+                        $ {e.price}
+                      </h4>
+                    </div>
                   </div>
-                  <div className=" h-full space-y-1 px-2">
-                    <h3 className="font-semibold text-xl">
-                      {e.description.length > 30
-                        ? `${e.description.slice(0, 30)}...`
-                        : e.description}
-                    </h3>
-                    <h4 className="text-[#959595] font-bold text-2xl">
-                      $ {e.price}
-                    </h4>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </SwiperSlide>
+                </Link>
+              </div>
+            </SwiperSlide>
           ))}
         </Swiper>
       </div>
