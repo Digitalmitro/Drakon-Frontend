@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Hero from "../Component/Hero";
 import Featured from "../Component/Featured";
 import BatSection from "../Component/BatSection";
@@ -16,9 +16,10 @@ const Home = () => {
   const hideCartModal = () => {
     dispatch(cartModal(false));
   };
+  const [loading,setLoading]=useState(true)
   return (
     <div>
-      <Hero closeCart={hideCartModal} />
+      <Hero closeCart={hideCartModal} loading={loading} setLoading={setLoading}/>
       <Featured closeCart={hideCartModal} />
       <GlassesSection closeCart={hideCartModal} />
       <GlovesSection closeCart={hideCartModal} />

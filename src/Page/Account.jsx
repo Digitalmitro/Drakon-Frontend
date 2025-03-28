@@ -80,7 +80,7 @@ const Account = () => {
           transition={{ duration: 1 }}
           className="absolute  transform  -translate-x-1/2 -translate-y-1/2 text-white text-5xl font-semibold"
         >
-        <h2 className="text-center size">My Account</h2>
+        <h2 className="text-center text-7xl">MY ACCOUNT</h2>
         </motion.h2>
       </div>
 
@@ -93,10 +93,10 @@ const Account = () => {
             {showLogin ? (
               <div className="col-md-6">
                 <h2 className="fs-2 text p-4">Login</h2>
-                <div className="login-box h-[350px]">
+                <div className="login-box h-[350px] min-w-[400px]">
                   <form onSubmit={handelLogin}>
                     <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">
+                      <label for="exampleInputEmail1" class="form-label text-[16px]">
                         Username or Email address *
                       </label>
                       <input
@@ -138,13 +138,22 @@ const Account = () => {
                     >
                       Log in
                     </button>
+                    <p className="text-[15px] pt-4">
+                      Don't have an account?{" "}
+                      <span
+                        className="text-[15px] font-semibold cursor-pointer"
+                        onClick={() => setShowLogin(false)}
+                      >
+                        Register
+                      </span>
+                    </p>
                   </form>
                 </div>
               </div>
             ) : (
               <div className="col-md-6">
                 <h2 className="fs-2 text p-4">Register</h2>
-                <div className="login-box h-[450px]">
+                <div className="login-box h-[480px]">
                   <form onSubmit={handelRegiste}>
                     <div class="mb-3">
                       <label for="exampleInputName1" class="form-label">

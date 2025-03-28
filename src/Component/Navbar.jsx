@@ -121,6 +121,20 @@ function Navbar(props) {
             </ListItemButton>
           </ListItem>
         ))}
+        <div
+          className="flex justify-center items-center cursor-pointer mb-2 mt-2"
+          onClick={() => navigate("/account")}
+        >
+          <p className="">MY ACCOUNT</p>{" "}
+          {/* <img src={profile} alt="" className="h-10 p-1 pb-2 block" /> */}
+        </div>
+        <div
+          className="flex justify-center space-x-1 items-center cursor-pointer"
+          onClick={() => navigate("/cart")}
+        >
+          <p className="">CART</p>
+          {/* <IoCart size={28} /> */}
+        </div>
       </List>
     </Box>
   );
@@ -149,52 +163,62 @@ function Navbar(props) {
         </Box>
 
         <Toolbar
-          className="h-[100px] lg:h-25"
+          className="lg:h-[100px]"
           sx={{ justifyContent: "space-between", margin: ".8rem" }}
         >
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" }, color: "black" }}
-          >
-            <MenuIcon sx={{ fontSize: "2.5rem" }} />
-          </IconButton>
-          <img
-            onClick={() => navigate("/")}
-            src={logo}
-            alt="logo"
-            width={""}
-            className="w-36 cursor-pointer logoMobile"
-          />
-          <Box>
-            <div className="flex flex-col justify-end items-end">
-              <div className="text-black pt-6  flex space-x-12">
-                <div className="flex bg-white rounded-lg">
-                  <input
-                    type="text"
-                    className="outline-none border-none px-2 py-1 rounded-lg"
-                    placeholder="Search..."
-                  />
-                  <img src={search} alt="" className="h-8 p-1" />
-                </div>
+           <div className="flex justify-between items-center w-full lg:w-auto">
+           
+           <img
+           onClick={() => navigate("/")}
+             src={logo}
+             alt="logo"
+             className="w-36 cursor-pointer block md:hidden"
+           />
+           <IconButton
+             color="inherit"
+             aria-label="open drawer"
+             edge="end"
+             onClick={handleDrawerToggle}
+             sx={{ display: { sm: "none" }, color: "black" }}
+           >
+             <MenuIcon sx={{ fontSize: "2.5rem" }} />
+           </IconButton>
 
-                <div
-                  className="flex justify-center items-center cursor-pointer"
-                  onClick={() => navigate("/account")}
-                >
-                  <p className="hidden lg:block">My Accounts</p>{" "}
-                  <img src={profile} alt="" className="h-8 p-1 pb-2 block" />
-                </div>
-                <div className="flex justify-center space-x-1 items-center cursor-pointer"
-                 onClick={() => navigate("/cart")}
-                >
-                  <p className="hidden lg:block">Cart</p>
-                  <IoCart size={22} />
-                </div>
+           <img
+             onClick={() => navigate("/")}
+             src={logo}
+             alt="logo"
+             className="w-36 cursor-pointer logoMobile"
+           />
+         </div>
+
+          <div className="flex flex-col lg:justify-end justify-center items-center lg:items-end">
+            <div className="text-black lg:pt-6 flex lg:gap-12 gap-6">
+              <div className="lg:flex hidden bg-white rounded-lg ">
+                <input
+                  type="text"
+                  className="outline-none border-none px-2 py-1 rounded-lg w-[200px] lg:w-full"
+                  placeholder="Search..."
+                />
+                <img src={search} alt="" className="h-8 p-1" />
               </div>
 
+              <div
+                className=" justify-center items-center cursor-pointer hidden lg:flex"
+                onClick={() => navigate("/account")}
+              >
+                <p className="">My Accounts</p>{" "}
+                <img src={profile} alt="" className="h-10 p-1 pb-2 block" />
+              </div>
+              <div
+                className="hidden lg:flex justify-center space-x-1 items-center cursor-pointer"
+                onClick={() => navigate("/cart")}
+              >
+                <p className="hidden lg:block">Cart</p>
+                <IoCart size={28} />
+              </div>
+            </div>
+            <Box>
               <div>
                 <List sx={{ display: { xs: "none", sm: "block" } }}>
                   <ListItem disablePadding>
@@ -216,8 +240,8 @@ function Navbar(props) {
                   </ListItem>
                 </List>
               </div>
-            </div>
-          </Box>
+            </Box>
+          </div>
         </Toolbar>
       </AppBar>
       <nav>

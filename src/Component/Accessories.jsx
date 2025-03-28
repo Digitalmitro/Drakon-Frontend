@@ -26,17 +26,9 @@ const Accessories = ({ closeCart, navigate }) => {
     console.log("show all glasses products",response)
     setAccessProducts(response)
   }
-  // const getAllProducts = async () => {
-  //   const response = await fetch(
-  //     `${import.meta.env.VITE_BACKEND_API}/products`
-  //   );
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     setGlass(data);
-  //   }
-  // };
+
   useEffect(() => {
-    // getAllProducts()
+
     fetchAllGlassesBanner();
     allProductsByCategory();
   }, []);
@@ -59,12 +51,12 @@ const Accessories = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
+                <div className="lg:w-[500px]">
                   <p className="text-2xl font-semibold">
-                    VIEW ALL TOP CATEGORY PRODUCTS
+                  Shop premium game accessories for peak performance
                   </p>
-                  <button className="mt-4 font-medium text-[18px] bg-[#ff5B00] text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
-                    View
-                  </button>
+                  </div>
+                  
                 </div>
               </div>
 
@@ -79,9 +71,7 @@ const Accessories = ({ closeCart, navigate }) => {
                   <p className="text-lg font-semibold text-center">
                     VIEW ALL TOP CATEGORY PRODUCTS
                   </p>
-                  <button className="mt-2 bg-[#ff5B00] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
-                    View
-                  </button>
+                 
                 </div>
               </div>
             </div>
@@ -107,11 +97,11 @@ const Accessories = ({ closeCart, navigate }) => {
             <SwiperSlide key={e._id}>
             <div className="lg:h-[500px] h-[420px]">
               <Link to={`/productDetails/${e._id}`}>
-                <div className="shadow-lg lg:h-[410px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
+                <div className="shadow-lg lg:h-[410px] h-[370px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
                   <div className="flex justify-center lg:w-full bg-[#dddfe0]">
                     <img
                       src={e.image?.[0]}
-                      className="object-contain h-[250px] lg:h-[323px] w-[100%]"
+                      className="object-contain h-[280px] lg:h-[323px] w-[100%]"
                       alt="Product"
                     />
                   </div>

@@ -63,7 +63,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
             <SwiperSlide key={e._id}>
               <div className="h-[450px]">
                 <Link to={`/${e.description.toLowerCase()}`}>
-                  <div className="shadow-lg lg:h-[350px] rounded   lg:w-[90%] flex flex-col justify-between gap-6 bg-white p-2 ">
+                  <div className="shadow-lg lg:h-[350px] rounded lg:w-[90%] flex flex-col justify-between gap-6 bg-white p-2 pb-4">
                     <div className="flex justify-center lg:w-full">
                       <img
                         src={e.image}
