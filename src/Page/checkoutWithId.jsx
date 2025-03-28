@@ -35,8 +35,8 @@ const Checkout = () => {
 
   useEffect(() => {
     handleProduct()
-  })
- console.log()
+  },[])
+//  console.log()
   const getAddressData = async () => {
     try {
       const response1 = await axios.get(
@@ -63,6 +63,9 @@ const Checkout = () => {
     navigate('/profile?tab=1');
  
   };
+  const handletoCheckout =()=>{
+    
+  }
 
   return (
     <>
@@ -175,7 +178,9 @@ const Checkout = () => {
                 Your personal details will be used to process your order,
                 support your experience throughout this website
               </p>
-              <button className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white">
+              <button className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white"
+              onClick={handletoCheckout()}
+              >
                 Place Order
               </button>
             </div>
