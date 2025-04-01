@@ -7,18 +7,11 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Autoplay } from "swiper/modules";
 import { Carousel } from "antd";
-import glassbanner from "../assets/carousel/glass_banner/SUNGLASS.jpg";
-import glassbannerMobile from "../assets/carousel/glass_banner/Sunglass_Mobile.jpg";
+
 
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
 
-const topCatBanner = [
-  {
-    desktop_image: glassbanner,
-    mobile_image: glassbannerMobile,
-  },
-];
 
 const GlovesSection = ({ closeCart, navigate }) => {
   const { getAllCategoryBanner, getAllProductsByCategories } = useProduct();
