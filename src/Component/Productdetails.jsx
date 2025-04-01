@@ -206,15 +206,25 @@ const Productdetails = () => {
                 </div>
 
                 <div className="d-flex" style={{ gap: "25px" }}>
-                  <button
+                  {isProductInCart ? (
+                    <button
+                      type="submit"
+                      className="btn rounded-2xl text-white bg-[#ff5B00] "
+                      // onClick={() => navigate(`/checkout/${id}`,{ state: { quantity } })}
+                      onClick={() => navigate(`/cart`)}
+                    >
+                      Buy Now
+                    </button>
+                  ) : (<button
                     type="submit"
                     className="btn rounded-2xl text-white bg-[#ff5B00] "
-                    onClick={() =>
-                      navigate(`/checkout/${id}`, { state: { quantity } })
+                    onClick={
+                      user_id ? () => handleCart(data) : navigateToLogin
                     }
                   >
                     Buy Now
-                  </button>
+                  </button>)
+                  }
 
                   {isProductInCart ? (
                     <button
