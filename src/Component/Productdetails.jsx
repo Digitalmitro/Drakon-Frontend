@@ -66,7 +66,6 @@ const Productdetails = () => {
       console.log(err);
     }
 
-
     // setData(res.data);
   };
   // console.log("allProduct", allProduct);
@@ -123,14 +122,15 @@ const Productdetails = () => {
 
   return (
     <>
-      <div className="pt-32 w-full max-w-1200 max-auto px-4">
-        <div className="row productDetails">
+      <div className=" w-full max-w-1200 max-auto px-4">
+        <div className="row productDetails ">
           <div className="col-6 flex flex-col items-center ">
             {/* Centering the Main Image */}
-            <div className="lg:w-[500px] lg:h-[500px] w-[300px] h-[300px] flex justify-center items-center">
+            <div className="lg:w-[500px] border-b lg:h-[500px] w-[300px] h-[300px] flex flex-col justify-center items-center overflow-hidden">
+              {/* <p className="text-gray-300">move cursor on the image to zoom</p> */}
               <img
                 src={selectedImage || data?.image?.[0]}
-                className=" w-full h-full object-conatin"
+                className="lg:min-w-[300px] lg:min-h-[300px] object-contain transition-transform duration-300 ease-in-out hover:scale-125"
               />
             </div>
 
@@ -139,7 +139,7 @@ const Productdetails = () => {
               {data?.image.map((img, i) => (
                 <div
                   key={i}
-                  className="w-[100px] h-[100px]  p-2 flex justify-center items-center "
+                  className="w-[80px] h-[80px] lg:w-[120px] lg:h-auto p-2 flex justify-center items-center "
                 >
                   <img
                     src={img}
@@ -152,7 +152,7 @@ const Productdetails = () => {
             </div>
           </div>
 
-          <div className="col-6">
+          <div className="col-6 pt-32">
             <div className="details ">
               <h3 className="fs-1 text fw-normal">{data?.title}</h3>
               <h5 className="pb-4 mt-1">
@@ -209,7 +209,9 @@ const Productdetails = () => {
                   <button
                     type="submit"
                     className="btn rounded-2xl text-white bg-[#ff5B00] "
-                    onClick={() => navigate(`/checkout/${id}`,{ state: { quantity } })}
+                    onClick={() =>
+                      navigate(`/checkout/${id}`, { state: { quantity } })
+                    }
                   >
                     Buy Now
                   </button>
