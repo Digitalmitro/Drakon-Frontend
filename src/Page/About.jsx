@@ -1,7 +1,7 @@
 import whyChooseUsImg from "../assets/new.png";
 import aboutus from "../assets/carousel/about.jpg";
-import about1 from "../assets/carousel/about1.jpg";
-import about2 from "../assets/carousel/about2.jpg";
+import about1 from "../assets/carousel/about1.jpeg";
+import about2 from "../assets/carousel/2.jpg";
 import about3 from "../assets/carousel/about3.jpg";
 import { motion } from "framer-motion";
 const About = () => {
@@ -78,7 +78,7 @@ const About = () => {
             {/* Bottom Section (Text 03 & 04) */}
             <div className="flex justify-between w-full">
               {/* Left Text */}
-              <div className="max-w-[40%] ">
+              <div className="max-w-[40%] ml-16">
                 <h3 className="text-4xl font-bold">03</h3>
                 <h3 className="text-2xl font-bold mb-4">FREE SHIPPING</h3>
                 <p className="text-lg leading-8">
@@ -88,7 +88,7 @@ const About = () => {
               </div>
 
               {/* Right Text */}
-              <div className="max-w-[40%] text-end">
+              <div className="max-w-[40%] text-end mr-16">
                 <h3 className="text-4xl font-bold ">04</h3>
                 <h3 className="text-2xl font-bold mb-4 ">
                   PROFESSIONAL SUPPORT
