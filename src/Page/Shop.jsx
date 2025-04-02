@@ -47,7 +47,7 @@ function Shop() {
 
   return (
     <div className="pt-20 flex flex-wrap lg:flex-row">
-      <div className="sidebar bg-light lg:w-[20%] w-full px-10 lg:px-0 lg:pl-4 ">
+      {/* <div className="sidebar bg-light lg:w-[20%] w-full px-10 lg:px-0 lg:pl-4 ">
         <div className="mb-3 py-2">
           <h3
             style={{
@@ -141,9 +141,9 @@ function Shop() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Product Display */}
-      <div className="flex flex-wrap justify-center lg:gap-8 pt-4 lg:px-24 lg:w-[80%] w-full">
+      <div className="flex flex-wrap justify-center lg:gap-8 pt-4 w-full">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((e) => (
             <div key={e._id} className="h-[450px]">

@@ -188,7 +188,7 @@ function Navbar(props) {
              onClick={() => navigate("/")}
              src={logo}
              alt="logo"
-             className="w-36 cursor-pointer logoMobile"
+             className="w-48 cursor-pointer logoMobile"
            />
          </div>
 
