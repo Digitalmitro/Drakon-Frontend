@@ -79,7 +79,7 @@ const Hero = ({ closeCart, setLoading, loading }) => {
                         "&:hover": { backgroundColor: "#be410c" },
                       }}
                       variant="contained"
-                      onClick={() => navigate("/product")}
+                      onClick={() => navigate("/shop")}
                     >
                       Shop Now
                     </Button>
