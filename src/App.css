@@ -27,7 +27,7 @@
   height: 500px;
 }
 .contact-banner{
-  background: url("./assets/contact.png"),rgba(0, 0, 0, 0.7);
+  background: url("https://res.cloudinary.com/dinitjlyf/image/upload/v1743772085/chat_uploads/zsar2np2vwgtevrtva6o.jpg"),rgba(0, 0, 0, 0.7);
   background-blend-mode: multiply;
   background-position: center;
   background-repeat: no-repeat;
