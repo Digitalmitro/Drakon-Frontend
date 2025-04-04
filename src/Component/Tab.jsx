@@ -421,6 +421,7 @@ export default function VerticalTabs() {
   };
 
   // get user by id
+  const [user,setUser]=useState([])
   const getUserById = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/user/profile`, {
@@ -433,7 +434,7 @@ export default function VerticalTabs() {
       }
 
       const data = await res.json();
-      console.log("User Profile:", data);
+      setUser(data);
     } catch (err) {
       console.error("Failed to fetch user profile:", err.message);
     }
@@ -490,23 +491,25 @@ export default function VerticalTabs() {
             <h1 className="mb-8">PROFILE DETAILS</h1>
             <div className=" flex space-x-4 mb-3 items-center">
               <h4>Name: </h4>
-              <p> suvo suvo</p>
+              <p>{user.name}</p>
             </div>
             <div className="flex space-x-4  items-center">
               <h4>Email: </h4>
-              <p>Suvo@gmail.com</p>
+              <p>{user.email}</p>
             </div>
           </div>
           <div className="profile-box" style={{ width: "500px" }}>
             <form>
               <div class="my-3">
                 <label for="username" className="form-label fs-5 text">
-                  Username
+                  Full Name
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   id="username"
+                  value={user.name}
+
                   required
                 />
               </div>
@@ -518,6 +521,7 @@ export default function VerticalTabs() {
                   type="text"
                   className="form-control"
                   id="name"
+                  value={user.name}
                   required
                 />
               </div>
@@ -529,6 +533,7 @@ export default function VerticalTabs() {
                   type="email"
                   className="form-control"
                   id="email"
+                  value={user.email}
                   required
                 />
               </div>
@@ -540,6 +545,7 @@ export default function VerticalTabs() {
                   type="tel"
                   className="form-control"
                   id="phone"
+                  
                   required
                 />
               </div>
