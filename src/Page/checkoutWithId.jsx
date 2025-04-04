@@ -55,7 +55,7 @@ const Checkout = () => {
     // console.log("billing response:", billingData);
   };
   useEffect(() => {
-    getAddressData();
+    // getAddressData();
     handleProduct();
   }, []);
 

@@ -29,7 +29,7 @@ const Checkout = () => {
   const [deliveryAddress, setDeliveryAddress] = useState(null);
 
   useEffect(() => {
-    getAddressData();
+    // getAddressData();
     handleProduct();
     // handleOrderPlaced()
   }, []);
