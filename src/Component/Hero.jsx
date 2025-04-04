@@ -74,7 +74,6 @@ const Hero = ({ closeCart, setLoading, loading }) => {
                         fontSize: "1rem",
                         fontWeight: "bold",
                         backgroundColor: "#F5743B",
-
                         mr: "20px",
                         "&:hover": { backgroundColor: "#be410c" },
                       }}
