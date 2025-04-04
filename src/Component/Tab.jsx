@@ -16,6 +16,40 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { message } from "antd";
+const pastOrders = [
+  {
+    userId: "13h5sh3",
+    products: [
+      {
+        productId: "pr0d1d1",
+        quantity: 2,
+        price: 499.99,
+        total: 999.98,
+      },
+      {
+        productId: "pr0d2d2",
+        quantity: 1,
+        price: 299.99,
+        total: 299.99,
+      },
+    ],
+    subtotal: 1299.97,
+    shippingCost: 50,
+    discount: 100,
+    totalAmount: 1249.97,
+    paymentMethod: "Credit Card",
+    paymentStatus: "Paid",
+    orderStatus: "Shipped",
+    shippingAddress: {
+      fullName: "Jane Doe",
+      address: "123 SkinCare Lane",
+      city: "Glowtown",
+      postalCode: "123456",
+      country: "Skintopia",
+    },
+    createdAt: "2025-04-04T00:00:00.000Z",
+  },
+];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -78,7 +112,7 @@ export default function VerticalTabs() {
     }
     try {
       const token = Cookies.get("token");
-      console.log(token)
+      console.log(token);
       const response = await axios.put(
         `${import.meta.env.VITE_BACKEND_API}/reset-password`,
         { oldPassword, newPassword },
@@ -365,42 +399,30 @@ export default function VerticalTabs() {
   const toggleShippingForm = () => {
     setShowShippingForm((prev) => !prev);
   };
-  // const pastOrders = [
-  //   {
-  //     id: 1,
-  //     img: product1,
-  //     deliveredDate: "Sat, Mar 25, 2024 07:15 pm",
-  //     orderDate: "Sat, Mar 22, 2024, 5:00 pm",
-  //     title: "Full Sleeve Jacket",
-  //     orderNumber: "14524156451268",
-  //     totalPaid: 142,
-  //   },
-  //   {
-  //     id: 2,
-  //     img: product1,
-  //     deliveredDate: "Sat, ",
-  //     orderDate: "Sat, Mar 22, 2024, 5:00 pm",
-  //     title: "  Jacket",
-  //     orderNumber: "14524156451268",
-  //     totalPaid: 142,
-  //   },
 
-  //   // Add more orders as needed
-  // ];
+  const [pastOrders, setPastOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const productsPerPage = 1; // You can adjust this value
-  // const totalPages = Math.ceil(pastOrders.length / productsPerPage);
+  const getOrders = async (id) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API}/api/user/${id}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch orders");
 
-  // const indexOfLastProduct = currentPage * productsPerPage;
-  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  // const currentProducts = pastOrders.slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
+      const data = await response.json();
+      setPastOrders(data);
+      console.log("Order Data:", data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  useEffect(() => {
+    getOrders(userId);
+  }, []);
   return (
     <Box
       className="tabSection"
@@ -948,66 +970,49 @@ export default function VerticalTabs() {
       </TabPanel>
 
       <TabPanel value={value} index={3}>
-        {/* <div className="text-center">
-          <h2 className="fs-1 text my-3">Past Orders</h2>
-        </div>
-        <div className="past-order d-flex justify-content-center">
-          {currentProducts.map((order) => (
-            <div key={order.id} className="past-order-box">
-              <div className="wrap">
-                <img src={order.img} alt="Product" />
-                <div className="burger-text">
-                  <p className="text-end pb-4">
-                    Delivered on {order.deliveredDate}{" "}
-                    <i className="fa-solid fa-circle-check"></i>
-                  </p>
-                  <h3 className="fs-2 text fw-bold">{order.title}</h3>
-                  <br></br>
-                  <span>
-                    order#{order.orderNumber} {order.orderDate}
-                  </span>
-                  <br></br>
-
-                  <button className="btn-1" type="button">
-                    view details
-                  </button>
-                </div>
+        <div className="p-4 space-y-8 ">
+          {pastOrders?.map((order) => (
+            <div
+              key={order._id}
+              className="border p-4  rounded-lg shadow flex flex-col lg:flex-row  lg:justify-around space-y-6"
+            >
+              <div className="">
+                <h3 className="font-semibold  text-[18px]">Products:</h3>
+                {order?.products?.map((item, index) => (
+                  <div key={index} className=" lg:flex gap-10">
+                    <div>
+                      <img
+                        src={item?.productId?.image[0]}
+                        alt={item?.productId?.title}
+                        className="w-28 h-28 "
+                      />
+                    </div>
+                    <div className="text-[18px]">
+                      <p>Quantity: <b>{item?.quantity}</b></p>
+                      <p>Price: ₹<b>{item?.price}</b></p>
+                      <p>Total: ₹<b>{item?.total}</b></p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="order-history " style={{ marginTop: "20px" }}>
-                <b className="px-4">
-                  {order.title} {" : "}{" "}
-                </b>
-                <span className="px-4"> total spanaid $ {order.totalPaid}</span>
-              </div>
-              <div
-                style={{
-                  marginTop: "10px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <button className="btn" type="button">
-                  Get HELP
-                </button>
-                <br />
-                <div className="pagination-controlsborder d-flex justify-content-center">
-                  {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => paginate(index + 1)}
-                      className={`p-2 border  pagination-button ${
-                        currentPage === index + 1 ? "active" : ""
-                      }`}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-                </div>
+              <div>
+                <h2 className="text-lg font-bold mb-2">
+                  Order ID: {order?._id}
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Status: {order?.orderStatus}
+                </p>
+                <p className="text-sm">
+                  Payment: {order?.paymentMethod} ({order?.paymentStatus})
+                </p>
+                <p className="text-sm">Total: ₹{order?.totalAmount}</p>
+                <p className="text-sm text-gray-500">
+                  Ordered on: {new Date(order?.createdAt).toLocaleString()}
+                </p>
               </div>
             </div>
           ))}
-        </div> */}
-        <OrdersTabPanel />
+        </div>
       </TabPanel>
       <TabPanel value={value} index={5}></TabPanel>
     </Box>
