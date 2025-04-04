@@ -3,7 +3,7 @@ import { FaTrash } from "react-icons/fa";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { loadStripe } from "@stripe/stripe-js";
-
+import { useLocation, useSearchParams } from "react-router-dom";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CartPage = () => {
@@ -14,20 +14,21 @@ const CartPage = () => {
   const shippingCost = 6.99;
   const shippingDiscount = -6.99;
   const token = Cookies.get("token");
-
+  const [params] = useSearchParams();
+  const sessionId = params.get("session_id");
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/api/cart`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCart(response.data.products);
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/api/cart`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCart(response.data.products);
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchCart();
   }, [token]);
 
@@ -42,28 +43,87 @@ const CartPage = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const stripe = await stripePromise;
-    await stripe.redirectToCheckout({ sessionId: response.data.sessionId });
+      await stripe.redirectToCheckout({ sessionId: response.data.sessionId });
+
     } catch (error) {
       console.error("Error processing payment:", error);
     }
   };
-  
+
+  const checkPaymentStatus = async (sessionId) => {
+    try {
+      const paymentRes = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/api/stripe/confirm`,
+        { sessionId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (paymentRes.data.session !== "paid") {
+        console.warn("Payment not successful. Aborting order creation.");
+        return;
+      }
+
+      // 1. Create the Order
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/api/order/create`,
+        {
+          paymentMethod: "Stripe",
+          paymentStatus: "Paid"
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // 2. Optional: Send to shipping API
+
+      // 3. Clear the cart
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_API}/api/cart/clear`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Order created and cart cleared.");
+    } catch (error) {
+      console.error("Error verifying payment or creating order:", error.response?.data || error.message);
+    }
+  };
 
   useEffect(() => {
-    const checkPaymentStatus = async () => {
-      const query = new URLSearchParams(window.location.search);
-      if (query.get("success")) {
-        setPaymentSuccess(true);
-        await axios.post(
-          `${import.meta.env.VITE_BACKEND_API}/api/order/create`,
-          { paymentMethod: "Stripe" },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setCart([]);
+    const verifyPaymentAndCreateOrder = async () => {
+      if (!sessionId) return;
+
+      try {
+        // Confirm payment and create order
+        checkPaymentStatus(sessionId);
+      } catch (err) {
+        console.error("Payment confirmation failed:", err);
       }
     };
-    checkPaymentStatus();
-  }, []);
+
+    verifyPaymentAndCreateOrder(sessionId);
+  }, [sessionId]);
+
+  const removeProduct = async (productId) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_API}/api/cart/remove`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { productId }, // 🔥 this is the key part!
+      });
+      fetchCart();  
+    } catch (error) {
+      console.error("Error deleting from cart:", error.response?.data || error.message);
+    }
+  };
+
 
   return (
     <div className="max-w-5xl mx-auto px-6 pt-24 pb-5">
@@ -84,7 +144,7 @@ const CartPage = () => {
                 <p className="text-sm text-gray-500">Price: ${item.productId.price.toFixed(2)}</p>
               </div>
               <div className="text-center flex flex-col justify-around h-[200px]">
-                <button className="text-red-500"><FaTrash /></button>
+                <button className="text-red-500" onClick={() => removeProduct(item.productId._id)}><FaTrash /></button>
                 <p className="font-semibold">${item.total.toFixed(2)}</p>
               </div>
             </div>
