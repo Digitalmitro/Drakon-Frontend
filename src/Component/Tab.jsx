@@ -420,8 +420,29 @@ export default function VerticalTabs() {
     }
   };
 
+  // get user by id
+  const getUserById = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/user/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}: ${res.statusText}`);
+      }
+
+      const data = await res.json();
+      console.log("User Profile:", data);
+    } catch (err) {
+      console.error("Failed to fetch user profile:", err.message);
+    }
+  };
+  
+
   useEffect(() => {
     getOrders(userId);
+    getUserById()
   }, []);
   return (
     <Box
