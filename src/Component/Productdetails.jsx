@@ -130,7 +130,7 @@ const Productdetails = () => {
               {/* <p className="text-gray-300">move cursor on the image to zoom</p> */}
               <img
                 src={selectedImage || data?.image?.[0]}
-                className="lg:min-w-[300px] lg:min-h-[300px] object-contain transition-transform duration-300 ease-in-out hover:scale-125"
+                className="lg:max-w-[300px] lg:max-h-[300px] object-contain transition-transform duration-300 ease-in-out hover:scale-125"
               />
             </div>
 
