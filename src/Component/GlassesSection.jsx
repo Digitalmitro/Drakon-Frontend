@@ -42,7 +42,22 @@ const GlassesSection = ({ closeCart, navigate }) => {
   return (
     <div className="bg-[#F3F3F3]" onClick={closeCart}>
       <div className=" mx-auto pb-10">
-        <h2 className="font-bold pb-4 text-4xl lg:text-5xl uppercase text-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:py-16 ">
+          {/* Find Drakon */}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Find Drakon
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto text-justify">
+              We sell our products across the U.S. Regardless of your location,
+              we are always here to help and get you the desired product. We
+              have a team of expert and dedicated reps experienced in helping
+              sports enthusiasts. With us, you will always stay a step ahead.
+            </p>
+          </div>
+        </div>
+
+        <h2 className="font-bold pb-4 text-4xl uppercase text-center">
           Drakon Sports Performance Sunglasses
         </h2>
 
@@ -57,10 +72,10 @@ const GlassesSection = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
-                  <div className="lg:w-[500px]">
-                    <p className="text-2xl font-semibold">
-                      lightweight, durable, and UV-protected for peak athletic
-                      performance
+                  <div className="lg:w-[600px] text-justify">
+                    <p className="text-2xl ">
+                      Search for your go-to sports equipment and apparel. Browse
+                      through Drakon’s catalogs and gear up your game.
                     </p>
                   </div>
                 </div>
@@ -75,7 +90,8 @@ const GlassesSection = ({ closeCart, navigate }) => {
 
                 <div className="absolute inset-0 flex flex-col pt-20 items-center text-white bg-black/50">
                   <p className="text-lg font-semibold text-center">
-                    VIEW ALL TOP CATEGORY PRODUCTS
+                    Search for your go-to sports equipment and apparel. Browse
+                    through Drakon’s catalogs and gear up your game.
                   </p>
                 </div>
               </div>
@@ -112,9 +128,10 @@ const GlassesSection = ({ closeCart, navigate }) => {
                     </div>
                     <div className=" h-full space-y-1 px-2">
                       <h3 className="font-semibold text-xl">
-                        {e.description.length > 30
+                        {/* {e.description.length > 30
                           ? `${e.description.slice(0, 30)}...`
-                          : e.description}
+                          : e.description} */}
+                        {e.title}
                       </h3>
                       <h4 className="text-[#959595] font-bold text-2xl">
                         $ {e.price}
