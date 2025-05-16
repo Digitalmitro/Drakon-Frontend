@@ -1,418 +1,390 @@
+import React, { useEffect, useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import moment from "moment";
 import { message } from "antd";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
 const Checkout = () => {
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const userId = decodedToken?._id;
-  const user = decodedToken?.email;
+  const userEmail = decodedToken?.email;
   const navigate = useNavigate();
-  const [shippingData, setShippingData] = useState();
-  const [billingData, setBillingData] = useState();
+  const [searchParams] = useSearchParams();
 
-  const [cartData, setCartData] = useState();
-  const [allProductData, setAllProductData] = useState([]);
-  const [subtotal, setSubtotal] = useState(0);
-  const [enableTax, setEnabletax] = useState();
-  const [enableCurrency, setEnableCurrency] = useState();
-  const [tax, setTax] = useState(0);
-  const [taxValue, setTaxValue] = useState(0);
-  const [coupon, setCoupon] = useState([]);
-  const [enableCoupon, setEnableCoupon] = useState([]);
-  const [couponName, setCouponName] = useState(""); // State variable for coupon percentage
-  const [couponDiscount, setCouponDiscount] = useState(0);
-  const [finalPayment, setFinalPayment] = useState(0);
+  // Addresses & form for guest
+  const [shippingData, setShippingData] = useState([]);
   const [deliveryAddress, setDeliveryAddress] = useState(null);
+  const [guestShipping, setGuestShipping] = useState({
+    shippingfirstName: "",
+    shippinglastName: "",
+    shippingstreetAddress: "",
+    shippingcity: "",
+    shippingstate: "",
+    shippingcountry: "",
+    shippingzipcode: "",
+    shippingphone: "",
+  });
 
+  // Cart
+  const [cartData, setCartData] = useState([]);
+  // Pricing
+  const [subtotal, setSubtotal] = useState(0);
+  const [taxValue, setTaxValue] = useState(0);
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [shippingCost, setShippingCost] = useState(0);
+  const [finalPayment, setFinalPayment] = useState(0);
+
+  // Settings
+  const [enableTax, setEnableTax] = useState(false);
+  const [taxRate, setTaxRate] = useState(0);
+  const [enableCurrency, setEnableCurrency] = useState("");
+  const [enableCoupon, setEnableCoupon] = useState(false);
+  const [couponList, setCouponList] = useState([]);
+  const [couponName, setCouponName] = useState("");
+
+  // Stripe
+  const [sessionId, setSessionId] = useState(null);
+
+  // on mount
   useEffect(() => {
-    // getAddressData();
-    handleProduct();
-    // handleOrderPlaced()
+    fetchCart();
+    fetchSettings();
+    const sid = searchParams.get("session_id");
+    if (sid) setSessionId(sid);
   }, []);
 
-  // Addrress
-  const getAddressData = async () => {
-    try {
-      const response1 = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
-      );
-      // console.log("Billing response:", response1);
-      const response2 = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/addressbookshipping/${userId}`
-      );
-      await setBillingData(response1.data.addressbookbilling);
-      await setShippingData(response2.data.addressbookShipping);
-    } catch (error) {
-      console.error("Error saving addresses:", error);
-    }
-    console.log("shipping response:", shippingData);
-    console.log("billing response:", billingData);
-  };
-  const handleAddAddress = () => {
-    navigate("/profile?tab=1");
-  };
-
-  const DeliveryAddressbill = async () => {};
-
-  const getAllProductData = async () => {
-    try {
-      const res1 = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/feature-products`
-      );
-      const featureProduct = res1.data;
-      // fetchProducts = featureRes.data
-      console.log("feature-data", featureProduct);
-
-      const res2 = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/products`
-      );
-      const prodData = res2.data;
-
-      const res3 = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/inv-products`
-      );
-      const invProduct = res3.data;
-      setAllProductData([...featureProduct, ...invProduct, ...prodData]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  // console.log("productDatat", allProductData);
-
   useEffect(() => {
-    getAllProductData();
-  }, []);
+    if (sessionId) confirmPayment(sessionId);
+  }, [sessionId]);
 
-  // wishlist Products
-  const handleProduct = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist/${userId}`
-      );
-
-      // console.log("response", response);
-
-      setCartData(response.data.wishlist);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // Tax
-  const getTax = async () => {
-    const res = await axios.get(
-      `${import.meta.env.VITE_BACKEND_API}/general-settings`
-    );
-    const ress = await axios.get(`${import.meta.env.VITE_BACKEND_API}/coupon`);
-    setEnabletax(res.data[0].EnableTax);
-    setEnableCoupon(res.data[0].EnableCoupon);
-    setTax(res.data[0].TaxRate);
-    setCoupon(ress.data);
-    setEnableCurrency(res.data[0].Currency);
-    if (enableTax) {
-      let taxAmount = (subtotal * tax) / 100;
-      let youPay = subtotal + taxAmount;
-      setTaxValue(taxAmount);
-      setFinalPayment(youPay);
-    }
-  };
-
-  const applyCoupon = async () => {
-    if (!enableCoupon) {
-      message.error("coupon is not applicable");
-      return;
-    } else {
-      const cpName = coupon?.find((e) => e.couponName === couponName);
-      if (cpName) {
-        let discoundAmount = await cpName?.discount;
-        // await setCouponDiscount(cpName ? cpName?.discount : 0);
-
-        if (discoundAmount) {
-          let taxAmount = (subtotal * tax) / 100;
-
-          let couponAmount = (subtotal * discoundAmount) / 100;
-          let youPay = subtotal + taxAmount - couponAmount;
-
-          setCouponDiscount(couponAmount);
-          setFinalPayment(youPay);
-          message.success("Coupon applied");
-        } else {
-          message.error("Discount is not Applied");
-        }
-      } else {
-        message.error("Coupon Name is Invalid");
+  // fetchCart supports guest
+  const fetchCart = async () => {
+    if (token) {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_API}/api/cart`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCartData(res.data.products || []);
+      } catch {
+        setCartData([]);
       }
+    } else {
+      setCartData(JSON.parse(localStorage.getItem("guest_cart") || "[]"));
     }
   };
-  // console.log("couponDiscount", couponDiscount);
 
-  // subtotal
+  // settings
+  const fetchSettings = async () => {
+    try {
+      const [sRes, cRes] = await Promise.all([
+        axios.get(`${import.meta.env.VITE_BACKEND_API}/general-settings`),
+        axios.get(`${import.meta.env.VITE_BACKEND_API}/coupon`),
+      ]);
+      const settings = sRes.data[0];
+      setEnableTax(settings.EnableTax);
+      setTaxRate(settings.TaxRate);
+      setEnableCurrency(settings.Currency);
+      setEnableCoupon(settings.EnableCoupon);
+      setCouponList(cRes.data || []);
+    } catch {}
+  };
+
+  // recalc prices
   useEffect(() => {
-    // Calculate subtotal whenever cartData changes
-    const subTotal = cartData?.reduce(
-      (acc, item) => acc + item.price * item.qty,
+    const sub = cartData.reduce(
+      (acc, item) => acc + (item.productId?.price || 0) * item.quantity,
       0
     );
-    setSubtotal(subTotal);
-    getTax();
-  }, [cartData]);
+    setSubtotal(sub);
+    const t = enableTax ? (sub * taxRate) / 100 : 0;
+    setTaxValue(t);
+    setFinalPayment(sub + t - couponDiscount);
+  }, [cartData, enableTax, taxRate, couponDiscount]);
 
-  // console.log("cartData", cartData);
+  // apply coupon
+  const applyCoupon = () => {
+    if (!enableCoupon) return message.error("Coupons disabled");
+    const cp = couponList.find(c => c.couponName === couponName);
+    if (!cp) return message.error("Invalid coupon");
+    setCouponDiscount((subtotal * (cp.discount || 0)) / 100);
+    message.success("Coupon applied");
+  };
 
-  async function handleOrderPlaced() {
-    await getAllProductData();
-
-    try {
-      const res = await axios.get("https://api.ipify.org");
-      // Iterate through each item in the cart
-
-      for (const item of cartData) {
+  // when deliveryAddress changes (including guest form),
+  // fetch shipping rates
+  useEffect(() => {
+    if (!deliveryAddress) return setShippingCost(0);
+    (async () => {
+      try {
+        const weight = cartData.reduce(
+          (w, i) => w + (i.productId?.weight || 0) * i.quantity,
+          0
+        );
         const payload = {
-          image: item.image?.map((img) => img),
-          title: item.title,
-          price: item.price,
-          qty: item.qty,
-          billing: billingData,
-          shipping: shippingData,
-          product_id: item.product_id,
-          user: "#" + Math.floor(Math.random() * 1000) + " " + user,
-          user_id: userId,
-          ip: res.data,
+          carrierCode: "stamps_com",
+          fromPostalCode: import.meta.env.VITE_SHIP_FROM_ZIP,
+          toState: deliveryAddress.shippingstate,
+          toPostalCode: deliveryAddress.shippingzipcode,
+          toCountry: deliveryAddress.shippingcountry,
+          toCity: deliveryAddress.shippingcity,
+          weight: { value: weight, units: "ounces" },
+          confirmation: "delivery",
+          residential: false,
+        };
+        const res = await axios.post(
+          "https://ssapi.shipstation.com/v2/shipments/getrates",
+          payload,
+          {
+            auth: {
+              username: import.meta.env.VITE_SHIPSTATION_API_KEY,
+              password: import.meta.env.VITE_SHIPSTATION_API_SECRET,
+            },
+          }
+        );
+        setShippingCost(res.data.rates?.[0]?.shipmentCost || 0);
+      } catch {
+        setShippingCost(0);
+      }
+    })();
+  }, [deliveryAddress, cartData]);
+
+  // Stripe checkout
+  const initiateStripe = async () => {
+    if (!deliveryAddress) {
+      return message.error("Enter a shipping address");
+    }
+    try {
+      const stripe = await stripePromise;
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/api/stripe/create-payment-intent`,
+        {
+          amount: Math.round((finalPayment + shippingCost) * 100),
+          success_url: `${window.location.origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: window.location.href,
+        },
+        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+      );
+      await stripe.redirectToCheckout({ sessionId: data.sessionId });
+    } catch (err) {
+      console.error(err);
+      message.error("Payment initiation failed");
+    }
+  };
+
+  // confirm + create orders
+  const confirmPayment = async sid => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/api/stripe/confirm`,
+        { sessionId: sid },
+        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+      );
+
+      // create orders & update stock
+      for (const item of cartData) {
+        const p = item.productId;
+        const payload = {
+          image: p.image || [],
+          title: p.title,
+          price: p.price,
+          qty: item.quantity,
+          billing: {}, // you can add billing input similarly
+          shipping: deliveryAddress,
+          shippingCost,
+          product_id: p._id,
+          user_id: userId || null,
+          user: userEmail || "Guest",
+          ip: (await axios.get("https://api.ipify.org")).data,
           createdDate: moment().format("MMM Do YY"),
           status: "Processing",
-          totalpay: Number(finalPayment),
+          totalpay: Number(finalPayment + shippingCost),
+          paymentMethod: "Stripe",
+          paymentStatus: "Paid",
         };
-
-        const orderedStock = allProductData.filter(
-          (info) => info._id === item.product_id
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_API}/order`,
+          payload,
+          token ? { headers: { Authorization: `Bearer ${token}` } } : {}
         );
-
-        console.log("orderedStock", orderedStock[0]._id);
-        if (orderedStock[0].stock) {
-          const productPayload = {
-            stock: orderedStock[0].stock - item.qty,
-          };
-          if (orderedStock[0].type === "products") {
-            const productRes = await axios.put(
-              `${import.meta.env.VITE_BACKEND_API}/products/${item.product_id}`,
-              productPayload
-            );
-          } else if (orderedStock[0].type === "inventory") {
-            const inventory = await axios.put(
-              `${import.meta.env.VITE_BACKEND_API}/inv-products/${
-                item.product_id
-              }`,
-              productPayload
-            );
-          } else {
-            const feature = await axios.put(
-              `${import.meta.env.VITE_BACKEND_API}/feature-products/${
-                item.product_id
-              }`,
-              productPayload
-            );
-          }
+        if (p.stock != null) {
+          const newStock = p.stock - item.quantity;
+          const endpoint =
+            p.type === "products"
+              ? "products"
+              : p.type === "inventory"
+              ? "inv-products"
+              : "feature-products";
+          await axios.put(
+            `${import.meta.env.VITE_BACKEND_API}/${endpoint}/${p._id}`,
+            { stock: newStock }
+          );
         }
-
-        console.log("payload", payload);
-        // // Send a request to place the order
-        await axios.post(`${import.meta.env.VITE_BACKEND_API}/order`, payload);
-
-        // setLoaderPlacingOrder(true);
-        // setTimeout(() => {
-        //   setLoaderPlacingOrder(false);
-        //   setCardOrderPlaced(true);
-        // }, 5100);
-
-        const rescartdelete = await axios.delete(
-          `${import.meta.env.VITE_BACKEND_API}/wishlist/${item._id}`
-        );
-
-        // navigate("/tab");
-        console.log(rescartdelete.data);
-        handleProduct();
       }
-      message.success("Product ordered");
-      window.location.href = "/profile?tab=3";
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    } catch (error) {
-      console.error("Error placing order:", error);
+
+      // clear cart
+      if (token) {
+        await axios.delete(`${import.meta.env.VITE_BACKEND_API}/api/cart/clear`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } else {
+        localStorage.removeItem("guest_cart");
+      }
+      message.success("Order placed!");
+      navigate("/profile?tab=3");
+    } catch (err) {
+      console.error(err);
+      message.error("Order creation failed");
     }
-  }
+  };
+
+  // handle guest form change
+  const onGuestChange = e => {
+    const { name, value } = e.target;
+    const upd = { ...guestShipping, [name]: value };
+    setGuestShipping(upd);
+    setDeliveryAddress(upd);
+  };
 
   return (
-    <>
-      <div
-        className="container  d-flex align-items-center justify-content-center mt-20 "
-        style={{ zoom: "1.1" }}
-      >
-        <div
-          className="row w-100 px-3"
-          style={{ display: "flex", gap: "7rem" }}
-        >
-          <div className="col-md-4 my-5">
-            <h2 className="fs-2 text pb-3 ">ADDRESSES</h2>
-            <div className="login-box">
-              <button type="btn" className="btn-add" onClick={handleAddAddress}>
-                ADD ADDRESS
-              </button>
-              <div className="address-box">
-                <p>
-                  <strong>SHIPPING ADDRESS :</strong>{" "}
-                  {shippingData
-                    ? `${shippingData?.shippingstreetAddress}, 
-                  ${shippingData?.shippingcity} ,${shippingData?.shippingstate}, 
-                  ${shippingData?.shippingcountry}`
-                    : " Add your shipping address"}
-                </p>
-                <p>
-                  <strong>ZIPCODE :</strong> {shippingData?.shippingzipcode}
-                </p>
-                {/* <button type="btn" className="btn-select ">
-                  SELECT ADDRESS
-                </button> */}
-              </div>
-            </div>
+    <div className="container d-flex justify-content-center mt-20" style={{ zoom: "1.1" }}>
+      <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
+        {/* Shipping Section */}
+        <div className="col-md-4 my-5">
+          <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
 
-            <div
-              className="login-box w-100 my-4"
-              style={{ display: "flex", gap: "20px" }}
-            >
-              <input
-                type="text"
-                className="form-control  h-10"
-                id="exampleFormControlInput1"
-                placeholder=" Coupon Name "
-                value={couponName}
-                onChange={(e) => setCouponName(e.target.value)}
-              />
-              <button
-                type="sumbit"
-                className="btn btn-primary coupon-btn"
-                style={{ backgroundColor: "coral" }}
-                onClick={applyCoupon}
-              >
-                Apply coupon
-              </button>
+          {/* logged-in: select saved */}
+          {token && shippingData.length > 0 ? (
+            shippingData.map(addr => {
+              const sel = deliveryAddress?._id === addr._id;
+              return (
+                <div
+                  key={addr._id}
+                  onClick={() => setDeliveryAddress(addr)}
+                  style={{
+                    border: sel ? "2px solid coral" : "1px solid #ddd",
+                    borderRadius: 5,
+                    padding: "1rem",
+                    marginBottom: "1rem",
+                    background: sel ? "#fff4f1" : "#fff",
+                    cursor: "pointer",
+                  }}
+                >
+                  <p><strong>{addr.shippingfirstName} {addr.shippinglastName}</strong></p>
+                  <p>{addr.shippingstreetAddress}, {addr.shippingcity}, {addr.shippingstate}, {addr.shippingcountry}</p>
+                  <p><strong>ZIP:</strong> {addr.shippingzipcode}</p>
+                  <p><strong>Phone:</strong> {addr.shippingphone}</p>
+                </div>
+              );
+            })
+          ) : (
+            // guest or no saved: inline form
+            <div>
+              {[
+                ["shippingfirstName","First Name"],
+                ["shippinglastName","Last Name"],
+                ["shippingstreetAddress","Street Address"],
+                ["shippingcity","City"],
+                ["shippingstate","State"],
+                ["shippingcountry","Country"],
+                ["shippingzipcode","ZIP"],
+                ["shippingphone","Phone"],
+              ].map(([key,label]) => (
+                <div className="mb-2" key={key}>
+                  <label>{label}</label>
+                  <input
+                    name={key}
+                    value={guestShipping[key] || ""}
+                    onChange={onGuestChange}
+                    className="form-control"
+                    placeholder={label}
+                  />
+                </div>
+              ))}
             </div>
+          )}
+
+          {/* Coupon */}
+          <div className="mt-4 d-flex">
+            <input
+              type="text"
+              className="form-control me-2"
+              placeholder="Coupon Code"
+              value={couponName}
+              onChange={e => setCouponName(e.target.value)}
+            />
+            <button className="btn btn-warning" onClick={applyCoupon}>Apply</button>
           </div>
+        </div>
 
-          <div className="col-md-6">
-            <h2 className="fs-2 text ">YOUR ORDER</h2>
+        {/* Order Summary */}
+        <div className="col-md-6">
+          <h2 className="fs-2">YOUR ORDER</h2>
+          <table className="table">
+            <thead>
+              <tr><th>Product</th><th></th><th>Qty</th><th>Price</th></tr>
+            </thead>
+            <tbody>
+              {cartData.map(item => {
+                const p = item.productId;
+                return (
+                  <tr key={p._id}>
+                    <td>
+                      <img
+                        src={p.image?.[0]||""}
+                        alt={p.title}
+                        style={{ width:50,height:50,objectFit:"cover" }}
+                        className="me-2"
+                      />
+                      {p.title}
+                    </td>
+                    <td></td>
+                    <td>{item.quantity}</td>
+                    <td>{enableCurrency} {(p.price * item.quantity).toFixed(2)}</td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <td colSpan="3" className="text-end">Subtotal:</td>
+                <td>{enableCurrency} {subtotal.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">Coupon Discount:</td>
+                <td>- {enableCurrency} {couponDiscount.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">Tax:</td>
+                <td>+ {enableCurrency} {taxValue.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">Shipping Cost:</td>
+                <td>+ {enableCurrency} {shippingCost.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end"><strong>Total:</strong></td>
+                <td><strong>{enableCurrency} {(finalPayment+shippingCost).toFixed(2)}</strong></td>
+              </tr>
+            </tbody>
+          </table>
 
-            <table className="table w-full ">
-              <thead>
-                <tr className="p-3 m-3">
-                  <th
-                    scope="col"
-                    colspan="2"
-                    className="p-4 px-2 m-4  border-b-4 w-1/2"
-                  >
-                    Product
-                  </th>
-                  <th scope="col" className="p-2 m-4"></th>
-                  <th scope="col" className="p-4 m-4">
-                    Quantity
-                  </th>
-                  <th scope="col" className="p-4 m-4">
-                    Price
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody className="p-4 m-6 px-7 border-b-4">
-                {cartData?.map((info) => {
-                  return (
-                    <tr className="p-4 m-4 px-7 border-b-4">
-                      <td className="p-4 m-4 px-7 border-b-4 w-1/2" colspan="2">
-                        {info.title}
-                      </td>
-                      <td className="p-4 m-4 px-7 border-b-4"></td>
-                      <td className="p-4 m-4 px-7 border-b-4">{info.qty}</td>
-                      <td className="p-4 m-4 px-7 border-b-4">
-                        {enableCurrency} {info.price * info.qty}
-                      </td>
-                    </tr>
-                  );
-                })}
-                <tr className="p-4 m-4 px-7 border-b-4">
-                  <td className="p-4 m-4 px-7 border-b-4 w-1/2" colspan="2">
-                    <p className="pb-2 mb-4 ">Sub Total : </p>
-                    <p className="text-orange-600  mb-2">Coupon : </p>
-
-                    <p className="text-green-600  mb-2">tax</p>
-                  </td>
-                  <td className="p-4 m-4 px-7 border-b-4"></td>
-                  <td className="p-4 m-4 px-7 border-b-4"></td>
-                  <td className="p-4 m-4 px-7 border-b-4">
-                    <p className="pb-2 mb-4">
-                      {enableCurrency} {subtotal}
-                    </p>
-                    <p className="text-orange-600  mb-2">
-                      -{enableCurrency} {couponDiscount}
-                    </p>
-                    <p className="text-green-600  mb-2">
-                      +{enableCurrency} {taxValue}
-                    </p>
-                  </td>
-                </tr>
-                <tr className="p-4 m-4 px-7 mb-8 border-b-4">
-                  <td className="p-4 m-4 px-7 w-1/2" colspan="2">
-                    You Pay
-                  </td>
-                  <td className="p-4 m-4 px-7 border-b-4"></td>
-                  <td className="p-4 m-4 px-7"></td>
-                  <td className="p-4 m-4 px-7 border-b-4">
-                    {enableCurrency} {finalPayment || subtotal}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p className="p-4 border  border-b-4">
-              <span className="">
-                <strong>Delivery Location : </strong>
-              </span>
-              {!shippingData ? (
-                <span className="text-orange-500 ">
-                  {" "}
-                  ! Please Add Shipping Address
-                </span>
-              ) : (
-                `${shippingData?.shippingstreetAddress} ${shippingData?.shippingzipcode}, 
-                  ${shippingData?.shippingcity} ,${shippingData?.shippingstate}, 
-                  ${shippingData?.shippingcountry}`
-              )}
-            </p>
-
-            <div className="text-center border-4">
-              <p>
-                Your personal details will be used to process your order,
-                support your experience throughout this website
-              </p>
-
-              <button
-                className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white"
-                disabled={!shippingData}
-                style={{
-                  backgroundColor: !shippingData ? "grey" : "coral",
-                }}
-                onClick={handleOrderPlaced}
-              >
-                Place Order
-              </button>
-            </div>
+          <div className="text-center mt-4">
+            <button
+              className="btn btn-lg btn-success"
+              disabled={!deliveryAddress}
+              onClick={initiateStripe}
+            >
+              Pay & Place Order
+            </button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
+
 export default Checkout;
