@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import Payment from "../assets/method.png";
 import axios from "axios";
@@ -5,8 +6,6 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import product1 from "../assets/pad.png";
-import { useEffect } from "react";
-import { useState } from "react";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { addItem } from "../Redux/CartSlice";
@@ -17,13 +16,10 @@ const Productdetails = () => {
   const dispatch = useDispatch();
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
-  const user = decodedToken?.email;
   const user_id = decodedToken?._id;
-  const [data, setData] = useState();
-  let defaultImage = data?.image.map((img) => img?.[0]);
-  // console.log("ghtghytuh",data)
-  const [selectedImage, setSelectedImage] = useState(defaultImage);
-  // console.log("show the first image",defaultImage)
+
+  const [data, setData] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -31,94 +27,77 @@ const Productdetails = () => {
     getAllProductData();
   }, []);
 
-  const ratingChanged = (newRating) => {
-    setRating(newRating);
-    // console.log("newRating", newRating);
-  };
-
-  const navigateToLogin = () => {
-    navigate("/account");
-
-    message.success("please Login");
-  };
-
   const getAllProductData = async () => {
-    // try {
-    //   const feature = await axios.get(
-    //     `${import.meta.env.VITE_BACKEND_API}/products/${id}`
-    //   );
-    //   // fetchProducts = invRes.data
-    //   // console.log("get product by id", feature);
-    //   setData(feature.data);
-    //   // console.log("invRes", data);
-    // } catch (err) {
-    //   console.log(err);
-    // }
-
     try {
       const productRes = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/products/${id}`
       );
-
       setData(productRes.data);
-      // console.log("productRes", data);
+      setSelectedImage(productRes.data.image?.[0] || null);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
-
-    // setData(res.data);
   };
-  // console.log("allProduct", allProduct);
 
-  const handleCart = async (e) => {
-    dispatch(addItem(e));
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/api/add`,
-        {
-          image: data?.image,
-          title: data?.title,
-          price: data?.price,
-          quantity: quantity,
-          productId: id,
-          userId: user_id,
-        }
+  const ratingChanged = (newRating) => {
+    // ...
+  };
+
+  const handleCart = async () => {
+    if (!data) return;
+
+    // item shape for both guest & logged-in
+    const cartItem = {
+      productId: {
+        _id: data._id,
+        title: data.title,
+        price: data.price,
+        image: data.image,
+        stock: data.stock,
+      },
+      quantity,
+      total: data.price * quantity,
+    };
+
+    if (user_id) {
+      // logged-in: hit server
+      dispatch(addItem(data));
+      try {
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_API}/api/add`,
+          {
+            image: data.image,
+            title: data.title,
+            price: data.price,
+            quantity,
+            productId: data._id,
+            userId: user_id,
+          }
+        );
+        message.success("Added to Cart");
+        setTimeout(() => navigate("/cart"), 500);
+      } catch (error) {
+        console.error(error);
+        message.error("Cart item not added");
+      }
+    } else {
+      // guest: write to localStorage
+      const guestCart =
+        JSON.parse(localStorage.getItem("guest_cart") || "[]");
+      const existing = guestCart.find(
+        (i) => i.productId._id === data._id
       );
+      if (existing) {
+        existing.quantity += quantity;
+        existing.total = existing.quantity * data.price;
+      } else {
+        guestCart.push(cartItem);
+      }
+      localStorage.setItem("guest_cart", JSON.stringify(guestCart));
       message.success("Added to Cart");
-
-      setTimeout(() => {
-        window.location.href = "/cart";
-        // navigate(`/cart`)
-      }, 500);
-      console.log("cart data post", response);
-    } catch (error) {
-      console.error(error);
-      message.success("cartItem not added");
+      setTimeout(() => navigate("/cart"), 500);
     }
   };
-
-  // const [cartData, setCartData] = useState([]);
-  // async function getCartData() {
-  //   try {
-  //     const { data } = await axios.get(
-  //       `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
-  //     );
-  //     setCartData(data.wishlist);
-  //     console.log("get cart data", cartData);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  let isProductInCart;
-
-  // useEffect(() => {
-  //   // getCartData();
-  //   isProductInCart = cartData?.find((e) => e.product_id === id);
-  //   // console.log("isProductInCart", isProductInCart)
-  // }, [data]);
-
-  // console.log("duct", data);
 
   return (
     <>
@@ -186,65 +165,33 @@ const Productdetails = () => {
             />
 
             {(data?.stock || data?.stock > 0) && (
-              <div class="product-counter d-flex  gap-3 py-4">
-                <div className="d-flex gap-3 ">
+              <div className="product-counter d-flex gap-3 py-4">
+                {/* quantity controls */}
+                <div className="d-flex gap-3">
                   <button
-                    id="decrease"
-                    onClick={() => setQuantity((prev) => prev - 1)}
+                    onClick={() => setQuantity((p) => Math.max(1, p - 1))}
                     disabled={quantity === 1}
                   >
-                    -
+                    –
                   </button>
-
-                  <span id="count">{quantity}</span>
-                  <button
-                    id="increase"
-                    onClick={() => setQuantity((prev) => prev + 1)}
-                  >
-                    +
-                  </button>
+                  <span>{quantity}</span>
+                  <button onClick={() => setQuantity((p) => p + 1)}>+</button>
                 </div>
 
+                {/* Buy Now / Add to Cart both go through handleCart */}
                 <div className="d-flex" style={{ gap: "25px" }}>
-                  {isProductInCart ? (
-                    <button
-                      type="submit"
-                      className="btn rounded-2xl text-white bg-[#ff5B00] "
-                      // onClick={() => navigate(`/checkout/${id}`,{ state: { quantity } })}
-                      onClick={() => navigate(`/cart`)}
-                    >
-                      Buy Now
-                    </button>
-                  ) : (<button
-                    type="submit"
-                    className="btn rounded-2xl text-white bg-[#ff5B00] "
-                    onClick={
-                      user_id ? () => handleCart(data) : navigateToLogin
-                    }
+                  <button
+                    className="btn rounded-2xl text-white bg-[#ff5B00]"
+                    onClick={handleCart}
                   >
                     Buy Now
-                  </button>)
-                  }
-
-                  {isProductInCart ? (
-                    <button
-                      type="submit"
-                      className="btn bg-[#ff0024] rounded-2xl text-white"
-                      onClick={() => navigate(`/cart`)}
-                    >
-                      Add to Cart
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="btn bg-[#ff0024] rounded-2xl text-white"
-                      onClick={
-                        user_id ? () => handleCart(data) : navigateToLogin
-                      }
-                    >
-                      Add to Cart
-                    </button>
-                  )}
+                  </button>
+                  <button
+                    className="btn bg-[#ff0024] rounded-2xl text-white"
+                    onClick={handleCart}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             )}

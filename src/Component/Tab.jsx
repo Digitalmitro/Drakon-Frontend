@@ -275,6 +275,7 @@ export default function VerticalTabs() {
         phone: null,
       });
       setShowShippingForm(false);
+      getAddresses();
       // console.log("after postData", billingFormData, shippingFormData);
     } catch (error) {
       console.error("Error saving addresses:", error);
@@ -421,14 +422,17 @@ export default function VerticalTabs() {
   };
 
   // get user by id
-  const [user,setUser]=useState([])
+  const [user, setUser] = useState([]);
   const getUserById = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/user/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API}/user/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!res.ok) {
         throw new Error(`Error ${res.status}: ${res.statusText}`);
       }
@@ -439,11 +443,10 @@ export default function VerticalTabs() {
       console.error("Failed to fetch user profile:", err.message);
     }
   };
-  
 
   useEffect(() => {
     getOrders(userId);
-    getUserById()
+    getUserById();
   }, []);
   return (
     <Box
@@ -509,7 +512,6 @@ export default function VerticalTabs() {
                   className="form-control"
                   id="username"
                   value={user.name}
-
                   required
                 />
               </div>
@@ -545,7 +547,6 @@ export default function VerticalTabs() {
                   type="tel"
                   className="form-control"
                   id="phone"
-                  
                   required
                 />
               </div>
@@ -769,20 +770,21 @@ export default function VerticalTabs() {
                 </button>
                 {shippingAddresses ? (
                   <>
-                    <div className="address-box">
-                      <p>
-                        <strong>SHIPPING ADDRESS :</strong>{" "}
-                        {shippingAddresses?.shippingstreetAddress ||
-                          " Chicago, USA"}
-                        , {shippingAddresses?.shippingcity} ,
-                        {shippingAddresses?.shippingstate},{" "}
-                        {shippingAddresses?.shippingcountry}
-                      </p>
-                      <p>
-                        <strong>ZIPCODE :</strong>{" "}
-                        {shippingAddresses?.shippingzipcode}
-                      </p>
-                    </div>
+                    {shippingAddresses.map((el) => {
+                      return (
+                        <div className="address-box">
+                          <p>
+                            <strong>SHIPPING ADDRESS :</strong>{" "}
+                            {el?.shippingstreetAddress || " Chicago, USA"},{" "}
+                            {el?.shippingcity} ,{el?.shippingstate},{" "}
+                            {el?.shippingcountry}
+                          </p>
+                          <p>
+                            <strong>ZIPCODE :</strong> {el?.shippingzipcode}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </>
                 ) : (
                   <p>Shipping Address is not set up yet.</p>
@@ -1015,9 +1017,15 @@ export default function VerticalTabs() {
                       />
                     </div>
                     <div className="text-[18px]">
-                      <p>Quantity: <b>{item?.quantity}</b></p>
-                      <p>Price: ₹<b>{item?.price}</b></p>
-                      <p>Total: ₹<b>{item?.total}</b></p>
+                      <p>
+                        Quantity: <b>{item?.quantity}</b>
+                      </p>
+                      <p>
+                        Price: ₹<b>{item?.price}</b>
+                      </p>
+                      <p>
+                        Total: ₹<b>{item?.total}</b>
+                      </p>
                     </div>
                   </div>
                 ))}
