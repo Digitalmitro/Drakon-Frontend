@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Hero from "../Component/Hero";
 import Featured from "../Component/Featured";
 import BatSection from "../Component/BatSection";
@@ -9,6 +9,7 @@ import AllCategories from "../Component/AllCategories";
 import Apparel from "../Component/Apparel";
 import { useMediaQuery } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { useCart } from "../context/CartContext";
 
 const Home = () => {
   const isMobile = useMediaQuery("(max-width:900px)");
@@ -17,6 +18,19 @@ const Home = () => {
     dispatch(cartModal(false));
   };
   const [loading,setLoading]=useState(true)
+
+
+  // const guestCart=JSON.parse(localStorage.getItem("guest_cart") || "[]")
+
+  // console.log(guestCart);
+
+  // useEffect(())
+
+  const {cart}=useCart();
+
+  console.log(cart);
+  
+  
   return (
     <div>
       <Hero closeCart={hideCartModal} loading={loading} setLoading={setLoading}/>
