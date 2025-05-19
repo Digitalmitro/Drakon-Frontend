@@ -51,7 +51,23 @@ const Checkout = () => {
   // Stripe
   const [sessionId, setSessionId] = useState(null);
 
+
+
   // on mount
+
+  useEffect(() => {
+
+    async function getUserShippingAddresses() {
+      const shipping = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API}/addressbookshipping/${userId}`
+      );
+      setShippingData(shipping.data.addressbookShipping)
+      console.log(shipping);
+
+    }
+    getUserShippingAddresses();
+  }, [])
+
   useEffect(() => {
     fetchCart();
     fetchSettings();
@@ -251,7 +267,7 @@ const Checkout = () => {
     setDeliveryAddress(upd);
   };
 
-  console.log();
+  console.log(shippingData);
 
 
   return (
@@ -384,16 +400,17 @@ const Checkout = () => {
             >
               Pay & Place Order
             </button>
-             <button
-                onClick={()=>navigate("/account")}
-                    type="button"
-                    className="w-full  py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800 transition duration-200"
-                >
-                    Register
-                </button>
+            {!token && <button
+              onClick={() => navigate("/account")}
+              type="button"
+              className="w-full  py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800 transition duration-200"
+            >
+              Register
+            </button>}
+
           </div>
 
-         
+
 
         </div>
       </div>
