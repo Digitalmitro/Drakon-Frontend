@@ -12,7 +12,7 @@ const Account = () => {
   const [regPassword, setRegPassword] = useState("");
   const [showLogin, setShowLogin] = useState(false);
   const [username, setUsername] = useState("");
-
+    
   const handelRegiste = async (e) => {
     e.preventDefault();
     const payload = {
