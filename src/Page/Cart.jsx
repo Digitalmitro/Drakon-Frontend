@@ -10,12 +10,12 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const {cart, setCart,loading, setLoading}=useCart()
-  
+  const { cart, setCart, loading, setLoading } = useCart()
+
   const [sessionId, setSessionId] = useState(null);
   const [params] = useSearchParams();
   const token = Cookies.get("token");
-console.log(cart);
+  console.log(cart);
 
   useEffect(() => {
     fetchCart();

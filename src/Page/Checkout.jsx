@@ -271,11 +271,34 @@ const Checkout = () => {
 
 
   return (
-    <div className="container d-flex justify-content-center mt-20" style={{ zoom: "1.1" }}>
+    <div className="container d-flex justify-content-center mt-20 mb-5" style={{ zoom: "1.1" }}>
       <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
         {/* Shipping Section */}
 
-        <div className="col-md-4 my-5">
+        <div className="col-md-4 mt-5 ">
+
+          {!token && <div>
+            <ul>
+              <li><button
+                onClick={() => {
+                  localStorage.setItem("redirect_after_login", "/checkout");
+                  navigate("/account", { state: { from: "/checkout" } });
+
+                }}
+                type="button"
+                className="w-full mb-4  py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800 transition duration-200"
+              >
+                Login
+              </button></li>
+              <li><button
+                onClick={() => navigate("/account", { state: { from: "/checkout" } })}
+                type="button"
+                className="w-full mb-4  py-2 px-4 border-2 border-black  text-black rounded-md hover:bg-gray-800 hover:text-white transition duration-200"
+              >
+                Register
+              </button></li>
+            </ul>
+          </div>}
           <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
 
           {/* logged-in: select saved */}
@@ -400,13 +423,7 @@ const Checkout = () => {
             >
               Pay & Place Order
             </button>
-            {!token && <button
-              onClick={() => navigate("/account")}
-              type="button"
-              className="w-full  py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800 transition duration-200"
-            >
-              Register
-            </button>}
+
 
           </div>
 
