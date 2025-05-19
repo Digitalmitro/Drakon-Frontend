@@ -4,16 +4,18 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {cart, setCart,loading, setLoading}=useCart()
+  
   const [sessionId, setSessionId] = useState(null);
   const [params] = useSearchParams();
   const token = Cookies.get("token");
+console.log(cart);
 
   useEffect(() => {
     fetchCart();
@@ -123,6 +125,7 @@ const CartPage = () => {
   const shippingCost = 6.99;
   const shippingDiscount = -6.99;
   const estimatedTotal = subtotal + shippingCost + shippingDiscount;
+
 
   return (
     <div className="max-w-5xl mx-auto px-6 pt-24 pb-5">

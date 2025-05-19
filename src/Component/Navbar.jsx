@@ -27,6 +27,7 @@ import axios from "axios";
 import { message } from "antd";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import { useCart } from "../context/CartContext";
 
 const drawerWidth = 240;
 const navItems = [
@@ -56,6 +57,7 @@ function Navbar(props) {
     setMobileOpen((prevState) => !prevState);
   };
   // CART PRODUCTS
+const {cart}=useCart();
   const products = useSelector((state) => state.cartReducer.items);
   const isOpenCart = useSelector((state) => state.cartReducer.openCartModal);
   const dispatch = useDispatch();
@@ -211,11 +213,12 @@ function Navbar(props) {
                 <img src={profile} alt="" className="h-10 p-1 pb-2 block" />
               </div>
               <div
-                className="hidden lg:flex justify-center space-x-1 items-center cursor-pointer"
+                className="hidden lg:flex justify-center space-x-1 items-center cursor-pointer relative"
                 onClick={() => navigate("/cart")}
               >
+                <span className="h-6 w-6 rounded-full bg-[#ff5B00] text-sm text-white  grid place-items-center absolute -right-4 bottom-0"  >{cart?.length}</span>
                 <p className="hidden lg:block">Cart</p>
-                <IoCart size={28} />
+                <IoCart size={28} />  
               </div>
             </div>
             <Box>

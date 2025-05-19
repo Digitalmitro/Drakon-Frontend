@@ -92,7 +92,7 @@ const Checkout = () => {
       setEnableCurrency(settings.Currency);
       setEnableCoupon(settings.EnableCoupon);
       setCouponList(cRes.data || []);
-    } catch {}
+    } catch { }
   };
 
   // recalc prices
@@ -218,8 +218,8 @@ const Checkout = () => {
             p.type === "products"
               ? "products"
               : p.type === "inventory"
-              ? "inv-products"
-              : "feature-products";
+                ? "inv-products"
+                : "feature-products";
           await axios.put(
             `${import.meta.env.VITE_BACKEND_API}/${endpoint}/${p._id}`,
             { stock: newStock }
@@ -251,10 +251,14 @@ const Checkout = () => {
     setDeliveryAddress(upd);
   };
 
+  console.log();
+
+
   return (
     <div className="container d-flex justify-content-center mt-20" style={{ zoom: "1.1" }}>
       <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
         {/* Shipping Section */}
+
         <div className="col-md-4 my-5">
           <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
 
@@ -286,15 +290,15 @@ const Checkout = () => {
             // guest or no saved: inline form
             <div>
               {[
-                ["shippingfirstName","First Name"],
-                ["shippinglastName","Last Name"],
-                ["shippingstreetAddress","Street Address"],
-                ["shippingcity","City"],
-                ["shippingstate","State"],
-                ["shippingcountry","Country"],
-                ["shippingzipcode","ZIP"],
-                ["shippingphone","Phone"],
-              ].map(([key,label]) => (
+                ["shippingfirstName", "First Name"],
+                ["shippinglastName", "Last Name"],
+                ["shippingstreetAddress", "Street Address"],
+                ["shippingcity", "City"],
+                ["shippingstate", "State"],
+                ["shippingcountry", "Country"],
+                ["shippingzipcode", "ZIP"],
+                ["shippingphone", "Phone"],
+              ].map(([key, label]) => (
                 <div className="mb-2" key={key}>
                   <label>{label}</label>
                   <input
@@ -323,7 +327,7 @@ const Checkout = () => {
         </div>
 
         {/* Order Summary */}
-        <div className="col-md-6">
+        <div className="col-md-6  mt-5 flex flex-col">
           <h2 className="fs-2">YOUR ORDER</h2>
           <table className="table">
             <thead>
@@ -336,9 +340,9 @@ const Checkout = () => {
                   <tr key={p._id}>
                     <td>
                       <img
-                        src={p.image?.[0]||""}
+                        src={p.image?.[0] || ""}
                         alt={p.title}
-                        style={{ width:50,height:50,objectFit:"cover" }}
+                        style={{ width: 50, height: 50, objectFit: "cover" }}
                         className="me-2"
                       />
                       {p.title}
@@ -367,12 +371,12 @@ const Checkout = () => {
               </tr>
               <tr>
                 <td colSpan="3" className="text-end"><strong>Total:</strong></td>
-                <td><strong>{enableCurrency} {(finalPayment+shippingCost).toFixed(2)}</strong></td>
+                <td><strong>{enableCurrency} {(finalPayment + shippingCost).toFixed(2)}</strong></td>
               </tr>
             </tbody>
           </table>
 
-          <div className="text-center mt-4">
+          <div className="text-center space-y-5 mt-4 mb-auto">
             <button
               className="btn btn-lg btn-success"
               disabled={!deliveryAddress}
@@ -380,7 +384,17 @@ const Checkout = () => {
             >
               Pay & Place Order
             </button>
+             <button
+                onClick={()=>navigate("/account")}
+                    type="button"
+                    className="w-full  py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800 transition duration-200"
+                >
+                    Register
+                </button>
           </div>
+
+         
+
         </div>
       </div>
     </div>
