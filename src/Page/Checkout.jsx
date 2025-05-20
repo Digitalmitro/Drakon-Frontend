@@ -302,7 +302,7 @@ const Checkout = () => {
           <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
 
           {/* logged-in: select saved */}
-          {token && shippingData.length > 0 ? (
+          {token && shippingData?.length > 0 ? (
             shippingData.map(addr => {
               const sel = deliveryAddress?._id === addr._id;
               return (
