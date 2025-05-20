@@ -5,11 +5,11 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import moment from "moment";
-import { message } from "antd";
+import { message, Spin } from "antd";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
-const Checkout = () => {
+export default function Checkout() {
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const userId = decodedToken?._id;
@@ -17,10 +17,10 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // Addresses & form for guest
-  const [shippingData, setShippingData] = useState([]);
+  // Address form / final address
+  const [showAddressForm, setShowAddressForm] = useState(true);
   const [deliveryAddress, setDeliveryAddress] = useState(null);
-  const [guestShipping, setGuestShipping] = useState({
+  const [addressForm, setAddressForm] = useState({
     shippingfirstName: "",
     shippinglastName: "",
     shippingstreetAddress: "",
@@ -31,9 +31,8 @@ const Checkout = () => {
     shippingphone: "",
   });
 
-  // Cart
+  // Cart & pricing
   const [cartData, setCartData] = useState([]);
-  // Pricing
   const [subtotal, setSubtotal] = useState(0);
   const [taxValue, setTaxValue] = useState(0);
   const [couponDiscount, setCouponDiscount] = useState(0);
@@ -48,10 +47,13 @@ const Checkout = () => {
   const [couponList, setCouponList] = useState([]);
   const [couponName, setCouponName] = useState("");
 
-  // Stripe
+  // Loading
+  const [shippingLoading, setShippingLoading] = useState(false);
+
+  // Stripe session
   const [sessionId, setSessionId] = useState(null);
 
-  // on mount
+  // INITIAL FETCH
   useEffect(() => {
     fetchCart();
     fetchSettings();
@@ -59,28 +61,37 @@ const Checkout = () => {
     if (sid) setSessionId(sid);
   }, []);
 
+  // CONFIRM PAYMENT
   useEffect(() => {
     if (sessionId) confirmPayment(sessionId);
   }, [sessionId]);
 
-  // fetchCart supports guest
-  const fetchCart = async () => {
+  // AUTO‐CALCULATE SHIPPING once we have a deliveryAddress
+  useEffect(() => {
+    if (!showAddressForm && cartData.length) {
+      calculateShipping();
+    }
+  }, [deliveryAddress]);
+
+  // FETCH CART
+  async function fetchCart() {
     if (token) {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_API}/api/cart`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCartData(res.data.products || []);
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_BACKEND_API}/api/cart`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setCartData(data.products || []);
       } catch {
         setCartData([]);
       }
     } else {
       setCartData(JSON.parse(localStorage.getItem("guest_cart") || "[]"));
     }
-  };
+  }
 
-  // settings
-  const fetchSettings = async () => {
+  // FETCH SETTINGS
+  async function fetchSettings() {
     try {
       const [sRes, cRes] = await Promise.all([
         axios.get(`${import.meta.env.VITE_BACKEND_API}/general-settings`),
@@ -93,9 +104,9 @@ const Checkout = () => {
       setEnableCoupon(settings.EnableCoupon);
       setCouponList(cRes.data || []);
     } catch {}
-  };
+  }
 
-  // recalc prices
+  // RECALCULATE SUBTOTAL, TAX, FINAL before shipping
   useEffect(() => {
     const sub = cartData.reduce(
       (acc, item) => acc + (item.productId?.price || 0) * item.quantity,
@@ -107,57 +118,75 @@ const Checkout = () => {
     setFinalPayment(sub + t - couponDiscount);
   }, [cartData, enableTax, taxRate, couponDiscount]);
 
-  // apply coupon
-  const applyCoupon = () => {
-    if (!enableCoupon) return message.error("Coupons disabled");
-    const cp = couponList.find(c => c.couponName === couponName);
-    if (!cp) return message.error("Invalid coupon");
+  // APPLY COUPON
+  function applyCoupon() {
+    if (!enableCoupon) {
+      return message.error("Coupons disabled");
+    }
+    const cp = couponList.find((c) => c.couponName === couponName);
+    if (!cp) {
+      return message.error("Invalid coupon");
+    }
     setCouponDiscount((subtotal * (cp.discount || 0)) / 100);
     message.success("Coupon applied");
-  };
+  }
 
-  // when deliveryAddress changes (including guest form),
-  // fetch shipping rates
-  useEffect(() => {
-    if (!deliveryAddress) return setShippingCost(0);
-    (async () => {
-      try {
-        const weight = cartData.reduce(
-          (w, i) => w + (i.productId?.weight || 0) * i.quantity,
-          0
-        );
-        const payload = {
-          carrierCode: "stamps_com",
-          fromPostalCode: import.meta.env.VITE_SHIP_FROM_ZIP,
-          toState: deliveryAddress.shippingstate,
-          toPostalCode: deliveryAddress.shippingzipcode,
-          toCountry: deliveryAddress.shippingcountry,
-          toCity: deliveryAddress.shippingcity,
-          weight: { value: weight, units: "ounces" },
-          confirmation: "delivery",
-          residential: false,
-        };
-        const res = await axios.post(
-          "https://ssapi.shipstation.com/v2/shipments/getrates",
-          payload,
-          {
-            auth: {
-              username: import.meta.env.VITE_SHIPSTATION_API_KEY,
-              password: import.meta.env.VITE_SHIPSTATION_API_SECRET,
-            },
-          }
-        );
-        setShippingCost(res.data.rates?.[0]?.shipmentCost || 0);
-      } catch {
-        setShippingCost(0);
-      }
-    })();
-  }, [deliveryAddress, cartData]);
+  // SAVE ADDRESS FORM as FINAL address
+  function handleAddressSubmit(e) {
+    e.preventDefault();
+    // simple validation
+    const f = addressForm;
+    if (
+      !f.shippingfirstName ||
+      !f.shippinglastName ||
+      !f.shippingstreetAddress ||
+      !f.shippingcity ||
+      !f.shippingstate ||
+      !f.shippingcountry ||
+      !f.shippingzipcode ||
+      !f.shippingphone
+    ) {
+      return message.error("Please fill all address fields");
+    }
+    setDeliveryAddress({ ...addressForm });
+    setShowAddressForm(false);
+  }
 
-  // Stripe checkout
-  const initiateStripe = async () => {
-    if (!deliveryAddress) {
-      return message.error("Enter a shipping address");
+  // CALCULATE SHIPPING
+  async function calculateShipping() {
+    setShippingLoading(true);
+    try {
+      const totalOunces = cartData.reduce(
+        (sum, item) => sum + (item.productId?.weight || 0) * item.quantity,
+        0
+      );
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/shipping/estimate`,
+        {
+          to: {
+            shippingcountry: deliveryAddress.shippingcountry,
+            shippingzipcode: deliveryAddress.shippingzipcode,
+            shippingcity: deliveryAddress.shippingcity,
+            shippingstate: deliveryAddress.shippingstate,
+          },
+          weightOunces: totalOunces,
+        },
+        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+      );
+      setShippingCost(res.data.estimatedCost || 0);
+    } catch (err) {
+      console.error(err);
+      message.error("Failed to calculate shipping");
+      setShippingCost(0);
+    } finally {
+      setShippingLoading(false);
+    }
+  }
+
+  // INITIATE STRIPE
+  async function initiateStripe() {
+    if (shippingLoading || !deliveryAddress) {
+      return message.error("Please wait for shipping to finish");
     }
     try {
       const stripe = await stripePromise;
@@ -175,18 +204,16 @@ const Checkout = () => {
       console.error(err);
       message.error("Payment initiation failed");
     }
-  };
+  }
 
-  // confirm + create orders
-  const confirmPayment = async sid => {
+  // CONFIRM STRIPE & CREATE ORDERS
+  async function confirmPayment(sid) {
     try {
       await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/api/stripe/confirm`,
         { sessionId: sid },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
-
-      // create orders & update stock
       for (const item of cartData) {
         const p = item.productId;
         const payload = {
@@ -194,7 +221,7 @@ const Checkout = () => {
           title: p.title,
           price: p.price,
           qty: item.quantity,
-          billing: {}, // you can add billing input similarly
+          billing: {}, // optional
           shipping: deliveryAddress,
           shippingCost,
           product_id: p._id,
@@ -214,20 +241,18 @@ const Checkout = () => {
         );
         if (p.stock != null) {
           const newStock = p.stock - item.quantity;
-          const endpoint =
+          const ep =
             p.type === "products"
               ? "products"
               : p.type === "inventory"
               ? "inv-products"
               : "feature-products";
           await axios.put(
-            `${import.meta.env.VITE_BACKEND_API}/${endpoint}/${p._id}`,
+            `${import.meta.env.VITE_BACKEND_API}/${ep}/${p._id}`,
             { stock: newStock }
           );
         }
       }
-
-      // clear cart
       if (token) {
         await axios.delete(`${import.meta.env.VITE_BACKEND_API}/api/cart/clear`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -241,111 +266,125 @@ const Checkout = () => {
       console.error(err);
       message.error("Order creation failed");
     }
-  };
+  }
 
-  // handle guest form change
-  const onGuestChange = e => {
+  // INPUT HANDLER
+  function onAddressChange(e) {
     const { name, value } = e.target;
-    const upd = { ...guestShipping, [name]: value };
-    setGuestShipping(upd);
-    setDeliveryAddress(upd);
-  };
+    setAddressForm((f) => ({ ...f, [name]: value }));
+  }
 
   return (
     <div className="container d-flex justify-content-center mt-20" style={{ zoom: "1.1" }}>
       <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
-        {/* Shipping Section */}
+
+        {/* ADDRESS FORM or SUMMARY */}
         <div className="col-md-4 my-5">
           <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
 
-          {/* logged-in: select saved */}
-          {token && shippingData.length > 0 ? (
-            shippingData.map(addr => {
-              const sel = deliveryAddress?._id === addr._id;
-              return (
-                <div
-                  key={addr._id}
-                  onClick={() => setDeliveryAddress(addr)}
-                  style={{
-                    border: sel ? "2px solid coral" : "1px solid #ddd",
-                    borderRadius: 5,
-                    padding: "1rem",
-                    marginBottom: "1rem",
-                    background: sel ? "#fff4f1" : "#fff",
-                    cursor: "pointer",
-                  }}
-                >
-                  <p><strong>{addr.shippingfirstName} {addr.shippinglastName}</strong></p>
-                  <p>{addr.shippingstreetAddress}, {addr.shippingcity}, {addr.shippingstate}, {addr.shippingcountry}</p>
-                  <p><strong>ZIP:</strong> {addr.shippingzipcode}</p>
-                  <p><strong>Phone:</strong> {addr.shippingphone}</p>
-                </div>
-              );
-            })
-          ) : (
-            // guest or no saved: inline form
-            <div>
+          {showAddressForm ? (
+            <form onSubmit={handleAddressSubmit}>
               {[
-                ["shippingfirstName","First Name"],
-                ["shippinglastName","Last Name"],
-                ["shippingstreetAddress","Street Address"],
-                ["shippingcity","City"],
-                ["shippingstate","State"],
-                ["shippingcountry","Country"],
-                ["shippingzipcode","ZIP"],
-                ["shippingphone","Phone"],
-              ].map(([key,label]) => (
+                ["shippingfirstName", "First Name"],
+                ["shippinglastName", "Last Name"],
+                ["shippingstreetAddress", "Street Address"],
+                ["shippingcity", "City"],
+                ["shippingstate", "State"],
+                ["shippingcountry", "Country"],
+                ["shippingzipcode", "ZIP"],
+                ["shippingphone", "Phone"],
+              ].map(([key, label]) => (
                 <div className="mb-2" key={key}>
                   <label>{label}</label>
                   <input
                     name={key}
-                    value={guestShipping[key] || ""}
-                    onChange={onGuestChange}
+                    value={addressForm[key]}
+                    onChange={onAddressChange}
                     className="form-control"
                     placeholder={label}
                   />
                 </div>
               ))}
+              <button type="submit" className="btn btn-primary w-100">
+                Save & Continue
+              </button>
+            </form>
+          ) : (
+            <div style={{ border: "1px solid #ddd", padding: "1rem", borderRadius: 5 }}>
+              <p>
+                <strong>
+                  {deliveryAddress.shippingfirstName}{" "}
+                  {deliveryAddress.shippinglastName}
+                </strong>
+              </p>
+              <p>
+                {deliveryAddress.shippingstreetAddress},{" "}
+                {deliveryAddress.shippingcity},{" "}
+                {deliveryAddress.shippingstate},{" "}
+                {deliveryAddress.shippingcountry}
+              </p>
+              <p>
+                <strong>ZIP:</strong>{" "}
+                {deliveryAddress.shippingzipcode}
+              </p>
+              <p>
+                <strong>Phone:</strong>{" "}
+                {deliveryAddress.shippingphone}
+              </p>
             </div>
           )}
 
-          {/* Coupon */}
+          {/* Loader
+          {!showAddressForm && shippingLoading && (
+            <div className="text-center my-3">
+              <Spin tip="Calculating shipping…" />
+            </div>
+          )} */}
+
+          {/* COUPON */}
           <div className="mt-4 d-flex">
             <input
               type="text"
               className="form-control me-2"
-              placeholder="Coupon Code"
+              placeholder="Coupon"
               value={couponName}
-              onChange={e => setCouponName(e.target.value)}
+              onChange={(e) => setCouponName(e.target.value)}
             />
-            <button className="btn btn-warning" onClick={applyCoupon}>Apply</button>
+            <button className="btn btn-warning" onClick={applyCoupon}>
+              Apply
+            </button>
           </div>
         </div>
 
-        {/* Order Summary */}
+        {/* ORDER SUMMARY */}
         <div className="col-md-6">
           <h2 className="fs-2">YOUR ORDER</h2>
           <table className="table">
             <thead>
-              <tr><th>Product</th><th></th><th>Qty</th><th>Price</th></tr>
+              <tr>
+                <th>Product</th><th></th><th>Qty</th><th>Price</th>
+              </tr>
             </thead>
             <tbody>
-              {cartData.map(item => {
+              {cartData.map((item) => {
                 const p = item.productId;
                 return (
                   <tr key={p._id}>
                     <td>
                       <img
-                        src={p.image?.[0]||""}
+                        src={p.image?.[0] || ""}
                         alt={p.title}
-                        style={{ width:50,height:50,objectFit:"cover" }}
+                        style={{ width: 50, height: 50, objectFit: "cover" }}
                         className="me-2"
                       />
                       {p.title}
                     </td>
                     <td></td>
                     <td>{item.quantity}</td>
-                    <td>{enableCurrency} {(p.price * item.quantity).toFixed(2)}</td>
+                    <td>
+                      {enableCurrency}{" "}
+                      {(p.price * item.quantity).toFixed(2)}
+                    </td>
                   </tr>
                 );
               })}
@@ -354,7 +393,7 @@ const Checkout = () => {
                 <td>{enableCurrency} {subtotal.toFixed(2)}</td>
               </tr>
               <tr>
-                <td colSpan="3" className="text-end">Coupon Discount:</td>
+                <td colSpan="3" className="text-end">Coupon:</td>
                 <td>- {enableCurrency} {couponDiscount.toFixed(2)}</td>
               </tr>
               <tr>
@@ -362,20 +401,31 @@ const Checkout = () => {
                 <td>+ {enableCurrency} {taxValue.toFixed(2)}</td>
               </tr>
               <tr>
-                <td colSpan="3" className="text-end">Shipping Cost:</td>
-                <td>+ {enableCurrency} {shippingCost.toFixed(2)}</td>
+                <td colSpan="3" className="text-end">Shipping:</td>
+                <td>
+                  {!shippingLoading
+                    ? `+ ${enableCurrency} ${shippingCost.toFixed(2)}`
+                    : <Spin />}
+                </td>
               </tr>
               <tr>
                 <td colSpan="3" className="text-end"><strong>Total:</strong></td>
-                <td><strong>{enableCurrency} {(finalPayment+shippingCost).toFixed(2)}</strong></td>
+                <td>
+                  <strong>
+                    {enableCurrency}{" "}
+                    {(finalPayment + shippingCost).toFixed(2)}
+                  </strong>
+                </td>
               </tr>
             </tbody>
           </table>
 
-          <div className="text-center mt-4">
+          <div className="text-center mt-4 mb-4">
             <button
               className="btn btn-lg btn-success"
-              disabled={!deliveryAddress}
+              disabled={
+                showAddressForm || shippingLoading
+              }
               onClick={initiateStripe}
             >
               Pay & Place Order
@@ -385,6 +435,4 @@ const Checkout = () => {
       </div>
     </div>
   );
-};
-
-export default Checkout;
+}
