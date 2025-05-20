@@ -64,6 +64,7 @@ const Footer = ({ closeCart }) => {
                 <li onClick={()=>navigate("/termscondition")}>Terms and Conditions</li>
                 <li onClick={()=>navigate("/privacypolicy")}>Privacy Policy</li>
                 <li onClick={()=>navigate("/shippingpolicy")}>Shipping Policy</li>
+                <li onClick={()=>navigate("/returnrefund")}>Return and Refund</li>
                 <li onClick={()=>navigate("/faq")}>FAQ</li>
               </ul>
             </div>
