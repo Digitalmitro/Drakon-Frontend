@@ -65,16 +65,16 @@ const Hero = ({ closeCart, setLoading, loading }) => {
                       window.innerWidth < 1024
                         ? img.mobile_image
                         : img.desktop_image
-                    })`,
+                    }) `,
                   }}
                 >
                   <div className={`text-white px-4`}>
-                    <h1 className="   lg:text-xl  mb-10 lg:w-[600px] text-justify">
-                      <span className="text-amber-500 text-2xl font-semibold">
+                    <h1 className="  mb-10 lg:w-[800px] ">
+                      <span className="text-amber-500 md:text-6xl text-3xl font-semibold leading-[2.5]">
                         {img.title}
                       </span>
                       <br />
-                      <span>{img.description}</span>
+                      {/* <span>{img.description}</span> */}
                     </h1>
                     <div>
                       <Button

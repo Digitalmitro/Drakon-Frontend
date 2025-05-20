@@ -254,7 +254,6 @@ export default function VerticalTabs() {
       setBillingFormData({
         firstName: "",
         lastName: "",
-
         country: "",
         streetAddress: "",
         city: "",
@@ -285,7 +284,7 @@ export default function VerticalTabs() {
   const [billingAddresses, setBillingAddresses] = React.useState([]);
   const [shippingAddresses, setShippingAddresses] = React.useState([]);
 
-  async function getAddresses() {
+   async function getAddresses() {
     try {
       const billing = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
@@ -592,18 +591,18 @@ export default function VerticalTabs() {
                     </div>
                   </>
                 ) : (
-                  <p>BillingAddress is not set</p>
+                  <p className="mt-2">BillingAddress is not set</p>
                 )}
               </div>
               {showBillingForm && (
                 <form
-                  className="address-form w-[89%] pl-3"
+                  className="address-form w-[89%] pl-3 "
                   onSubmit={saveAddressesToDatabase}
                 >
                   <>
                     <label
                       htmlFor="billingFirstName"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       First Name <span className="text-[#ff0024]">*</span>
                     </label>
@@ -619,7 +618,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="billingLastName"
-                      className="form-label font-serif text-[18px] "
+                      className="form-label  text-[16px] "
                     >
                       Last Name <span className="text-[#ff0024]">*</span>
                     </label>
@@ -635,7 +634,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="billingCountry"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Country/Region <span className="text-[#ff0024]">*</span>
                     </label>
@@ -652,7 +651,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="billingStreet"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Street address
                     </label>
@@ -668,7 +667,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="billingCity"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Town / City <span className="text-[#ff0024]">*</span>
                     </label>
@@ -684,7 +683,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="billingState"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       State
                     </label>
@@ -700,7 +699,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="billingZip"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Zip Code <span className="text-[#ff0024]">*</span>
                     </label>
@@ -716,7 +715,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="billingPhone"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Phone <span className="text-[#ff0024]">*</span>
                     </label>
@@ -732,7 +731,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="billingEmail"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Email Address
                     </label>
@@ -747,7 +746,7 @@ export default function VerticalTabs() {
                     />
 
                     <div>
-                      <button className="btn btn-outline-danger" type="submit">
+                      <button className="btn btn-outline-danger w-full mt-3" type="submit">
                         Save Address
                       </button>
                     </div>
@@ -798,7 +797,7 @@ export default function VerticalTabs() {
                   <>
                     <label
                       htmlFor="shippingFirstName"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       First Name <span className="text-[#ff0024]">*</span>
                     </label>
@@ -813,7 +812,7 @@ export default function VerticalTabs() {
                     />
                     <label
                       htmlFor="shippingLastName"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Last Name <span className="text-[#ff0024]">*</span>
                     </label>
@@ -828,7 +827,7 @@ export default function VerticalTabs() {
                     />
                     <label
                       htmlFor="shippingCountry"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Country/Region <span className="text-[#ff0024]">*</span>
                     </label>
@@ -844,7 +843,7 @@ export default function VerticalTabs() {
                     />
                     <label
                       htmlFor="shippingStreet"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Street address
                     </label>
@@ -860,7 +859,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="shippingCity"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Town / City <span className="text-[#ff0024]">*</span>
                     </label>
@@ -876,7 +875,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="shippingState"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       State <span className="text-[#ff0024]">*</span>
                     </label>
@@ -892,7 +891,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="shippingZip"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Zip Code <span className="text-[#ff0024]">*</span>
                     </label>
@@ -908,7 +907,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="shippingPhone"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Phone <span className="text-[#ff0024]">*</span>
                     </label>
@@ -924,7 +923,7 @@ export default function VerticalTabs() {
 
                     <label
                       htmlFor="shippingEmail"
-                      className="form-label font-serif text-[18px]"
+                      className="form-label  text-[16px]"
                     >
                       Email Address
                     </label>
@@ -938,7 +937,7 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <button className="btn btn-outline-danger" type="submit">
+                    <button className="btn btn-outline-danger mt-3   w-full" type="submit">
                       Save Address
                     </button>
                   </>
@@ -1006,7 +1005,7 @@ export default function VerticalTabs() {
               className="border p-4  rounded-lg shadow flex flex-col lg:flex-row  lg:justify-around space-y-6"
             >
               <div className="">
-                <h3 className="font-semibold  text-[18px]">Products:</h3>
+                <h3 className="font-semibold  text-[16px]">Products:</h3>
                 {order?.products?.map((item, index) => (
                   <div key={index} className=" lg:flex gap-10">
                     <div>
@@ -1016,7 +1015,7 @@ export default function VerticalTabs() {
                         className="w-28 h-28 "
                       />
                     </div>
-                    <div className="text-[18px]">
+                    <div className="text-[16px]">
                       <p>
                         Quantity: <b>{item?.quantity}</b>
                       </p>
