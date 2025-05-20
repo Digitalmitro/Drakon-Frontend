@@ -2,7 +2,7 @@ import { message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Account = () => {
@@ -12,6 +12,9 @@ const Account = () => {
   const [regPassword, setRegPassword] = useState("");
   const [showLogin, setShowLogin] = useState(false);
   const [username, setUsername] = useState("");
+  const location = useLocation();
+  const from = location.state?.from || localStorage.getItem("redirect_after_login") || "/profile";
+  console.log(location);
 
   const handelRegiste = async (e) => {
     e.preventDefault();
@@ -56,7 +59,8 @@ const Account = () => {
       setLogEmail("");
       setLogPass("");
       setTimeout(() => {
-        window.location.href = "/profile";
+        navigate(from);
+        localStorage.removeItem("redirect_after_login");
       }, 1200);
     } catch (error) {
       console.log(error.response.data.status);
@@ -66,21 +70,21 @@ const Account = () => {
 
   useEffect(() => {
     if (token) {
-      return navigate("/profile");
-    } else {
-      return navigate("/account");
+      navigate("/profile");
     }
   }, [token]);
+
+
   return (
     <>
       <div className="container-fluid relative flex justify-center items-center profile-banner">
-      <motion.h2
+        <motion.h2
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           className="absolute  transform  -translate-x-1/2 -translate-y-1/2 text-white text-5xl font-semibold"
         >
-        <h2 className="text-center text-7xl">MY ACCOUNT</h2>
+          <h2 className="text-center text-7xl">MY ACCOUNT</h2>
         </motion.h2>
       </div>
 
