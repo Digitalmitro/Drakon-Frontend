@@ -119,10 +119,10 @@ const Apparel = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/30">
-                  <div className="lg:w-[500px]">
-                    <p className="text-2xl font-semibold">
-                      Discover high-quality, comfortable, and stylish sports
-                      apparel designed for performance and durability
+                  <div className="lg:w-[600px] text-justify">
+                    <p className="text-2xl ">
+                      Look Sharp. Play Hard. Live the Game. Performance wear
+                      designed for true athletes — on and off the field.
                     </p>
                   </div>
                 </div>

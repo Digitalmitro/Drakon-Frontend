@@ -75,10 +75,10 @@ const GlovesSection = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
-                  <div className="lg:w-[500px]">
-                    <p className="text-2xl font-semibold">
-                      Drakon Sports Leather Batting Gloves offer superior grip,
-                      durability, and comfort for peak performance
+                  <div className="lg:w-[600px] text-justify">
+                    <p className="text-2xl ">
+                      Grip with Power. Swing with Precision. Premium leather.
+                      Maximum comfort. Game-changing contro
                     </p>
                   </div>
                 </div>

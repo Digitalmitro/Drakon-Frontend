@@ -76,9 +76,10 @@ const BatSection = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
-                  <div className="lg:w-[500px]">
-                    <p className="text-2xl font-semibold">
-                      Shop top-quality game equipment for peak performance
+                  <div className="lg:w-[600px] text-justify">
+                    <p className="text-2xl ">
+                      Gear Up Like the Pros. Play to Win. From bats to gloves &
+                      every quipment— everything you need, all in one place.
                     </p>
                   </div>
                 </div>
