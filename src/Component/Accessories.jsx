@@ -47,20 +47,26 @@ const Accessories = ({ closeCart, navigate }) => {
         </p>
         <ul className="list-disc text-left text-lg text-gray-800 max-w-3xl mx-auto pl-6 space-y-3">
           <li>
-            <strong className="text-orange-600">Fitness enthusiasts and active individuals</strong> who
-            value comfort and performance.
+            <strong className="text-orange-600">
+              Fitness enthusiasts and active individuals
+            </strong>{" "}
+            who value comfort and performance.
           </li>
           <li>
-            <strong className="text-orange-600">Coaches and sports academies</strong> seeking durable,
-            high-quality training equipment.
+            <strong className="text-orange-600">
+              Coaches and sports academies
+            </strong>{" "}
+            seeking durable, high-quality training equipment.
           </li>
           <li>
-            <strong className="text-orange-600">Teams and schools</strong> looking for customized uniforms
-            and branded sportswear.
+            <strong className="text-orange-600">Teams and schools</strong>{" "}
+            looking for customized uniforms and branded sportswear.
           </li>
           <li>
-            <strong className="text-orange-600">Customers across the United States</strong> in search of
-            authentic and dependable sports gear.
+            <strong className="text-orange-600">
+              Customers across the United States
+            </strong>{" "}
+            in search of authentic and dependable sports gear.
           </li>
         </ul>
       </div>
@@ -81,9 +87,11 @@ const Accessories = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
-                  <div className="lg:w-[500px]">
-                    <p className="text-2xl font-semibold">
-                      Shop premium game accessories for peak performance
+                  <div className="lg:w-[600px] text-justify">
+                    <p className="text-2xl ">
+                      Every Detail Matters. Elevate Your Edge. From quality
+                      sleeves to headbands, and more — complete your gear with
+                      pro-level accessories.
                     </p>
                   </div>
                 </div>

@@ -74,8 +74,8 @@ const GlassesSection = ({ closeCart, navigate }) => {
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/20">
                   <div className="lg:w-[600px] text-justify">
                     <p className="text-2xl ">
-                      Search for your go-to sports equipment and apparel. Browse
-                      through Drakon’s catalogs and gear up your game.
+                      Unleash Precision. Dominate Every Move. Engineered for
+                      athletes. Built for endurance. Styled for winners.
                     </p>
                   </div>
                 </div>
