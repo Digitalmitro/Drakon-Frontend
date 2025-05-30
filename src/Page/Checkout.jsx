@@ -26,7 +26,7 @@ export default function Checkout() {
     shippingstreetAddress: "",
     shippingcity: "",
     shippingstate: "",
-    shippingcountry: "",
+    shippingcountry: "US",       
     shippingzipcode: "",
     shippingphone: "",
   });
@@ -283,6 +283,9 @@ export default function Checkout() {
                     onChange={onAddressChange}
                     className="form-control"
                     placeholder={label}
+                    {...(key === "shippingcountry"
+                      ? { disabled: true }
+                      : {})}
                   />
                 </div>
               ))}
