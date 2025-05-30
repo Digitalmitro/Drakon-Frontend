@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import moment from "moment";
@@ -134,7 +134,6 @@ export default function Checkout() {
   // SAVE ADDRESS FORM as FINAL address
   function handleAddressSubmit(e) {
     e.preventDefault();
-    // simple validation
     const f = addressForm;
     if (
       !f.shippingfirstName ||
@@ -206,53 +205,29 @@ export default function Checkout() {
     }
   }
 
-  // CONFIRM STRIPE & CREATE ORDERS
+  // CONFIRM STRIPE & CREATE ORDER
   async function confirmPayment(sid) {
     try {
+      // Confirm payment on your backend
       await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/api/stripe/confirm`,
         { sessionId: sid },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
-      for (const item of cartData) {
-        const p = item.productId;
-        const payload = {
-          image: p.image || [],
-          title: p.title,
-          price: p.price,
-          qty: item.quantity,
-          billing: {}, // optional
-          shipping: deliveryAddress,
-          shippingCost,
-          product_id: p._id,
-          user_id: userId || null,
-          user: userEmail || "Guest",
-          ip: (await axios.get("https://api.ipify.org")).data,
-          createdDate: moment().format("MMM Do YY"),
-          status: "Processing",
-          totalpay: Number(finalPayment + shippingCost),
-          paymentMethod: "Stripe",
-          paymentStatus: "Paid",
-        };
-        await axios.post(
-          `${import.meta.env.VITE_BACKEND_API}/order`,
-          payload,
-          token ? { headers: { Authorization: `Bearer ${token}` } } : {}
-        );
-        if (p.stock != null) {
-          const newStock = p.stock - item.quantity;
-          const ep =
-            p.type === "products"
-              ? "products"
-              : p.type === "inventory"
-              ? "inv-products"
-              : "feature-products";
-          await axios.put(
-            `${import.meta.env.VITE_BACKEND_API}/${ep}/${p._id}`,
-            { stock: newStock }
-          );
-        }
-      }
+
+      // Create a single Order using your new API
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/order`,
+        {
+          paymentMethod:   "Stripe",
+          paymentStatus:    "Paid",
+          shippingAddress:  deliveryAddress,
+          billingAddress:   deliveryAddress  // or separate billing form
+        },
+        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+      );
+
+      // Clear the cart
       if (token) {
         await axios.delete(`${import.meta.env.VITE_BACKEND_API}/api/cart/clear`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -260,6 +235,7 @@ export default function Checkout() {
       } else {
         localStorage.removeItem("guest_cart");
       }
+
       message.success("Order placed!");
       navigate("/profile?tab=3");
     } catch (err) {
@@ -324,22 +300,13 @@ export default function Checkout() {
                 {deliveryAddress.shippingcountry}
               </p>
               <p>
-                <strong>ZIP:</strong>{" "}
-                {deliveryAddress.shippingzipcode}
+                <strong>ZIP:</strong> {deliveryAddress.shippingzipcode}
               </p>
               <p>
-                <strong>Phone:</strong>{" "}
-                {deliveryAddress.shippingphone}
+                <strong>Phone:</strong> {deliveryAddress.shippingphone}
               </p>
             </div>
           )}
-
-          {/* Loader
-          {!showAddressForm && shippingLoading && (
-            <div className="text-center my-3">
-              <Spin tip="Calculating shipping…" />
-            </div>
-          )} */}
 
           {/* COUPON */}
           <div className="mt-4 d-flex">
@@ -382,8 +349,7 @@ export default function Checkout() {
                     <td></td>
                     <td>{item.quantity}</td>
                     <td>
-                      {enableCurrency}{" "}
-                      {(p.price * item.quantity).toFixed(2)}
+                      {enableCurrency} {(p.price * item.quantity).toFixed(2)}
                     </td>
                   </tr>
                 );
@@ -423,9 +389,7 @@ export default function Checkout() {
           <div className="text-center mt-4 mb-4">
             <button
               className="btn btn-lg btn-success"
-              disabled={
-                showAddressForm || shippingLoading
-              }
+              disabled={showAddressForm || shippingLoading}
               onClick={initiateStripe}
             >
               Pay & Place Order
