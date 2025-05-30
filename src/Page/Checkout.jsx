@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import moment from "moment";
@@ -219,19 +219,22 @@ export default function Checkout() {
       await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/order`,
         {
-          paymentMethod:   "Stripe",
-          paymentStatus:    "Paid",
-          shippingAddress:  deliveryAddress,
-          billingAddress:   deliveryAddress  // or separate billing form
+          paymentMethod: "Stripe",
+          paymentStatus: "Paid",
+          shippingAddress: deliveryAddress,
+          billingAddress: deliveryAddress, // or separate billing form
         },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
       // Clear the cart
       if (token) {
-        await axios.delete(`${import.meta.env.VITE_BACKEND_API}/api/cart/clear`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.delete(
+          `${import.meta.env.VITE_BACKEND_API}/api/cart/clear`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
       } else {
         localStorage.removeItem("guest_cart");
       }
@@ -251,9 +254,11 @@ export default function Checkout() {
   }
 
   return (
-    <div className="container d-flex justify-content-center mt-20" style={{ zoom: "1.1" }}>
+    <div
+      className="container d-flex justify-content-center mt-20"
+      style={{ zoom: "1.1" }}
+    >
       <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
-
         {/* ADDRESS FORM or SUMMARY */}
         <div className="col-md-4 my-5">
           <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
@@ -286,7 +291,13 @@ export default function Checkout() {
               </button>
             </form>
           ) : (
-            <div style={{ border: "1px solid #ddd", padding: "1rem", borderRadius: 5 }}>
+            <div
+              style={{
+                border: "1px solid #ddd",
+                padding: "1rem",
+                borderRadius: 5,
+              }}
+            >
               <p>
                 <strong>
                   {deliveryAddress.shippingfirstName}{" "}
@@ -295,8 +306,7 @@ export default function Checkout() {
               </p>
               <p>
                 {deliveryAddress.shippingstreetAddress},{" "}
-                {deliveryAddress.shippingcity},{" "}
-                {deliveryAddress.shippingstate},{" "}
+                {deliveryAddress.shippingcity}, {deliveryAddress.shippingstate},{" "}
                 {deliveryAddress.shippingcountry}
               </p>
               <p>
@@ -329,7 +339,10 @@ export default function Checkout() {
           <table className="table">
             <thead>
               <tr>
-                <th>Product</th><th></th><th>Qty</th><th>Price</th>
+                <th>Product</th>
+                <th></th>
+                <th>Qty</th>
+                <th>Price</th>
               </tr>
             </thead>
             <tbody>
@@ -355,31 +368,48 @@ export default function Checkout() {
                 );
               })}
               <tr>
-                <td colSpan="3" className="text-end">Subtotal:</td>
-                <td>{enableCurrency} {subtotal.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="3" className="text-end">Coupon:</td>
-                <td>- {enableCurrency} {couponDiscount.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="3" className="text-end">Tax:</td>
-                <td>+ {enableCurrency} {taxValue.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="3" className="text-end">Shipping:</td>
+                <td colSpan="3" className="text-end">
+                  Subtotal:
+                </td>
                 <td>
-                  {!shippingLoading
-                    ? `+ ${enableCurrency} ${shippingCost.toFixed(2)}`
-                    : <Spin />}
+                  {enableCurrency} {subtotal.toFixed(2)}
                 </td>
               </tr>
               <tr>
-                <td colSpan="3" className="text-end"><strong>Total:</strong></td>
+                <td colSpan="3" className="text-end">
+                  Coupon:
+                </td>
+                <td>
+                  - {enableCurrency} {couponDiscount.toFixed(2)}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">
+                  Tax:
+                </td>
+                <td>
+                  + {enableCurrency} {taxValue.toFixed(2)}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">
+                  Shipping:
+                </td>
+                <td>
+                  {!shippingLoading ? (
+                    `+ ${enableCurrency} ${shippingCost.toFixed(2)}`
+                  ) : (
+                    <Spin />
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">
+                  <strong>Total:</strong>
+                </td>
                 <td>
                   <strong>
-                    {enableCurrency}{" "}
-                    {(finalPayment + shippingCost).toFixed(2)}
+                    {enableCurrency} {(finalPayment + shippingCost).toFixed(2)}
                   </strong>
                 </td>
               </tr>
