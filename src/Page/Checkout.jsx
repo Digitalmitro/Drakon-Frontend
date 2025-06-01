@@ -26,7 +26,7 @@ export default function Checkout() {
     shippingstreetAddress: "",
     shippingcity: "",
     shippingstate: "",
-    shippingcountry: "US",       
+    shippingcountry: "US",
     shippingzipcode: "",
     shippingphone: "",
   });
@@ -53,18 +53,63 @@ export default function Checkout() {
   // Stripe session
   const [sessionId, setSessionId] = useState(null);
 
-  // INITIAL FETCH
+  // ───────────────────────────────────────────────────
+  // 1) on mount: fetch Cart, fetch Settings,
+  //    rehydrate any saved address, and pick up session_id from URL
+  // ───────────────────────────────────────────────────
   useEffect(() => {
     fetchCart();
     fetchSettings();
+
+    // 1a) rehydrate deliveryAddress from localStorage if it exists
+    const saved = localStorage.getItem("deliveryAddress");
+    if (saved) {
+      setDeliveryAddress(JSON.parse(saved));
+      setShowAddressForm(false);
+    }
+
+    // 1b) if Stripe redirected back with ?session_id=…, save it
     const sid = searchParams.get("session_id");
-    if (sid) setSessionId(sid);
+    if (sid) {
+      setSessionId(sid);
+    }
   }, []);
 
-  // CONFIRM PAYMENT
+  // ──────────────────────────────────────────────
+  // 2) only run confirmPayment if both sessionId AND deliveryAddress are set
+  // ──────────────────────────────────────────────
   useEffect(() => {
-    if (sessionId) confirmPayment(sessionId);
-  }, [sessionId]);
+    if (sessionId && deliveryAddress) {
+      confirmPayment(sessionId);
+    }
+  }, [sessionId, deliveryAddress]);
+
+  // ───────────────────────────────────────────────────
+  // 3) if user modifies the address form and clicks “Save”,
+  //    save to state & localStorage, then auto-calculate shipping
+  // ───────────────────────────────────────────────────
+  function handleAddressSubmit(e) {
+    e.preventDefault();
+    const f = addressForm;
+    if (
+      !f.shippingfirstName ||
+      !f.shippinglastName ||
+      !f.shippingstreetAddress ||
+      !f.shippingcity ||
+      !f.shippingstate ||
+      !f.shippingcountry ||
+      !f.shippingzipcode ||
+      !f.shippingphone
+    ) {
+      return message.error("Please fill all address fields");
+    }
+    // 3a) save to React state
+    setDeliveryAddress({ ...addressForm });
+    setShowAddressForm(false);
+
+    // 3b) persist to localStorage so it survives the Stripe redirect
+    localStorage.setItem("deliveryAddress", JSON.stringify(addressForm));
+  }
 
   // AUTO‐CALCULATE SHIPPING once we have a deliveryAddress
   useEffect(() => {
@@ -73,7 +118,9 @@ export default function Checkout() {
     }
   }, [deliveryAddress]);
 
+  // ───────────────────────────────────────────────────
   // FETCH CART
+  // ───────────────────────────────────────────────────
   async function fetchCart() {
     if (token) {
       try {
@@ -90,7 +137,9 @@ export default function Checkout() {
     }
   }
 
+  // ───────────────────────────────────────────────────
   // FETCH SETTINGS
+  // ───────────────────────────────────────────────────
   async function fetchSettings() {
     try {
       const [sRes, cRes] = await Promise.all([
@@ -106,7 +155,9 @@ export default function Checkout() {
     } catch {}
   }
 
+  // ───────────────────────────────────────────────────
   // RECALCULATE SUBTOTAL, TAX, FINAL before shipping
+  // ───────────────────────────────────────────────────
   useEffect(() => {
     const sub = cartData.reduce(
       (acc, item) => acc + (item.productId?.price || 0) * item.quantity,
@@ -118,7 +169,9 @@ export default function Checkout() {
     setFinalPayment(sub + t - couponDiscount);
   }, [cartData, enableTax, taxRate, couponDiscount]);
 
+  // ───────────────────────────────────────────────────
   // APPLY COUPON
+  // ───────────────────────────────────────────────────
   function applyCoupon() {
     if (!enableCoupon) {
       return message.error("Coupons disabled");
@@ -131,27 +184,9 @@ export default function Checkout() {
     message.success("Coupon applied");
   }
 
-  // SAVE ADDRESS FORM as FINAL address
-  function handleAddressSubmit(e) {
-    e.preventDefault();
-    const f = addressForm;
-    if (
-      !f.shippingfirstName ||
-      !f.shippinglastName ||
-      !f.shippingstreetAddress ||
-      !f.shippingcity ||
-      !f.shippingstate ||
-      !f.shippingcountry ||
-      !f.shippingzipcode ||
-      !f.shippingphone
-    ) {
-      return message.error("Please fill all address fields");
-    }
-    setDeliveryAddress({ ...addressForm });
-    setShowAddressForm(false);
-  }
-
+  // ───────────────────────────────────────────────────
   // CALCULATE SHIPPING
+  // ───────────────────────────────────────────────────
   async function calculateShipping() {
     setShippingLoading(true);
     try {
@@ -182,13 +217,17 @@ export default function Checkout() {
     }
   }
 
+  // ───────────────────────────────────────────────────
   // INITIATE STRIPE
+  // ───────────────────────────────────────────────────
   async function initiateStripe() {
     if (shippingLoading || !deliveryAddress) {
       return message.error("Please wait for shipping to finish");
     }
     try {
       const stripe = await stripePromise;
+
+      // localStorage already contains the address. Stripe will redirect back here.
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/api/stripe/create-payment-intent`,
         {
@@ -205,29 +244,75 @@ export default function Checkout() {
     }
   }
 
+  // ───────────────────────────────────────────────────
   // CONFIRM STRIPE & CREATE ORDER
+  // ───────────────────────────────────────────────────
   async function confirmPayment(sid) {
     try {
-      // Confirm payment on your backend
+      // 1) Confirm payment on your backend
       await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/api/stripe/confirm`,
         { sessionId: sid },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
-      // Create a single Order using your new API
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/order`,
-        {
+      // 2) Build “normalized” address object matching your backend schema
+      const normalizedShipping = {
+        fullName: `${deliveryAddress.shippingfirstName} ${deliveryAddress.shippinglastName}`,
+        company: "",
+        phone: deliveryAddress.shippingphone,
+        email: userEmail || "",
+        address1: deliveryAddress.shippingstreetAddress,
+        address2: "",
+        city: deliveryAddress.shippingcity,
+        state: deliveryAddress.shippingstate,
+        postalCode: deliveryAddress.shippingzipcode,
+        country: deliveryAddress.shippingcountry,
+      };
+
+      // 3) If no separate billing form, reuse the shipping object
+      const normalizedBilling = normalizedShipping;
+
+      // 4) Build the request payload according to whether user is logged in or guest
+      let payload;
+      if (token) {
+        // Authenticated user: backend will pull cart from DB
+        payload = {
           paymentMethod: "Stripe",
           paymentStatus: "Paid",
-          shippingAddress: deliveryAddress,
-          billingAddress: deliveryAddress, // or separate billing form
-        },
+          shippingAddress: normalizedShipping,
+          billingAddress: normalizedBilling,
+        };
+      } else {
+        // Guest checkout: include cart data + totals in body
+        payload = {
+          paymentMethod: "Stripe",
+          paymentStatus: "Paid",
+          shippingAddress: normalizedShipping,
+          billingAddress: normalizedBilling,
+          cartData: cartData.map((p) => ({
+            productId: p.productId._id || p.productId,
+            productTitle: p.productId.title || p.productTitle,
+            quantity: p.quantity,
+            price: p.productId.price || p.price,
+            options: p.options || {},
+            location: p.location || "",
+          })),
+          subtotal,
+          shippingCost,
+          discount: couponDiscount || 0,
+          totalAmount: finalPayment + shippingCost,
+        };
+      }
+
+      // 5) Send to backend
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/order`,
+        payload,
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
-      // Clear the cart
+      // 6) Clear the cart
       if (token) {
         await axios.delete(
           `${import.meta.env.VITE_BACKEND_API}/api/cart/clear`,
@@ -240,19 +325,24 @@ export default function Checkout() {
       }
 
       message.success("Order placed!");
-      navigate("/profile?tab=3");
+      navigate("/");
     } catch (err) {
       console.error(err);
       message.error("Order creation failed");
     }
   }
 
-  // INPUT HANDLER
+  // ───────────────────────────────────────────────────
+  // INPUT HANDLER for address form
+  // ───────────────────────────────────────────────────
   function onAddressChange(e) {
     const { name, value } = e.target;
     setAddressForm((f) => ({ ...f, [name]: value }));
   }
 
+  // ───────────────────────────────────────────────────
+  // Render
+  // ───────────────────────────────────────────────────
   return (
     <div
       className="container d-flex justify-content-center mt-20"
@@ -283,9 +373,7 @@ export default function Checkout() {
                     onChange={onAddressChange}
                     className="form-control"
                     placeholder={label}
-                    {...(key === "shippingcountry"
-                      ? { disabled: true }
-                      : {})}
+                    {...(key === "shippingcountry" ? { disabled: true } : {})}
                   />
                 </div>
               ))}
@@ -352,7 +440,7 @@ export default function Checkout() {
               {cartData.map((item) => {
                 const p = item.productId;
                 return (
-                  <tr key={p._id}>
+                  <tr key={p._id || p}>
                     <td>
                       <img
                         src={p.image?.[0] || ""}
