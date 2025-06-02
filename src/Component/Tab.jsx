@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import product1 from "../assets/product1.png";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import OrdersTabPanel from '../Component/tabsPanel/orders'
+import OrdersTabPanel from "../Component/tabsPanel/orders";
 import axios from "axios";
 import {
   Link,
@@ -16,6 +16,40 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { message } from "antd";
+const pastOrders = [
+  {
+    userId: "13h5sh3",
+    products: [
+      {
+        productId: "pr0d1d1",
+        quantity: 2,
+        price: 499.99,
+        total: 999.98,
+      },
+      {
+        productId: "pr0d2d2",
+        quantity: 1,
+        price: 299.99,
+        total: 299.99,
+      },
+    ],
+    subtotal: 1299.97,
+    shippingCost: 50,
+    discount: 100,
+    totalAmount: 1249.97,
+    paymentMethod: "Credit Card",
+    paymentStatus: "Paid",
+    orderStatus: "Shipped",
+    shippingAddress: {
+      fullName: "Jane Doe",
+      address: "123 SkinCare Lane",
+      city: "Glowtown",
+      postalCode: "123456",
+      country: "Skintopia",
+    },
+    createdAt: "2025-04-04T00:00:00.000Z",
+  },
+];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,6 +91,47 @@ export default function VerticalTabs() {
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const userId = decodedToken?._id;
+  // reset password
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleForgetPasswordSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      setError("All fields are required.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError("New password and confirm password do not match.");
+      return;
+    }
+    try {
+      const token = Cookies.get("token");
+      console.log(token);
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_API}/reset-password`,
+        { oldPassword, newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSuccess(response.data.message);
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    }
+  };
+
+  // reset password ends here
 
   const [formData, setFormData] = React.useState({
     firstName: "",
@@ -67,7 +142,6 @@ export default function VerticalTabs() {
     newPassword: "",
     user_id: userId,
   });
-
 
   useEffect(() => {
     const tabIndex = searchParams.get("tab");
@@ -180,7 +254,6 @@ export default function VerticalTabs() {
       setBillingFormData({
         firstName: "",
         lastName: "",
-
         country: "",
         streetAddress: "",
         city: "",
@@ -189,7 +262,7 @@ export default function VerticalTabs() {
         phone: null,
         email: "",
       });
-
+      setShowBillingForm(false);
       setShippingFormData({
         firstName: "",
         lastName: "",
@@ -200,6 +273,8 @@ export default function VerticalTabs() {
         zipcode: null,
         phone: null,
       });
+      setShowShippingForm(false);
+      getAddresses();
       // console.log("after postData", billingFormData, shippingFormData);
     } catch (error) {
       console.error("Error saving addresses:", error);
@@ -209,7 +284,7 @@ export default function VerticalTabs() {
   const [billingAddresses, setBillingAddresses] = React.useState([]);
   const [shippingAddresses, setShippingAddresses] = React.useState([]);
 
-  async function getAddresses() {
+   async function getAddresses() {
     try {
       const billing = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
@@ -324,45 +399,57 @@ export default function VerticalTabs() {
   const toggleShippingForm = () => {
     setShowShippingForm((prev) => !prev);
   };
-  // const pastOrders = [
-  //   {
-  //     id: 1,
-  //     img: product1,
-  //     deliveredDate: "Sat, Mar 25, 2024 07:15 pm",
-  //     orderDate: "Sat, Mar 22, 2024, 5:00 pm",
-  //     title: "Full Sleeve Jacket",
-  //     orderNumber: "14524156451268",
-  //     totalPaid: 142,
-  //   },
-  //   {
-  //     id: 2,
-  //     img: product1,
-  //     deliveredDate: "Sat, ",
-  //     orderDate: "Sat, Mar 22, 2024, 5:00 pm",
-  //     title: "  Jacket",
-  //     orderNumber: "14524156451268",
-  //     totalPaid: 142,
-  //   },
 
-  //   // Add more orders as needed
-  // ];
+  const [pastOrders, setPastOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const productsPerPage = 1; // You can adjust this value
-  // const totalPages = Math.ceil(pastOrders.length / productsPerPage);
+  const getOrders = async (id) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API}/api/user/${id}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch orders");
 
-  // const indexOfLastProduct = currentPage * productsPerPage;
-  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  // const currentProducts = pastOrders.slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
+      const data = await response.json();
+      setPastOrders(data);
+      console.log("Order Data:", data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // get user by id
+  const [user, setUser] = useState([]);
+  const getUserById = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API}/user/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}: ${res.statusText}`);
+      }
 
+      const data = await res.json();
+      setUser(data);
+    } catch (err) {
+      console.error("Failed to fetch user profile:", err.message);
+    }
+  };
+
+  useEffect(() => {
+    getOrders(userId);
+    getUserById();
+  }, []);
   return (
     <Box
-    className="tabSection"
+      className="tabSection"
       sx={{
         flexGrow: 1,
         bgcolor: "background.paper",
@@ -374,10 +461,10 @@ export default function VerticalTabs() {
         orientation="vertical"
         variant="scrollable"
         value={value}
-        
         onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{
+          width: { xs: "auto", lg: "300px" },
           borderRight: 1,
           borderColor: "divider",
           color: "orangeline",
@@ -387,9 +474,9 @@ export default function VerticalTabs() {
         <Tab className="sidenav" label="Profile" {...a11yProps(0)} />
         <Tab className="sidenav" label="Address" {...a11yProps(3)} />
 
-        <Tab className="sidenav" label="account details" {...a11yProps(5)} />
+        <Tab className="sidenav" label="Reset Password" {...a11yProps(5)} />
         <Tab className="sidenav" label="Order" {...a11yProps(4)} />
-        {/* <Tab className="sidenav" label="BILLING DETAILS" {...a11yProps(1)} /> */}
+
         <Tab
           onClick={handelLogout}
           className="sidenav"
@@ -399,30 +486,31 @@ export default function VerticalTabs() {
       </Tabs>
       <TabPanel value={value} index={0}>
         <div
-          className="profile d-flex justify-content-around w-full "
+          className="profile flex justify-evenly flex-wrap w-full "
           style={{ margin: "10px" }}
         >
-          <div className=" profileDetails gap-5 md:w-full  my-5 w-1/3 w-sm-full text-center border p-5">
-            <h1>PROFILE DETAILS</h1>
-            <div className=" d-flex justify-content-between  items-center my-5 py-2">
+          <div className=" profileDetails  lg:w-[600px] my-3 text-center border p-5">
+            <h1 className="mb-8">PROFILE DETAILS</h1>
+            <div className=" flex space-x-4 mb-3 items-center">
               <h4>Name: </h4>
-              <p> suvo suvo</p>
+              <p>{user.name}</p>
             </div>
-            <div className="d-flex justify-content-between items-center">
+            <div className="flex space-x-4  items-center">
               <h4>Email: </h4>
-              <p>Suvo@gmail.com</p>
+              <p>{user.email}</p>
             </div>
           </div>
           <div className="profile-box" style={{ width: "500px" }}>
             <form>
               <div class="my-3">
                 <label for="username" className="form-label fs-5 text">
-                  Username
+                  Full Name
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   id="username"
+                  value={user.name}
                   required
                 />
               </div>
@@ -434,6 +522,7 @@ export default function VerticalTabs() {
                   type="text"
                   className="form-control"
                   id="name"
+                  value={user.name}
                   required
                 />
               </div>
@@ -445,6 +534,7 @@ export default function VerticalTabs() {
                   type="email"
                   className="form-control"
                   id="email"
+                  value={user.email}
                   required
                 />
               </div>
@@ -498,50 +588,60 @@ export default function VerticalTabs() {
                         <strong>ZIPCODE: </strong>{" "}
                         {billingAddresses?.billingzipcode}
                       </p>
-                     
                     </div>
                   </>
-                ): <p>BillingAddress is not set</p>}
+                ) : (
+                  <p className="mt-2">BillingAddress is not set</p>
+                )}
               </div>
               {showBillingForm && (
                 <form
-                  className="address-form"
+                  className="address-form w-[89%] pl-3 "
                   onSubmit={saveAddressesToDatabase}
                 >
                   <>
-                    <label htmlFor="billingFirstName" className="form-label">
-                      First Name*
+                    <label
+                      htmlFor="billingFirstName"
+                      className="form-label  text-[16px]"
+                    >
+                      First Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="firstName"
-                      className="form-control placeholder-left"
+                      className="form-control placeholder-left mb-3"
                       id="billingFirstName"
                       placeholder="Enter First Name"
                       value={billingFormData.firstName}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingLastName" className="form-label">
-                      Last Name*
+                    <label
+                      htmlFor="billingLastName"
+                      className="form-label  text-[16px] "
+                    >
+                      Last Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="lastName"
-                      className="form-control placeholder-left"
+                      className="form-control placeholder-left mb-3"
                       id="billingLastName"
                       placeholder="Enter Last Name"
                       value={billingFormData.lastName}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingCountry" className="form-label">
-                      Country/Region *
+                    <label
+                      htmlFor="billingCountry"
+                      className="form-label  text-[16px]"
+                    >
+                      Country/Region <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="country"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingCountry"
                       placeholder="Enter Country/ Region"
                       value={billingFormData.country}
@@ -549,51 +649,63 @@ export default function VerticalTabs() {
                       required
                     />
 
-                    <label htmlFor="billingStreet" className="form-label">
+                    <label
+                      htmlFor="billingStreet"
+                      className="form-label  text-[16px]"
+                    >
                       Street address
                     </label>
                     <input
                       type="text"
                       name="streetAddress"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingStreet"
                       placeholder="Enter Street Address"
                       value={billingFormData.streetAddress}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingCity" className="form-label">
-                      Town / City*
+                    <label
+                      htmlFor="billingCity"
+                      className="form-label  text-[16px]"
+                    >
+                      Town / City <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="city"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingCity"
                       placeholder="Enter City / Town"
                       value={billingFormData.city}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingState" className="form-label">
+                    <label
+                      htmlFor="billingState"
+                      className="form-label  text-[16px]"
+                    >
                       State
                     </label>
                     <input
                       type="text"
                       name="state"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingState"
                       placeholder="Enter State"
                       value={billingFormData.state}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingZip" className="form-label">
-                      Zip Code
+                    <label
+                      htmlFor="billingZip"
+                      className="form-label  text-[16px]"
+                    >
+                      Zip Code <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="number"
-                      className="form-control"
+                      className="form-control mb-3"
                       name="zipcode"
                       id="billingZip"
                       placeholder="Enter Zipcode"
@@ -601,26 +713,32 @@ export default function VerticalTabs() {
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingPhone" className="form-label">
-                      Phone *
+                    <label
+                      htmlFor="billingPhone"
+                      className="form-label  text-[16px]"
+                    >
+                      Phone <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="number"
                       name="phone"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="billingPhone"
                       placeholder="Enter Phone no."
                       value={billingFormData.phone}
                       onChange={handleBillingFormChange}
                     />
 
-                    <label htmlFor="billingEmail" className="form-label">
+                    <label
+                      htmlFor="billingEmail"
+                      className="form-label  text-[16px]"
+                    >
                       Email Address
                     </label>
                     <input
                       type="email"
                       name="email"
-                      className="form-control"
+                      className="form-control mb-3 "
                       id="billingEmail"
                       placeholder="Enter Email Address"
                       value={billingFormData.email}
@@ -628,7 +746,7 @@ export default function VerticalTabs() {
                     />
 
                     <div>
-                      <button className="btn btn-outline-danger" type="submit">
+                      <button className="btn btn-outline-danger w-full mt-3" type="submit">
                         Save Address
                       </button>
                     </div>
@@ -651,146 +769,175 @@ export default function VerticalTabs() {
                 </button>
                 {shippingAddresses ? (
                   <>
-
-                    <div className="address-box">
-                      <p>
-                        <strong>SHIPPING ADDRESS :</strong>{" "}
-                        {shippingAddresses?.shippingstreetAddress || " Chicago, USA"}
-                        , {shippingAddresses?.shippingcity} ,
-                        {shippingAddresses?.shippingstate},{" "}
-                        {shippingAddresses?.shippingcountry}
-                      </p>
-                      <p>
-                        <strong>ZIPCODE :</strong>{" "}
-                        {shippingAddresses?.shippingzipcode}
-                      </p>
-                     
-                    </div>
+                    {shippingAddresses.map((el) => {
+                      return (
+                        <div className="address-box">
+                          <p>
+                            <strong>SHIPPING ADDRESS :</strong>{" "}
+                            {el?.shippingstreetAddress || " Chicago, USA"},{" "}
+                            {el?.shippingcity} ,{el?.shippingstate},{" "}
+                            {el?.shippingcountry}
+                          </p>
+                          <p>
+                            <strong>ZIPCODE :</strong> {el?.shippingzipcode}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </>
-                ): <p>Shipping Address is not set up yet.</p>}
+                ) : (
+                  <p>Shipping Address is not set up yet.</p>
+                )}
               </div>
               {showShippingForm && (
                 <form
-                  className="address-form"
+                  className="address-form px-3 w-[91%]"
                   onSubmit={saveAddressesToDatabase}
                 >
                   <>
-                    <label htmlFor="shippingFirstName" className="form-label">
-                      First Name*
+                    <label
+                      htmlFor="shippingFirstName"
+                      className="form-label  text-[16px]"
+                    >
+                      First Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="firstName"
-                      className="form-control placeholder-left"
+                      className="form-control placeholder-left mb-3"
                       id="shippingFirstName"
                       placeholder="Enter First Name"
                       value={shippingFormData.firstName}
                       onChange={handleShippingFormChange}
                     />
-                    <label htmlFor="shippingLastName" className="form-label">
-                      Last Name*
+                    <label
+                      htmlFor="shippingLastName"
+                      className="form-label  text-[16px]"
+                    >
+                      Last Name <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="lastName"
-                      className="form-control placeholder-left"
+                      className="form-control placeholder-left mb-3"
                       id="shippingLastName"
                       placeholder="Enter Last Name"
                       value={shippingFormData.lastName}
                       onChange={handleShippingFormChange}
                     />
-                    <label htmlFor="shippingCountry" className="form-label">
-                      Country/Region *
+                    <label
+                      htmlFor="shippingCountry"
+                      className="form-label  text-[16px]"
+                    >
+                      Country/Region <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="country"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingCountry"
                       placeholder="Enter Country/ Region"
                       value={shippingFormData.country}
                       onChange={handleShippingFormChange}
                       required
                     />
-                    <label htmlFor="shippingStreet" className="form-label">
+                    <label
+                      htmlFor="shippingStreet"
+                      className="form-label  text-[16px]"
+                    >
                       Street address
                     </label>
                     <input
                       type="text"
                       name="streetAddress"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingStreet"
                       placeholder="Enter Street Address"
                       value={shippingFormData.streetAddress}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingCity" className="form-label">
-                      Town / City*
+                    <label
+                      htmlFor="shippingCity"
+                      className="form-label  text-[16px]"
+                    >
+                      Town / City <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="city"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingCity"
                       placeholder="Enter City / Town"
                       value={shippingFormData.city}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingState" className="form-label">
-                      State
+                    <label
+                      htmlFor="shippingState"
+                      className="form-label  text-[16px]"
+                    >
+                      State <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="text"
                       name="state"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingState"
                       placeholder="Enter State"
                       value={shippingFormData.state}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingZip" className="form-label">
-                      Zip Code
+                    <label
+                      htmlFor="shippingZip"
+                      className="form-label  text-[16px]"
+                    >
+                      Zip Code <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="number"
                       name="zipcode"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingZip"
                       placeholder="Enter Zipcode"
                       value={shippingFormData.zipcode}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingPhone" className="form-label">
-                      Phone *
+                    <label
+                      htmlFor="shippingPhone"
+                      className="form-label  text-[16px]"
+                    >
+                      Phone <span className="text-[#ff0024]">*</span>
                     </label>
                     <input
                       type="number"
                       name="phone"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingPhone"
                       placeholder="Enter Phone no."
                       value={shippingFormData.phone}
                       onChange={handleShippingFormChange}
                     />
 
-                    <label htmlFor="shippingEmail" className="form-label">
+                    <label
+                      htmlFor="shippingEmail"
+                      className="form-label  text-[16px]"
+                    >
                       Email Address
                     </label>
                     <input
                       type="email"
                       name="email"
-                      className="form-control"
+                      className="form-control mb-3"
                       id="shippingEmail"
                       placeholder="Enter Email Address"
                       value={shippingFormData.email}
                       onChange={handleShippingFormChange}
                     />
 
-                    <button className="btn btn-outline-danger" type="submit">
+                    <button className="btn btn-outline-danger mt-3   w-full" type="submit">
                       Save Address
                     </button>
                   </>
@@ -802,124 +949,104 @@ export default function VerticalTabs() {
       </TabPanel>
 
       <TabPanel value={value} index={2}>
-        <div class="d-flex justify-content-center align-items-center mt-5 addressDetails">
-          <form class="row g-3 m-3 d-flex justify-content-center align-items-center addressDetails">
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputCity"
-                placeholder="First Name"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputCity"
-                placeholder="Last Name"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputZip"
-                placeholder="Display Name"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputCity"
-                placeholder="Email Address"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputCity"
-                placeholder="Old Password"
-              />
-            </div>
-            <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                id="inputZip"
-                placeholder="New Password"
-              />
-            </div>
-            <button type="button" class="btn w-1/3">
-              Add Account
-            </button>
-          </form>
+        <div className="flex justify-center items-center pt-4">
+          <div className="bg-white p-6 rounded-lg  lg:w-[40%]">
+            <form onSubmit={handleForgetPasswordSubmit} className="space-y-4">
+              <div>
+                <label className="block font-medium">Old Password</label>
+                <input
+                  type="password"
+                  className="w-full border rounded-md p-2"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block font-medium">New Password</label>
+                <input
+                  type="password"
+                  className="w-full border rounded-md p-2"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block font-medium">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  className="w-full border rounded-md p-2"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+              {success && <p className="text-green-500 text-sm">{success}</p>}
+              <button
+                type="submit"
+                className="w-full bg-[#ff5B00] text-white py-2 rounded-md hover:bg-blue-600"
+              >
+                Change Password
+              </button>
+            </form>
+          </div>
         </div>
       </TabPanel>
 
       <TabPanel value={value} index={3}>
-        {/* <div className="text-center">
-          <h2 className="fs-1 text my-3">Past Orders</h2>
-        </div>
-        <div className="past-order d-flex justify-content-center">
-          {currentProducts.map((order) => (
-            <div key={order.id} className="past-order-box">
-              <div className="wrap">
-                <img src={order.img} alt="Product" />
-                <div className="burger-text">
-                  <p className="text-end pb-4">
-                    Delivered on {order.deliveredDate}{" "}
-                    <i className="fa-solid fa-circle-check"></i>
-                  </p>
-                  <h3 className="fs-2 text fw-bold">{order.title}</h3>
-                  <br></br>
-                  <span>
-                    order#{order.orderNumber} {order.orderDate}
-                  </span>
-                  <br></br>
-
-                  <button className="btn-1" type="button">
-                    view details
-                  </button>
-                </div>
+        <div className="p-4 space-y-8 ">
+          {pastOrders?.map((order) => (
+            <div
+              key={order._id}
+              className="border p-4  rounded-lg shadow flex flex-col lg:flex-row  lg:justify-around space-y-6"
+            >
+              <div className="">
+                <h3 className="font-semibold  text-[16px]">Products:</h3>
+                {order?.products?.map((item, index) => (
+                  <div key={index} className=" lg:flex gap-10">
+                    <div>
+                      <img
+                        src={item?.productId?.image[0]}
+                        alt={item?.productId?.title}
+                        className="w-28 h-28 "
+                      />
+                    </div>
+                    <div className="text-[16px]">
+                      <p>
+                        Quantity: <b>{item?.quantity}</b>
+                      </p>
+                      <p>
+                        Price: ₹<b>{item?.price}</b>
+                      </p>
+                      <p>
+                        Total: ₹<b>{item?.total}</b>
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="order-history " style={{ marginTop: "20px" }}>
-                <b className="px-4">
-                  {order.title} {" : "}{" "}
-                </b>
-                <span className="px-4"> total spanaid $ {order.totalPaid}</span>
-              </div>
-              <div
-                style={{
-                  marginTop: "10px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <button className="btn" type="button">
-                  Get HELP
-                </button>
-                <br />
-                <div className="pagination-controlsborder d-flex justify-content-center">
-                  {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => paginate(index + 1)}
-                      className={`p-2 border  pagination-button ${
-                        currentPage === index + 1 ? "active" : ""
-                      }`}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-                </div>
+              <div>
+                <h2 className="text-lg font-bold mb-2">
+                  Order ID: {order?._id}
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Status: {order?.orderStatus}
+                </p>
+                <p className="text-sm">
+                  Payment: {order?.paymentMethod} ({order?.paymentStatus})
+                </p>
+                <p className="text-sm">Total: ₹{order?.totalAmount}</p>
+                <p className="text-sm text-gray-500">
+                  Ordered on: {new Date(order?.createdAt).toLocaleString()}
+                </p>
               </div>
             </div>
           ))}
-        </div> */}
-        <OrdersTabPanel/>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={5}></TabPanel>
     </Box>
