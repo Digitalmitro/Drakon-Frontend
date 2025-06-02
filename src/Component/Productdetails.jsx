@@ -91,7 +91,7 @@ const Productdetails = () => {
       }
       localStorage.setItem("guest_cart", JSON.stringify(guestCart));
       message.success("Added to Cart");
-      setTimeout(() => navigate("/cart"), 500);
+      setTimeout(() => navigate("/cart"), 500); 
     }
   };
 
