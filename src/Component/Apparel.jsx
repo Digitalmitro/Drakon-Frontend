@@ -41,13 +41,13 @@ const Apparel = ({ closeCart, navigate }) => {
   }, []);
 
   return (
-    <div className="bg-[#F3F3F3]" onClick={closeCart}>
+    <div className="bg-[#fcf7f7]" onClick={closeCart}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="text-center lg:text-left mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
             Why Choose Us?
           </h2>
-          <p className="text-lg text-gray-700 leading-relaxed max-w-4xl mx-auto lg:mx-0 text-justify">
+          <p className="text-xl text-gray-900 leading-relaxed  mx-auto lg:mx-0 text-justify">
             Drakon Sports Apparel believes that your gear should work as hard as
             you do. Our mission is to go beyond making clothes—we create
             performance-driven apparel that supports your lifestyle, fuels your
@@ -58,10 +58,10 @@ const Apparel = ({ closeCart, navigate }) => {
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold text-orange-600 mb-2">
-              🇺🇸 U.S.-Based, Athlete-Focused
+            <h3 className="text-xl font-semibold text-orange-600 mb-2 flex ">
+            <img src="https://flagcdn.com/us.svg" width="32" alt="USA Flag" />&nbsp; U.S.-Based, Athlete-Focused
             </h3>
-            <p className="text-gray-700 text-base leading-relaxed">
+            <p className="text-gray-900 text-xl leading-relaxed">
               Proudly based in the U.S., we deeply understand the needs of
               today’s athletes and fitness lovers—from gym-goers to pros. Our
               designs are inspired by real routines and real challenges.
@@ -69,10 +69,10 @@ const Apparel = ({ closeCart, navigate }) => {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-orange-600 mb-2">
-              🧵 Premium-Quality Materials
+            <h3 className="text-xl font-semibold text-orange-600 mb-2 flex">
+              <img src="https://s.w.org/images/core/emoji/15.1.0/svg/1f9f5.svg" width="32" alt="USA Flag" /> Premium-Quality Materials
             </h3>
-            <p className="text-gray-700 text-base leading-relaxed">
+            <p className="text-gray-900 text-xl leading-relaxed">
               Each Drakon product is crafted with premium-grade, sweat-wicking,
               breathable, and quick-drying fabrics—built for endurance and
               high-intensity movement.
@@ -80,10 +80,10 @@ const Apparel = ({ closeCart, navigate }) => {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-orange-600 mb-2">
-              🏃‍♂️ Built for Movement
+            <h3 className="text-xl font-semibold text-orange-600 mb-2 flex">
+               <img src="https://s.w.org/images/core/emoji/15.1.0/svg/1f3c3-200d-2642-fe0f.svg" width="32" alt="USA Flag" /> Built for Movement
             </h3>
-            <p className="text-gray-700 text-base leading-relaxed">
+            <p className="text-gray-900 text-xl leading-relaxed">
               Functionality is at the core. Our apparel features ergonomic cuts
               and stretchable fabrics to provide unrestricted mobility so you
               stay focused on your performance.
@@ -91,10 +91,10 @@ const Apparel = ({ closeCart, navigate }) => {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-orange-600 mb-2">
-              🎨 Sleek, Functional Design
+            <h3 className="text-xl font-semibold text-orange-600 mb-2 flex">
+              <img src="https://s.w.org/images/core/emoji/15.1.0/svg/1f3a8.svg" width="32" alt="USA Flag" />&nbsp; Sleek, Functional Design
             </h3>
-            <p className="text-gray-700 text-base leading-relaxed">
+            <p className="text-gray-900 text-xl leading-relaxed">
               We merge athletic utility with minimalist aesthetics—bold
               branding, clean lines, and versatile color palettes to help you
               look sharp while you move with power.
@@ -104,7 +104,7 @@ const Apparel = ({ closeCart, navigate }) => {
       </div>
 
       <div className=" mx-auto pb-10">
-        <h2 className="font-bold text-4xl  uppercase text-center">
+        <h2 className="font-bold text-4xl md:text-5xl  uppercase text-center">
           SHOP THE GAME’S APPAREL
         </h2>
 
@@ -119,10 +119,10 @@ const Apparel = ({ closeCart, navigate }) => {
                 />
 
                 <div className="absolute inset-0 flex flex-col justify-center items-start px-6 text-white bg-black/30">
-                  <div className="lg:w-[500px]">
-                    <p className="text-2xl font-semibold">
-                      Discover high-quality, comfortable, and stylish sports
-                      apparel designed for performance and durability
+                  <div className="lg:w-[600px] text-justify">
+                    <p className="text-2xl ">
+                      Look Sharp. Play Hard. Live the Game. Performance wear
+                      designed for true athletes — on and off the field.
                     </p>
                   </div>
                 </div>
@@ -144,51 +144,80 @@ const Apparel = ({ closeCart, navigate }) => {
             </div>
           ))}
         </Carousel>
-        <Swiper
-          slidesPerView={4}
-          loop={true}
-          pagination={{ clickable: true }}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
-          modules={[Pagination, Autoplay]}
-          breakpoints={{
-            1024: { slidesPerView: 4 },
-            600: { slidesPerView: 2 },
-            375: { slidesPerView: 1 },
-          }}
-          className="mt-10 lg:ml-8 mx-6 lg:mx-0"
-        >
-          {apparelProducts?.map((e) => (
-            <SwiperSlide key={e._id}>
-              <div className="lg:h-[500px] h-[420px]">
-                <Link to={`/productDetails/${e._id}`}>
-                  <div className="shadow-lg lg:h-[410px] h-[370px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
-                    <div className="flex justify-center lg:w-full bg-[#dddfe0]">
-                      <img
-                        src={e.image?.[0]}
-                        className="object-contain h-[280px] lg:h-[323px] w-[100%]"
-                        alt="Product"
-                      />
-                    </div>
-                    <div className=" h-full space-y-1 px-2">
-                      <h3 className="font-semibold text-xl">
-                        {/* {e.description.length > 30
-                          ? `${e.description.slice(0, 30)}...`
-                          : e.description} */}
-                        {e.title}
-                      </h3>
-                      <h4 className="text-[#959595] font-bold text-2xl">
-                        $ {e.price}
-                      </h4>
+        <div className="mx-auto py-10">
+         
+
+          {apparelProducts?.length > 0 ? (
+            <Swiper
+              slidesPerView={4}
+              loop={true}
+              pagination={{ clickable: true }}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+                waitForTransition: true,
+                pauseOnMouseEnter: true,
+              }}
+              modules={[Pagination, Autoplay]}
+              breakpoints={{
+                1024: { slidesPerView: 4 },
+                600: { slidesPerView: 2 },
+                375: { slidesPerView: 1 },
+              }}
+              className="mt-10 lg:pl-8 mx-6 lg:mx-0"
+            >
+              {apparelProducts.map((e) => (
+                <SwiperSlide key={e._id}>
+                  <div className="lg:h-[500px] h-[440px]">
+                    <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
+                      {/* LIMITED Badge */}
+                      <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
+                        LIMITED
+                      </div>
+
+                      {/* Product Image */}
+                      <Link
+                        to={`/productDetails/${e._id}`}
+                        className="bg-[#dddfe0] rounded-md overflow-hidden flex justify-center items-center h-[240px] lg:h-[270px]"
+                      >
+                        <img
+                          src={e.image?.[0]}
+                          alt="Product"
+                          className="object-contain h-full w-full"
+                        />
+                      </Link>
+
+                      {/* Product Info */}
+                      <div className="mt-4 px-1 flex flex-col gap-1">
+                        <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                          {e.title}
+                        </h3>
+                        <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
+                          $ {e.price}
+                        </h4>
+                      </div>
+
+                      {/* Buttons */}
+                      <div className="flex mt-3 gap-2">
+                        <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
+                          Add to cart
+                        </button>
+                        <Link
+                          to={`/productDetails/${e._id}`}
+                          className="bg-[#f97316] text-white text-lg font-medium py-2 lg:pl-8 pl-10 rounded w-full hover:bg-[#ea580c] transition"
+                        >
+                          QUICK VIEW
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </Link>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <div className="text-center py-10">Loading apparel products...</div>
+          )}
+        </div>
       </div>
     </div>
   );
