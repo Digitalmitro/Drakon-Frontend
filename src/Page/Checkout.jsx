@@ -26,7 +26,7 @@ export default function Checkout() {
     shippingstreetAddress: "",
     shippingcity: "",
     shippingstate: "",
-    shippingcountry: "",
+    shippingcountry: "US",
     shippingzipcode: "",
     shippingphone: "",
   });
@@ -53,18 +53,63 @@ export default function Checkout() {
   // Stripe session
   const [sessionId, setSessionId] = useState(null);
 
-  // INITIAL FETCH
+  // ───────────────────────────────────────────────────
+  // 1) on mount: fetch Cart, fetch Settings,
+  //    rehydrate any saved address, and pick up session_id from URL
+  // ───────────────────────────────────────────────────
   useEffect(() => {
     fetchCart();
     fetchSettings();
+
+    // 1a) rehydrate deliveryAddress from localStorage if it exists
+    const saved = localStorage.getItem("deliveryAddress");
+    if (saved) {
+      setDeliveryAddress(JSON.parse(saved));
+      setShowAddressForm(false);
+    }
+
+    // 1b) if Stripe redirected back with ?session_id=…, save it
     const sid = searchParams.get("session_id");
-    if (sid) setSessionId(sid);
+    if (sid) {
+      setSessionId(sid);
+    }
   }, []);
 
-  // CONFIRM PAYMENT
+  // ──────────────────────────────────────────────
+  // 2) only run confirmPayment if both sessionId AND deliveryAddress are set
+  // ──────────────────────────────────────────────
   useEffect(() => {
-    if (sessionId) confirmPayment(sessionId);
-  }, [sessionId]);
+    if (sessionId && deliveryAddress) {
+      confirmPayment(sessionId);
+    }
+  }, [sessionId, deliveryAddress]);
+
+  // ───────────────────────────────────────────────────
+  // 3) if user modifies the address form and clicks “Save”,
+  //    save to state & localStorage, then auto-calculate shipping
+  // ───────────────────────────────────────────────────
+  function handleAddressSubmit(e) {
+    e.preventDefault();
+    const f = addressForm;
+    if (
+      !f.shippingfirstName ||
+      !f.shippinglastName ||
+      !f.shippingstreetAddress ||
+      !f.shippingcity ||
+      !f.shippingstate ||
+      !f.shippingcountry ||
+      !f.shippingzipcode ||
+      !f.shippingphone
+    ) {
+      return message.error("Please fill all address fields");
+    }
+    // 3a) save to React state
+    setDeliveryAddress({ ...addressForm });
+    setShowAddressForm(false);
+
+    // 3b) persist to localStorage so it survives the Stripe redirect
+    localStorage.setItem("deliveryAddress", JSON.stringify(addressForm));
+  }
 
   // AUTO‐CALCULATE SHIPPING once we have a deliveryAddress
   useEffect(() => {
@@ -73,7 +118,9 @@ export default function Checkout() {
     }
   }, [deliveryAddress]);
 
+  // ───────────────────────────────────────────────────
   // FETCH CART
+  // ───────────────────────────────────────────────────
   async function fetchCart() {
     if (token) {
       try {
@@ -90,7 +137,9 @@ export default function Checkout() {
     }
   }
 
+  // ───────────────────────────────────────────────────
   // FETCH SETTINGS
+  // ───────────────────────────────────────────────────
   async function fetchSettings() {
     try {
       const [sRes, cRes] = await Promise.all([
@@ -106,7 +155,9 @@ export default function Checkout() {
     } catch {}
   }
 
+  // ───────────────────────────────────────────────────
   // RECALCULATE SUBTOTAL, TAX, FINAL before shipping
+  // ───────────────────────────────────────────────────
   useEffect(() => {
     const sub = cartData.reduce(
       (acc, item) => acc + (item.productId?.price || 0) * item.quantity,
@@ -118,7 +169,9 @@ export default function Checkout() {
     setFinalPayment(sub + t - couponDiscount);
   }, [cartData, enableTax, taxRate, couponDiscount]);
 
+  // ───────────────────────────────────────────────────
   // APPLY COUPON
+  // ───────────────────────────────────────────────────
   function applyCoupon() {
     if (!enableCoupon) {
       return message.error("Coupons disabled");
@@ -131,28 +184,9 @@ export default function Checkout() {
     message.success("Coupon applied");
   }
 
-  // SAVE ADDRESS FORM as FINAL address
-  function handleAddressSubmit(e) {
-    e.preventDefault();
-    // simple validation
-    const f = addressForm;
-    if (
-      !f.shippingfirstName ||
-      !f.shippinglastName ||
-      !f.shippingstreetAddress ||
-      !f.shippingcity ||
-      !f.shippingstate ||
-      !f.shippingcountry ||
-      !f.shippingzipcode ||
-      !f.shippingphone
-    ) {
-      return message.error("Please fill all address fields");
-    }
-    setDeliveryAddress({ ...addressForm });
-    setShowAddressForm(false);
-  }
-
+  // ───────────────────────────────────────────────────
   // CALCULATE SHIPPING
+  // ───────────────────────────────────────────────────
   async function calculateShipping() {
     setShippingLoading(true);
     try {
@@ -183,13 +217,17 @@ export default function Checkout() {
     }
   }
 
+  // ───────────────────────────────────────────────────
   // INITIATE STRIPE
+  // ───────────────────────────────────────────────────
   async function initiateStripe() {
     if (shippingLoading || !deliveryAddress) {
       return message.error("Please wait for shipping to finish");
     }
     try {
       const stripe = await stripePromise;
+
+      // localStorage already contains the address. Stripe will redirect back here.
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/api/stripe/create-payment-intent`,
         {
@@ -206,78 +244,111 @@ export default function Checkout() {
     }
   }
 
-  // CONFIRM STRIPE & CREATE ORDERS
+  // ───────────────────────────────────────────────────
+  // CONFIRM STRIPE & CREATE ORDER
+  // ───────────────────────────────────────────────────
   async function confirmPayment(sid) {
     try {
+      // 1) Confirm payment on your backend
       await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/api/stripe/confirm`,
         { sessionId: sid },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
-      for (const item of cartData) {
-        const p = item.productId;
-        const payload = {
-          image: p.image || [],
-          title: p.title,
-          price: p.price,
-          qty: item.quantity,
-          billing: {}, // optional
-          shipping: deliveryAddress,
-          shippingCost,
-          product_id: p._id,
-          user_id: userId || null,
-          user: userEmail || "Guest",
-          ip: (await axios.get("https://api.ipify.org")).data,
-          createdDate: moment().format("MMM Do YY"),
-          status: "Processing",
-          totalpay: Number(finalPayment + shippingCost),
+
+      // 2) Build “normalized” address object matching your backend schema
+      const normalizedShipping = {
+        fullName: `${deliveryAddress.shippingfirstName} ${deliveryAddress.shippinglastName}`,
+        company: "",
+        phone: deliveryAddress.shippingphone,
+        email: userEmail || "",
+        address1: deliveryAddress.shippingstreetAddress,
+        address2: "",
+        city: deliveryAddress.shippingcity,
+        state: deliveryAddress.shippingstate,
+        postalCode: deliveryAddress.shippingzipcode,
+        country: deliveryAddress.shippingcountry,
+      };
+
+      // 3) If no separate billing form, reuse the shipping object
+      const normalizedBilling = normalizedShipping;
+
+      // 4) Build the request payload according to whether user is logged in or guest
+      let payload;
+      if (token) {
+        // Authenticated user: backend will pull cart from DB
+        payload = {
           paymentMethod: "Stripe",
           paymentStatus: "Paid",
+          shippingAddress: normalizedShipping,
+          billingAddress: normalizedBilling,
         };
-        await axios.post(
-          `${import.meta.env.VITE_BACKEND_API}/order`,
-          payload,
-          token ? { headers: { Authorization: `Bearer ${token}` } } : {}
-        );
-        if (p.stock != null) {
-          const newStock = p.stock - item.quantity;
-          const ep =
-            p.type === "products"
-              ? "products"
-              : p.type === "inventory"
-              ? "inv-products"
-              : "feature-products";
-          await axios.put(
-            `${import.meta.env.VITE_BACKEND_API}/${ep}/${p._id}`,
-            { stock: newStock }
-          );
-        }
+      } else {
+        // Guest checkout: include cart data + totals in body
+        payload = {
+          paymentMethod: "Stripe",
+          paymentStatus: "Paid",
+          shippingAddress: normalizedShipping,
+          billingAddress: normalizedBilling,
+          cartData: cartData.map((p) => ({
+            productId: p.productId._id || p.productId,
+            productTitle: p.productId.title || p.productTitle,
+            quantity: p.quantity,
+            price: p.productId.price || p.price,
+            options: p.options || {},
+            location: p.location || "",
+          })),
+          subtotal,
+          shippingCost,
+          discount: couponDiscount || 0,
+          totalAmount: finalPayment + shippingCost,
+        };
       }
+
+      // 5) Send to backend
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/order`,
+        payload,
+        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+      );
+
+      // 6) Clear the cart
       if (token) {
-        await axios.delete(`${import.meta.env.VITE_BACKEND_API}/api/cart/clear`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.delete(
+          `${import.meta.env.VITE_BACKEND_API}/api/cart/clear`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
       } else {
         localStorage.removeItem("guest_cart");
       }
+
       message.success("Order placed!");
-      navigate("/profile?tab=3");
+      navigate("/");
     } catch (err) {
       console.error(err);
       message.error("Order creation failed");
     }
   }
 
-  // INPUT HANDLER
+  // ───────────────────────────────────────────────────
+  // INPUT HANDLER for address form
+  // ───────────────────────────────────────────────────
   function onAddressChange(e) {
     const { name, value } = e.target;
     setAddressForm((f) => ({ ...f, [name]: value }));
   }
 
+  // ───────────────────────────────────────────────────
+  // Render
+  // ───────────────────────────────────────────────────
   return (
-    <div className="container d-flex justify-content-center mt-20" style={{ zoom: "1.1" }}>
+    <div
+      className="container d-flex justify-content-center mt-20"
+      style={{ zoom: "1.1" }}
+    >
       <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
-
         {/* ADDRESS FORM or SUMMARY */}
         <div className="col-md-4 my-5">
           <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
@@ -302,6 +373,7 @@ export default function Checkout() {
                     onChange={onAddressChange}
                     className="form-control"
                     placeholder={label}
+                    {...(key === "shippingcountry" ? { disabled: true } : {})}
                   />
                 </div>
               ))}
@@ -310,7 +382,13 @@ export default function Checkout() {
               </button>
             </form>
           ) : (
-            <div style={{ border: "1px solid #ddd", padding: "1rem", borderRadius: 5 }}>
+            <div
+              style={{
+                border: "1px solid #ddd",
+                padding: "1rem",
+                borderRadius: 5,
+              }}
+            >
               <p>
                 <strong>
                   {deliveryAddress.shippingfirstName}{" "}
@@ -319,27 +397,17 @@ export default function Checkout() {
               </p>
               <p>
                 {deliveryAddress.shippingstreetAddress},{" "}
-                {deliveryAddress.shippingcity},{" "}
-                {deliveryAddress.shippingstate},{" "}
+                {deliveryAddress.shippingcity}, {deliveryAddress.shippingstate},{" "}
                 {deliveryAddress.shippingcountry}
               </p>
               <p>
-                <strong>ZIP:</strong>{" "}
-                {deliveryAddress.shippingzipcode}
+                <strong>ZIP:</strong> {deliveryAddress.shippingzipcode}
               </p>
               <p>
-                <strong>Phone:</strong>{" "}
-                {deliveryAddress.shippingphone}
+                <strong>Phone:</strong> {deliveryAddress.shippingphone}
               </p>
             </div>
           )}
-
-          {/* Loader
-          {!showAddressForm && shippingLoading && (
-            <div className="text-center my-3">
-              <Spin tip="Calculating shipping…" />
-            </div>
-          )} */}
 
           {/* COUPON */}
           <div className="mt-4 d-flex">
@@ -362,14 +430,17 @@ export default function Checkout() {
           <table className="table">
             <thead>
               <tr>
-                <th>Product</th><th></th><th>Qty</th><th>Price</th>
+                <th>Product</th>
+                <th></th>
+                <th>Qty</th>
+                <th>Price</th>
               </tr>
             </thead>
             <tbody>
               {cartData.map((item) => {
                 const p = item.productId;
                 return (
-                  <tr key={p._id}>
+                  <tr key={p._id || p}>
                     <td>
                       <img
                         src={p.image?.[0] || ""}
@@ -382,38 +453,54 @@ export default function Checkout() {
                     <td></td>
                     <td>{item.quantity}</td>
                     <td>
-                      {enableCurrency}{" "}
-                      {(p.price * item.quantity).toFixed(2)}
+                      {enableCurrency} {(p.price * item.quantity).toFixed(2)}
                     </td>
                   </tr>
                 );
               })}
               <tr>
-                <td colSpan="3" className="text-end">Subtotal:</td>
-                <td>{enableCurrency} {subtotal.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="3" className="text-end">Coupon:</td>
-                <td>- {enableCurrency} {couponDiscount.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="3" className="text-end">Tax:</td>
-                <td>+ {enableCurrency} {taxValue.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="3" className="text-end">Shipping:</td>
+                <td colSpan="3" className="text-end">
+                  Subtotal:
+                </td>
                 <td>
-                  {!shippingLoading
-                    ? `+ ${enableCurrency} ${shippingCost.toFixed(2)}`
-                    : <Spin />}
+                  {enableCurrency} {subtotal.toFixed(2)}
                 </td>
               </tr>
               <tr>
-                <td colSpan="3" className="text-end"><strong>Total:</strong></td>
+                <td colSpan="3" className="text-end">
+                  Coupon:
+                </td>
+                <td>
+                  - {enableCurrency} {couponDiscount.toFixed(2)}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">
+                  Tax:
+                </td>
+                <td>
+                  + {enableCurrency} {taxValue.toFixed(2)}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">
+                  Shipping:
+                </td>
+                <td>
+                  {!shippingLoading ? (
+                    `+ ${enableCurrency} ${shippingCost.toFixed(2)}`
+                  ) : (
+                    <Spin />
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3" className="text-end">
+                  <strong>Total:</strong>
+                </td>
                 <td>
                   <strong>
-                    {enableCurrency}{" "}
-                    {(finalPayment + shippingCost).toFixed(2)}
+                    {enableCurrency} {(finalPayment + shippingCost).toFixed(2)}
                   </strong>
                 </td>
               </tr>
@@ -423,9 +510,7 @@ export default function Checkout() {
           <div className="text-center mt-4 mb-4">
             <button
               className="btn btn-lg btn-success"
-              disabled={
-                showAddressForm || shippingLoading
-              }
+              disabled={showAddressForm || shippingLoading}
               onClick={initiateStripe}
             >
               Pay & Place Order
