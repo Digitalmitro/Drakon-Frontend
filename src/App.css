@@ -881,12 +881,13 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 .productDetails{
-  width: fit-content !important;
+  width: 100% !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  margin: 0 auto; /* Center the container */
+  padding: 0;
 }
 .product-counter{
  display: flex;

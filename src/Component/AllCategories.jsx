@@ -36,7 +36,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
   }, []);
 
   return (
-    <div className="bg-[#F3F3F3]" onClick={closeCart}>
+    <div className="bg-[#fcf7f7]" onClick={closeCart}>
       <div className=" mx-auto pb-10">
         <h2 className="font-bold pb-4 text-4xl lg:text-5xl uppercase text-center">
           All Categories
@@ -80,18 +80,18 @@ const GlassesSection = ({ closeCart, navigate }) => {
           ))}
         </Swiper>
       </div>
-      <div className="bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-[#fcf7f7] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
             Elevate Your Game With Drakon Sports Apparel
           </h2>
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-4">
+          <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-4 text-justify">
             Looking to boost your performance, training, and style? Drakon
             Sports Apparel is here to power your grind with athletic wear built
             to move with you. Whether you're in the gym or out on the field,
             we've got you covered.
           </p>
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-4">
+          <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-4 text-justify">
             Explore our baseball equipment and apparel—featuring modern designs,
             high-performance fabrics, and unmatched comfort. Enjoy a secure
             online shopping experience with hassle-free, fast shipping.
