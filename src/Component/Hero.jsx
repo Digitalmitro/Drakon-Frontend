@@ -68,9 +68,9 @@ const Hero = ({ closeCart, setLoading, loading }) => {
                     }) `,
                   }}
                 >
-                  <div className={`text-white px-4`}>
-                    <h1 className="  mb-10 lg:w-[800px] ">
-                      <span className="text-amber-500 md:text-6xl text-3xl font-semibold leading-[2.5]">
+                  <div className={`text-white px-4 `}>
+                    <h1 className="  mb-10 lg:w-[850px] ">
+                      <span className="text-amber-500 md:text-7xl text-3xl font-semibold leading-[1.5]">
                         {img.title}
                       </span>
                       <br />
@@ -80,9 +80,9 @@ const Hero = ({ closeCart, setLoading, loading }) => {
                       <Button
                         sx={{
                           borderRadius: "100vw",
-                          padding: "15px 40px",
-                          fontSize: "1rem",
-                          fontWeight: "bold",
+                          padding: "10px 30px",
+                          fontSize: "1.3rem",
+                          fontWeight: 700,
                           backgroundColor: "#F5743B",
                           mr: "20px",
                           "&:hover": { backgroundColor: "#be410c" },
