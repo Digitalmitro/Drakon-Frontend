@@ -40,15 +40,15 @@ const GlassesSection = ({ closeCart, navigate }) => {
   }, []);
 
   return (
-    <div className="bg-[#F3F3F3]" onClick={closeCart}>
+    <div className="bg-[#fcf7f7]" onClick={closeCart}>
       <div className=" mx-auto pb-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:py-16 ">
           {/* Find Drakon */}
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
               Find Drakon
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto text-justify">
+            <p className="text-lg md:text-xl text-gray-800 max-w-3xl mx-auto text-justify">
               We sell our products across the U.S. Regardless of your location,
               we are always here to help and get you the desired product. We
               have a team of expert and dedicated reps experienced in helping
@@ -57,7 +57,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
           </div>
         </div>
 
-        <h2 className="font-bold pb-4 text-4xl uppercase text-center">
+        <h2 className="font-bold text-gray-800 pb-4 text-3xl uppercase text-center">
           Drakon Sports Performance Sunglasses
         </h2>
 
@@ -98,51 +98,81 @@ const GlassesSection = ({ closeCart, navigate }) => {
             </div>
           ))}
         </Carousel>
-        <Swiper
-          slidesPerView={4}
-          loop={true}
-          pagination={{ clickable: true }}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
-          modules={[Pagination, Autoplay]}
-          breakpoints={{
-            1024: { slidesPerView: 4 },
-            600: { slidesPerView: 2 },
-            375: { slidesPerView: 1 },
-          }}
-          className="mt-10 lg:ml-8 mx-6 lg:mx-0 "
-        >
-          {glassesProducts.map((e) => (
-            <SwiperSlide key={e._id}>
-              <div className="lg:h-[500px] h-[420px]">
-                <Link to={`/productDetails/${e._id}`}>
-                  <div className="shadow-lg lg:h-[410px] h-[370px] rounded w-full  lg:w-[380px] bg-white flex flex-col justify-between gap-6 p-1">
-                    <div className="flex justify-center lg:w-full bg-[#dddfe0]">
-                      <img
-                        src={e.image?.[0]}
-                        className="object-contain h-[280px] lg:h-[323px] w-[100%]"
-                        alt="Product"
-                      />
-                    </div>
-                    <div className=" h-full space-y-1 px-2">
-                      <h3 className="font-semibold text-xl">
-                        {/* {e.description.length > 30
-                          ? `${e.description.slice(0, 30)}...`
-                          : e.description} */}
-                        {e.title}
-                      </h3>
-                      <h4 className="text-[#959595] font-bold text-2xl">
-                        $ {e.price}
-                      </h4>
-                    </div>
-                  </div>
+        <div className="mx-auto py-10">
+  
+
+  {glassesProducts?.length > 0 ? (
+    <Swiper
+      slidesPerView={4}
+      loop={true}
+      pagination={{ clickable: true }}
+      autoplay={{
+        delay: 3000,
+        disableOnInteraction: false,
+        waitForTransition: true,
+        pauseOnMouseEnter: true,
+      }}
+      modules={[Pagination, Autoplay]}
+      breakpoints={{
+        1024: { slidesPerView: 4 },
+        600: { slidesPerView: 2 },
+        375: { slidesPerView: 1 },
+      }}
+      className="mt-10 lg:pl-8 mx-6 lg:mx-0"
+    >
+      {glassesProducts.map((e) => (
+        <SwiperSlide key={e._id}>
+          <div className="lg:h-[500px] h-[440px]">
+            <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
+              {/* LIMITED Badge */}
+              <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
+                LIMITED
+              </div>
+
+              {/* Product Image */}
+              <Link
+                to={`/productDetails/${e._id}`}
+                className="bg-[#dddfe0] rounded-md overflow-hidden flex justify-center items-center h-[240px] lg:h-[270px]"
+              >
+                <img
+                  src={e.image?.[0]}
+                  alt="Product"
+                  className="object-contain h-full w-full"
+                />
+              </Link>
+
+              {/* Product Info */}
+              <div className="mt-4 px-1 flex flex-col gap-1">
+                <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                  {e.title}
+                </h3>
+                <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
+                  $ {e.price}
+                </h4>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex mt-3 gap-2">
+                <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
+                  Add to cart
+                </button>
+                <Link
+                  to={`/productDetails/${e._id}`}
+                  className="bg-[#f97316] text-white text-lg font-medium py-2 lg:pl-8 pl-10 rounded w-full hover:bg-[#ea580c] transition"
+                >
+                  QUICK VIEW
                 </Link>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            </div>
+          </div>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  ) : (
+    <div className="text-center py-10">Loading glasses...</div>
+  )}
+</div>
+
       </div>
     </div>
   );
