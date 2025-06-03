@@ -57,7 +57,7 @@ function Navbar(props) {
     setMobileOpen((prevState) => !prevState);
   };
   // CART PRODUCTS
-const {cart}=useCart();
+  const { cart } = useCart();
   const products = useSelector((state) => state.cartReducer.items);
   const isOpenCart = useSelector((state) => state.cartReducer.openCartModal);
   const dispatch = useDispatch();
@@ -168,31 +168,31 @@ const {cart}=useCart();
           className="lg:h-[100px]"
           sx={{ justifyContent: "space-between", margin: ".8rem" }}
         >
-           <div className="flex justify-between items-center w-full lg:w-auto">
-           
-           <img
-           onClick={() => navigate("/")}
-             src={logo}
-             alt="logo"
-             className="w-36 cursor-pointer block lg:hidden"
-           />
-           <IconButton
-             color="inherit"
-             aria-label="open drawer"
-             edge="end"
-             onClick={handleDrawerToggle}
-             sx={{ display: { md: "none" }, color: "black" }}
-           >
-             <MenuIcon sx={{ fontSize: "2.5rem" }} />
-           </IconButton>
+          <div className="flex justify-between items-center w-full lg:w-auto">
 
-           <img
-             onClick={() => navigate("/")}
-             src={logo}
-             alt="logo"
-             className="w-48 cursor-pointer logoMobile md:hidden lg:block"
-           />
-         </div>
+            <img
+              onClick={() => navigate("/")}
+              src={logo}
+              alt="logo"
+              className="w-36 cursor-pointer block lg:hidden"
+            />
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={handleDrawerToggle}
+              sx={{ display: { md: "none" }, color: "black" }}
+            >
+              <MenuIcon sx={{ fontSize: "2.5rem" }} />
+            </IconButton>
+
+            <img
+              onClick={() => navigate("/")}
+              src={logo}
+              alt="logo"
+              className="w-48 cursor-pointer logoMobile md:hidden lg:block"
+            />
+          </div>
 
           <div className="flex flex-col lg:justify-end justify-center items-center lg:items-end">
             <div className="text-black lg:pt-6 flex lg:gap-12 gap-6">
@@ -218,7 +218,7 @@ const {cart}=useCart();
               >
                 <span className="h-6 w-6 rounded-full bg-[#ff5B00] text-sm text-white  grid place-items-center absolute -right-4 bottom-0"  >{cart?.length}</span>
                 <p className="hidden lg:block">Cart</p>
-                <IoCart size={28} />  
+                <IoCart size={28} />
               </div>
             </div>
             <Box>

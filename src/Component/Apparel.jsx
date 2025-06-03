@@ -6,15 +6,25 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Autoplay } from "swiper/modules";
-import { Carousel } from "antd";
+import { Carousel, message } from "antd";
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
+import { useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
+import { addItem } from "../Redux/CartSlice";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const Apparel = ({ closeCart, navigate }) => {
+const Apparel = ({ closeCart }) => {
   const [glass, setGlass] = useState([]);
   const { getAllCategoryBanner, getAllProductsByCategories } = useProduct();
   const [apparelBanner, setApparelBanner] = useState([]);
   const [apparelProducts, setApparelProducts] = useState([]);
+  const dispatch = useDispatch();
+  const token = Cookies.get("token");
+  const decodedToken = token && jwtDecode(token);
+  const user_id = decodedToken?._id;
+  const navigate = useNavigate();
   const fetchAllGlassesBanner = async () => {
     const response = await getAllCategoryBanner("Apparel");
     // console.log("all gloves banner", response);
@@ -40,6 +50,63 @@ const Apparel = ({ closeCart, navigate }) => {
     allProductsByCategory();
   }, []);
 
+
+  const handleCart = async (id) => {
+
+    console.log("handleCart called");
+    const topProduct = apparelProducts.find((item) => item._id === id);
+
+    if (!topProduct) {
+      console.error("Product not found");
+      return;
+    }
+
+    // item shape for both guest & logged-in
+    const cartItem = {
+      productId: {
+        _id: topProduct._id,
+        title: topProduct.title,
+        price: topProduct.price,
+        image: topProduct.image,
+        stock: topProduct.stock,
+      },
+      quantity: 1,
+      total: topProduct.price * 1,
+    };
+
+    if (user_id) {
+      // logged-in: hit server
+      dispatch(addItem(topProduct));
+      try {
+        await axios.post(`${import.meta.env.VITE_BACKEND_API}/api/add`, {
+          image: topProduct.image,
+          title: topProduct.title,
+          price: topProduct.price,
+          quantity: 1,
+          productId: topProduct._id,
+          userId: user_id,
+        });
+        message.success("Added to Cart");
+        setTimeout(() => navigate("/cart"), 500);
+      } catch (error) {
+        console.error(error);
+        message.error("Cart item not added");
+      }
+    } else {
+      // guest: write to localStorage
+      const guestCart = JSON.parse(localStorage.getItem("guest_cart") || "[]");
+      const existing = guestCart.find((i) => i.productId._id === topProduct._id);
+      if (existing) {
+        existing.quantity += 1;
+        existing.total = existing.quantity * topProduct.price;
+      } else {
+        guestCart.push(cartItem);
+      }
+      localStorage.setItem("guest_cart", JSON.stringify(guestCart));
+      message.success("Added to Cart");
+      setTimeout(() => navigate("/cart"), 500);
+    }
+  };
   return (
     <div className="bg-[#fcf7f7]" onClick={closeCart}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
@@ -59,7 +126,7 @@ const Apparel = ({ closeCart, navigate }) => {
         <div className="space-y-8">
           <div>
             <h3 className="text-xl font-semibold text-orange-600 mb-2 flex ">
-            <img src="https://flagcdn.com/us.svg" width="32" alt="USA Flag" />&nbsp; U.S.-Based, Athlete-Focused
+              <img src="https://flagcdn.com/us.svg" width="32" alt="USA Flag" />&nbsp; U.S.-Based, Athlete-Focused
             </h3>
             <p className="text-gray-900 text-xl leading-relaxed">
               Proudly based in the U.S., we deeply understand the needs of
@@ -81,7 +148,7 @@ const Apparel = ({ closeCart, navigate }) => {
 
           <div>
             <h3 className="text-xl font-semibold text-orange-600 mb-2 flex">
-               <img src="https://s.w.org/images/core/emoji/15.1.0/svg/1f3c3-200d-2642-fe0f.svg" width="32" alt="USA Flag" /> Built for Movement
+              <img src="https://s.w.org/images/core/emoji/15.1.0/svg/1f3c3-200d-2642-fe0f.svg" width="32" alt="USA Flag" /> Built for Movement
             </h3>
             <p className="text-gray-900 text-xl leading-relaxed">
               Functionality is at the core. Our apparel features ergonomic cuts
@@ -145,7 +212,7 @@ const Apparel = ({ closeCart, navigate }) => {
           ))}
         </Carousel>
         <div className="mx-auto py-10">
-         
+
 
           {apparelProducts?.length > 0 ? (
             <Swiper
@@ -199,7 +266,7 @@ const Apparel = ({ closeCart, navigate }) => {
 
                       {/* Buttons */}
                       <div className="flex mt-3 gap-2">
-                        <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
+                        <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition" onClick={() => handleCart(e._id)}>
                           Add to cart
                         </button>
                         <Link

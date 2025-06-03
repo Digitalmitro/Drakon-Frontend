@@ -8,16 +8,26 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/autoplay";
 import { Pagination, Autoplay } from "swiper/modules";
-import { Carousel } from "antd";
+import { Carousel, message } from "antd";
 import { useProduct } from "../context/ProductContext";
+import { addItem } from "../Redux/CartSlice";
+import { useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 // Initialize Swiper modules
 SwiperCore.use([Autoplay, Pagination]);
 
-const Featured = ({ closeCart, navigate }) => {
+const Featured = ({ closeCart }) => {
   const { getAllTopProducts } = useProduct();
   const [topProductBanner, setTopProductBanner] = useState([]);
   const swiperRef = useRef(null);
+  const dispatch = useDispatch();
+  const token = Cookies.get("token");
+  const decodedToken = token && jwtDecode(token);
+  const user_id = decodedToken?._id;
+  const navigate = useNavigate();
 
   const fetchAllGlassesBanner = async () => {
     const response = await getAllTopProducts();
@@ -29,7 +39,7 @@ const Featured = ({ closeCart, navigate }) => {
   }, []);
 
   useEffect(() => {
-    // Start autoplay when data is loaded and swiper is ready
+    // Start autoplay when topProductBanner is loaded and swiper is ready
     if (
       swiperRef.current &&
       swiperRef.current.swiper &&
@@ -38,6 +48,64 @@ const Featured = ({ closeCart, navigate }) => {
       swiperRef.current.swiper.autoplay.start();
     }
   }, [topProductBanner]);
+
+  const handleCart = async (id) => {
+
+    console.log("handleCart called");
+    const topProduct = topProductBanner.find((item) => item._id === id);
+
+    if (!topProduct) {
+      console.error("Product not found");
+      return;
+    }
+
+    // item shape for both guest & logged-in
+    const cartItem = {
+      productId: {
+        _id: topProduct._id,
+        title: topProduct.title,
+        price: topProduct.price,
+        image: topProduct.image,
+        stock: topProduct.stock,
+      },
+      quantity: 1,
+      total: topProduct.price * 1,
+    };
+
+    if (user_id) {
+      // logged-in: hit server
+      dispatch(addItem(topProduct));
+      try {
+        await axios.post(`${import.meta.env.VITE_BACKEND_API}/api/add`, {
+          image: topProduct.image,
+          title: topProduct.title,
+          price: topProduct.price,
+          quantity: 1,
+          productId: topProduct._id,
+          userId: user_id,
+        });
+        message.success("Added to Cart");
+        setTimeout(() => navigate("/cart"), 500);
+      } catch (error) {
+        console.error(error);
+        message.error("Cart item not added");
+      }
+    } else {
+      // guest: write to localStorage
+      const guestCart = JSON.parse(localStorage.getItem("guest_cart") || "[]");
+      const existing = guestCart.find((i) => i.productId._id === topProduct._id);
+      if (existing) {
+        existing.quantity += 1;
+        existing.total = existing.quantity * topProduct.price;
+      } else {
+        guestCart.push(cartItem);
+      }
+      localStorage.setItem("guest_cart", JSON.stringify(guestCart));
+      message.success("Added to Cart");
+      setTimeout(() => navigate("/cart"), 500);
+    }
+  };
+  console.log(topProductBanner);
 
   return (
     <div className="bg-[#fcf7f7]" onClick={closeCart}>
@@ -116,7 +184,7 @@ const Featured = ({ closeCart, navigate }) => {
                     </div>
                     {/* Buttons */}
                     <div className="flex mt-3 gap-2">
-                      <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
+                      <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition" onClick={() => handleCart(e._id)}>
                         Add to cart
                       </button>
                       <Link

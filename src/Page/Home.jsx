@@ -10,6 +10,7 @@ import Apparel from "../Component/Apparel";
 import { useMediaQuery } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useCart } from "../context/CartContext";
+import { cartModal } from "../Redux/CartSlice";
 
 const Home = () => {
   const isMobile = useMediaQuery("(max-width:900px)");
@@ -17,7 +18,7 @@ const Home = () => {
   const hideCartModal = () => {
     dispatch(cartModal(false));
   };
-  const [loading,setLoading]=useState(true)
+  const [loading, setLoading] = useState(true)
 
 
   // const guestCart=JSON.parse(localStorage.getItem("guest_cart") || "[]")
@@ -26,14 +27,14 @@ const Home = () => {
 
   // useEffect(())
 
-  const {cart}=useCart();
+  const { cart } = useCart();
 
   console.log(cart);
-  
-  
+
+
   return (
     <div>
-      <Hero closeCart={hideCartModal} loading={loading} setLoading={setLoading}/>
+      <Hero closeCart={hideCartModal} loading={loading} setLoading={setLoading} />
       <Featured closeCart={hideCartModal} />
       <GlassesSection closeCart={hideCartModal} />
       <GlovesSection closeCart={hideCartModal} />
