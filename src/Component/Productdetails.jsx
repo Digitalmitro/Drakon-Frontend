@@ -127,11 +127,11 @@ const Productdetails = () => {
             </div>
           </div>
 
-          <div className="col-6 md:pt-32 lg:w-[50%]  pt-10 w-full md:w-auto flex flex-col justify-center items-center">
+          <div className="col-6  md:pt-32 lg:w-[50%]  pt-10 w-full md:w-auto flex flex-col justify-start items-start">
             <div className="details ">
               <h3 className="fs-1 text fw-normal">{data?.title}</h3>
               <h5 className="pb-4 mt-1">
-                <b>Category: {data?.category}</b>
+                <b>Category: <span className="font-medium">{data?.category}</span></b>
               </h5>
               {data?.category && (
                 <div className="size-selector mb-6">
@@ -146,7 +146,7 @@ const Productdetails = () => {
                           {["YS", "YM", "YL", "YXL"].map((size) => (
                             <button
                               key={size}
-                              className={`size-btn text-xl px-2 font-semibold ${
+                              className={`size-btn text-xl px-2 font-medium ${
                                 selectedSize === size
                                   ? "bg-orange-500 text-white"
                                   : "bg-gray-100"
@@ -164,7 +164,7 @@ const Productdetails = () => {
                           {["S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
                             <button
                               key={size}
-                              className={`size-btn text-xl px-2 font-semibold ${
+                              className={`size-btn text-xl px-2 font-medium ${
                                 selectedSize === size
                                   ? "bg-orange-500 text-white"
                                   : "bg-gray-100"
@@ -184,7 +184,7 @@ const Productdetails = () => {
                         {["S", "M", "L", "XL", "XXL"].map((size) => (
                           <button
                             key={size}
-                            className={`size-btn px-2 text-xl font-semibold ${
+                            className={`size-btn px-2 text-xl font-medium ${
                               selectedSize === size
                                 ? "bg-orange-500 text-white"
                                 : "bg-gray-100"
@@ -378,8 +378,7 @@ const Productdetails = () => {
                   <p style={{ color: "grey" }}>OUT OF STOCK</p>
                 )}
               </p>
-            </div>
-            <ReactStars
+              <ReactStars
               count={5}
               onChange={ratingChanged}
               size={30}
@@ -388,9 +387,11 @@ const Productdetails = () => {
               color="#ccc"
               activeColor="#ffd700"
             />
+            </div>
+            
 
             {(data?.stock || data?.stock > 0) && (
-              <div className="product-counter d-flex gap-3 py-4">
+              <div className="product-counter flex justify-start items-center gap-3 py-4">
                 {/* quantity controls */}
                 <div className="flex items-center gap-3">
                   <button
@@ -416,7 +417,7 @@ const Productdetails = () => {
                 </div>
 
                 {/* Buy Now / Add to Cart both go through handleCart */}
-                <div className="d-flex" style={{ gap: "25px" }}>
+                <div className="flex justify-center items-center" style={{ gap: "20px" }}>
                   <button
                     className="btn rounded-2xl text-white bg-[#ff5B00]"
                     onClick={handleCart}
