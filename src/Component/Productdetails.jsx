@@ -127,7 +127,7 @@ const Productdetails = () => {
             </div>
           </div>
 
-          <div className="col-6  md:pt-32 lg:w-[50%]  pt-10 w-full md:w-auto flex flex-col justify-center items-center">
+          <div className="col-6  md:pt-32 lg:w-[50%]  pt-10 w-full md:w-auto flex flex-col justify-start items-start">
             <div className="details ">
               <h3 className="fs-1 text fw-normal">{data?.title}</h3>
               <h5 className="pb-4 mt-1">
@@ -391,7 +391,7 @@ const Productdetails = () => {
             
 
             {(data?.stock || data?.stock > 0) && (
-              <div className="product-counter flex justify-center items-center gap-3 py-4">
+              <div className="product-counter flex justify-start items-center gap-3 py-4">
                 {/* quantity controls */}
                 <div className="flex items-center gap-3">
                   <button
