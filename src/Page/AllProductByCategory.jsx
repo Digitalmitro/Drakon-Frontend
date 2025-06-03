@@ -2,8 +2,13 @@ import React from 'react'
 import { useProduct } from '../context/ProductContext'
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
+import { addItem } from "../Redux/CartSlice";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { message } from 'antd';
 function AllProductByCategory() {
     const urlname=useParams();
     console.log(urlname)
@@ -11,6 +16,67 @@ function AllProductByCategory() {
     const {getAllProductsByCategories}=useProduct();
     const [sunglasses,setSunglasses]=useState([])
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const dispatch = useDispatch();
+    const token = Cookies.get("token");
+    const decodedToken = token && jwtDecode(token);
+    const user_id = decodedToken?._id;
+    const navigate = useNavigate();
+    const handleCart = async (id) => {
+
+      console.log("handleCart called");
+      const topProduct = sunglasses.find((item) => item._id === id);
+  
+      if (!topProduct) {
+        console.error("Product not found");
+        return;
+      }
+  
+      // item shape for both guest & logged-in
+      const cartItem = {
+        productId: {
+          _id: topProduct._id,
+          title: topProduct.title,
+          price: topProduct.price,
+          image: topProduct.image,
+          stock: topProduct.stock,
+        },
+        quantity: 1,
+        total: topProduct.price * 1,
+      };
+  
+      if (user_id) {
+        // logged-in: hit server
+        dispatch(addItem(topProduct));
+        try {
+          await axios.post(`${import.meta.env.VITE_BACKEND_API}/api/add`, {
+            image: topProduct.image,
+            title: topProduct.title,
+            price: topProduct.price,
+            quantity: 1,
+            productId: topProduct._id,
+            userId: user_id,
+          });
+          message.success("Added to Cart");
+          setTimeout(() => navigate("/cart"), 500);
+        } catch (error) {
+          console.error(error);
+          message.error("Cart item not added");
+        }
+      } else {
+        // guest: write to localStorage
+        const guestCart = JSON.parse(localStorage.getItem("guest_cart") || "[]");
+        const existing = guestCart.find((i) => i.productId._id === topProduct._id);
+        if (existing) {
+          existing.quantity += 1;
+          existing.total = existing.quantity * topProduct.price;
+        } else {
+          guestCart.push(cartItem);
+        }
+        localStorage.setItem("guest_cart", JSON.stringify(guestCart));
+        message.success("Added to Cart");
+        setTimeout(() => navigate("/cart"), 500);
+      }
+    };
     const fetchSunglasses=async()=>{
         let response
             if(product=="sunglasses"){
@@ -100,7 +166,7 @@ function AllProductByCategory() {
 
             {/* Buttons */}
             <div className="flex mt-3 gap-2">
-              <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
+              <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition" onClick={() => handleCart(e._id)}>
                 Add to cart
               </button>
               <Link
