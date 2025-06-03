@@ -146,13 +146,14 @@ export default function Checkout() {
         axios.get(`${import.meta.env.VITE_BACKEND_API}/general-settings`),
         axios.get(`${import.meta.env.VITE_BACKEND_API}/coupon`),
       ]);
+      console.log(sRes, cRes)
       const settings = sRes.data[0];
       setEnableTax(settings.EnableTax);
       setTaxRate(settings.TaxRate);
       setEnableCurrency(settings.Currency);
-      setEnableCoupon(settings.EnableCoupon);
-      setCouponList(cRes.data || []);
-    } catch {}
+      setEnableCoupon(true);
+      setCouponList(cRes?.data ?? []);
+    } catch { }
   }
 
   // ───────────────────────────────────────────────────
@@ -174,6 +175,8 @@ export default function Checkout() {
   // ───────────────────────────────────────────────────
   function applyCoupon() {
     if (!enableCoupon) {
+      console.log(couponList);
+
       return message.error("Coupons disabled");
     }
     const cp = couponList.find((c) => c.couponName === couponName);
@@ -343,6 +346,8 @@ export default function Checkout() {
   // ───────────────────────────────────────────────────
   // Render
   // ───────────────────────────────────────────────────
+
+  console.log(couponList)
   return (
     <div
       className="container d-flex justify-content-center mt-20"
