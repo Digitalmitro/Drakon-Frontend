@@ -146,13 +146,14 @@ export default function Checkout() {
         axios.get(`${import.meta.env.VITE_BACKEND_API}/general-settings`),
         axios.get(`${import.meta.env.VITE_BACKEND_API}/coupon`),
       ]);
-      console.log(sRes, cRes)
+      console.log(sRes, cRes?.data)
+      setEnableCoupon(true);
+      setCouponList(cRes?.data || []);
       const settings = sRes.data[0];
       setEnableTax(settings.EnableTax);
       setTaxRate(settings.TaxRate);
       setEnableCurrency(settings.Currency);
-      setEnableCoupon(true);
-      setCouponList(cRes?.data ?? []);
+
     } catch { }
   }
 
