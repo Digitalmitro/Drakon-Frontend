@@ -54,7 +54,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
           breakpoints={{
             1024: { slidesPerView: 4 },
             600: { slidesPerView: 2 },
-            375: { slidesPerView: 1 },
+            200: { slidesPerView: 1 },
           }}
           className="mt-10 lg:ml-8 mx-6 lg:mx-0"
         >
