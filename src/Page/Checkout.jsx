@@ -350,7 +350,16 @@ export default function Checkout() {
     >
       <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
         {/* ADDRESS FORM or SUMMARY */}
-        <div className="col-md-4 my-5">
+        <div className="col-md-4 my-1">
+          <div className="mb-6 flex  justify-start  w-full">
+            <button
+              onClick={() => navigate("/account")}
+              className="px-6 py-2 bg-[#f97316] hover:bg-orange-600 text-white w-[80%] text-lg font-semibold rounded-lg shadow-md transition duration-300"
+            >
+              Login
+            </button>
+          </div>
+
           <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
 
           {showAddressForm ? (
