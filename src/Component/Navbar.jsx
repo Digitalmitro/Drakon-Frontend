@@ -174,14 +174,14 @@ function Navbar(props) {
               onClick={() => navigate("/")}
               src={logo}
               alt="logo"
-              className="w-36 cursor-pointer block md:hidden"
+              className="w-36 cursor-pointer block lg:hidden"
             />
             <IconButton
               color="inherit"
               aria-label="open drawer"
               edge="end"
               onClick={handleDrawerToggle}
-              sx={{ display: { sm: "none" }, color: "black" }}
+              sx={{ display: { md: "none" }, color: "black" }}
             >
               <MenuIcon sx={{ fontSize: "2.5rem" }} />
             </IconButton>
@@ -190,7 +190,7 @@ function Navbar(props) {
               onClick={() => navigate("/")}
               src={logo}
               alt="logo"
-              className="w-48 cursor-pointer logoMobile"
+              className="w-48 cursor-pointer logoMobile md:hidden lg:block"
             />
           </div>
 
@@ -223,7 +223,7 @@ function Navbar(props) {
             </div>
             <Box>
               <div>
-                <List sx={{ display: { xs: "none", sm: "block" } }}>
+                <List sx={{ display: { xs: "none", md: "block" } }}>
                   <ListItem disablePadding>
                     {navItems.map((item) => (
                       <ListItemButton
