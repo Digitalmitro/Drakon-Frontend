@@ -98,8 +98,8 @@ const Productdetails = () => {
   return (
     <>
       <div className=" w-full max-w-1200 max-auto px-4">
-      <div className="row productDetails ">
-          <div className="col-6 flex flex-col items-center ">
+      <div className="row productDetails  flex justify-center w-full items-center">
+          <div className="col-6 flex  flex-col  items-center justify-center">
             {/* Centering the Main Image */}
             <div className="lg:w-[500px] border-b lg:h-[500px] w-[300px] h-[300px] flex flex-col justify-center items-center overflow-hidden">
               {/* <p className="text-gray-300">move cursor on the image to zoom</p> */}
@@ -127,7 +127,7 @@ const Productdetails = () => {
             </div>
           </div>
 
-          <div className="col-6 md:pt-32 pt-10 w-full lg:w-auto flex flex-col justify-center items-center">
+          <div className="col-6 md:pt-32 lg:w-[50%]  pt-10 w-full md:w-auto flex flex-col justify-center items-center">
             <div className="details ">
               <h3 className="fs-1 text fw-normal">{data?.title}</h3>
               <h5 className="pb-4 mt-1">
