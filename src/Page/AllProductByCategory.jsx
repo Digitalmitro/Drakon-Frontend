@@ -64,30 +64,60 @@ function AllProductByCategory() {
 
   return (
     <div className='pt-20 flex flex-wrap lg:flex-row'>
-      <div className='flex flex-wrap justify-center lg:gap-8 pt-4  w-full'>
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((e) => (
-            <div className="h-[450px]" key={e._id}>
-              <Link to={`/productDetails/${e._id}`}>
-                <div className="shadow-lg lg:h-[380px] lg:w-[350px] w-[400px] rounded flex flex-col justify-between gap-6 bg-white p-2">
-                  <div className="flex justify-center lg:w-full bg-[#dddfe0]">
-                    <img src={e.image?.[0]} className="object-contain h-[250px] w-[100%]" alt="Product" />
-                  </div>
-                  <div className="h-full space-y-1 px-2">
-                    <h3 className="font-semibold text-xl">
-                      {e.description.length > 25 ? `${e.description.slice(0, 35)}...` : e.description}
-                    </h3>
-                    <h4 className="text-[#959595] font-bold text-2xl">$ {e.price}</h4>
-                  </div>
-                </div>
+  <div className='flex flex-wrap justify-center lg:gap-8 pt-4 w-full'>
+    {filteredProducts.length > 0 ? (
+      filteredProducts.map((e) => (
+        <div key={e._id} className="lg:h-[500px] h-[440px]">
+          <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
+            {/* LIMITED Badge */}
+            <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
+              LIMITED
+            </div>
+
+            {/* Product Image */}
+            <Link
+              to={`/productDetails/${e._id}`}
+              className="bg-[#dddfe0] rounded-md overflow-hidden flex justify-center items-center h-[240px] lg:h-[270px]"
+            >
+              <img
+                src={e.image?.[0]}
+                alt="Product"
+                className="object-contain h-full w-full"
+              />
+            </Link>
+
+            {/* Product Info */}
+            <div className="mt-4 px-1 flex flex-col gap-1">
+              <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                {e.description.length > 35
+                  ? `${e.description.slice(0, 35)}...`
+                  : e.description}
+              </h3>
+              <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
+                $ {e.price}
+              </h4>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex mt-3 gap-2">
+              <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
+                Add to cart
+              </button>
+              <Link
+                to={`/productDetails/${e._id}`}
+                className="bg-[#f97316] text-white text-lg font-medium py-2 lg:pl-8 pl-10 rounded w-full hover:bg-[#ea580c] transition"
+              >
+                QUICK VIEW
               </Link>
             </div>
-          ))
-        ) : (
-          <p className="text-xl text-gray-500">No products found in this price range.</p>
-        )}
-      </div>
-    </div>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="text-xl text-gray-500">No products found in this price range.</p>
+    )}
+  </div>
+</div>
   )
 }
 

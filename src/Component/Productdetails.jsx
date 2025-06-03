@@ -127,7 +127,7 @@ const Productdetails = () => {
             </div>
           </div>
 
-          <div className="col-6 md:pt-32 pt-10 w-full flex flex-col justify-center items-center">
+          <div className="col-6 md:pt-32 pt-10 w-full lg:w-auto flex flex-col justify-center items-center">
             <div className="details ">
               <h3 className="fs-1 text fw-normal">{data?.title}</h3>
               <h5 className="pb-4 mt-1">
