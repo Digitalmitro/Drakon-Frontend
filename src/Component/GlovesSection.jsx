@@ -6,15 +6,25 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Autoplay } from "swiper/modules";
-import { Carousel } from "antd";
+import { Carousel, message } from "antd";
 
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
+import { useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
+import { addItem } from "../Redux/CartSlice";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const GlovesSection = ({ closeCart, navigate }) => {
+const GlovesSection = ({ closeCart }) => {
   const { getAllCategoryBanner, getAllProductsByCategories } = useProduct();
   const [glovesBanner, setGlovesBanner] = useState([]);
   const [glovesProducts, setGlovesProducts] = useState([]);
+  const dispatch = useDispatch();
+  const token = Cookies.get("token");
+  const decodedToken = token && jwtDecode(token);
+  const user_id = decodedToken?._id;
+  const navigate = useNavigate();
   const fetchAllGlovesBanner = async () => {
     const response = await getAllCategoryBanner("Batting Gloves");
     // console.log("all gloves banner", response);
@@ -40,7 +50,62 @@ const GlovesSection = ({ closeCart, navigate }) => {
     fetchAllGlovesBanner();
     allProductsByCategory();
   }, []);
+  const handleCart = async (id) => {
 
+    console.log("handleCart called");
+    const topProduct = glovesProducts.find((item) => item._id === id);
+
+    if (!topProduct) {
+      console.error("Product not found");
+      return;
+    }
+
+    // item shape for both guest & logged-in
+    const cartItem = {
+      productId: {
+        _id: topProduct._id,
+        title: topProduct.title,
+        price: topProduct.price,
+        image: topProduct.image,
+        stock: topProduct.stock,
+      },
+      quantity: 1,
+      total: topProduct.price * 1,
+    };
+
+    if (user_id) {
+      // logged-in: hit server
+      dispatch(addItem(topProduct));
+      try {
+        await axios.post(`${import.meta.env.VITE_BACKEND_API}/api/add`, {
+          image: topProduct.image,
+          title: topProduct.title,
+          price: topProduct.price,
+          quantity: 1,
+          productId: topProduct._id,
+          userId: user_id,
+        });
+        message.success("Added to Cart");
+        setTimeout(() => navigate("/cart"), 500);
+      } catch (error) {
+        console.error(error);
+        message.error("Cart item not added");
+      }
+    } else {
+      // guest: write to localStorage
+      const guestCart = JSON.parse(localStorage.getItem("guest_cart") || "[]");
+      const existing = guestCart.find((i) => i.productId._id === topProduct._id);
+      if (existing) {
+        existing.quantity += 1;
+        existing.total = existing.quantity * topProduct.price;
+      } else {
+        guestCart.push(cartItem);
+      }
+      localStorage.setItem("guest_cart", JSON.stringify(guestCart));
+      message.success("Added to Cart");
+      setTimeout(() => navigate("/cart"), 500);
+    }
+  };
   return (
     <div className="bg-[#fcf7f7]" onClick={closeCart}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 text-center lg:text-left">
@@ -131,49 +196,49 @@ const GlovesSection = ({ closeCart, navigate }) => {
                 LIMITED
               </div>
 
-              {/* Product Image */}
-              <Link
-                to={`/productDetails/${e._id}`}
-                className="bg-[#dddfe0] rounded-md overflow-hidden flex justify-center items-center h-[240px] lg:h-[270px]"
-              >
-                <img
-                  src={e.image?.[0]}
-                  alt="Product"
-                  className="object-contain h-full w-full"
-                />
-              </Link>
+                      {/* Product Image */}
+                      <Link
+                        to={`/productDetails/${e._id}`}
+                        className="bg-[#dddfe0] rounded-md overflow-hidden flex justify-center items-center h-[240px] lg:h-[270px]"
+                      >
+                        <img
+                          src={e.image?.[0]}
+                          alt="Product"
+                          className="object-contain h-full w-full"
+                        />
+                      </Link>
 
-              {/* Product Info */}
-              <div className="mt-4 px-1 flex flex-col gap-1">
-                <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
-                  {e.title}
-                </h3>
-                <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
-                  $ {e.price}
-                </h4>
-              </div>
+                      {/* Product Info */}
+                      <div className="mt-4 px-1 flex flex-col gap-1">
+                        <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                          {e.title}
+                        </h3>
+                        <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
+                          $ {e.price}
+                        </h4>
+                      </div>
 
-              {/* Buttons */}
-              <div className="flex mt-3 gap-2">
-                <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
-                  Add to cart
-                </button>
-                <Link
-                  to={`/productDetails/${e._id}`}
-                  className="bg-[#f97316] text-white text-lg font-medium py-2 lg:pl-8 pl-10 rounded w-full hover:bg-[#ea580c] transition"
-                >
-                  QUICK VIEW
-                </Link>
-              </div>
-            </div>
-          </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  ) : (
-    <div className="text-center py-10">Loading gloves...</div>
-  )}
-</div>
+                      {/* Buttons */}
+                      <div className="flex mt-3 gap-2">
+                        <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition" onClick={() => handleCart(e._id)}>
+                          Add to cart
+                        </button>
+                        <Link
+                          to={`/productDetails/${e._id}`}
+                          className="bg-[#f97316] text-white text-lg font-medium py-2 lg:pl-8 pl-10 rounded w-full hover:bg-[#ea580c] transition"
+                        >
+                          QUICK VIEW
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <div className="text-center py-10">Loading gloves...</div>
+          )}
+        </div>
 
       </div>
     </div>
