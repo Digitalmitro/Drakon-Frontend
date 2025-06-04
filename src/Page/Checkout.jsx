@@ -112,7 +112,7 @@ export default function Checkout() {
       setEnableTax(settings.EnableTax);
       setTaxRate(settings.TaxRate);
       setEnableCurrency(settings.Currency);
-    } catch {}
+    } catch { }
   }
 
   // SUBTOTAL / TAX
@@ -235,26 +235,26 @@ export default function Checkout() {
 
       const payload = token
         ? {
-            paymentMethod: "Stripe",
-            paymentStatus: "Paid",
-            shippingAddress: normalizedShipping,
-            billingAddress: normalizedBilling,
-          }
+          paymentMethod: "Stripe",
+          paymentStatus: "Paid",
+          shippingAddress: normalizedShipping,
+          billingAddress: normalizedBilling,
+        }
         : {
-            paymentMethod: "Stripe",
-            paymentStatus: "Paid",
-            shippingAddress: normalizedShipping,
-            billingAddress: normalizedBilling,
-            cartData: cartData.map((p) => ({
-              productId: p.productId._id || p.productId,
-              quantity: p.quantity,
-              price: p.productId.price || p.price,
-            })),
-            subtotal,
-            shippingCost,
-            discount: couponDiscount,
-            totalAmount: finalPayment + shippingCost,
-          };
+          paymentMethod: "Stripe",
+          paymentStatus: "Paid",
+          shippingAddress: normalizedShipping,
+          billingAddress: normalizedBilling,
+          cartData: cartData.map((p) => ({
+            productId: p.productId._id || p.productId,
+            quantity: p.quantity,
+            price: p.productId.price || p.price,
+          })),
+          subtotal,
+          shippingCost,
+          discount: couponDiscount,
+          totalAmount: finalPayment + shippingCost,
+        };
 
       await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/order`,
@@ -290,16 +290,18 @@ export default function Checkout() {
 
         {/* ADDRESS */}
         <div className="col-md-4 my-1">
-          <div className="mb-6 flex gap-3 justify-start w-full">
+
+          {!token && <div className="mb-6 flex gap-3 justify-start w-full">
             <button onClick={() => navigate("/account")}
-                    className="px-6 py-2 bg-[#f97316] text-white w-[80%] font-semibold rounded-lg">
+              className="px-6 py-2 bg-[#f97316] text-white w-[80%] font-semibold rounded-lg">
               Register
             </button>
             <button onClick={() => navigate("/account")}
-                    className="px-6 py-2 bg-slate-900 text-white w-[80%] font-semibold rounded-lg">
+              className="px-6 py-2 bg-slate-900 text-white w-[80%] font-semibold rounded-lg">
               Login
             </button>
-          </div>
+          </div>}
+
 
           <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
 
@@ -383,8 +385,8 @@ export default function Checkout() {
                   <tr key={p._id || p}>
                     <td>
                       <img src={p.image?.[0] || ""} alt={p.title}
-                           style={{ width: 50, height: 50, objectFit: "cover" }}
-                           className="me-2"/> {p.title}
+                        style={{ width: 50, height: 50, objectFit: "cover" }}
+                        className="me-2" /> {p.title}
                     </td>
                     <td></td>
                     <td>{item.quantity}</td>
@@ -396,7 +398,7 @@ export default function Checkout() {
               <tr><td colSpan="3" className="text-end">Coupon:</td><td>- {enableCurrency} {couponDiscount.toFixed(2)}</td></tr>
               <tr><td colSpan="3" className="text-end">Tax:</td><td>+ {enableCurrency} {taxValue.toFixed(2)}</td></tr>
               <tr><td colSpan="3" className="text-end">Shipping:</td>
-                <td>{!shippingLoading ? `+ ${enableCurrency} ${shippingCost.toFixed(2)}` : <Spin/>}</td></tr>
+                <td>{!shippingLoading ? `+ ${enableCurrency} ${shippingCost.toFixed(2)}` : <Spin />}</td></tr>
               <tr><td colSpan="3" className="text-end"><strong>Total:</strong></td>
                 <td><strong>{enableCurrency} {(finalPayment + shippingCost).toFixed(2)}</strong></td></tr>
             </tbody>
