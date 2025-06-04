@@ -17,17 +17,15 @@ import { IoCart } from "react-icons/io5";
 import logo from "../assets/logo.png";
 import search from "../assets/search.png";
 import profile from "../assets/profile.png";
-import logo1 from "../assets/logo4-remove.png";
-import { Badge, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { CancelOutlined } from "@mui/icons-material";
 import { cartModal, removeItem } from "../Redux/CartSlice";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { message } from "antd";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useCart } from "../context/CartContext";
+import { useUser } from "../hooks/useUser";
 
 const drawerWidth = 240;
 const navItems = [
@@ -52,6 +50,7 @@ function Navbar(props) {
   const user_id = decodedToken?._id;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [data, setData] = useState();
+  const { user: userData } = useUser()
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -99,6 +98,9 @@ function Navbar(props) {
     }
   };
 
+
+
+  console.log(userData, "userData in navbar");
   // NAV Items
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -127,6 +129,7 @@ function Navbar(props) {
           className="flex justify-center items-center cursor-pointer mb-2 mt-2"
           onClick={() => navigate("/account")}
         >
+
           <p className="">MY ACCOUNT</p>{" "}
           {/* <img src={profile} alt="" className="h-10 p-1 pb-2 block" /> */}
         </div>
@@ -209,8 +212,9 @@ function Navbar(props) {
                 className=" justify-center items-center cursor-pointer hidden lg:flex"
                 onClick={() => navigate("/account")}
               >
-                <p className="">My Accounts</p>{" "}
-                <img src={profile} alt="" className="h-10 p-1 pb-2 block" />
+                {userData ? <p className="flex items-center gap-1"> <span className="h-10 w-10 border rounded-full bg-black text-white font-bold grid place-items-center ">{userData.name.at(0)}</span> {userData.name}</p> : <> <p className="">MY ACCOUNT</p><img src={profile} alt="" className="h-10 p-1 pb-2 block" /></>}
+
+
               </div>
               <div
                 className="hidden lg:flex justify-center space-x-1 items-center cursor-pointer relative"

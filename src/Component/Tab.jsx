@@ -16,6 +16,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { message } from "antd";
+import UserProfileForm from "./UserProfileForm";
 const pastOrders = [
   {
     userId: "13h5sh3",
@@ -284,14 +285,14 @@ export default function VerticalTabs() {
   const [billingAddresses, setBillingAddresses] = React.useState([]);
   const [shippingAddresses, setShippingAddresses] = React.useState([]);
 
-   async function getAddresses() {
+  async function getAddresses() {
     try {
       const billing = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
       );
-      // console.log("billing", billing);
+      console.log("billing", billing);
 
-      setBillingAddresses(billing.data.addressbookbilling);
+      setBillingAddresses(billing.data);
 
       const shipping = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookshipping/${userId}`
@@ -368,16 +369,20 @@ export default function VerticalTabs() {
     }
   };
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
 
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/order`
+        `${import.meta.env.VITE_BACKEND_API}/order`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
       );
       // console.log(" order", data);
-      setData(data);
-    } catch (error) {}
+      setOrderData(data);
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -422,6 +427,7 @@ export default function VerticalTabs() {
 
   // get user by id
   const [user, setUser] = useState([]);
+
   const getUserById = async () => {
     try {
       const res = await fetch(
@@ -495,13 +501,19 @@ export default function VerticalTabs() {
               <h4>Name: </h4>
               <p>{user.name}</p>
             </div>
-            <div className="flex space-x-4  items-center">
+            <div className="flex space-x-4 mb-3 items-center">
               <h4>Email: </h4>
               <p>{user.email}</p>
             </div>
+            <div className="flex space-x-4  items-center">
+              <h4>Phone: </h4>
+              <p>{user.phone}</p>
+            </div>
           </div>
           <div className="profile-box" style={{ width: "500px" }}>
-            <form>
+
+            <UserProfileForm />
+            {/* <form>
               <div class="my-3">
                 <label for="username" className="form-label fs-5 text">
                   Full Name
@@ -549,14 +561,15 @@ export default function VerticalTabs() {
                   required
                 />
               </div>
-            </form>
-            <button
-              type="submit"
-              className="btn btn-danger"
-              style={{ backgroundColor: "#FF7F50 " }}
-            >
-              Submit
-            </button>
+              <button
+                type="submit"
+                className="btn btn-danger"
+                style={{ backgroundColor: "#FF7F50 " }}
+              >
+                Submit
+              </button>
+            </form> */}
+
           </div>
         </div>
       </TabPanel>
@@ -573,25 +586,29 @@ export default function VerticalTabs() {
                 >
                   ADD
                 </button>
-                {billingAddresses ? (
-                  <>
-                    <div className="address-box">
-                      <p>
-                        <strong>BILLING ADDRESS: </strong>{" "}
-                        {billingAddresses?.billingstreetAddress ||
-                          " Chicago, USA"}
-                        , {billingAddresses?.billingcity} ,
-                        {billingAddresses?.billingstate},{" "}
-                        {billingAddresses?.billingcountry}
-                      </p>
-                      <p>
-                        <strong>ZIPCODE: </strong>{" "}
-                        {billingAddresses?.billingzipcode}
-                      </p>
-                    </div>
-                  </>
+                {billingAddresses && billingAddresses.length > 0 ? (
+                  <div className="space-y-4">
+                    {billingAddresses.map((address, index) => (
+                      <div className="address-box p-4 border rounded-md shadow-sm" key={address._id || index}>
+                        <p>
+                          <strong>BILLING ADDRESS #{index + 1}:</strong>{" "}
+                          {address.billingstreetAddress}, {address.billingcity}, {address.billingstate},{" "}
+                          {address.billingcountry}
+                        </p>
+                        <p>
+                          <strong>ZIPCODE:</strong> {address.billingzipcode}
+                        </p>
+                        {/* <p>
+                          <strong>PHONE:</strong> {address.billingphone}
+                        </p>
+                        <p>
+                          <strong>EMAIL:</strong> {address.billingemail}
+                        </p> */}
+                      </div>
+                    ))}
+                  </div>
                 ) : (
-                  <p className="mt-2">BillingAddress is not set</p>
+                  <p className="mt-2">Billing Address is not set</p>
                 )}
               </div>
               {showBillingForm && (
@@ -999,53 +1016,56 @@ export default function VerticalTabs() {
 
       <TabPanel value={value} index={3}>
         <div className="p-4 space-y-8 ">
-          {pastOrders?.map((order) => (
-            <div
-              key={order._id}
-              className="border p-4  rounded-lg shadow flex flex-col lg:flex-row  lg:justify-around space-y-6"
-            >
-              <div className="">
-                <h3 className="font-semibold  text-[16px]">Products:</h3>
-                {order?.products?.map((item, index) => (
-                  <div key={index} className=" lg:flex gap-10">
-                    <div>
-                      <img
-                        src={item?.productId?.image[0]}
-                        alt={item?.productId?.title}
-                        className="w-28 h-28 "
-                      />
+          {pastOrders && pastOrders.length > 0 ? (
+            pastOrders.map((order) => (
+              <div
+                key={order._id}
+                className="border p-4 rounded-lg shadow flex flex-col lg:flex-row lg:justify-around space-y-6"
+              >
+                <div>
+                  <h3 className="font-semibold text-[16px]">Products:</h3>
+                  {order.products?.map((item, index) => (
+                    <div key={index} className="lg:flex gap-10">
+                      <div>
+                        <img
+                          src={item?.productId?.image[0]}
+                          alt={item?.productId?.title}
+                          className="w-28 h-28"
+                        />
+                      </div>
+                      <div className="text-[16px]">
+                        <p>
+                          Quantity: <b>{item?.quantity}</b>
+                        </p>
+                        <p>
+                          Price: ₹<b>{item?.price}</b>
+                        </p>
+                        <p>
+                          Total: ₹<b>{item?.total}</b>
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-[16px]">
-                      <p>
-                        Quantity: <b>{item?.quantity}</b>
-                      </p>
-                      <p>
-                        Price: ₹<b>{item?.price}</b>
-                      </p>
-                      <p>
-                        Total: ₹<b>{item?.total}</b>
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold mb-2">Order ID: {order?._id}</h2>
+                  <p className="text-sm text-gray-600">Status: {order?.orderStatus}</p>
+                  <p className="text-sm">
+                    Payment: {order?.paymentMethod} ({order?.paymentStatus})
+                  </p>
+                  <p className="text-sm">Total: ₹{order?.totalAmount}</p>
+                  <p className="text-sm text-gray-500">
+                    Ordered on: {new Date(order?.createdAt).toLocaleString()}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-lg font-bold mb-2">
-                  Order ID: {order?._id}
-                </h2>
-                <p className="text-sm text-gray-600">
-                  Status: {order?.orderStatus}
-                </p>
-                <p className="text-sm">
-                  Payment: {order?.paymentMethod} ({order?.paymentStatus})
-                </p>
-                <p className="text-sm">Total: ₹{order?.totalAmount}</p>
-                <p className="text-sm text-gray-500">
-                  Ordered on: {new Date(order?.createdAt).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-gray-500 mt-6 text-lg font-medium">
+              No orders yet 🛒
+            </p>
+          )}
+
         </div>
       </TabPanel>
       <TabPanel value={value} index={5}></TabPanel>
