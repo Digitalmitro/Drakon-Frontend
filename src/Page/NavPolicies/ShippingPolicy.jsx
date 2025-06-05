@@ -6,10 +6,10 @@ function ShippingPolicy() {
   return (
     <section className="bg-gray-50">
       <Helmet>
-        <title>Dracon Sports Apparel Shipping | Fast & Secure Delivery</title>
+        <title>Drakon Sports Apparel Shipping | Fast & Secure Delivery</title>
         <meta
           name="description"
-          content="Experience the most reliable, fast and secure shipping with Dracon Sports Apparel. We deliver your preferred sport items safely and on time to your doorsteps."
+          content="Experience the most reliable, fast and secure shipping with Drakon Sports Apparel. We deliver your preferred sport items safely and on time to your doorsteps."
         />
       </Helmet>
 
@@ -38,11 +38,11 @@ function ShippingPolicy() {
       <div className="container mx-auto px-4 py-12 max-w-6xl">
         <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 md:p-8">
           <h2 className="text-3xl font-bold text-[#ff6702] mb-6">
-            Dracon Sports Apparel: Fast and Secure Shipping for Every Order
+            Drakon Sports Apparel: Fast and Secure Shipping for Every Order
           </h2>
           <p className="text-gray-700 mb-8 leading-relaxed">
             One of the biggest concerns of any customer is receiving their product on time.
-            At Dracon Sports Apparel, we are aware that getting your gear on time is as important
+            At Drakon Sports Apparel, we are aware that getting your gear on time is as important
             as getting the right product. This is why we provide a fast, convenient and reliable
             shipping process for our customers for an overall better shopping experience. No
             matter what sports wear you order, we ensure timely delivery from our warehouse
@@ -57,7 +57,7 @@ function ShippingPolicy() {
               Drakon Sports Apparel guarantees its customers with "same day" fulfillment for
               orders placed before 1 PM CST that include the Rush or Express shipping option.
             </p>
-            
+
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
                 <h4 className="font-bold text-lg text-gray-800 mb-2">Rush Shipping</h4>
