@@ -285,87 +285,64 @@ export default function Checkout() {
 
   // RENDER
   return (
-    <div className="container d-flex justify-content-center mt-20" style={{ zoom: "1.1" }}>
-      <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
+    // Responsive and Shopify-like checkout UI
+    <div className="container mx-auto mt-24 mb-4 px-4">
+      <div className="flex flex-col lg:flex-row gap-10">
 
-        {/* ADDRESS */}
-        <div className="col-md-4 my-1">
+        {/* Shipping Address */}
+        <div className="w-full lg:w-2/3">
+          <h2 className="text-2xl font-semibold mb-6">Shipping address</h2>
 
-          {!token && <div className="mb-6 flex gap-3 justify-start w-full">
-            <button onClick={() => navigate("/account")}
-              className="px-6 py-2 bg-[#f97316] text-white w-[80%] font-semibold rounded-lg">
+          <div className="mb-4 flex gap-4">
+            <button onClick={() => navigate("/account")} className="px-6 py-2 bg-orange-500 text-white rounded-lg w-full max-w-[180px]">
               Register
             </button>
-            <button onClick={() => navigate("/account")}
-              className="px-6 py-2 bg-slate-900 text-white w-[80%] font-semibold rounded-lg">
+            <button onClick={() => navigate("/account")} className="px-6 py-2 bg-slate-900 text-white rounded-lg w-full max-w-[180px]">
               Login
             </button>
-          </div>}
-
-
-          <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
+          </div>
 
           {showAddressForm ? (
-            <form onSubmit={handleAddressSubmit}>
-              {[
-                ["shippingfirstName", "First Name"],
-                ["shippinglastName", "Last Name"],
-                ["shippingstreetAddress", "Street Address"],
-                ["shippingcity", "City"],
-                ["shippingstate", "State"],
-                ["shippingcountry", "Country"],
-                ["shippingzipcode", "ZIP"],
-                ["shippingphone", "Phone"],
-              ].map(([key, label]) => (
-                <div className="mb-2" key={key}>
-                  <label>{label}</label>
+            <form onSubmit={handleAddressSubmit} className="space-y-4">
+              {[["shippingfirstName", "First Name"], ["shippinglastName", "Last Name"], ["shippingstreetAddress", "Street Address"], ["shippingcity", "City"], ["shippingstate", "State"], ["shippingcountry", "Country"], ["shippingzipcode", "ZIP"], ["shippingphone", "Phone"]].map(([key, label]) => (
+                <div key={key}>
+                  <label className="block mb-1 text-sm font-medium">{label}</label>
                   <input
                     name={key}
                     value={addressForm[key]}
                     onChange={onAddressChange}
-                    className="form-control"
+                    className="w-full border border-gray-300 px-3 py-2 rounded-md"
                     placeholder={label}
                     {...(key === "shippingcountry" ? { disabled: true } : {})}
                   />
                 </div>
               ))}
-              <button type="submit" className="btn btn-primary w-100">
+              <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md">
                 Save & Continue
               </button>
             </form>
           ) : (
-            <div style={{ border: "1px solid #ddd", padding: "1rem", borderRadius: 5, position: "relative" }}>
-              {/* EDIT ICON */}
-              <button
-                onClick={handleEditAddress}
-                style={{ position: "absolute", top: 8, right: 8, border: "none", background: "transparent" }}
-                aria-label="Edit address"
-              >
+            <div className="border p-4 rounded relative">
+              <button onClick={handleEditAddress} className="absolute top-2 right-2 text-gray-500 hover:text-black">
                 <FiEdit size={18} />
               </button>
-
-              <p>
-                <strong>{deliveryAddress.shippingfirstName} {deliveryAddress.shippinglastName}</strong>
-              </p>
-              <p>
-                {deliveryAddress.shippingstreetAddress}, {deliveryAddress.shippingcity},{" "}
-                {deliveryAddress.shippingstate}, {deliveryAddress.shippingcountry}
-              </p>
+              <p className="font-semibold">{deliveryAddress.shippingfirstName} {deliveryAddress.shippinglastName}</p>
+              <p>{deliveryAddress.shippingstreetAddress}, {deliveryAddress.shippingcity}, {deliveryAddress.shippingstate}, {deliveryAddress.shippingcountry}</p>
               <p><strong>ZIP:</strong> {deliveryAddress.shippingzipcode}</p>
               <p><strong>Phone:</strong> {deliveryAddress.shippingphone}</p>
             </div>
           )}
 
-          {/* COUPON */}
-          <div className="mt-4 d-flex mb-4">
+          {/* Coupon */}
+          <div className="mt-6 flex gap-2">
             <input
               type="text"
-              className="form-control me-2"
+              className="border border-gray-300 px-3 py-2 rounded-md w-full"
               placeholder="Coupon"
               value={couponName}
               onChange={(e) => setCouponName(e.target.value)}
             />
-            <button className="btn btn-warning" onClick={applyCoupon}>
+            <button className="bg-yellow-500 text-white px-4 py-2 rounded-md" onClick={applyCoupon}>
               Apply
             </button>
           </div>
@@ -404,9 +381,9 @@ export default function Checkout() {
             </tbody>
           </table>
 
-          <div className="text-center mt-4 mb-4">
+          <div className="mt-6 text-center">
             <button
-              className="btn btn-lg btn-success"
+              className="bg-green-600 text-white text-lg py-2 w-full rounded-md"
               disabled={showAddressForm || shippingLoading}
               onClick={initiateStripe}
             >
@@ -416,5 +393,7 @@ export default function Checkout() {
         </div>
       </div>
     </div>
+</div >
+
   );
 }
