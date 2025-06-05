@@ -285,134 +285,121 @@ export default function Checkout() {
 
   // RENDER
   return (
-    <div className="container d-flex justify-content-center mt-20" style={{ zoom: "1.1" }}>
-      <div className="row w-100 px-3" style={{ display: "flex", gap: "7rem" }}>
+   // Responsive and Shopify-like checkout UI
+<div className="container mx-auto mt-24 mb-4 px-4">
+  <div className="flex flex-col lg:flex-row gap-10">
 
-        {/* ADDRESS */}
-        <div className="col-md-4 my-1">
-          <div className="mb-6 flex gap-3 justify-start w-full">
-            <button onClick={() => navigate("/account")}
-                    className="px-6 py-2 bg-[#f97316] text-white w-[80%] font-semibold rounded-lg">
-              Register
-            </button>
-            <button onClick={() => navigate("/account")}
-                    className="px-6 py-2 bg-slate-900 text-white w-[80%] font-semibold rounded-lg">
-              Login
-            </button>
-          </div>
+    {/* Shipping Address */}
+    <div className="w-full lg:w-2/3">
+      <h2 className="text-2xl font-semibold mb-6">Shipping address</h2>
 
-          <h2 className="fs-2 pb-3">SHIPPING ADDRESS</h2>
+      <div className="mb-4 flex gap-4">
+        <button onClick={() => navigate("/account")} className="px-6 py-2 bg-orange-500 text-white rounded-lg w-full max-w-[180px]">
+          Register
+        </button>
+        <button onClick={() => navigate("/account")} className="px-6 py-2 bg-slate-900 text-white rounded-lg w-full max-w-[180px]">
+          Login
+        </button>
+      </div>
 
-          {showAddressForm ? (
-            <form onSubmit={handleAddressSubmit}>
-              {[
-                ["shippingfirstName", "First Name"],
-                ["shippinglastName", "Last Name"],
-                ["shippingstreetAddress", "Street Address"],
-                ["shippingcity", "City"],
-                ["shippingstate", "State"],
-                ["shippingcountry", "Country"],
-                ["shippingzipcode", "ZIP"],
-                ["shippingphone", "Phone"],
-              ].map(([key, label]) => (
-                <div className="mb-2" key={key}>
-                  <label>{label}</label>
-                  <input
-                    name={key}
-                    value={addressForm[key]}
-                    onChange={onAddressChange}
-                    className="form-control"
-                    placeholder={label}
-                    {...(key === "shippingcountry" ? { disabled: true } : {})}
-                  />
-                </div>
-              ))}
-              <button type="submit" className="btn btn-primary w-100">
-                Save & Continue
-              </button>
-            </form>
-          ) : (
-            <div style={{ border: "1px solid #ddd", padding: "1rem", borderRadius: 5, position: "relative" }}>
-              {/* EDIT ICON */}
-              <button
-                onClick={handleEditAddress}
-                style={{ position: "absolute", top: 8, right: 8, border: "none", background: "transparent" }}
-                aria-label="Edit address"
-              >
-                <FiEdit size={18} />
-              </button>
-
-              <p>
-                <strong>{deliveryAddress.shippingfirstName} {deliveryAddress.shippinglastName}</strong>
-              </p>
-              <p>
-                {deliveryAddress.shippingstreetAddress}, {deliveryAddress.shippingcity},{" "}
-                {deliveryAddress.shippingstate}, {deliveryAddress.shippingcountry}
-              </p>
-              <p><strong>ZIP:</strong> {deliveryAddress.shippingzipcode}</p>
-              <p><strong>Phone:</strong> {deliveryAddress.shippingphone}</p>
+      {showAddressForm ? (
+        <form onSubmit={handleAddressSubmit} className="space-y-4">
+          {[ ["shippingfirstName", "First Name"], ["shippinglastName", "Last Name"], ["shippingstreetAddress", "Street Address"], ["shippingcity", "City"], ["shippingstate", "State"], ["shippingcountry", "Country"], ["shippingzipcode", "ZIP"], ["shippingphone", "Phone"] ].map(([key, label]) => (
+            <div key={key}>
+              <label className="block mb-1 text-sm font-medium">{label}</label>
+              <input
+                name={key}
+                value={addressForm[key]}
+                onChange={onAddressChange}
+                className="w-full border border-gray-300 px-3 py-2 rounded-md"
+                placeholder={label}
+                {...(key === "shippingcountry" ? { disabled: true } : {})}
+              />
             </div>
-          )}
-
-          {/* COUPON */}
-          <div className="mt-4 d-flex mb-4">
-            <input
-              type="text"
-              className="form-control me-2"
-              placeholder="Coupon"
-              value={couponName}
-              onChange={(e) => setCouponName(e.target.value)}
-            />
-            <button className="btn btn-warning" onClick={applyCoupon}>
-              Apply
-            </button>
-          </div>
+          ))}
+          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md">
+            Save & Continue
+          </button>
+        </form>
+      ) : (
+        <div className="border p-4 rounded relative">
+          <button onClick={handleEditAddress} className="absolute top-2 right-2 text-gray-500 hover:text-black">
+            <FiEdit size={18} />
+          </button>
+          <p className="font-semibold">{deliveryAddress.shippingfirstName} {deliveryAddress.shippinglastName}</p>
+          <p>{deliveryAddress.shippingstreetAddress}, {deliveryAddress.shippingcity}, {deliveryAddress.shippingstate}, {deliveryAddress.shippingcountry}</p>
+          <p><strong>ZIP:</strong> {deliveryAddress.shippingzipcode}</p>
+          <p><strong>Phone:</strong> {deliveryAddress.shippingphone}</p>
         </div>
+      )}
 
-        {/* ORDER SUMMARY */}
-        <div className="col-md-6">
-          <h2 className="fs-2">YOUR ORDER</h2>
-          <table className="table">
-            <thead>
-              <tr><th>Product</th><th></th><th>Qty</th><th>Price</th></tr>
-            </thead>
-            <tbody>
-              {cartData.map((item) => {
-                const p = item.productId;
-                return (
-                  <tr key={p._id || p}>
-                    <td>
-                      <img src={p.image?.[0] || ""} alt={p.title}
-                           style={{ width: 50, height: 50, objectFit: "cover" }}
-                           className="me-2"/> {p.title}
-                    </td>
-                    <td></td>
-                    <td>{item.quantity}</td>
-                    <td>{enableCurrency} {(p.price * item.quantity).toFixed(2)}</td>
-                  </tr>
-                );
-              })}
-              <tr><td colSpan="3" className="text-end">Subtotal:</td><td>{enableCurrency} {subtotal.toFixed(2)}</td></tr>
-              <tr><td colSpan="3" className="text-end">Coupon:</td><td>- {enableCurrency} {couponDiscount.toFixed(2)}</td></tr>
-              <tr><td colSpan="3" className="text-end">Tax:</td><td>+ {enableCurrency} {taxValue.toFixed(2)}</td></tr>
-              <tr><td colSpan="3" className="text-end">Shipping:</td>
-                <td>{!shippingLoading ? `+ ${enableCurrency} ${shippingCost.toFixed(2)}` : <Spin/>}</td></tr>
-              <tr><td colSpan="3" className="text-end"><strong>Total:</strong></td>
-                <td><strong>{enableCurrency} {(finalPayment + shippingCost).toFixed(2)}</strong></td></tr>
-            </tbody>
-          </table>
+      {/* Coupon */}
+      <div className="mt-6 flex gap-2">
+        <input
+          type="text"
+          className="border border-gray-300 px-3 py-2 rounded-md w-full"
+          placeholder="Coupon"
+          value={couponName}
+          onChange={(e) => setCouponName(e.target.value)}
+        />
+        <button className="bg-yellow-500 text-white px-4 py-2 rounded-md" onClick={applyCoupon}>
+          Apply
+        </button>
+      </div>
+    </div>
 
-          <div className="text-center mt-4 mb-4">
-            <button
-              className="btn btn-lg btn-success"
-              disabled={showAddressForm || shippingLoading}
-              onClick={initiateStripe}
-            >
-              Pay & Place Order
-            </button>
-          </div>
+    {/* Order Summary */}
+    <div className="w-full lg:w-1/3">
+      <h2 className="text-2xl font-semibold mb-4">Your Order</h2>
+      <div className="border rounded-md p-4">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b">
+              <th className="text-left py-2">Product</th>
+              <th className="text-center">Qty</th>
+              <th className="text-right">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartData.map((item) => {
+              const p = item.productId;
+              return (
+                <tr key={p._id || p} className="border-b">
+                  <td className="flex items-center gap-2 py-2">
+                    <img src={p.image?.[0] || ""} alt={p.title} className="w-10 h-10 object-cover rounded" />
+                    <span>{p.title}</span>
+                  </td>
+                  <td className="text-center">{item.quantity}</td>
+                  <td className="text-right">{enableCurrency} {(p.price * item.quantity).toFixed(2)}</td>
+                </tr>
+              );
+            })}
+            <tr><td colSpan="2" className="text-right">Subtotal:</td><td className="text-right">{enableCurrency} {subtotal.toFixed(2)}</td></tr>
+            <tr><td colSpan="2" className="text-right">Coupon:</td><td className="text-right">- {enableCurrency} {couponDiscount.toFixed(2)}</td></tr>
+            <tr><td colSpan="2" className="text-right">Tax:</td><td className="text-right">+ {enableCurrency} {taxValue.toFixed(2)}</td></tr>
+            <tr><td colSpan="2" className="text-right">Shipping:</td>
+              <td className="text-right">{!shippingLoading ? `+ ${enableCurrency} ${shippingCost.toFixed(2)}` : <Spin />}</td>
+            </tr>
+            <tr className="font-semibold">
+              <td colSpan="2" className="text-right">Total:</td>
+              <td className="text-right">{enableCurrency} {(finalPayment + shippingCost).toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="mt-6 text-center">
+          <button
+            className="bg-green-600 text-white text-lg py-2 w-full rounded-md"
+            disabled={showAddressForm || shippingLoading}
+            onClick={initiateStripe}
+          >
+            Pay & Place Order
+          </button>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
   );
 }
