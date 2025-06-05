@@ -326,13 +326,8 @@ function TermsAndCondition() {
               3. Products and Pricing
             </h3>
             <p className="text-gray-700 leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
-              tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo. Lorem
-              ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus,
-              luctus nec ullamcorper mattis, pulvinar dapibus leo. Lorem ipsum
-              dolor sit amet, consectetur adipiscing elit. Ut elit tellus,
-              luctus nec ullamcorper mattis, pulvinar. fsdtg jhsaddyadu
-              ajshdjsadu sjhdgafyfy safyfy.
+              The price of products can change without any notice. We reserve this right at any given time to rectify or discontinue the Service without notice. We are not liable to our customers or any third party for any correction, price change, suspension, or discontinuance of the service.
+
             </p>
           </div>
 
