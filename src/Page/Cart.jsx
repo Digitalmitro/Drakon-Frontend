@@ -10,7 +10,7 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const { cart, setCart, loading, setLoading } = useCart()
+  const { cart, setCart, loading, setLoading } = useCart();
 
   const [sessionId, setSessionId] = useState(null);
   const [params] = useSearchParams();
@@ -126,55 +126,136 @@ const CartPage = () => {
   const shippingDiscount = -6.99;
   const estimatedTotal = subtotal + shippingCost + shippingDiscount;
 
-
   return (
-    <div className="max-w-5xl mx-auto px-6 pt-24 pb-5">
-      <h2 className="text-lg font-semibold">Shopping Cart</h2>
+    <div className="mx-auto px-4 sm:px-6 pt-24 pb-12">
+      <h1 className="text-2xl font-bold mb-8">Shopping Cart</h1>
 
       {loading ? (
         <p>Loading...</p>
       ) : cart.length === 0 ? (
-        <p className="text-gray-500">Your cart is empty.</p>
-      ) : (
-        <div className="bg-white p-4 rounded-md shadow-md mt-4">
-          {cart.map((item) => (
-            <div
-              key={item.productId._id}
-              className="flex items-center justify-between border-b pb-4 mb-4"
-            >
-              <img
-                src={item.productId.image[0]}
-                alt={item.productId.title}
-                className="w-20 h-20 object-cover rounded-md"
-              />
-              <div className="flex-1 space-y-2 px-4">
-                <h3 className="font-semibold">{item.productId.title}</h3>X{" "}
-                {item.quantity}
-                <p className="text-sm text-gray-500">
-                  Price: ${item.productId.price.toFixed(2)}
-                </p>
-              </div>
-              <div className="text-center flex flex-col justify-around h-[200px]">
-                <button
-                  className="text-red-500"
-                  onClick={() => removeProduct(item.productId._id)}
-                >
-                  <FaTrash />
-                </button>
-                <p className="font-semibold">${item.total.toFixed(2)}</p>
-              </div>
-            </div>
-          ))}
+        <div className="bg-white p-8 rounded-lg shadow-sm text-center">
+          <p className="text-gray-500 text-lg">Your cart is empty.</p>
+          <button
+            onClick={() => navigate("/shop")}
+            className="mt-4 bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition"
+          >
+            Continue Shopping
+          </button>
         </div>
-      )}
+      ) : (
+        <div className="flex flex-col lg:flex-row gap-8 md:px-20">
+          {/* Cart Items - Responsive */}
+          <div className="w-full lg:w-[70%]  ">
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+              {/* Desktop Header - Hidden on mobile */}
+              <div className="hidden sm:grid lg:grid-cols-12 gap-4 border-b pb-2 mb-4 text-sm text-gray-500">
+                <div className="col-span-5 ">Product</div>
+                <div className="col-span-2 text-center">Quantity</div>
+                <div className="col-span-3 text-center">Total</div>
+                <div className="col-span-2 text-center">Delete</div>
+              </div>
 
-      {cart.length > 0 && (
-        <button
-          onClick={() => navigate("/checkout")}
-          className="bg-red-500 text-white w-full py-3 mt-4 text-lg font-semibold rounded-md"
-        >
-          CHECKOUT
-        </button>
+              {cart.map((item) => (
+                <div
+                  key={item.productId._id}
+                  className="flex flex-col sm:grid sm:grid-cols-12 gap-4 py-4 border-b last:border-b-0"
+                >
+                  {/* Product Info */}
+                  <div className="sm:col-span-5 flex items-start gap-4">
+                    <img
+                      src={item.productId.image[0]}
+                      alt={item.productId.title}
+                      className="w-20 h-20 object-contain rounded-md"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-700 text-base">
+                        {item.productId.title}
+                      </h3>
+                      <div className="text-sm text-gray-500 mt-1 space-y-1">
+                    
+                      </div>
+                      {/* Mobile Price - Hidden on desktop */}
+                      <p className="sm:hidden font-semibold mt-2 text-base">
+                        ${item.total.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Quantity */}
+                  <div className="sm:col-span-2 flex items-center md:justify-center">
+                    <span className="sm:hidden text-gray-500">Quantity:</span>
+                    <div className="flex items-center gap-2  rounded-md px-3 py-1">
+                      {/* <span className="text-gray-500">-</span> */}
+                      <span className="font-medium">{item.quantity}</span>
+                      {/* <span className="text-gray-500">+</span> */}
+                    </div>
+                  </div>
+                  
+
+                  {/* Total - Hidden on mobile (shown in product info) */}
+                  <div className="hidden sm:flex sm:col-span-3 items-center justify-center">
+                    <p className="font-bold text-base">
+                      ${item.total.toFixed(2)}
+                    </p>
+                  </div>
+
+                  <div className="hidden sm:flex sm:col-span-2 items-center justify-center">
+                  <button
+                      className="text-gray-400 hover:text-red-500 transition"
+                      onClick={() => removeProduct(item.productId._id)}
+                    >
+                      <FaTrash size={16} />
+                    </button>
+                  </div>
+
+                  {/* Delete Button - Bottom right on mobile */}
+                  <div className="sm:hidden flex justify-end mt-2">
+                    <button
+                      className="text-gray-400 hover:text-red-500 transition"
+                      onClick={() => removeProduct(item.productId._id)}
+                    >
+                      <FaTrash size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Order Summary - Full width on mobile */}
+          <div className="w-full lg:w-[30%]">
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm lg:sticky lg:top-24">
+              <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+
+              {subtotal >= 200 && (
+                <div className="bg-green-50 text-green-700 p-3 rounded-md mb-4 text-sm">
+                  Nice work! You've unlocked free shipping
+                </div>
+              )}
+
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <div className="border-t pt-4 mb-6">
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => navigate("/checkout")}
+                className="w-full bg-black text-white py-3 rounded-md font-semibold hover:bg-gray-800 transition mb-4"
+              >
+                CHECKOUT
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
