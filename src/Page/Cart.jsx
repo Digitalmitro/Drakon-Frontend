@@ -172,7 +172,7 @@ const CartPage = () => {
                         {item.productId.title}
                       </h3>
                       <div className="text-sm text-gray-500 mt-1 space-y-1">
-                    
+
                       </div>
                       {/* Mobile Price - Hidden on desktop */}
                       <p className="sm:hidden font-semibold mt-2 text-base">
@@ -186,11 +186,12 @@ const CartPage = () => {
                     <span className="sm:hidden text-gray-500">Quantity:</span>
                     <div className="flex items-center gap-2  rounded-md px-3 py-1">
                       {/* <span className="text-gray-500">-</span> */}
-                      <span className="font-medium">{item.quantity}</span>
+                      <span className="font-medium">{item.quantity} {item.productId?.size ?? item?.size}  </span>
                       {/* <span className="text-gray-500">+</span> */}
                     </div>
                   </div>
-                  
+
+
 
                   {/* Total - Hidden on mobile (shown in product info) */}
                   <div className="hidden sm:flex sm:col-span-3 items-center justify-center">
@@ -200,7 +201,7 @@ const CartPage = () => {
                   </div>
 
                   <div className="hidden sm:flex sm:col-span-2 items-center justify-center">
-                  <button
+                    <button
                       className="text-gray-400 hover:text-red-500 transition"
                       onClick={() => removeProduct(item.productId._id)}
                     >
