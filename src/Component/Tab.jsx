@@ -16,6 +16,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { message } from "antd";
+import UserProfileForm from "./UserProfileForm";
 const pastOrders = [
   {
     userId: "13h5sh3",
@@ -289,9 +290,9 @@ export default function VerticalTabs() {
       const billing = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
       );
-      // console.log("billing", billing);
+      console.log("billing", billing);
 
-      setBillingAddresses(billing.data.addressbookbilling);
+      setBillingAddresses(billing.data);
 
       const shipping = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookshipping/${userId}`
@@ -368,16 +369,20 @@ export default function VerticalTabs() {
     }
   };
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
 
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/order`
+        `${import.meta.env.VITE_BACKEND_API}/order`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
       );
       // console.log(" order", data);
-      setData(data);
-    } catch (error) {}
+      setOrderData(data);
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -422,6 +427,7 @@ export default function VerticalTabs() {
 
   // get user by id
   const [user, setUser] = useState([]);
+
   const getUserById = async () => {
     try {
       const res = await fetch(
@@ -496,149 +502,111 @@ export default function VerticalTabs() {
         />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <div className="profile flex flex-col lg:flex-row gap-8 w-full p-4 md:p-6 max-w-6xl mx-auto">
-          {/* Profile Details Card */}
-          <div className="w-full lg:w-2/5 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-orange-50 to-amber-50 p-6 border-b border-gray-100">
-              <h1 className="text-2xl font-semibold text-gray-800">
-                Profile Overview
-              </h1>
-            </div>
-            <div className="p-6 space-y-6">
-              <div className="flex items-start">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-orange-500"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-sm font-medium text-gray-500">
-                    Full Name
-                  </h3>
-                  <p className="text-lg font-semibold text-gray-800">
-                    {user.name}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-orange-500"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-sm font-medium text-gray-500">
-                    Email Address
-                  </h3>
-                  <p className="text-lg font-semibold text-gray-800 break-all">
-                    {user.email}
-                  </p>
-                </div>
-              </div>
-            </div>
+  <div className="profile flex flex-col lg:flex-row gap-8 w-full p-4 md:p-6 max-w-6xl mx-auto">
+    {/* Profile Details Card */}
+    <div className="w-full lg:w-2/5 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-gradient-to-r from-orange-50 to-amber-50 p-6 border-b border-gray-100">
+        <h1 className="text-2xl font-semibold text-gray-800">Profile Overview</h1>
+      </div>
+      <div className="p-6 space-y-6">
+        <div className="flex items-start">
+          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+            </svg>
           </div>
-
-          {/* Edit Profile Form */}
-          <div className="w-full lg:w-3/5 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-orange-50 to-amber-50 p-6 border-b border-gray-100">
-              <h1 className="text-2xl font-semibold text-gray-800">
-                Edit Profile
-              </h1>
-            </div>
-            <form className="p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
-                    id="username"
-                    value={user.name}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Display Name
-                  </label>
-                  <input
-                    type="text"
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
-                    id="name"
-                    value={user.name}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
-                    id="email"
-                    value={user.email}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
-                    id="phone"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-medium py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
+          <div className="ml-4">
+            <h3 className="text-sm font-medium text-gray-500">Full Name</h3>
+            <p className="text-lg font-semibold text-gray-800">{user.name}</p>
           </div>
         </div>
-      </TabPanel>
+
+        <div className="flex items-start">
+          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
+          </div>
+          <div className="ml-4">
+            <h3 className="text-sm font-medium text-gray-500">Email Address</h3>
+            <p className="text-lg font-semibold text-gray-800 break-all">{user.email}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Edit Profile Form */}
+    <div className="w-full lg:w-3/5 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-gradient-to-r from-orange-50 to-amber-50 p-6 border-b border-gray-100">
+        <h1 className="text-2xl font-semibold text-gray-800">Edit Profile</h1>
+      </div>
+      <form className="p-6 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Full Name
+            </label>
+            <input
+              type="text"
+              className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
+              id="username"
+              value={user.name}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Display Name
+            </label>
+            <input
+              type="text"
+              className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
+              id="name"
+              value={user.name}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
+              id="email"
+              value={user.email}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
+              id="phone"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="pt-4">
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-medium py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+          >
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</TabPanel>
       <TabPanel value={value} index={1}>
         <div className="d-flex m-3 gap-5 adressess sm:flex-column">
           <div className="w-1/2 p-2 addressForm">
@@ -652,25 +620,29 @@ export default function VerticalTabs() {
                 >
                   ADD
                 </button>
-                {billingAddresses ? (
-                  <>
-                    <div className="address-box">
-                      <p>
-                        <strong>BILLING ADDRESS: </strong>{" "}
-                        {billingAddresses?.billingstreetAddress ||
-                          " Chicago, USA"}
-                        , {billingAddresses?.billingcity} ,
-                        {billingAddresses?.billingstate},{" "}
-                        {billingAddresses?.billingcountry}
-                      </p>
-                      <p>
-                        <strong>ZIPCODE: </strong>{" "}
-                        {billingAddresses?.billingzipcode}
-                      </p>
-                    </div>
-                  </>
+                {billingAddresses && billingAddresses.length > 0 ? (
+                  <div className="space-y-4">
+                    {billingAddresses.map((address, index) => (
+                      <div className="address-box p-4 border rounded-md shadow-sm" key={address._id || index}>
+                        <p>
+                          <strong>BILLING ADDRESS #{index + 1}:</strong>{" "}
+                          {address.billingstreetAddress}, {address.billingcity}, {address.billingstate},{" "}
+                          {address.billingcountry}
+                        </p>
+                        <p>
+                          <strong>ZIPCODE:</strong> {address.billingzipcode}
+                        </p>
+                        {/* <p>
+                          <strong>PHONE:</strong> {address.billingphone}
+                        </p>
+                        <p>
+                          <strong>EMAIL:</strong> {address.billingemail}
+                        </p> */}
+                      </div>
+                    ))}
+                  </div>
                 ) : (
-                  <p className="mt-2">BillingAddress is not set</p>
+                  <p className="mt-2">Billing Address is not set</p>
                 )}
               </div>
               {showBillingForm && (
@@ -1084,53 +1056,56 @@ export default function VerticalTabs() {
 
       <TabPanel value={value} index={3}>
         <div className="p-4 space-y-8 ">
-          {pastOrders?.map((order) => (
-            <div
-              key={order._id}
-              className="border p-4  rounded-lg shadow flex flex-col lg:flex-row  lg:justify-around space-y-6"
-            >
-              <div className="">
-                <h3 className="font-semibold  text-[16px]">Products:</h3>
-                {order?.products?.map((item, index) => (
-                  <div key={index} className=" lg:flex gap-10">
-                    <div>
-                      <img
-                        src={item?.productId?.image[0]}
-                        alt={item?.productId?.title}
-                        className="w-28 h-28 "
-                      />
+          {pastOrders && pastOrders.length > 0 ? (
+            pastOrders.map((order) => (
+              <div
+                key={order._id}
+                className="border p-4 rounded-lg shadow flex flex-col lg:flex-row lg:justify-around space-y-6"
+              >
+                <div>
+                  <h3 className="font-semibold text-[16px]">Products:</h3>
+                  {order.products?.map((item, index) => (
+                    <div key={index} className="lg:flex gap-10">
+                      <div>
+                        <img
+                          src={item?.productId?.image[0]}
+                          alt={item?.productId?.title}
+                          className="w-28 h-28"
+                        />
+                      </div>
+                      <div className="text-[16px]">
+                        <p>
+                          Quantity: <b>{item?.quantity}</b>
+                        </p>
+                        <p>
+                          Price: ₹<b>{item?.price}</b>
+                        </p>
+                        <p>
+                          Total: ₹<b>{item?.total}</b>
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-[16px]">
-                      <p>
-                        Quantity: <b>{item?.quantity}</b>
-                      </p>
-                      <p>
-                        Price: ₹<b>{item?.price}</b>
-                      </p>
-                      <p>
-                        Total: ₹<b>{item?.total}</b>
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold mb-2">Order ID: {order?._id}</h2>
+                  <p className="text-sm text-gray-600">Status: {order?.orderStatus}</p>
+                  <p className="text-sm">
+                    Payment: {order?.paymentMethod} ({order?.paymentStatus})
+                  </p>
+                  <p className="text-sm">Total: ₹{order?.totalAmount}</p>
+                  <p className="text-sm text-gray-500">
+                    Ordered on: {new Date(order?.createdAt).toLocaleString()}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-lg font-bold mb-2">
-                  Order ID: {order?._id}
-                </h2>
-                <p className="text-sm text-gray-600">
-                  Status: {order?.orderStatus}
-                </p>
-                <p className="text-sm">
-                  Payment: {order?.paymentMethod} ({order?.paymentStatus})
-                </p>
-                <p className="text-sm">Total: ₹{order?.totalAmount}</p>
-                <p className="text-sm text-gray-500">
-                  Ordered on: {new Date(order?.createdAt).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-gray-500 mt-6 text-lg font-medium">
+              No orders yet 🛒
+            </p>
+          )}
+
         </div>
       </TabPanel>
       <TabPanel value={value} index={5}></TabPanel>
