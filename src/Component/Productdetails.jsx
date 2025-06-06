@@ -91,14 +91,38 @@ const Productdetails = () => {
       }
       localStorage.setItem("guest_cart", JSON.stringify(guestCart));
       message.success("Added to Cart");
-      setTimeout(() => navigate("/cart"), 500); 
+      setTimeout(() => navigate("/cart"), 500);
     }
   };
+
+  const getSizesForCategory = (category) => {
+    switch (category?.toLowerCase()) {
+      case "sunglasses":
+      case "headband":
+        return "no-size"; // text only
+      case "hat":
+        return "snapback";
+      case "elbow guard":
+      case "sliding mitt":
+        return ["Youth", "Adult"];
+      case "compression sleeve":
+        return ["M", "L", "XL"];
+      case "batting gloves":
+        return {
+          youth: ["YS", "YM", "YL", "YXL"],
+          standard: ["S", "M", "L", "XL", "XXL", "XXXL"]
+        };
+      default:
+        return ["S", "M", "L", "XL", "XXL"];
+    }
+  };
+
+  // console.log(data)
 
   return (
     <>
       <div className=" w-full max-w-1200 max-auto px-4">
-      <div className="row productDetails  flex justify-center w-full items-center">
+        <div className="row productDetails  flex justify-center w-full items-center">
           <div className="col-6 flex  flex-col  items-center justify-center">
             {/* Centering the Main Image */}
             <div className="lg:w-[500px] border-b lg:h-[500px] w-[300px] h-[300px] flex flex-col justify-center items-center overflow-hidden">
@@ -137,76 +161,76 @@ const Productdetails = () => {
                 <div className="size-selector mb-6">
                   <h4 className="text-lg font-semibold mb-3">SIZE</h4>
 
-                  {/* Special sizing for batting gloves */}
-                  {data?.category.toLowerCase() === "batting gloves" ? (
-                    <div className="glove-sizing">
-                      <div className="youth-sizing mb-4">
-                        <h5 className="font-medium mb-2">Youth Sizing</h5>
-                        <div className="flex flex-wrap gap-2">
-                          {["YS", "YM", "YL", "YXL"].map((size) => (
-                            <button
-                              key={size}
-                              className={`size-btn text-xl px-2 font-medium ${
-                                selectedSize === size
-                                  ? "bg-orange-500 text-white"
-                                  : "bg-gray-100"
-                              }`}
-                              onClick={() => setSelectedSize(size)}
-                            >
-                              {size}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="standard-sizing">
-                        <h5 className="font-medium mb-2">Standard Sizing</h5>
-                        <div className="flex flex-wrap gap-2">
-                          {["S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
-                            <button
-                              key={size}
-                              className={`size-btn text-xl px-2 font-medium ${
-                                selectedSize === size
-                                  ? "bg-orange-500 text-white"
-                                  : "bg-gray-100"
-                              }`}
-                              onClick={() => setSelectedSize(size)}
-                            >
-                              {size}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    /* Standard sizing for other categories */
-                    <div className="standard-sizing">
-                      <div className="flex flex-wrap gap-2">
-                        {["S", "M", "L", "XL", "XXL"].map((size) => (
-                          <button
-                            key={size}
-                            className={`size-btn px-2 text-xl font-medium ${
-                              selectedSize === size
-                                ? "bg-orange-500 text-white"
-                                : "bg-gray-100"
-                            }`}
-                            onClick={() => setSelectedSize(size)}
-                          >
-                            {size}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  {(() => {
+                    const sizes = getSizesForCategory(data.category);
 
-                  {/* Size Chart Modal Trigger */}
-                  {/* <button 
-            className="text-blue-600 underline mt-2 text-sm"
-            onClick={() => setShowSizeChart(true)}
-          >
-            View Size Chart
-          </button> */}
+                    if (sizes === "no-size") {
+                      return <p className="text-gray-600">One size fits most</p>;
+                    }
+
+                    if (sizes === "snapback") {
+                      return <p className="text-gray-600">Snapback hat - one size fits most</p>;
+                    }
+
+                    if (Array.isArray(sizes)) {
+                      return (
+                        <div className="flex flex-wrap gap-2">
+                          {sizes.map((size) => (
+                            <button
+                              key={size}
+                              className={`size-btn px-2 text-xl font-medium ${selectedSize === size ? "bg-orange-500 text-white" : "bg-gray-100"
+                                }`}
+                              onClick={() => setSelectedSize(size)}
+                            >
+                              {size}
+                            </button>
+                          ))}
+                        </div>
+                      );
+                    }
+
+                    if (typeof sizes === "object") {
+                      return (
+                        <div className="glove-sizing">
+                          <div className="youth-sizing mb-4">
+                            <h5 className="font-medium mb-2">Youth Sizing</h5>
+                            <div className="flex flex-wrap gap-2">
+                              {sizes.youth.map((size) => (
+                                <button
+                                  key={size}
+                                  className={`size-btn text-xl px-2 font-medium ${selectedSize === size ? "bg-orange-500 text-white" : "bg-gray-100"
+                                    }`}
+                                  onClick={() => setSelectedSize(size)}
+                                >
+                                  {size}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="standard-sizing">
+                            <h5 className="font-medium mb-2">Standard Sizing</h5>
+                            <div className="flex flex-wrap gap-2">
+                              {sizes.standard.map((size) => (
+                                <button
+                                  key={size}
+                                  className={`size-btn text-xl px-2 font-medium ${selectedSize === size ? "bg-orange-500 text-white" : "bg-gray-100"
+                                    }`}
+                                  onClick={() => setSelectedSize(size)}
+                                >
+                                  {size}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    return null;
+                  })()}
                 </div>
               )}
+
 
               {/* Size Chart Modal */}
               {showSizeChart && (
@@ -216,142 +240,143 @@ const Productdetails = () => {
                       <h3 className="text-xl font-bold">Size Guide</h3>
                       <button onClick={() => setShowSizeChart(false)}>✕</button>
                     </div>
-
-                    {data?.category.toLowerCase() === "batting gloves" ? (
-                      <div className="glove-size-chart">
-                        <h4 className="font-semibold mb-2">
-                          Batting Gloves Sizing
-                        </h4>
-                        <table className="w-full border-collapse mt-10 lg:mt-32">
-                          <thead>
-                            <tr className="bg-gray-100">
-                              <th className="p-2 border">Size</th>
-                              <th className="p-2 border">Hand Circumference</th>
-                              <th className="p-2 border">Age</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {/* Youth Sizes */}
-                            <tr>
-                              <td
-                                colSpan="3"
-                                className="font-medium p-2 bg-gray-50"
-                              >
-                                Youth Sizes
+                    <div className="glove-size-chart">
+                      <h4 className="font-semibold mb-2">
+                        Batting Gloves Sizing
+                      </h4>
+                      <table className="w-full border-collapse mt-10 lg:mt-32">
+                        <thead>
+                          <tr className="bg-gray-100">
+                            <th className="p-2 border">Size</th>
+                            <th className="p-2 border">Hand Circumference</th>
+                            <th className="p-2 border">Age</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* Youth Sizes */}
+                          <tr>
+                            <td
+                              colSpan="3"
+                              className="font-medium p-2 bg-gray-50"
+                            >
+                              Youth Sizes
+                            </td>
+                          </tr>
+                          {[
+                            {
+                              size: "YS",
+                              circumference: '5.5"-6"',
+                              age: "6-8",
+                            },
+                            {
+                              size: "YM",
+                              circumference: '6"-6.5"',
+                              age: "8-10",
+                            },
+                            {
+                              size: "YL",
+                              circumference: '6.5"-7"',
+                              age: "10-12",
+                            },
+                            {
+                              size: "YXL",
+                              circumference: '7"-7.5"',
+                              age: "12-14",
+                            },
+                          ].map((row) => (
+                            <tr key={row.size} className="border-t">
+                              <td className="p-2 border">{row.size}</td>
+                              <td className="p-2 border">
+                                {row.circumference}
                               </td>
+                              <td className="p-2 border">{row.age}</td>
                             </tr>
-                            {[
-                              {
-                                size: "YS",
-                                circumference: '5.5"-6"',
-                                age: "6-8",
-                              },
-                              {
-                                size: "YM",
-                                circumference: '6"-6.5"',
-                                age: "8-10",
-                              },
-                              {
-                                size: "YL",
-                                circumference: '6.5"-7"',
-                                age: "10-12",
-                              },
-                              {
-                                size: "YXL",
-                                circumference: '7"-7.5"',
-                                age: "12-14",
-                              },
-                            ].map((row) => (
-                              <tr key={row.size} className="border-t">
-                                <td className="p-2 border">{row.size}</td>
-                                <td className="p-2 border">
-                                  {row.circumference}
-                                </td>
-                                <td className="p-2 border">{row.age}</td>
-                              </tr>
-                            ))}
+                          ))}
 
-                            {/* Standard Sizes */}
-                            <tr>
-                              <td
-                                colSpan="3"
-                                className="font-medium p-2 bg-gray-50"
-                              >
-                                Standard Sizes
+                          {/* Standard Sizes */}
+                          <tr>
+                            <td
+                              colSpan="3"
+                              className="font-medium p-2 bg-gray-50"
+                            >
+                              Standard Sizes
+                            </td>
+                          </tr>
+                          {[
+                            {
+                              size: "S",
+                              circumference: '7"-7.5"',
+                              age: "13+",
+                            },
+                            {
+                              size: "M",
+                              circumference: '7.5"-8"',
+                              age: "Adult",
+                            },
+                            {
+                              size: "L",
+                              circumference: '8"-8.5"',
+                              age: "Adult",
+                            },
+                            {
+                              size: "XL",
+                              circumference: '8.5"-9"',
+                              age: "Adult",
+                            },
+                            {
+                              size: "XXL",
+                              circumference: '9"-9.5"',
+                              age: "Adult",
+                            },
+                            {
+                              size: "XXXL",
+                              circumference: '9.5"+',
+                              age: "Adult",
+                            },
+                          ].map((row) => (
+                            <tr key={row.size} className="border-t">
+                              <td className="p-2 border">{row.size}</td>
+                              <td className="p-2 border">
+                                {row.circumference}
                               </td>
+                              <td className="p-2 border">{row.age}</td>
                             </tr>
-                            {[
-                              {
-                                size: "S",
-                                circumference: '7"-7.5"',
-                                age: "13+",
-                              },
-                              {
-                                size: "M",
-                                circumference: '7.5"-8"',
-                                age: "Adult",
-                              },
-                              {
-                                size: "L",
-                                circumference: '8"-8.5"',
-                                age: "Adult",
-                              },
-                              {
-                                size: "XL",
-                                circumference: '8.5"-9"',
-                                age: "Adult",
-                              },
-                              {
-                                size: "XXL",
-                                circumference: '9"-9.5"',
-                                age: "Adult",
-                              },
-                              {
-                                size: "XXXL",
-                                circumference: '9.5"+',
-                                age: "Adult",
-                              },
-                            ].map((row) => (
-                              <tr key={row.size} className="border-t">
-                                <td className="p-2 border">{row.size}</td>
-                                <td className="p-2 border">
-                                  {row.circumference}
-                                </td>
-                                <td className="p-2 border">{row.age}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {/* {data?.category.toLowerCase() === "batting gloves" ? (
+                    
                     ) : (
-                      <div className="standard-size-chart">
-                        <h4 className="font-semibold mb-2">Standard Sizing</h4>
-                        <table className="w-full border-collapse">
-                          <thead>
-                            <tr className="bg-gray-100">
-                              <th className="p-2 border">Size</th>
-                              <th className="p-2 border">Chest (in)</th>
-                              <th className="p-2 border">Waist (in)</th>
+                     
+                    )} */}
+                    <div className="standard-size-chart">
+                      <h4 className="font-semibold mb-2">Standard Sizing</h4>
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-gray-100">
+                            <th className="p-2 border">Size</th>
+                            <th className="p-2 border">Chest (in)</th>
+                            <th className="p-2 border">Waist (in)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[
+                            { size: "S", chest: "34-36", waist: "28-30" },
+                            { size: "M", chest: "38-40", waist: "32-34" },
+                            { size: "L", chest: "42-44", waist: "36-38" },
+                            { size: "XL", chest: "46-48", waist: "40-42" },
+                            { size: "XXL", chest: "50-52", waist: "44-46" },
+                          ].map((row) => (
+                            <tr key={row.size} className="border-t">
+                              <td className="p-2 border">{row.size}</td>
+                              <td className="p-2 border">{row.chest}</td>
+                              <td className="p-2 border">{row.waist}</td>
                             </tr>
-                          </thead>
-                          <tbody>
-                            {[
-                              { size: "S", chest: "34-36", waist: "28-30" },
-                              { size: "M", chest: "38-40", waist: "32-34" },
-                              { size: "L", chest: "42-44", waist: "36-38" },
-                              { size: "XL", chest: "46-48", waist: "40-42" },
-                              { size: "XXL", chest: "50-52", waist: "44-46" },
-                            ].map((row) => (
-                              <tr key={row.size} className="border-t">
-                                <td className="p-2 border">{row.size}</td>
-                                <td className="p-2 border">{row.chest}</td>
-                                <td className="p-2 border">{row.waist}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
 
                     <button
                       className="mt-4 bg-orange-500 text-white px-4 py-2 rounded"
@@ -379,16 +404,16 @@ const Productdetails = () => {
                 )}
               </p>
               <ReactStars
-              count={5}
-              onChange={ratingChanged}
-              size={30}
-              isHalf={true}
-              value={4}
-              color="#ccc"
-              activeColor="#ffd700"
-            />
+                count={5}
+                onChange={ratingChanged}
+                size={30}
+                isHalf={true}
+                value={4}
+                color="#ccc"
+                activeColor="#ffd700"
+              />
             </div>
-            
+
 
             {(data?.stock || data?.stock > 0) && (
               <div className="product-counter flex justify-start items-center gap-3 py-4">
@@ -397,11 +422,10 @@ const Productdetails = () => {
                   <button
                     onClick={() => setQuantity((p) => Math.max(1, p - 1))}
                     disabled={quantity === 1}
-                    className={`px-3 py-1 text-lg font-semibold border rounded ${
-                      quantity === 1
-                        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                        : "bg-white hover:bg-gray-100"
-                    }`}
+                    className={`px-3 py-1 text-lg font-semibold border rounded ${quantity === 1
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-white hover:bg-gray-100"
+                      }`}
                   >
                     –
                   </button>
