@@ -248,6 +248,8 @@ export default function Checkout() {
           cartData: cartData.map((p) => ({
             productId: p.productId._id || p.productId,
             quantity: p.quantity,
+            size: p?.productId?.size ?? p.size,
+            weight: p?.productId?.weight ?? p.weight,
             price: p.productId.price || p.price,
           })),
           subtotal,
