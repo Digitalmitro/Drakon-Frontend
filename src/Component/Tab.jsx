@@ -284,7 +284,7 @@ export default function VerticalTabs() {
   const [billingAddresses, setBillingAddresses] = React.useState([]);
   const [shippingAddresses, setShippingAddresses] = React.useState([]);
 
-   async function getAddresses() {
+  async function getAddresses() {
     try {
       const billing = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
@@ -463,100 +463,179 @@ export default function VerticalTabs() {
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
+        className="w-auto lg:w-72 border-r border-gray-200"
         sx={{
-          width: { xs: "auto", lg: "300px" },
-          borderRight: 1,
-          borderColor: "divider",
-          color: "orangeline",
           "& .MuiTab-indicator": { backgroundColor: "orangeline" },
         }}
       >
-        <Tab className="sidenav" label="Profile" {...a11yProps(0)} />
-        <Tab className="sidenav" label="Address" {...a11yProps(3)} />
-
-        <Tab className="sidenav" label="Reset Password" {...a11yProps(5)} />
-        <Tab className="sidenav" label="Order" {...a11yProps(4)} />
-
+        <Tab
+          className="sidenav flex items-center justify-start py-4 px-6 text-gray-600 hover:text-orange-500 transition-colors duration-200 text-sm font-medium"
+          label="Profile"
+          {...a11yProps(0)}
+        />
+        <Tab
+          className="sidenav flex items-center justify-start py-4 px-6 text-gray-600 hover:text-orange-500 transition-colors duration-200 text-sm font-medium"
+          label="Address"
+          {...a11yProps(3)}
+        />
+        <Tab
+          className="sidenav flex items-center justify-start py-4 px-6 text-gray-600 hover:text-orange-500 transition-colors duration-200 text-sm font-medium"
+          label="Reset Password"
+          {...a11yProps(5)}
+        />
+        <Tab
+          className="sidenav flex items-center justify-start py-4 px-6 text-gray-600 hover:text-orange-500 transition-colors duration-200 text-sm font-medium"
+          label="Order"
+          {...a11yProps(4)}
+        />
         <Tab
           onClick={handelLogout}
-          className="sidenav"
+          className="sidenav flex items-center justify-start py-4 px-6 text-gray-600 hover:text-orange-500 transition-colors duration-200 text-sm font-medium"
           label="Logout"
           {...a11yProps(2)}
         />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <div
-          className="profile flex justify-evenly flex-wrap w-full "
-          style={{ margin: "10px" }}
-        >
-          <div className=" profileDetails  lg:w-[600px] my-3 text-center border p-5">
-            <h1 className="mb-8">PROFILE DETAILS</h1>
-            <div className=" flex space-x-4 mb-3 items-center">
-              <h4>Name: </h4>
-              <p>{user.name}</p>
+        <div className="profile flex flex-col lg:flex-row gap-8 w-full p-4 md:p-6 max-w-6xl mx-auto">
+          {/* Profile Details Card */}
+          <div className="w-full lg:w-2/5 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-orange-50 to-amber-50 p-6 border-b border-gray-100">
+              <h1 className="text-2xl font-semibold text-gray-800">
+                Profile Overview
+              </h1>
             </div>
-            <div className="flex space-x-4  items-center">
-              <h4>Email: </h4>
-              <p>{user.email}</p>
+            <div className="p-6 space-y-6">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-orange-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-sm font-medium text-gray-500">
+                    Full Name
+                  </h3>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {user.name}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-orange-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-sm font-medium text-gray-500">
+                    Email Address
+                  </h3>
+                  <p className="text-lg font-semibold text-gray-800 break-all">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="profile-box" style={{ width: "500px" }}>
-            <form>
-              <div class="my-3">
-                <label for="username" className="form-label fs-5 text">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="username"
-                  value={user.name}
-                  required
-                />
+
+          {/* Edit Profile Form */}
+          <div className="w-full lg:w-3/5 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-orange-50 to-amber-50 p-6 border-b border-gray-100">
+              <h1 className="text-2xl font-semibold text-gray-800">
+                Edit Profile
+              </h1>
+            </div>
+            <form className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
+                    id="username"
+                    value={user.name}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Display Name
+                  </label>
+                  <input
+                    type="text"
+                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
+                    id="name"
+                    value={user.name}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
+                    id="email"
+                    value={user.email}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
+                    id="phone"
+                    required
+                  />
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="name" className="form-label fs-5 text">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  value={user.name}
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="email" className="form-label  fs-5 text">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  value={user.email}
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="phone" className="form-label  fs-5 text">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  className="form-control"
-                  id="phone"
-                  required
-                />
+
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-medium py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+                >
+                  Save Changes
+                </button>
               </div>
             </form>
-            <button
-              type="submit"
-              className="btn btn-danger"
-              style={{ backgroundColor: "#FF7F50 " }}
-            >
-              Submit
-            </button>
           </div>
         </div>
       </TabPanel>
@@ -746,7 +825,10 @@ export default function VerticalTabs() {
                     />
 
                     <div>
-                      <button className="btn btn-outline-danger w-full mt-3" type="submit">
+                      <button
+                        className="btn btn-outline-danger w-full mt-3"
+                        type="submit"
+                      >
                         Save Address
                       </button>
                     </div>
@@ -937,7 +1019,10 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <button className="btn btn-outline-danger mt-3   w-full" type="submit">
+                    <button
+                      className="btn btn-outline-danger mt-3   w-full"
+                      type="submit"
+                    >
                       Save Address
                     </button>
                   </>
