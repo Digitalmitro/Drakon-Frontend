@@ -8,6 +8,16 @@ import product1 from "../assets/product1.png";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import OrdersTabPanel from "../Component/tabsPanel/orders";
+import { motion } from "framer-motion"; // For animations
+
+// Heroicons (install with: npm install @heroicons/react)
+import {
+  UserIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  PencilSquareIcon
+} from "@heroicons/react/24/outline";
+// import motion from "framer-motion"
 import axios from "axios";
 import {
   Link,
@@ -374,15 +384,16 @@ export default function VerticalTabs() {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/order`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+        `${import.meta.env.VITE_BACKEND_API}/order`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       // console.log(" order", data);
       setOrderData(data);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -463,7 +474,7 @@ export default function VerticalTabs() {
         height: "auto",
       }}
     >
-      <Tabs
+     <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
@@ -490,34 +501,126 @@ export default function VerticalTabs() {
           {...a11yProps(2)}
         />
       </Tabs>
+
       <TabPanel value={value} index={0}>
-        <div
-          className="profile flex justify-evenly flex-wrap w-full "
-          style={{ margin: "10px" }}
-        >
-          <div className=" profileDetails  lg:w-[600px] my-3 text-center border p-5">
-            <h1 className="mb-8">PROFILE DETAILS</h1>
-            <div className=" flex space-x-4 mb-3 items-center">
-              <h4>Name: </h4>
-              <p>{user.name}</p>
-            </div>
-            <div className="flex space-x-4 mb-3 items-center">
-              <h4>Email: </h4>
-              <p>{user.email}</p>
-            </div>
-            <div className="flex space-x-4  items-center">
-              <h4>Phone: </h4>
-              <p>{user.phone}</p>
-            </div>
-          </div>
-          <div className="profile-box" style={{ width: "500px" }}>
+        <div className="profile-section bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8 rounded-2xl transition-all duration-300">
+          <div className="max-w-7xl mx-auto">
+            <h2
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center"
+            >
+              My <span className="text-orange-600">Profile</span>
+            </h2>
 
-            <UserProfileForm />
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+              {/* Profile Details Card */}
+              <div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200/80 hover:shadow-md transition-all duration-300 col-span-1"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="bg-blue-100/80 p-3 rounded-xl">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8 text-blue-600"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      Personal Info
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      Your account details
+                    </p>
+                  </div>
+                </div>
 
+                <div className="space-y-4 divide-y divide-gray-100">
+                  <div className="pt-3">
+                    <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      Full Name
+                    </span>
+                    <p className="text-gray-800 font-medium py-2.5 px-3 rounded-lg bg-gray-50/50 mt-1 flex items-center gap-2">
+                      <UserIcon className="h-4 w-4 text-gray-400" />
+                      {user.name}
+                    </p>
+                  </div>
 
+                  <div className="pt-3">
+                    <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      Email Address
+                    </span>
+                    <p className="text-gray-800 font-medium py-2.5 px-3 rounded-lg bg-gray-50/50 mt-1 flex items-center gap-2 break-all">
+                      <EnvelopeIcon className="h-4 w-4 text-gray-400" />
+                      {user.email}
+                    </p>
+                  </div>
+
+                  <div className="pt-3">
+                    <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      Phone Number
+                    </span>
+                    <p className="text-gray-800 font-medium py-2.5 px-3 rounded-lg bg-gray-50/50 mt-1 flex items-center gap-2">
+                      <PhoneIcon className="h-4 w-4 text-gray-400" />
+                      {user.phone || (
+                        <span className="text-gray-400 italic">
+                          Not provided
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Profile Form */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200/80 hover:shadow-md transition-all duration-300 xl:col-span-2"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="bg-purple-100/80 p-3 rounded-xl">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8 text-purple-600"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                      <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      Edit Profile
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      Update your information
+                    </p>
+                  </div>
+                </div>
+
+                <div className="profile-form-wrapper">
+                  <UserProfileForm />
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </TabPanel>
+
       <TabPanel value={value} index={1}>
         <div className="d-flex m-3 gap-5 adressess sm:flex-column">
           <div className="w-1/2 p-2 addressForm">
@@ -534,11 +637,14 @@ export default function VerticalTabs() {
                 {billingAddresses && billingAddresses.length > 0 ? (
                   <div className="space-y-4">
                     {billingAddresses.map((address, index) => (
-                      <div className="address-box p-4 border rounded-md shadow-sm" key={address._id || index}>
+                      <div
+                        className="address-box p-4 border rounded-md shadow-sm"
+                        key={address._id || index}
+                      >
                         <p>
                           <strong>BILLING ADDRESS #{index + 1}:</strong>{" "}
-                          {address.billingstreetAddress}, {address.billingcity}, {address.billingstate},{" "}
-                          {address.billingcountry}
+                          {address.billingstreetAddress}, {address.billingcity},{" "}
+                          {address.billingstate}, {address.billingcountry}
                         </p>
                         <p>
                           <strong>ZIPCODE:</strong> {address.billingzipcode}
@@ -708,7 +814,10 @@ export default function VerticalTabs() {
                     />
 
                     <div>
-                      <button className="btn btn-outline-danger w-full mt-3" type="submit">
+                      <button
+                        className="btn btn-outline-danger w-full mt-3"
+                        type="submit"
+                      >
                         Save Address
                       </button>
                     </div>
@@ -899,7 +1008,10 @@ export default function VerticalTabs() {
                       onChange={handleShippingFormChange}
                     />
 
-                    <button className="btn btn-outline-danger mt-3   w-full" type="submit">
+                    <button
+                      className="btn btn-outline-danger mt-3   w-full"
+                      type="submit"
+                    >
                       Save Address
                     </button>
                   </>
@@ -993,8 +1105,12 @@ export default function VerticalTabs() {
                   ))}
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold mb-2">Order ID: {order?._id}</h2>
-                  <p className="text-sm text-gray-600">Status: {order?.orderStatus}</p>
+                  <h2 className="text-lg font-bold mb-2">
+                    Order ID: {order?._id}
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    Status: {order?.orderStatus}
+                  </p>
                   <p className="text-sm">
                     Payment: {order?.paymentMethod} ({order?.paymentStatus})
                   </p>
@@ -1010,7 +1126,6 @@ export default function VerticalTabs() {
               No orders yet 🛒
             </p>
           )}
-
         </div>
       </TabPanel>
       <TabPanel value={value} index={5}></TabPanel>
