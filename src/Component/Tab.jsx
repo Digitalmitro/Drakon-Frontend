@@ -513,62 +513,7 @@ export default function VerticalTabs() {
           <div className="profile-box" style={{ width: "500px" }}>
 
             <UserProfileForm />
-            {/* <form>
-              <div class="my-3">
-                <label for="username" className="form-label fs-5 text">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="username"
-                  value={user.name}
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="name" className="form-label fs-5 text">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  value={user.name}
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="email" className="form-label  fs-5 text">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  value={user.email}
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="phone" className="form-label  fs-5 text">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  className="form-control"
-                  id="phone"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="btn btn-danger"
-                style={{ backgroundColor: "#FF7F50 " }}
-              >
-                Submit
-              </button>
-            </form> */}
+
 
           </div>
         </div>
