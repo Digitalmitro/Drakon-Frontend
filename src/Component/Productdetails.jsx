@@ -54,6 +54,8 @@ const Productdetails = () => {
         _id: data._id,
         title: data.title,
         price: data.price,
+        size: selectedSize,
+        weight: data.weight,
         image: data.image,
         stock: data.stock,
       },
@@ -70,6 +72,7 @@ const Productdetails = () => {
           title: data.title,
           price: data.price,
           quantity,
+          size: selectedSize,
           productId: data._id,
           userId: user_id,
         });
@@ -157,7 +160,7 @@ const Productdetails = () => {
               <h5 className="pb-4 mt-1">
                 <b>Category: <span className="font-medium">{data?.category}</span></b>
               </h5>
-              {data?.category && (
+              {/* {data?.category && (
                 <div className="size-selector mb-6">
                   <h4 className="text-lg font-semibold mb-3">SIZE</h4>
 
@@ -229,8 +232,36 @@ const Productdetails = () => {
                     return null;
                   })()}
                 </div>
-              )}
+              )} */}
 
+              {data?.category && (
+                <div className="flex items-center gap-5 mb-3" >
+
+                  <div className="flex flex-col items-start gap-1 ">
+                    <h4 className="text-lg font-semibold ">SIZE</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {Array.isArray(data.size) && data?.size.map((size) => (
+
+                        <button
+                          key={size}
+                          className={`size-btn px-2 text-xl font-medium ${selectedSize === size ? "bg-orange-500 text-white" : "bg-gray-100"
+                            }`}
+                          onClick={() => setSelectedSize(size)}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start gap-1 ">
+                    <h4 className="text-lg font-semibold ">WEIGHT</h4>
+                    <h3 className="text-lg">{data.weight}</h3>
+                  </div>
+                </div>
+
+
+
+              )}
 
               {/* Size Chart Modal */}
               {showSizeChart && (

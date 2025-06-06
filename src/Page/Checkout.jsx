@@ -366,11 +366,12 @@ export default function Checkout() {
                         className="me-2" /> {p.title}
                     </td>
                     <td></td>
-                    <td>{item.quantity}</td>
+                    <td>{item.quantity} <strong className=""> {item.productId?.size ?? item?.size}</strong></td>
                     <td>{enableCurrency} {(p.price * item.quantity).toFixed(2)}</td>
                   </tr>
                 );
               })}
+
               <tr><td colSpan="3" className="text-end">Subtotal:</td><td>{enableCurrency} {subtotal.toFixed(2)}</td></tr>
               <tr><td colSpan="3" className="text-end">Coupon:</td><td>- {enableCurrency} {couponDiscount.toFixed(2)}</td></tr>
               <tr><td colSpan="3" className="text-end">Tax:</td><td>+ {enableCurrency} {taxValue.toFixed(2)}</td></tr>
