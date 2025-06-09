@@ -242,7 +242,7 @@ function Navbar(props) {
               <div
                 className=" justify-center items-center cursor-pointer hidden lg:flex">
                 {userData ?
-                  <p className="flex items-center gap-1 user-btn" onClick={() => setDropdownOpen(!dropdownOpen)}  > <span className="h-10 w-10 border rounded-full bg-black text-white font-bold grid place-items-center ">{userData.name.at(0)}</span> {userData.name}</p>
+                  <p className="flex items-center gap-1 user-btn" onClick={() => setDropdownOpen(!dropdownOpen)}  > <span className="h-10 w-10 border rounded-full bg-orange-500 text-white font-bold grid place-items-center ">{userData.name.at(0)}</span> {userData.name}</p>
                   :
                   <>
                     <p className="flex gap-1 items-center" onClick={() => navigate("/account")}>MY ACCOUNT<img src={profile} alt="" className="h-10 p-1 pb-2 block" /></p>
