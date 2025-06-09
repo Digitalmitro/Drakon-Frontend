@@ -50,7 +50,29 @@ function Navbar(props) {
   const user_id = decodedToken?._id;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [data, setData] = useState();
-  const { user: userData } = useUser()
+  const { user: userData, setUser } = useUser()
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handelLogout = () => {
+    Cookies.remove("token");
+    // location.reload();
+    setUser(null);
+    navigate("/account");
+    setDropdownOpen(false);
+  };
+
+
+  const handleItemClick = (option) => {
+
+    if (option === "Logout") {
+      handelLogout()
+      return;
+    }
+    console.log(`Selected: ${option}`);
+    navigate(`/${option.toLowerCase().replace(" ", "-")}`);
+    setDropdownOpen(false);
+    // Add your logic for each option here
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -208,14 +230,7 @@ function Navbar(props) {
                 <img src={search} alt="" className="h-8 p-1" />
               </div>
 
-              <div
-                className=" justify-center items-center cursor-pointer hidden lg:flex"
-                onClick={() => navigate("/account")}
-              >
-                {userData ? <p className="flex items-center gap-1"> <span className="h-10 w-10 border rounded-full bg-black text-white font-bold grid place-items-center ">{userData.name.at(0)}</span> {userData.name}</p> : <> <p className="">MY ACCOUNT</p><img src={profile} alt="" className="h-10 p-1 pb-2 block" /></>}
 
-
-              </div>
               <div
                 className="hidden lg:flex justify-center space-x-1 items-center cursor-pointer relative"
                 onClick={() => navigate("/cart")}
@@ -224,6 +239,31 @@ function Navbar(props) {
                 <p className="hidden lg:block">Cart</p>
                 <IoCart size={28} />
               </div>
+              <div
+                className=" justify-center items-center cursor-pointer hidden lg:flex">
+                {userData ?
+                  <p className="flex items-center gap-1 user-btn" onClick={() => setDropdownOpen(!dropdownOpen)}  > <span className="h-10 w-10 border rounded-full bg-black text-white font-bold grid place-items-center ">{userData.name.at(0)}</span> {userData.name}</p>
+                  :
+                  <>
+                    <p className="flex gap-1 items-center" onClick={() => navigate("/account")}>MY ACCOUNT<img src={profile} alt="" className="h-10 p-1 pb-2 block" /></p>
+                  </>}
+                {dropdownOpen && (
+                  <div className="absolute text-start right-0 top-14 mt-2 w-48 bg-[#F3F3F3] rounded-md shadow-lg  z-10 border">
+                    {['Profile', 'Address', 'Order', "Reset Password", 'Logout'].map((option) => (
+                      <div
+                        key={option}
+                        className="block px-3 py-2 text-base text-gray-700 hover:bg-gray-300 cursor-pointer"
+                        onClick={() => handleItemClick(option)}
+                      >
+                        {option}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+              </div>
+
+
             </div>
             <Box>
               <div>

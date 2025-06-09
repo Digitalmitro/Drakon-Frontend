@@ -51,6 +51,7 @@ export function useUser() {
         email: decodedToken?.email || null,
         loading,
         error,
-        token
+        token,
+        setUser
     };
 }
