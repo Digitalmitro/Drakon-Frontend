@@ -30,6 +30,9 @@ import Shop from "./Page/Shop"
 import Cart from "./Page/Cart"
 import ScrollToTop from "./Component/ScrollToTop";
 import StripeCheckout from "./Component/StripeCheckout";
+import Order from "./Page/Order";
+import Address from "./Page/Address";
+import ResetPassword from "./Page/ResetPassword";
 function App() {
   const isMobile = useMediaQuery("(max-width:900px)");
   const dispatch = useDispatch();
@@ -56,7 +59,7 @@ function App() {
 
     try {
       const payload = {
-        email : email
+        email: email
       }
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/subscribe`,
@@ -80,12 +83,15 @@ function App() {
 
   return (
     <Router>
-      <ScrollToTop/>
+      <ScrollToTop />
       <div className="" style={{ zoom: "0.8" }}>
         <Navbar closeCart={hideCartModal} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/order" element={<Order />} />
+          <Route path="/address" element={<Address />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/account" element={<Account />} />
           <Route path="/productdetails/:id" element={<Productdetails />} />
           <Route path="/contact" element={<Contact />} />
@@ -105,10 +111,10 @@ function App() {
           <Route path="/:apparel" element={<AllProductByCategory />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/category" element={<Category />} />
-          <Route path="/orders" element={<Orders />} />
+          {/* <Route path="/orders" element={<Orders />} /> */}
           <Route path="/termscondition" element={<TermsAndCondition />} />
-          <Route path="/shop" element={<Shop/>}/>
-          <Route path="/cart" element={<Cart/>}/>
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
         {/* <StripeCheckout /> */}
         <Footer closeCart={hideCartModal} />
