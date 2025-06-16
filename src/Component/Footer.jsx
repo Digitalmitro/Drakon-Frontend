@@ -8,7 +8,7 @@ import phone from "../assets/phone-telephone.png";
 import mail from "../assets/mail.png";
 import locationFooter from "../assets/location-footer.png";
 import { useMediaQuery } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Footer = ({ closeCart }) => {
   const navigate=useNavigate()
@@ -32,18 +32,18 @@ const Footer = ({ closeCart }) => {
                 now!
               </p>
               <div className="flex py-3 gap-6 text-[#ff5B00]">
-                <div>
+                <Link to={"https://www.facebook.com/drakonsportsapparel/"}>
                   <img src={fbFooter} alt="" />
-                </div>
+                </Link>
                 <div>
                   <img src={twitterFooter} alt="" />
                 </div>
                 <div>
                   <img src={linkedFooter} alt="" />
                 </div>
-                <div>
+                <Link to={"https://www.instagram.com/drakon_sports_apparel/"}>
                   <img src={igFooter} alt="" />
-                </div>
+                </Link>
               </div>
             </div>
             <div className="flex py-5 px-10 flex-col banner items-center lg:items-start gap-2 text-white mb-5 lg:mb-0 ">
