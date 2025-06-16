@@ -9,9 +9,10 @@ import mail from "../assets/mail.png";
 import locationFooter from "../assets/location-footer.png";
 import { useMediaQuery } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-
+import { IoLogoYoutube } from "react-icons/io5";
+import { FaPinterest } from "react-icons/fa6";
 const Footer = ({ closeCart }) => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width:900px)");
   return (
     <div
@@ -31,18 +32,30 @@ const Footer = ({ closeCart }) => {
                 including t-shirts, glasses, elbow guards, and hoodies. Shop
                 now!
               </p>
-              <div className="flex py-3 gap-6 text-[#ff5B00]">
+              <div className="flex py-3 gap-3 text-[#ff5B00]">
                 <Link to={"https://www.facebook.com/drakonsportsapparel/"}>
                   <img src={fbFooter} alt="" />
                 </Link>
-                <div>
+                <Link to={"https://x.com/drakonsports_a"}>
                   <img src={twitterFooter} alt="" />
-                </div>
-                <div>
+                </Link>
+                <Link
+                  to={"https://www.linkedin.com/company/drakon-sports-apparel/"}
+                >
                   <img src={linkedFooter} alt="" />
-                </div>
+                </Link>
                 <Link to={"https://www.instagram.com/drakon_sports_apparel/"}>
                   <img src={igFooter} alt="" />
+                </Link>
+                <Link to={"https://www.youtube.com/@drakonsportsapparel"}>
+                  <div className="w-[32px] h-[30px] rounded bg-[#f5743b] flex items-center justify-center">
+                    <IoLogoYoutube className="text-white text-[18px]" />
+                  </div>
+                </Link>
+                <Link to={"https://www.pinterest.com/drakonsportsapparel/"}>
+                <div className="w-[32px] h-[30px] rounded bg-[#f5743b] flex items-center justify-center">
+                    <FaPinterest className="text-white text-[18px]" />
+                  </div>
                 </Link>
               </div>
             </div>
@@ -50,22 +63,32 @@ const Footer = ({ closeCart }) => {
               <h3 className="text-2xl font-bold">Category</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col gap-7 text-2xl lg:text-xl cursor-pointer">
-                <li onClick={()=>navigate("/sunglasses")}>Sunglasses</li>
-                <li onClick={()=>navigate("/batting-gloves")}>Batting gloves</li>
-                <li onClick={()=>navigate("/equipment")}>Equipment</li>
-                <li onClick={()=>navigate("/accessories")}>Accessories</li>
-                <li onClick={()=>navigate("/apparel")}>Apparel</li>
+                <li onClick={() => navigate("/sunglasses")}>Sunglasses</li>
+                <li onClick={() => navigate("/batting-gloves")}>
+                  Batting gloves
+                </li>
+                <li onClick={() => navigate("/equipment")}>Equipment</li>
+                <li onClick={() => navigate("/accessories")}>Accessories</li>
+                <li onClick={() => navigate("/apparel")}>Apparel</li>
               </ul>
             </div>
             <div className="flex flex-col px-10 items-center banner lg:items-start gap-2 py-5 text-white mb-5 lg:mb-0">
               <h3 className="text-2xl font-bold">Useful Links</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col gap-7 text-xl cursor-pointer">
-                <li onClick={()=>navigate("/termscondition")}>Terms and Conditions</li>
-                <li onClick={()=>navigate("/privacypolicy")}>Privacy Policy</li>
-                <li onClick={()=>navigate("/shippingpolicy")}>Shipping Policy</li>
-                <li onClick={()=>navigate("/returnrefund")}>Return and Refund</li>
-                <li onClick={()=>navigate("/faq")}>FAQ</li>
+                <li onClick={() => navigate("/termscondition")}>
+                  Terms and Conditions
+                </li>
+                <li onClick={() => navigate("/privacypolicy")}>
+                  Privacy Policy
+                </li>
+                <li onClick={() => navigate("/shippingpolicy")}>
+                  Shipping Policy
+                </li>
+                <li onClick={() => navigate("/returnrefund")}>
+                  Return and Refund
+                </li>
+                <li onClick={() => navigate("/faq")}>FAQ</li>
               </ul>
             </div>
             <div className="flex flex-col contact px-10 lg:px-0 items-center lg:items-start gap-2 py-5 text-white">
