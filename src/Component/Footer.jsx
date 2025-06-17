@@ -89,6 +89,7 @@ const Footer = ({ closeCart }) => {
                   Return and Refund
                 </li>
                 <li onClick={() => navigate("/faq")}>FAQ</li>
+                <li onClick={() => navigate("/blog")}>Blog</li>
               </ul>
             </div>
             <div className="flex flex-col contact px-10 lg:px-0 items-center lg:items-start gap-2 py-5 text-white">

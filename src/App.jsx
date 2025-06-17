@@ -33,6 +33,8 @@ import StripeCheckout from "./Component/StripeCheckout";
 import Order from "./Page/Order";
 import Address from "./Page/Address";
 import ResetPassword from "./Page/ResetPassword";
+import Blog from "./Page/Blog";
+import BlogPost from "./Page/BlogPost";
 function App() {
   const isMobile = useMediaQuery("(max-width:900px)");
   const dispatch = useDispatch();
@@ -102,6 +104,7 @@ function App() {
           <Route path="/tab" element={<Tab />} />
           <Route path="/product" element={<EqpProduct />} />
           <Route path="/shippingpolicy" element={<ShippingPolicy />} />
+          <Route path="/blog" element={<Blog />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/returnrefund" element={<ReturnAndRefund />} />
           <Route path="/:sunglasses" element={<AllProductByCategory />} />
@@ -114,6 +117,7 @@ function App() {
           {/* <Route path="/orders" element={<Orders />} /> */}
           <Route path="/termscondition" element={<TermsAndCondition />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
         {/* <StripeCheckout /> */}
