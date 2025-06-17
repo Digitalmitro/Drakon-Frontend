@@ -21,7 +21,7 @@ const Footer = ({ closeCart }) => {
       style={{ zoom: isMobile ? "0.7" : "" }}
     >
       <div className="footer container mx-auto py-10">
-        <div className="flex wrapper lg:items-center sm:items-start  lg:p-0 h-full">
+        <div className="flex wrapper lg:items-center sm:items-start lg:p-0 h-full">
           <div className="lg:grid  wrapped grid-cols-4 justify-items-center lg:text-left">
             <div className="flex flex-col banner items-center lg:items-start gap-6 mb-5 lg:mb-0">
               <div className="logo">
