@@ -38,7 +38,7 @@ const Faq = () => {
                           aria-expanded="false"
                           aria-controls="faqAccountCollapse1"
                         >
-                          What is the equipment used for baseball?
+                          1. What is the equipment used for baseball?
                         </button>
                       </h2>
                       <div

@@ -19,7 +19,7 @@ import CheckoutWithId from "./Page/checkoutWithId";
 import Category from "./Page/Category";
 import Orders from "./Page/Orders";
 import EqpProduct from "./Component/EqpProduct";
-import Faq from "./Page/NavPolicies/Faq";
+import Faq from "./Page/Faq"
 import ShippingPolicy from "./Page/NavPolicies/ShippingPolicy";
 import PrivacyPolicy from "./Page/NavPolicies/PrivacyPolicy";
 import ReturnAndRefund from "./Page/NavPolicies/ReturnAndRefund";
