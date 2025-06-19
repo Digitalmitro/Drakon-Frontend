@@ -69,6 +69,24 @@ function Shop() {
           name="description"
           content="Dive into a passion for baseball and shop premium baseball gear online at Drakon Sports. Our products are crafted specially for game lovers."
         />
+        <meta
+          name="keywords"
+          content="Baseball Accessories Online,
+          Baseball Gloves Online,
+          Baseball Lifestyle Apparel,
+          Baseball Sunglasses,
+          Baseball Batting Gloves,
+          Pro Batting Gloves,
+          Baseball Equipment,
+          Baseball Apparel,
+          Baseball Clothing,
+          Baseball t-shirts,
+          Baseball Outfits,
+          Custom baseball jerseys,
+          baseball gear,
+          Baseball gear shop,
+          baseball clothing online"
+        />
       </Helmet>
       {/* Product Display */}
       <div className="flex flex-wrap justify-center lg:gap-8 pt-4 w-full">

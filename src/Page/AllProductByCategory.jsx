@@ -17,29 +17,40 @@ const categoryMetaData = {
       "Protect Your Vision – Baseball Sunglasses Online at Drakon Sports Apparel",
     description:
       "Reduce glare and protect your vision with quality baseball sunglasses online at Drakon Sports. Your go-to store for baseball accessories",
+    keywords:
+    "Baseball Sunglasses"
   },
   "batting-gloves": {
     title: "Top Baseball Batting Gloves for Power Hitters | Shop Now",
     description:
       "Firmer Grip, smooth swing, & better bat control with top baseball batting gloves available at Drakon Sports. Time to be a power hitter.",
+      keywords:
+      "Baseball Batting Gloves, Pro Batting Gloves"
   },
   equipment: {
     title:
       "Your Game, Your Gear – Shop Baseball Equipment at Drakon Sports Apparel",
     description:
       "Gear up your game with quality baseball equipment available at Drakon Sports online. Explore our online store now",
+      keywords:
+      "Baseball Equipment"
   },
   accessories: {
     title:
       "Game-Ready Baseball Accessories | Shop Now at Drakon Sports Apparel",
     description:
       " Always be game-ready with exclusive baseball accessories for better performance. Shop quality baseball accessories at Drakon Sports online.",
+      keywords:
+      "Baseball Accessories Online"
   },
   apparel: {
     title: "Top-Quality Baseball Apparel for Athletes | Drakon Sports",
     description:
       "But top-quality baseball apparel for better functionality at Drakon Sports online. Get hoodies, t-shirts, caps, and more at a favorable price.",
+      keywords:
+      "Baseball Apparel"
   },
+ 
 };
 function AllProductByCategory() {
   const urlname = useParams();
@@ -58,6 +69,8 @@ function AllProductByCategory() {
   const currentMeta = categoryMetaData[product] || {
     title: "Shop Our Products | YourBrand",
     description: "Explore our wide range of high-quality products.",
+    keywords:
+    "Baseball Sunglasses"
   };
   useMetaTags(currentMeta);
   const handleCart = async (id) => {

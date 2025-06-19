@@ -39,6 +39,10 @@ const Home = () => {
           name="description"
           content="Drakon Sports- One-stop online store for baseball enthusiasts to gear up like a pro. Get access to game essentials and accessories online."
         />
+         <meta
+          name="keywords"
+          content="Baseball Accessories Online, Baseball Gloves Online,Baseball Lifestyle Apparel,Baseball Sunglasses,Baseball Batting Gloves,Pro Batting Gloves,Baseball Equipment,Baseball Apparel,Baseball Clothing,Baseball t-shirts,Baseball Outfits,Custom baseball jerseys,baseball gear,Baseball gear shop,baseball clothing online"
+        />
       </Helmet>
       <Hero
         closeCart={hideCartModal}
