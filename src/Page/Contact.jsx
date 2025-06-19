@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { message } from "antd";
 import Cookies from "js-cookie";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 
 const Contact = () => {
   const token = Cookies.get("token");
@@ -74,6 +75,13 @@ const Contact = () => {
 
   return (
     <div className="bg-gray-50">
+      <Helmet>
+        <title>Get in Touch | Drakon Sports Apparel Support</title>
+        <meta
+          name="description"
+          content="Eager to know more? Drakon Sports is available 24/7 to answer all our queries regarding the products. Contact us and know more for a better purchase experience."
+        />
+      </Helmet>
       {/* Banner Section - Kept your original motion animation */}
       <div className="relative  container-fluid contact-banner bg-gray-800 flex items-center justify-center overflow-hidden">
         <motion.h2
@@ -104,9 +112,11 @@ const Contact = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Column - Form (same fields as original) */}
           <div className="lg:w-1/2 bg-white p-6 rounded-lg shadow-md">
-            <h5 className="text-gray-500 text-sm uppercase mb-1">Have a question?</h5>
+            <h5 className="text-gray-500 text-sm uppercase mb-1">
+              Have a question?
+            </h5>
             <h3 className="text-2xl font-bold mb-6">Send Message</h3>
-            
+
             <form onSubmit={handleContact} className="space-y-4">
               <div className="flex flex-col md:flex-row gap-4">
                 <input
@@ -142,9 +152,13 @@ const Contact = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-3 px-6 rounded-lg font-medium text-white ${isSubmitting ? 'bg-orange-400' : 'bg-orange-600 hover:bg-orange-700'}`}
+                className={`w-full py-3 px-6 rounded-lg font-medium text-white ${
+                  isSubmitting
+                    ? "bg-orange-400"
+                    : "bg-orange-600 hover:bg-orange-700"
+                }`}
               >
-                {isSubmitting ? 'Sending...' : 'Send message'}
+                {isSubmitting ? "Sending..." : "Send message"}
               </button>
             </form>
           </div>
@@ -153,7 +167,7 @@ const Contact = () => {
           <div className="lg:w-1/2 bg-white p-6 rounded-lg shadow-md">
             <h5 className="text-gray-500 text-sm uppercase mb-1">Address</h5>
             <h3 className="text-2xl font-bold mb-6">Find Us</h3>
-            
+
             <div className="space-y-4 text-gray-700">
               <p>
                 <span className="font-semibold">Location:</span>
@@ -169,10 +183,11 @@ const Contact = () => {
               </p>
               <p className="font-semibold">Customer Support Hotline:</p>
               <p>123-456-7890</p>
-              
+
               <div className="mt-6">
                 <p className="mt-4 font-semibold">
-                  Speak directly with a Drakon representative during our business hours:
+                  Speak directly with a Drakon representative during our
+                  business hours:
                 </p>
                 <p>Monday – Friday:</p>
                 <ul className="list-disc ml-5 space-y-1">
@@ -187,7 +202,9 @@ const Contact = () => {
         {/* Additional Info - Same content as original */}
         <div className="bg-white p-6 rounded-lg shadow-md mt-8">
           <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-2">Share Your Drakon Story</h2>
+            <h2 className="text-lg font-semibold mb-2">
+              Share Your Drakon Story
+            </h2>
             <p className="text-gray-700">
               We are always inspired by the achievements of the Drakon
               community. If you have a story to share about how Drakon Sports
@@ -199,7 +216,9 @@ const Contact = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold mb-2">Our Commitment to You</h2>
+            <h2 className="text-lg font-semibold mb-2">
+              Our Commitment to You
+            </h2>
             <p className="text-gray-700">
               At Drakon Sports Apparel, we are committed to providing
               exceptional products and unparalleled customer service.
