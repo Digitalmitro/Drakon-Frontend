@@ -114,9 +114,9 @@ const GlassesSection = ({ closeCart }) => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:py-16 ">
           {/* Find Drakon */}
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
               Find Drakon
-            </h2>
+            </h1>
             <p className="text-lg md:text-xl text-gray-800 max-w-3xl mx-auto text-justify">
               We sell our products across the U.S. Regardless of your location,
               we are always here to help and get you the desired product. We

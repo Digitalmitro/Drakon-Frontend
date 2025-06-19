@@ -1,24 +1,32 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-const useMetaTags = ({ title, description }) => {
+const useMetaTags = ({ title, description, keywords }) => {
   useEffect(() => {
     document.title = title;
-    
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', description);
-    } else {
-      const tag = document.createElement('meta');
-      tag.name = 'description';
-      tag.content = description;
-      document.head.appendChild(tag);
+
+    // Update or create description meta tag
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.name = 'description';
+      document.head.appendChild(metaDescription);
     }
-    
-    // Clean up function
-    return () => {
-      document.title = ''; // Reset to default title if needed
-    };
-  }, [title, description]);
+    metaDescription.content = description;
+
+    // Update or create keywords meta tag
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.name = 'keywords';
+      document.head.appendChild(metaKeywords);
+    }
+
+    // Convert keywords to string (handles string or array)
+    metaKeywords.content = Array.isArray(keywords)
+      ? keywords.join(', ')
+      : (keywords || '');
+
+  }, [title, description, keywords]);
 };
 
 export default useMetaTags;

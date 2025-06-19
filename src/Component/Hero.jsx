@@ -69,13 +69,13 @@ const Hero = ({ closeCart, setLoading, loading }) => {
                   }}
                 >
                   <div className={`text-white px-4 `}>
-                    <h1 className="  mb-10 lg:w-[850px] ">
+                    <h2 className="  mb-10 lg:w-[850px] ">
                       <span className="text-amber-500 md:text-7xl text-3xl font-semibold leading-[1.5]">
                         {img.title}
                       </span>
                       <br />
                       {/* <span>{img.description}</span> */}
-                    </h1>
+                    </h2>
                     <div>
                       <Button
                         sx={{

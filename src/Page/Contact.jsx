@@ -81,6 +81,11 @@ const Contact = () => {
           name="description"
           content="Eager to know more? Drakon Sports is available 24/7 to answer all our queries regarding the products. Contact us and know more for a better purchase experience."
         />
+        <meta
+          name="keywords"
+          content="baseball gear
+          Baseball gear shop, Baseball Accessories Online, Baseball Gloves Online"
+        />
       </Helmet>
       {/* Banner Section - Kept your original motion animation */}
       <div className="relative  container-fluid contact-banner bg-gray-800 flex items-center justify-center overflow-hidden">
