@@ -11,6 +11,7 @@ import { useMediaQuery } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useCart } from "../context/CartContext";
 import { cartModal } from "../Redux/CartSlice";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const isMobile = useMediaQuery("(max-width:900px)");
@@ -18,8 +19,7 @@ const Home = () => {
   const hideCartModal = () => {
     dispatch(cartModal(false));
   };
-  const [loading, setLoading] = useState(true)
-
+  const [loading, setLoading] = useState(true);
 
   // const guestCart=JSON.parse(localStorage.getItem("guest_cart") || "[]")
 
@@ -31,10 +31,20 @@ const Home = () => {
 
   console.log(cart);
 
-
   return (
     <div>
-      <Hero closeCart={hideCartModal} loading={loading} setLoading={setLoading} />
+      <Helmet>
+        <title>Gear Up Like a Pro – Premium Baseball Apparel Online</title>
+        <meta
+          name="description"
+          content="Drakon Sports- One-stop online store for baseball enthusiasts to gear up like a pro. Get access to game essentials and accessories online."
+        />
+      </Helmet>
+      <Hero
+        closeCart={hideCartModal}
+        loading={loading}
+        setLoading={setLoading}
+      />
       <Featured closeCart={hideCartModal} />
       <GlassesSection closeCart={hideCartModal} />
       <GlovesSection closeCart={hideCartModal} />

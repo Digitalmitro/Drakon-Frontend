@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 function Shop() {
   const { getAllShopProduct } = useProduct();
@@ -62,6 +63,13 @@ function Shop() {
 
   return (
     <div className="pt-20 flex flex-wrap lg:flex-row">
+       <Helmet>
+        <title>Shop Premium Baseball Gear Online | Drakon Sports Apparel</title>
+        <meta
+          name="description"
+          content="Dive into a passion for baseball and shop premium baseball gear online at Drakon Sports. Our products are crafted specially for game lovers."
+        />
+      </Helmet>
       {/* Product Display */}
       <div className="flex flex-wrap justify-center lg:gap-8 pt-4 w-full">
         {currentProducts.length > 0 ? (
