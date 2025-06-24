@@ -18,13 +18,13 @@ const categoryMetaData = {
     description:
       "Reduce glare and protect your vision with quality baseball sunglasses online at Drakon Sports. Your go-to store for baseball accessories",
     keywords:
-    "Baseball Sunglasses"
+      "Baseball Sunglasses"
   },
   "batting-gloves": {
     title: "Top Baseball Batting Gloves for Power Hitters | Shop Now",
     description:
       "Firmer Grip, smooth swing, & better bat control with top baseball batting gloves available at Drakon Sports. Time to be a power hitter.",
-      keywords:
+    keywords:
       "Baseball Batting Gloves, Pro Batting Gloves"
   },
   equipment: {
@@ -32,7 +32,7 @@ const categoryMetaData = {
       "Your Game, Your Gear – Shop Baseball Equipment at Drakon Sports Apparel",
     description:
       "Gear up your game with quality baseball equipment available at Drakon Sports online. Explore our online store now",
-      keywords:
+    keywords:
       "Baseball Equipment"
   },
   accessories: {
@@ -40,17 +40,17 @@ const categoryMetaData = {
       "Game-Ready Baseball Accessories | Shop Now at Drakon Sports Apparel",
     description:
       " Always be game-ready with exclusive baseball accessories for better performance. Shop quality baseball accessories at Drakon Sports online.",
-      keywords:
+    keywords:
       "Baseball Accessories Online"
   },
   apparel: {
     title: "Top-Quality Baseball Apparel for Athletes | Drakon Sports",
     description:
       "But top-quality baseball apparel for better functionality at Drakon Sports online. Get hoodies, t-shirts, caps, and more at a favorable price.",
-      keywords:
+    keywords:
       "Baseball Apparel"
   },
- 
+
 };
 function AllProductByCategory() {
   const urlname = useParams();
@@ -70,7 +70,7 @@ function AllProductByCategory() {
     title: "Shop Our Products | YourBrand",
     description: "Explore our wide range of high-quality products.",
     keywords:
-    "Baseball Sunglasses"
+      "Baseball Sunglasses"
   };
   useMetaTags(currentMeta);
   const handleCart = async (id) => {
@@ -207,11 +207,17 @@ function AllProductByCategory() {
 
                 {/* Product Info */}
                 <div className="mt-4 px-1 flex flex-col gap-1">
-                  <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
-                    {e.description.length > 35
-                      ? `${e.description.slice(0, 35)}...`
-                      : e.description}
-                  </h3>
+                  <Link
+                    to={`/productDetails/${e._id}`}
+                    className=""
+                  >
+                    <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                      {e.description.length > 35
+                        ? `${e.description.slice(0, 35)}...`
+                        : e.description}
+                    </h3>
+                  </Link>
+
                   <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
                     $ {e.price}
                   </h4>

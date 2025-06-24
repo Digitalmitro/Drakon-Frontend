@@ -184,11 +184,17 @@ function Shop() {
 
                 {/* Product Info - Updated to match second UI */}
                 <div className="mt-4 px-1 flex flex-col gap-1">
-                  <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
-                    {e.description.length > 35
-                      ? `${e.description.slice(0, 35)}...`
-                      : e.description}
-                  </h3>
+                  <Link
+                    to={`/productDetails/${e._id}`}
+                    className=""
+                  >
+                    <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                      {e.description.length > 35
+                        ? `${e.description.slice(0, 35)}...`
+                        : e.description}
+                    </h3>
+                  </Link>
+
                   <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
                     $ {e.price}
                   </h4>
