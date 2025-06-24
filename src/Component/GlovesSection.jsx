@@ -168,33 +168,33 @@ const GlovesSection = ({ closeCart }) => {
         <div className="mx-auto py-10">
 
 
-  {glovesProducts?.length > 0 ? (
-    <Swiper
-      slidesPerView={4}
-      loop={true}
-      pagination={{ clickable: true }}
-      autoplay={{
-        delay: 3000,
-        disableOnInteraction: false,
-        waitForTransition: true,
-        pauseOnMouseEnter: true,
-      }}
-      modules={[Pagination, Autoplay]}
-      breakpoints={{
-        1024: { slidesPerView: 4 },
-        600: { slidesPerView: 2 },
-        200: { slidesPerView: 1 },
-      }}
-      className="mt-10 lg:pl-8 mx-6 lg:mx-0"
-    >
-      {glovesProducts.map((e) => (
-        <SwiperSlide key={e._id}>
-          <div className="lg:h-[500px] h-[440px]">
-            <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
-              {/* LIMITED Badge */}
-              <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
-                LIMITED
-              </div>
+          {glovesProducts?.length > 0 ? (
+            <Swiper
+              slidesPerView={4}
+              loop={true}
+              pagination={{ clickable: true }}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+                waitForTransition: true,
+                pauseOnMouseEnter: true,
+              }}
+              modules={[Pagination, Autoplay]}
+              breakpoints={{
+                1024: { slidesPerView: 4 },
+                600: { slidesPerView: 2 },
+                200: { slidesPerView: 1 },
+              }}
+              className="mt-10 lg:pl-8 mx-6 lg:mx-0"
+            >
+              {glovesProducts.map((e) => (
+                <SwiperSlide key={e._id}>
+                  <div className="lg:h-[500px] h-[440px]">
+                    <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
+                      {/* LIMITED Badge */}
+                      <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
+                        LIMITED
+                      </div>
 
                       {/* Product Image */}
                       <Link
@@ -210,9 +210,14 @@ const GlovesSection = ({ closeCart }) => {
 
                       {/* Product Info */}
                       <div className="mt-4 px-1 flex flex-col gap-1">
-                        <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
-                          {e.title}
-                        </h3>
+                        <Link
+                          to={`/productDetails/${e._id}`}
+                          className=""
+                        >
+                          <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                            {e.title}
+                          </h3>
+                        </Link>
                         <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
                           $ {e.price}
                         </h4>
