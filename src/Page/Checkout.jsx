@@ -193,26 +193,40 @@ export default function Checkout() {
     }
   }
 
-  // STRIPE INIT
   async function initiateStripe() {
     if (shippingLoading || !deliveryAddress)
       return message.error("Wait for shipping to finish");
+
     try {
       const stripe = await stripePromise;
+      if (!stripe) {
+        return message.error("Stripe JS failed to load. Check publishable key & HTTPS.");
+      }
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/api/stripe/create-payment-intent`,
         {
           amount: Math.round((finalPayment + shippingCost) * 100),
-          success_url: `${window.location.origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: window.location.href,
+          success_url: `${location.origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${location.origin}/cart?canceled=true`,
         },
-        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+        token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
       );
-      await stripe.redirectToCheckout({ sessionId: data.sessionId });
-    } catch {
+
+      console.log("Session from backend ➜", data);   // verify sessionId value
+
+      const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+
+      if (error) {
+        console.error("Stripe redirect error ➜", error);
+        message.error(error.message);
+      }
+    } catch (err) {
+      console.error("Outer catch ➜", err);
       message.error("Payment initiation failed");
     }
   }
+
 
   // CONFIRM PAYMENT & CREATE ORDER  (unchanged except for brevity)
   async function confirmPayment(sid) {
