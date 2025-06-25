@@ -87,6 +87,7 @@ function Shop() {
           Baseball gear shop,
           baseball clothing online"
         />
+        <link rel="canonical" href={`https://drakon-sports.com/shop`} />
       </Helmet>
       {/* Product Display */}
       <div className="flex flex-wrap justify-center lg:gap-8 pt-4 w-full">

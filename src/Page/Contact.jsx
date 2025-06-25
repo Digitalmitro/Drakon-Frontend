@@ -86,6 +86,7 @@ const Contact = () => {
           content="baseball gear
           Baseball gear shop, Baseball Accessories Online, Baseball Gloves Online"
         />
+        <link rel="canonical" href={`https://drakon-sports.com/contact`} />
       </Helmet>
       {/* Banner Section - Kept your original motion animation */}
       <div className="relative  container-fluid contact-banner bg-gray-800 flex items-center justify-center overflow-hidden">
