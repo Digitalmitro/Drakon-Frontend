@@ -43,6 +43,7 @@ const Home = () => {
           name="keywords"
           content="Baseball Accessories Online, Baseball Gloves Online,Baseball Lifestyle Apparel,Baseball Sunglasses,Baseball Batting Gloves,Pro Batting Gloves,Baseball Equipment,Baseball Apparel,Baseball Clothing,Baseball t-shirts,Baseball Outfits,Custom baseball jerseys,baseball gear,Baseball gear shop,baseball clothing online"
         />
+        <link rel="canonical" href={`https://drakon-sports.com/`} />
       </Helmet>
       <Hero
         closeCart={hideCartModal}

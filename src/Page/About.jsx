@@ -21,6 +21,7 @@ const About = () => {
           name="keywords"
           content="Drakon Sports, About Us, High Quality Sportswear, Free Shipping, Money Back Guarantee, Customer Support"
         />
+        <link rel="canonical" href={`https://drakon-sports.com/about`} />
       </Helmet>
 
       <div className="container-fluid relative flex justify-center items-center">
