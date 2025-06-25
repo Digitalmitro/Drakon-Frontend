@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { addItem } from "../Redux/CartSlice";
+import axios from "axios";
+import { message } from "antd";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+
 
 function Shop() {
   const { getAllShopProduct } = useProduct();
@@ -11,6 +17,11 @@ function Shop() {
   const [productsPerPage] = useState(8);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(500);
+  const dispatch = useDispatch();
+  const token = Cookies.get("token");
+  const decodedToken = token && jwtDecode(token);
+  const user_id = decodedToken?._id;
+  const navigate = useNavigate();
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
@@ -61,9 +72,69 @@ function Shop() {
     setCurrentPage(1); // Reset to first page when price range changes
   }, [minPrice, maxPrice, sunglasses]);
 
+
+  const handleCart = async (id) => {
+    console.log("handleCart called");
+    const topProduct = currentProducts.find((item) => item._id === id);
+
+    if (!topProduct) {
+      console.error("Product not found");
+      return;
+    }
+
+    // item shape for both guest & logged-in
+    const cartItem = {
+      productId: {
+        _id: topProduct._id,
+        title: topProduct.title,
+        price: topProduct.price,
+        image: topProduct.image,
+        stock: topProduct.stock,
+      },
+      quantity: 1,
+      total: topProduct.price * 1,
+    };
+
+    if (user_id) {
+      // logged-in: hit server
+      dispatch(addItem(topProduct));
+      try {
+        await axios.post(`${import.meta.env.VITE_BACKEND_API}/api/add`, {
+          image: topProduct.image,
+          title: topProduct.title,
+          price: topProduct.price,
+          quantity: 1,
+          productId: topProduct._id,
+          userId: user_id,
+        });
+        message.success("Added to Cart");
+        setTimeout(() => navigate("/cart"), 500);
+      } catch (error) {
+        console.error(error);
+        message.error("Cart item not added");
+      }
+    } else {
+      // guest: write to localStorage
+      const guestCart = JSON.parse(localStorage.getItem("guest_cart") || "[]");
+      const existing = guestCart.find(
+        (i) => i.productId._id === topProduct._id
+      );
+      if (existing) {
+        existing.quantity += 1;
+        existing.total = existing.quantity * topProduct.price;
+      } else {
+        guestCart.push(cartItem);
+      }
+      localStorage.setItem("guest_cart", JSON.stringify(guestCart));
+      message.success("Added to Cart");
+      setTimeout(() => navigate("/cart"), 500);
+    }
+  };
+
+
   return (
     <div className="pt-20 flex flex-wrap lg:flex-row">
-       <Helmet>
+      <Helmet>
         <title>Shop Premium Baseball Gear Online | Drakon Sports Apparel</title>
         <meta
           name="description"
@@ -114,11 +185,17 @@ function Shop() {
 
                 {/* Product Info - Updated to match second UI */}
                 <div className="mt-4 px-1 flex flex-col gap-1">
-                  <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
-                    {e.description.length > 35
-                      ? `${e.description.slice(0, 35)}...`
-                      : e.description}
-                  </h3>
+                  <Link
+                    to={`/productDetails/${e._id}`}
+                    className=""
+                  >
+                    <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                      {e.description.length > 35
+                        ? `${e.description.slice(0, 35)}...`
+                        : e.description}
+                    </h3>
+                  </Link>
+
                   <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
                     $ {e.price}
                   </h4>
@@ -126,7 +203,7 @@ function Shop() {
 
                 {/* Buttons - Added like in second UI */}
                 <div className="flex mt-3 gap-2">
-                  <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
+                  <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition" onClick={() => handleCart(e._id)}>
                     Add to cart
                   </button>
                   <Link
@@ -159,11 +236,10 @@ function Shop() {
             {Array.from({ length: totalPages }).map((_, index) => (
               <button
                 key={index}
-                className={`px-4 py-2 border rounded-md ${
-                  currentPage === index + 1
-                    ? "bg-blue-500 text-white"
-                    : "hover:bg-gray-100"
-                }`}
+                className={`px-4 py-2 border rounded-md ${currentPage === index + 1
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-100"
+                  }`}
                 onClick={() => setCurrentPage(index + 1)}
               >
                 {index + 1}
