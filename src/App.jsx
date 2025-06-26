@@ -117,7 +117,7 @@ function App() {
           {/* <Route path="/orders" element={<Orders />} /> */}
           <Route path="/termscondition" element={<TermsAndCondition />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
         {/* <StripeCheckout /> */}

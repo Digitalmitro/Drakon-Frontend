@@ -2,6 +2,7 @@ export const blogPosts = [
   {
     id: 1,
     title: "Choosing Proper Baseball Compression Sleeves",
+    slug: "choosing-proper-baseball-compression-sleeves",
     date: "March 15, 2024",
     metaTitle: "Choosing the Correct Baseball Compression Sleeves",
     metaDescription:
@@ -73,6 +74,7 @@ export const blogPosts = [
   {
     id: 2,
     title: "Sunglasses That Actually Improve Your Game",
+    slug: "sunglasses-that-actually-improve-your-game",
     date: "April 2, 2024",
     image:
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80",
@@ -100,6 +102,7 @@ export const blogPosts = [
   {
     id: 3,
     title: "Baseball Apparel: Moisture-Wicking vs. Compression",
+    slug: "baseball-apparel-moisture-wicking-vs-compression",
     date: "May 10, 2024",
     image:
       "https://images.unsplash.com/photo-1521747116042-5a810fda9664?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
@@ -138,6 +141,7 @@ export const blogPosts = [
   {
     id: 4,
     title: "Gear Maintenance: Make Your Equipment Last",
+    slug: "gear-maintenance-make-your-equipment-last",
     date: "June 5, 2024",
     image:
       "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1605&q=80",

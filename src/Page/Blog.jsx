@@ -21,7 +21,7 @@ function Blog() {
         {blogPosts.map((post) => (
           <div
             key={post.id}
-            onClick={() => navigate(`/blog/${post.id}`)}
+            onClick={() => navigate(`/blog/${post.slug}`)}
             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
           >
             <div className="relative h-60 overflow-hidden">
