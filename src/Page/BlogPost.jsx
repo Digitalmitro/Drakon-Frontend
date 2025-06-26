@@ -2,9 +2,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { blogPosts } from "./BlogData";
 import { Helmet } from "react-helmet";
 function BlogPost() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
-  const post = blogPosts.find((post) => post.id === Number(id));
+  const post = blogPosts.find((post) => post.slug === slug);
 
   if (!post) {
     return (
@@ -32,7 +32,7 @@ function BlogPost() {
           name="keywords"
           content={post.metaKeywords}
         />
-         <link rel="canonical" href={`https://drakon-sports.com/blog/${id}`} />
+         <link rel="canonical" href={`https://drakon-sports.com/blog/${slug}`} />
       </Helmet>
       {/* Breadcrumb Navigation */}
       <nav className="flex mb-6" aria-label="Breadcrumb">
