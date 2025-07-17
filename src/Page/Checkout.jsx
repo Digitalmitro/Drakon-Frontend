@@ -70,6 +70,7 @@ export default function Checkout() {
 
     const sid = searchParams.get("session_id");
     if (sid) setSessionId(sid);
+
   }, []);
 
   // 2) confirmPayment when stripe returns
@@ -262,7 +263,8 @@ export default function Checkout() {
           cartData: cartData.map((p) => ({
             productId: p.productId._id || p.productId,
             quantity: p.quantity,
-            size: p?.productId?.size ?? p.size,
+            name: p?.productId?.title ?? "",
+            size: p?.productId?.size ?? "M",
             weight: p?.productId?.weight ?? p.weight,
             price: p.productId.price || p.price,
           })),
@@ -299,6 +301,9 @@ export default function Checkout() {
     setAddressForm((f) => ({ ...f, [name]: value }));
   }
 
+
+  console.log(cartData);
+
   // RENDER
   return (
     // Responsive and Shopify-like checkout UI
@@ -309,14 +314,22 @@ export default function Checkout() {
         <div className="w-full lg:w-2/3">
           <h2 className="text-2xl font-semibold mb-6">Shipping address</h2>
 
-          <div className="mb-4 flex gap-4">
-            <button onClick={() => navigate("/account")} className="px-6 py-2 bg-orange-500 text-white rounded-lg w-full max-w-[180px]">
-              Register
-            </button>
-            <button onClick={() => navigate("/account")} className="px-6 py-2 bg-slate-900 text-white rounded-lg w-full max-w-[180px]">
-              Login
-            </button>
-          </div>
+
+
+          {
+            !token &&
+            <>
+              <div className="mb-4 flex gap-4">
+                <button onClick={() => navigate("/account")} className="px-6 py-2 bg-orange-500 text-white rounded-lg w-full max-w-[180px]">
+                  Register
+                </button>
+                <button onClick={() => navigate("/account")} className="px-6 py-2 bg-slate-900 text-white rounded-lg w-full max-w-[180px]">
+                  Login
+                </button>
+              </div>
+            </>
+          }
+
 
           {showAddressForm ? (
             <form onSubmit={handleAddressSubmit} className="space-y-4">
