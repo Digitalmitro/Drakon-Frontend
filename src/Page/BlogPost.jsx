@@ -112,7 +112,7 @@ function BlogPost() {
           <img
             src={post.image}
             alt={post.title}
-            className="w-full h-auto object-cover"
+            className=" w-full h-auto object-cover max-w-[800px]"
           />
         </div>
 
@@ -122,11 +122,7 @@ function BlogPost() {
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        {/* Related Products CTA */}
-        <div className="mt-16 bg-gray-50 p-6 rounded-xl">
-          <h3 className="text-xl font-bold mb-4">Featured Gear Mentioned</h3>
-          <p className="mb-4">Shop the products recommended in this article:</p>
-        </div>
+       
 
         {/* Back Button */}
         <div className="mt-12 text-center">
