@@ -28,7 +28,7 @@ function Blog() {
               <img
                 src={post.image}
                 alt={post.title}
-                className="group-hover:scale-105 transition-transform duration-500"
+                className="group-hover:scale-105 transition-transform duration-500 "
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <span className="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">

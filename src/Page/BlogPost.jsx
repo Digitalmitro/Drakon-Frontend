@@ -108,11 +108,11 @@ function BlogPost() {
         </div>
 
         {/* Featured Image */}
-        <div className="rounded-xl overflow-hidden mb-10">
+        <div className="rounded-xl overflow-hidden flex justify mb-10">
           <img
             src={post.image}
             alt={post.title}
-            className=" w-full h-auto object-cover max-w-[800px]"
+            className=" w-full h-auto max-h-[400px] object-fit max-w-[500px]"
           />
         </div>
 
