@@ -1,8 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import { blogPosts } from "./BlogData";
+// import { blogPosts } from "./BlogData";
+import { useEffect, useState } from "react";
 
 function Blog() {
   const navigate = useNavigate();
+  const [blogPost,setBlogPost] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/api`);
+      const data = await response.json();
+      console.log(data);
+      setBlogPost(data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-24 sm:py-4">
@@ -18,34 +29,37 @@ function Blog() {
 
       {/* Blog Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {blogPosts.map((post) => (
+        {blogPost.map((post) => (
           <div
-            key={post.id}
+            key={post._id}
             onClick={() => navigate(`/blog/${post.slug}`)}
             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
           >
+            {/* Blog Image */}
             <div className="relative h-60 overflow-hidden">
               <img
                 src={post.image}
                 alt={post.title}
-                className="group-hover:scale-105 transition-transform duration-500 "
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <span className="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">
-                  {post.tags[0]}
+                  {post.tags?.[0]}
                 </span>
               </div>
             </div>
+
+            {/* Blog Content */}
             <div className="p-6">
               <div className="flex items-center text-sm text-gray-500 mb-2">
-                <span>{post.date}</span>
-                <span className="mx-2">•</span>
-                <span>{post.author}</span>
+                <span>{new Date(post.createdAt).toDateString()}</span>
               </div>
               <h2 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">
                 {post.title}
               </h2>
-              <p className="text-gray-600 mb-4 text-justify">{post.excerpt}</p>
+              <p className="text-gray-600 mb-4 text-justify">
+                {post.metaDescription?.slice(0, 120)}...
+              </p>
               <button className="text-blue-600 font-medium text-sm flex items-center">
                 Read More
                 <svg
