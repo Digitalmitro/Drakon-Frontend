@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/autoplay";
 import { Pagination, Autoplay } from "swiper/modules";
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
@@ -49,6 +50,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
           autoplay={{
             delay: 3000,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
           }}
           modules={[Pagination, Autoplay]}
           breakpoints={{
