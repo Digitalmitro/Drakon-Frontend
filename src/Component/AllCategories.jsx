@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import "swiper/css/autoplay";
 import { Pagination, Autoplay } from "swiper/modules";
 import { useEffect } from "react";
 import { useProduct } from "../context/ProductContext";
@@ -12,10 +12,15 @@ import img1 from "../assets/carousel/free-shipping.png";
 import img2 from "../assets/carousel/credit.png";
 import img3 from "../assets/carousel/return.png";
 import img4 from "../assets/carousel/secure-wallet.png";
+
+// Initialize Swiper modules
+SwiperCore.use([Autoplay, Pagination]);
+
 const GlassesSection = ({ closeCart, navigate }) => {
   const { getCategory } = useProduct();
   const [glassesBanner, setGlassesBanner] = useState([]);
   const [glassesProducts, setGlassesProducts] = useState([]);
+  const swiperRef = useRef(null);
 
   const allProductsByCategory = async () => {
     const response = await getCategory();
@@ -36,6 +41,17 @@ const GlassesSection = ({ closeCart, navigate }) => {
     allProductsByCategory();
   }, []);
 
+  useEffect(() => {
+    // Start autoplay when glassesProducts is loaded and swiper is ready
+    if (
+      swiperRef.current &&
+      swiperRef.current.swiper &&
+      glassesProducts.length > 0
+    ) {
+      swiperRef.current.swiper.autoplay.start();
+    }
+  }, [glassesProducts]);
+
   return (
     <div className="bg-[#fcf7f7]" onClick={closeCart}>
       <div className=" mx-auto pb-10">
@@ -43,44 +59,52 @@ const GlassesSection = ({ closeCart, navigate }) => {
           All Categories
         </h2>
 
-        <Swiper
-          slidesPerView={4}
-          loop={true}
-          pagination={{ clickable: true }}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }}
-          modules={[Pagination, Autoplay]}
-          breakpoints={{
-            1024: { slidesPerView: 4 },
-            600: { slidesPerView: 2 },
-            200: { slidesPerView: 1 },
-          }}
-          className="mt-10 lg:ml-8 mx-6 lg:mx-0"
-        >
-          {glassesProducts.map((e) => (
-            <SwiperSlide key={e._id}>
-              <div className="h-[450px]">
-                <Link to={`/${e.description.toLowerCase()}`}>
-                  <div className="shadow-lg lg:h-[350px] rounded lg:w-[90%] flex flex-col justify-between gap-6 bg-white p-2 pb-4">
-                    <div className="flex justify-center lg:w-full">
-                      <img
-                        src={e.image}
-                        className="object-cover h-[300px] w-[100%]"
-                        alt="Product"
-                      />
+        {glassesProducts.length > 0 ? (
+          <Swiper
+            ref={swiperRef}
+            slidesPerView={4}
+            loop={true}
+            pagination={{ clickable: true }}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: false,
+            }}
+            modules={[Pagination, Autoplay]}
+            breakpoints={{
+              1024: { slidesPerView: 4 },
+              600: { slidesPerView: 2 },
+              200: { slidesPerView: 1 },
+            }}
+            className="mt-10 lg:ml-8 mx-6 lg:mx-0"
+            onInit={(swiper) => {
+              swiper.autoplay.start();
+            }}
+          >
+            {glassesProducts.map((e) => (
+              <SwiperSlide key={e._id}>
+                <div className="h-[450px]">
+                  <Link to={`/${e.description.toLowerCase()}`}>
+                    <div className="shadow-lg lg:h-[350px] rounded lg:w-[90%] flex flex-col justify-between gap-6 bg-white p-2 pb-4">
+                      <div className="flex justify-center lg:w-full">
+                        <img
+                          src={e.image}
+                          className="object-cover h-[300px] w-[100%]"
+                          alt="Product"
+                        />
+                      </div>
+                      <div className=" h-full space-y-1 px-2">
+                        <h3 className="font-semibold text-xl">{e.title}</h3>
+                      </div>
                     </div>
-                    <div className=" h-full space-y-1 px-2">
-                      <h3 className="font-semibold text-xl">{e.title}</h3>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+                  </Link>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <div className="text-center py-10">Loading categories...</div>
+        )}
       </div>
       <div className="bg-[#fcf7f7] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
