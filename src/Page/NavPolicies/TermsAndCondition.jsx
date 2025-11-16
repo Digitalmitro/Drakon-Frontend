@@ -325,9 +325,14 @@ function TermsAndCondition() {
             <h3 className="text-2xl font-semibold text-gray-900 mb-6 pb-2 border-b border-gray-200">
               3. Products and Pricing
             </h3>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              All products and services available on our website are subject to availability. We make every effort to ensure that product descriptions, images, and pricing information are accurate. However, we do not warrant that product descriptions or other content on the Service is accurate, complete, reliable, current, or error-free.
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              The price of products can change without any notice. We reserve the right at any given time to modify or discontinue the Service (or any part or content thereof) without notice. We shall not be liable to you or any third party for any modification, price change, suspension, or discontinuance of the Service.
+            </p>
             <p className="text-gray-700 leading-relaxed">
-              The price of products can change without any notice. We reserve this right at any given time to rectify or discontinue the Service without notice. We are not liable to our customers or any third party for any correction, price change, suspension, or discontinuance of the service.
-
+              We reserve the right to limit the quantities of any products or services that we offer. All descriptions of products or product pricing are subject to change at any time without notice, at our sole discretion. We reserve the right to discontinue any product at any time.
             </p>
           </div>
 
