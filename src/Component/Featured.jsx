@@ -59,6 +59,12 @@ const Featured = ({ closeCart }) => {
       return;
     }
 
+    // Check if product is sold out
+    if (topProduct.isSoldOut) {
+      message.error("This product is sold out");
+      return;
+    }
+
     // item shape for both guest & logged-in
     const cartItem = {
       productId: {
@@ -155,11 +161,18 @@ const Featured = ({ closeCart }) => {
             {topProductBanner.map((e) => (
               <SwiperSlide key={e._id}>
                 <div className="lg:h-[500px] h-[440px]">
-                  <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300">
+                  <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
                     {/* LIMITED Badge */}
                     <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
                       LIMITED
                     </div>
+
+                    {/* Sold Out Badge */}
+                    {e.isSoldOut && (
+                      <div className="absolute top-2 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-md uppercase z-10">
+                        SOLD OUT
+                      </div>
+                    )}
 
                     {/* Product Image */}
                     <Link
@@ -189,8 +202,16 @@ const Featured = ({ closeCart }) => {
                     </div>
                     {/* Buttons */}
                     <div className="flex mt-3 gap-2">
-                      <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition" onClick={() => handleCart(e._id)}>
-                        Add to cart
+                      <button 
+                        className={`text-white text-lg font-medium py-2 px-2 rounded w-full transition ${
+                          e.isSoldOut 
+                            ? "bg-gray-400 cursor-not-allowed" 
+                            : "bg-[#0f172a] hover:bg-[#1e293b]"
+                        }`}
+                        onClick={() => handleCart(e._id)}
+                        disabled={e.isSoldOut}
+                      >
+                        {e.isSoldOut ? "Sold Out" : "Add to cart"}
                       </button>
                       <Link
                         to={`/productDetails/${e._id}`}

@@ -48,6 +48,17 @@ const Productdetails = () => {
   const handleCart = async () => {
     if (!data) return;
 
+    // Check if product or selected size is sold out
+    if (data.isSoldOut) {
+      message.error("This product is sold out");
+      return;
+    }
+
+    if (selectedSize && data.soldOutSizes?.includes(selectedSize)) {
+      message.error(`Size ${selectedSize} is sold out`);
+      return;
+    }
+
     // item shape for both guest & logged-in
     const cartItem = {
       productId: {
@@ -241,17 +252,26 @@ const Productdetails = () => {
                   <div className="flex flex-col items-start gap-1 ">
                     <h4 className="text-lg font-semibold ">SIZE</h4>
                     <div className="flex flex-wrap gap-2">
-                      {Array.isArray(data.size) && data?.size.map((size) => (
-
-                        <button
-                          key={size}
-                          className={`size-btn px-2 text-xl font-medium ${selectedSize === size ? "bg-orange-500 text-white" : "bg-gray-100"
+                      {Array.isArray(data.size) && data?.size.map((size) => {
+                        const isSoldOut = data.soldOutSizes?.includes(size);
+                        return (
+                          <button
+                            key={size}
+                            className={`size-btn px-2 text-xl font-medium ${
+                              isSoldOut 
+                                ? "bg-gray-300 text-gray-500 cursor-not-allowed line-through" 
+                                : selectedSize === size 
+                                ? "bg-orange-500 text-white" 
+                                : "bg-gray-100"
                             }`}
-                          onClick={() => setSelectedSize(size)}
-                        >
-                          {size}
-                        </button>
-                      ))}
+                            onClick={() => !isSoldOut && setSelectedSize(size)}
+                            disabled={isSoldOut}
+                            title={isSoldOut ? "This size is sold out" : ""}
+                          >
+                            {size}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                   <div className="flex flex-col items-start gap-1 ">
@@ -429,7 +449,9 @@ const Productdetails = () => {
                 >
                   ${data?.price}
                 </span>{" "}
-                {data?.stock > 0 ? (
+                {data?.isSoldOut ? (
+                  <p style={{ color: "red", fontWeight: "bold" }}>SOLD OUT</p>
+                ) : data?.stock > 0 ? (
                   <p>IN STOCK</p>
                 ) : (
                   <p style={{ color: "grey" }}>OUT OF STOCK</p>
@@ -447,7 +469,7 @@ const Productdetails = () => {
             </div>
 
 
-            {(data?.stock || data?.stock > 0) && (
+            {(data?.stock || data?.stock > 0) && !data?.isSoldOut && (
               <div className="product-counter flex justify-start items-center gap-3 py-4">
                 {/* quantity controls */}
                 <div className="flex items-center gap-3">

@@ -60,6 +60,12 @@ const GlovesSection = ({ closeCart }) => {
       return;
     }
 
+    // Check if product is sold out
+    if (topProduct.isSoldOut) {
+      message.error("This product is sold out");
+      return;
+    }
+
     // item shape for both guest & logged-in
     const cartItem = {
       productId: {
@@ -196,6 +202,13 @@ const GlovesSection = ({ closeCart }) => {
                         LIMITED
                       </div>
 
+                      {/* Sold Out Badge */}
+                      {e.isSoldOut && (
+                        <div className="absolute top-2 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-md uppercase z-10">
+                          SOLD OUT
+                        </div>
+                      )}
+
                       {/* Product Image */}
                       <Link
                         to={`/productDetails/${e._id}`}
@@ -225,8 +238,16 @@ const GlovesSection = ({ closeCart }) => {
 
                       {/* Buttons */}
                       <div className="flex mt-3 gap-2">
-                        <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition" onClick={() => handleCart(e._id)}>
-                          Add to cart
+                        <button 
+                          className={`text-white text-lg font-medium py-2 px-2 rounded w-full transition ${
+                            e.isSoldOut 
+                              ? "bg-gray-400 cursor-not-allowed" 
+                              : "bg-[#0f172a] hover:bg-[#1e293b]"
+                          }`}
+                          onClick={() => handleCart(e._id)}
+                          disabled={e.isSoldOut}
+                        >
+                          {e.isSoldOut ? "Sold Out" : "Add to cart"}
                         </button>
                         <Link
                           to={`/productDetails/${e._id}`}
