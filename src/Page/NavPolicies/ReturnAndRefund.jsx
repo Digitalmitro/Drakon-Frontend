@@ -55,7 +55,7 @@ function ReturnAndRefund() {
               Exchange and Return Policy
             </h3>
             <p className="text-gray-700 mb-6 leading-relaxed">
-              You have around a month's time after receiving your product to
+              You have 30 days after receiving your product to
               request a refund or exchange your size. If you want to be eligible
               for a return or exchange of our gears, you must ensure that the
               item is in the same condition that it was during the original
