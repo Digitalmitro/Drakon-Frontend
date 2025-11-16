@@ -107,6 +107,7 @@ const Productdetails = () => {
         return "snapback";
       case "elbow guard":
       case "sliding mitt":
+      case "shin guard":
         return ["Youth", "Adult"];
       case "compression sleeve":
         return ["M", "L", "XL"];
