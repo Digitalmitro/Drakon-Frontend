@@ -207,9 +207,9 @@ const Accessories = ({ closeCart }) => {
                 <SwiperSlide key={e._id}>
                   <div className="lg:h-[500px] h-[440px]">
                     <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
-                      {/* LIMITED Badge */}
+                      {/* Category/Description Badge */}
                       <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
-                        LIMITED
+                        {e.description || "LIMITED"}
                       </div>
 
                       {/* Product Image */}
