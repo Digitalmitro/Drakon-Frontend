@@ -45,8 +45,8 @@ export default function Checkout() {
   const [taxRate, setTaxRate] = useState(0);
   const [enableCurrency, setEnableCurrency] = useState("");
   const [enableCoupon, setEnableCoupon] = useState(false);
-  const [couponList, setCouponList] = useState([]);
-  const [couponName, setCouponName] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
 
   // Loading
   const [shippingLoading, setShippingLoading] = useState(false);
@@ -103,13 +103,9 @@ export default function Checkout() {
   // FETCH SETTINGS
   async function fetchSettings() {
     try {
-      const [sRes, cRes] = await Promise.all([
-        axios.get(`${import.meta.env.VITE_BACKEND_API}/general-settings`),
-        axios.get(`${import.meta.env.VITE_BACKEND_API}/coupon`),
-      ]);
-      setEnableCoupon(true);
-      setCouponList(cRes.data || []);
+      const sRes = await axios.get(`${import.meta.env.VITE_BACKEND_API}/general-settings`);
       const settings = sRes.data[0];
+      setEnableCoupon(settings.EnableCoupon || false);
       setEnableTax(settings.EnableTax);
       setTaxRate(settings.TaxRate);
       setEnableCurrency(settings.Currency);
@@ -129,12 +125,28 @@ export default function Checkout() {
   }, [cartData, enableTax, taxRate, couponDiscount]);
 
   // APPLY COUPON
-  function applyCoupon() {
+  async function applyCoupon() {
     if (!enableCoupon) return message.error("Coupons disabled");
-    const cp = couponList.find((c) => c.couponName === couponName);
-    if (!cp) return message.error("Invalid coupon");
-    setCouponDiscount((subtotal * (cp.discount || 0)) / 100);
-    message.success("Coupon applied");
+    if (!couponCode.trim()) return message.error("Please enter a coupon code");
+    
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/coupon/validate`,
+        { couponCode: couponCode.trim() }
+      );
+      
+      if (res.data.valid) {
+        const discountAmount = (subtotal * (res.data.discount || 0)) / 100;
+        setCouponDiscount(discountAmount);
+        setAppliedCoupon({ code: couponCode, discount: res.data.discount });
+        message.success(res.data.message || "Coupon applied successfully");
+      } else {
+        message.error(res.data.message || "Invalid coupon code");
+      }
+    } catch (error) {
+      console.error("Coupon validation error:", error);
+      message.error("Failed to validate coupon");
+    }
   }
 
   // SAVE ADDRESS
@@ -367,9 +379,9 @@ export default function Checkout() {
             <input
               type="text"
               className="border border-gray-300 px-3 py-2 rounded-md w-full"
-              placeholder="Coupon"
-              value={couponName}
-              onChange={(e) => setCouponName(e.target.value)}
+              placeholder="Enter coupon code"
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value)}
             />
             <button className="bg-yellow-500 text-white px-4 py-2 rounded-md" onClick={applyCoupon}>
               Apply
