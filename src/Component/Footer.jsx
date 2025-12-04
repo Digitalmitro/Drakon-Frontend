@@ -17,7 +17,7 @@ const Footer = ({ closeCart }) => {
   return (
     <div
       onClick={closeCart}
-      className="bg-white lg:h-[550px]"
+      className="bg-black lg:min-h-[550px]"
       style={{ zoom: isMobile ? "0.7" : "" }}
     >
       <div className="footer container mx-auto py-10">
@@ -27,7 +27,7 @@ const Footer = ({ closeCart }) => {
               <div className="logo">
                 <img src={logoFooter} alt="" />
               </div>
-              <p className="text-black text-xl leading-9">
+              <p className="text-white text-xl leading-9">
                 Explore our e-commerce site for a range of sports gear,
                 including t-shirts, glasses, elbow guards, and hoodies. Shop
                 now!
@@ -92,7 +92,7 @@ const Footer = ({ closeCart }) => {
                 <li onClick={() => navigate("/blog")}>Blog</li>
               </ul>
             </div>
-            <div className="flex flex-col contact px-10 lg:px-0 items-center lg:items-start gap-2 py-5 text-black">
+            <div className="flex flex-col contact px-10 lg:px-0 items-center lg:items-start gap-2 py-5 text-white">
               <h3 className="text-2xl font-bold">Contact</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col  contact items-center lg:items-start gap-7 text-xl">
@@ -117,13 +117,13 @@ const Footer = ({ closeCart }) => {
           </div>
         </div>
         {/* <hr className="my-5" /> */}
-        <p className="text-black text-center ">
+        <p className="text-white text-center ">
           Designed and developed by{" "}
           <a
             href="https://digitalmitro.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 underline"
+            className="text-white underline"
           >
             Digital Mitro
           </a>
