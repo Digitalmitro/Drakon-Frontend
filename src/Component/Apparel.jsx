@@ -243,11 +243,6 @@ const Apparel = ({ closeCart }) => {
                 <SwiperSlide key={e._id}>
                   <div className="lg:h-[500px] h-[440px]">
                     <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
-                      {/* Category/Description Badge */}
-                      <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
-                        {e.description || "LIMITED"}
-                      </div>
-
                       {/* Sold Out Badge */}
                       {e.isSoldOut && (
                         <div className="absolute top-2 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-md uppercase z-10">
@@ -269,14 +264,64 @@ const Apparel = ({ closeCart }) => {
 
                       {/* Product Info */}
                       <div className="mt-4 px-1 flex flex-col gap-1">
-                        <Link
-                          to={`/productDetails/${e._id}`}
-                          className=""
-                        >
-                          <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
-                            {e.title}
-                          </h3>
-                        </Link>
+                        <div className="d-flex align-items-start gap-2" style={{ position: 'relative' }}>
+                          <Link
+                            to={`/productDetails/${e._id}`}
+                            className="flex-grow-1"
+                          >
+                            <h3 
+                              className="font-semibold text-black text-[1.3rem] leading-tight"
+                              style={{
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                minHeight: '2.6rem',
+                                maxHeight: '2.6rem'
+                              }}
+                            >
+                              {e.title}
+                            </h3>
+                          </Link>
+                          <div style={{ position: 'relative', flexShrink: 0 }}>
+                            <i 
+                              className="fas fa-info-circle info-icon-hover" 
+                              style={{ 
+                                cursor: 'pointer', 
+                                fontSize: '1.2rem', 
+                                marginTop: '0.2rem',
+                                color: '#007bff'
+                              }}
+                            ></i>
+                            <div 
+                              className="info-tooltip"
+                              style={{
+                                position: 'absolute',
+                                bottom: '100%',
+                                right: '-50px',
+                                backgroundColor: '#333',
+                                color: 'white',
+                                padding: '12px 16px',
+                                borderRadius: '6px',
+                                fontSize: '0.9rem',
+                                whiteSpace: 'normal',
+                                width: '350px',
+                                maxWidth: '90vw',
+                                zIndex: 1000,
+                                marginBottom: '8px',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                                opacity: 0,
+                                visibility: 'hidden',
+                                transition: 'opacity 0.2s, visibility 0.2s',
+                                pointerEvents: 'none',
+                                lineHeight: '1.5'
+                              }}
+                            >
+                              {e.description}
+                            </div>
+                          </div>
+                        </div>
                         <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
                           $ {e.price}
                         </h4>

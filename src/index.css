@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom tooltip styles */
+.info-icon-hover:hover + .info-tooltip {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
