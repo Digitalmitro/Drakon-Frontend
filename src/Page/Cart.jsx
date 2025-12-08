@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { FaTrash } from "react-icons/fa";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { loadStripe } from "@stripe/stripe-js";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import React, { useEffect, useState } from 'react';
+import { FaTrash } from 'react-icons/fa';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { loadStripe } from '@stripe/stripe-js';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -14,12 +14,12 @@ const CartPage = () => {
 
   const [sessionId, setSessionId] = useState(null);
   const [params] = useSearchParams();
-  const token = Cookies.get("token");
+  const token = Cookies.get('token');
   console.log(cart);
 
   useEffect(() => {
     fetchCart();
-    const sid = params.get("session_id");
+    const sid = params.get('session_id');
     if (sid) setSessionId(sid);
   }, []);
 
@@ -32,18 +32,17 @@ const CartPage = () => {
   const fetchCart = async () => {
     if (token) {
       try {
-        const res = await axios.get(
-          `https://api.drakon-sports.com/api/cart`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const res = await axios.get(`https://api.drakon-sports.com/api/cart`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setCart(res.data.products || []);
       } catch (err) {
-        console.error("Error fetching cart:", err);
+        console.error('Error fetching cart:', err);
         setCart([]);
       }
     } else {
       // guest
-      setCart(JSON.parse(localStorage.getItem("guest_cart") || "[]"));
+      setCart(JSON.parse(localStorage.getItem('guest_cart') || '[]'));
     }
     setLoading(false);
   };
@@ -52,23 +51,20 @@ const CartPage = () => {
   const removeProduct = async (productId) => {
     if (token) {
       try {
-        await axios.delete(
-          `https://api.drakon-sports.com/api/cart/remove`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-            data: { productId },
-          }
-        );
+        await axios.delete(`https://api.drakon-sports.com/api/cart/remove`, {
+          headers: { Authorization: `Bearer ${token}` },
+          data: { productId },
+        });
         fetchCart();
       } catch (err) {
-        console.error("Error deleting from cart:", err);
+        console.error('Error deleting from cart:', err);
       }
     } else {
       // guest
-      const guestCart = JSON.parse(
-        localStorage.getItem("guest_cart") || "[]"
-      ).filter((i) => i.productId._id !== productId);
-      localStorage.setItem("guest_cart", JSON.stringify(guestCart));
+      const guestCart = JSON.parse(localStorage.getItem('guest_cart') || '[]').filter(
+        (i) => i.productId._id !== productId
+      );
+      localStorage.setItem('guest_cart', JSON.stringify(guestCart));
       setCart(guestCart);
     }
   };
@@ -93,7 +89,7 @@ const CartPage = () => {
       );
       await stripe.redirectToCheckout({ sessionId: data.sessionId });
     } catch (err) {
-      console.error("Stripe checkout error:", err);
+      console.error('Stripe checkout error:', err);
     }
   };
 
@@ -107,17 +103,16 @@ const CartPage = () => {
       );
       // create orders on your backend, clear cart...
       if (token) {
-        await axios.delete(
-          `https://api.drakon-sports.com/api/cart/clear`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        await axios.delete(`https://api.drakon-sports.com/api/cart/clear`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       } else {
-        localStorage.removeItem("guest_cart");
+        localStorage.removeItem('guest_cart');
       }
       fetchCart();
-      message.success("Payment successful and order placed!");
+      message.success('Payment successful and order placed!');
     } catch (err) {
-      console.error("Order confirm error:", err);
+      console.error('Order confirm error:', err);
     }
   };
 
@@ -136,7 +131,7 @@ const CartPage = () => {
         <div className="bg-white p-8 rounded-lg shadow-sm text-center">
           <p className="text-gray-500 text-lg">Your cart is empty.</p>
           <button
-            onClick={() => navigate("/shop")}
+            onClick={() => navigate('/shop')}
             className="mt-4 bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition"
           >
             Continue Shopping
@@ -168,16 +163,10 @@ const CartPage = () => {
                       className="w-20 h-20 object-contain rounded-md"
                     />
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-700 text-base">
-                        {item.productId.title}
-                      </h3>
-                      <div className="text-sm text-gray-500 mt-1 space-y-1">
-
-                      </div>
+                      <h3 className="font-semibold text-gray-700 text-base">{item.productId.title}</h3>
+                      <div className="text-sm text-gray-500 mt-1 space-y-1"></div>
                       {/* Mobile Price - Hidden on desktop */}
-                      <p className="sm:hidden font-semibold mt-2 text-base">
-                        ${item.total.toFixed(2)}
-                      </p>
+                      <p className="sm:hidden font-semibold mt-2 text-base">${item.total.toFixed(2)}</p>
                     </div>
                   </div>
 
@@ -186,18 +175,16 @@ const CartPage = () => {
                     <span className="sm:hidden text-gray-500">Quantity:</span>
                     <div className="flex items-center gap-2  rounded-md px-3 py-1">
                       {/* <span className="text-gray-500">-</span> */}
-                      <span className="font-medium">{item.quantity} {item.productId?.size ?? item?.size}  </span>
+                      <span className="font-medium">
+                        {item.quantity} {item.productId?.size ?? item?.size}{' '}
+                      </span>
                       {/* <span className="text-gray-500">+</span> */}
                     </div>
                   </div>
 
-
-
                   {/* Total - Hidden on mobile (shown in product info) */}
                   <div className="hidden sm:flex sm:col-span-3 items-center justify-center">
-                    <p className="font-bold text-base">
-                      ${item.total.toFixed(2)}
-                    </p>
+                    <p className="font-bold text-base">${item.total.toFixed(2)}</p>
                   </div>
 
                   <div className="hidden sm:flex sm:col-span-2 items-center justify-center">
@@ -249,10 +236,16 @@ const CartPage = () => {
               </div>
 
               <button
-                onClick={() => navigate("/checkout")}
+                onClick={() => navigate('/checkout')}
                 className="w-full bg-black text-white py-3 rounded-md font-semibold hover:bg-gray-800 transition mb-4"
               >
                 CHECKOUT
+              </button>
+              <button
+                onClick={() => navigate('/shop')}
+                className="w-full bg-black text-white py-3 rounded-md font-semibold hover:bg-gray-800 transition mb-4"
+              >
+                Continue Shopping
               </button>
             </div>
           </div>

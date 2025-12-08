@@ -12,14 +12,16 @@ import img1 from "../assets/carousel/free-shipping.png";
 import img2 from "../assets/carousel/credit.png";
 import img3 from "../assets/carousel/return.png";
 import img4 from "../assets/carousel/secure-wallet.png";
-
+import equipmentImage from "../assets/equipment.jpeg";
 // Initialize Swiper modules
 SwiperCore.use([Autoplay, Pagination]);
+const equimpentImageWhichNeedsToBeReplaced = "https://res.cloudinary.com/dinitjlyf/image/upload/v1742466472/product-images/kro5rigxbt5lydkwmftm.jpg";
 
 const GlassesSection = ({ closeCart, navigate }) => {
   const { getCategory } = useProduct();
   const [glassesBanner, setGlassesBanner] = useState([]);
   const [glassesProducts, setGlassesProducts] = useState([]);
+  const [glass, setGlass] = useState([]);
   const swiperRef = useRef(null);
 
   const allProductsByCategory = async () => {
@@ -88,7 +90,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
                     <div className="shadow-lg lg:h-[350px] rounded lg:w-[90%] flex flex-col justify-between gap-6 bg-white p-2 pb-4">
                       <div className="flex justify-center lg:w-full">
                         <img
-                          src={e.image}
+                          src={e.image.trim() === equimpentImageWhichNeedsToBeReplaced.trim() ?  equipmentImage : e.image}
                           className="object-cover h-[300px] w-[100%]"
                           alt="Product"
                         />
