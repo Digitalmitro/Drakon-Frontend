@@ -41,7 +41,7 @@ const Contact = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/message`,
+        `https://api.drakon-sports.com/message`,
         payload
       );
 
@@ -55,7 +55,7 @@ const Contact = () => {
         };
 
         await axios.post(
-          `${import.meta.env.VITE_BACKEND_API}/send-email`,
+          `https://api.drakon-sports.com/send-email`,
           emailPayload
         );
 

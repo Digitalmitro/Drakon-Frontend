@@ -33,7 +33,7 @@ const CartPage = () => {
     if (token) {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_API}/api/cart`,
+          `https://api.drakon-sports.com/api/cart`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setCart(res.data.products || []);
@@ -53,7 +53,7 @@ const CartPage = () => {
     if (token) {
       try {
         await axios.delete(
-          `${import.meta.env.VITE_BACKEND_API}/api/cart/remove`,
+          `https://api.drakon-sports.com/api/cart/remove`,
           {
             headers: { Authorization: `Bearer ${token}` },
             data: { productId },
@@ -83,7 +83,7 @@ const CartPage = () => {
     try {
       const stripe = await stripePromise;
       const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/api/stripe/create-payment-intent`,
+        `https://api.drakon-sports.com/api/stripe/create-payment-intent`,
         {
           amount: Math.round(total * 100),
           success_url: `${window.location.origin}/cart?session_id={CHECKOUT_SESSION_ID}`,
@@ -101,14 +101,14 @@ const CartPage = () => {
   const confirmOrder = async (sid) => {
     try {
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/api/stripe/confirm`,
+        `https://api.drakon-sports.com/api/stripe/confirm`,
         { sessionId: sid },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
       // create orders on your backend, clear cart...
       if (token) {
         await axios.delete(
-          `${import.meta.env.VITE_BACKEND_API}/api/cart/clear`,
+          `https://api.drakon-sports.com/api/cart/clear`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {

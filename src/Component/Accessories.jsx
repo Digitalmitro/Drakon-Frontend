@@ -76,7 +76,7 @@ const Accessories = ({ closeCart }) => {
       // logged-in: hit server
       dispatch(addItem(topProduct));
       try {
-        await axios.post(`${import.meta.env.VITE_BACKEND_API}/api/add`, {
+        await axios.post(`https://api.drakon-sports.com/api/add`, {
           image: topProduct.image,
           title: topProduct.title,
           price: topProduct.price,

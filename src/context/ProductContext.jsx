@@ -6,7 +6,7 @@ export const ProductProvider = ({ children }) => {
   const getCategory = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/api/top-category`
+        `https://api.drakon-sports.com/api/top-category`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
@@ -22,11 +22,11 @@ export const ProductProvider = ({ children }) => {
       let response;
       if (!arg) {
         response = await fetch(
-          `${import.meta.env.VITE_BACKEND_API}/api/category`
+          `https://api.drakon-sports.com/api/category`
         );
       }
       response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/api/category/?categoryName=${arg}`
+        `https://api.drakon-sports.com/api/category/?categoryName=${arg}`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
@@ -42,7 +42,7 @@ export const ProductProvider = ({ children }) => {
     try {
       let response;
       response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/products/?category=${arg}`
+        `https://api.drakon-sports.com/products/?category=${arg}`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
@@ -58,7 +58,7 @@ export const ProductProvider = ({ children }) => {
   const getAllTopProducts = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/top-products`
+        `https://api.drakon-sports.com/top-products`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
@@ -73,7 +73,7 @@ export const ProductProvider = ({ children }) => {
   const getAllShopProduct = async () =>{
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/feature-products`
+        `https://api.drakon-sports.com/feature-products`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);

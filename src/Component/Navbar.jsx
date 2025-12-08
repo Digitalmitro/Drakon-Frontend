@@ -93,7 +93,7 @@ function Navbar(props) {
   const handleProduct = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
+        `https://api.drakon-sports.com/wishlist/${user_id}`
       );
 
       setData(response.data.wishlist.reverse());
@@ -110,7 +110,7 @@ function Navbar(props) {
     dispatch(removeItem(productId));
     try {
       const deletedData = await axios.delete(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist/${wishlistId}`
+        `https://api.drakon-sports.com/wishlist/${wishlistId}`
       );
       handleProduct();
 

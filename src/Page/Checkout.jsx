@@ -88,7 +88,7 @@ export default function Checkout() {
     if (token) {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_BACKEND_API}/api/cart`,
+          `https://api.drakon-sports.com/api/cart`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setCartData(data.products || []);
@@ -103,7 +103,7 @@ export default function Checkout() {
   // FETCH SETTINGS
   async function fetchSettings() {
     try {
-      const sRes = await axios.get(`${import.meta.env.VITE_BACKEND_API}/general-settings`);
+      const sRes = await axios.get(`https://api.drakon-sports.com/general-settings`);
       const settings = sRes.data[0];
       setEnableCoupon(settings.EnableCoupon || false);
       setEnableTax(settings.EnableTax);
@@ -131,7 +131,7 @@ export default function Checkout() {
     
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/coupon/validate`,
+        `https://api.drakon-sports.com/coupon/validate`,
         { couponCode: couponCode.trim() }
       );
       
@@ -185,7 +185,7 @@ export default function Checkout() {
         0
       );
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/shipping/estimate`,
+        `https://api.drakon-sports.com/shipping/estimate`,
         {
           to: {
             shippingcountry: deliveryAddress.shippingcountry,
@@ -217,7 +217,7 @@ export default function Checkout() {
       }
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/api/stripe/create-payment-intent`,
+        `https://api.drakon-sports.com/api/stripe/create-payment-intent`,
         {
           amount: Math.round((finalPayment + shippingCost) * 100),
           success_url: `${location.origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
@@ -245,7 +245,7 @@ export default function Checkout() {
   async function confirmPayment(sid) {
     try {
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/api/stripe/confirm`,
+        `https://api.drakon-sports.com/api/stripe/confirm`,
         { sessionId: sid },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
@@ -277,7 +277,7 @@ export default function Checkout() {
             quantity: p.quantity,
             name: p?.productId?.title ?? "",
             size: p?.productId?.size ?? "M",
-            weight: p?.productId?.weight ?? p.weight,
+            weight: p?.productId?.weight ?? p.weight ?? 0,
             price: p.productId.price || p.price,
           })),
           subtotal,
@@ -287,14 +287,14 @@ export default function Checkout() {
         };
 
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/order`,
+        `https://api.drakon-sports.com/order`,
         payload,
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
       if (token) {
         await axios.delete(
-          `${import.meta.env.VITE_BACKEND_API}/api/cart/clear`,
+          `https://api.drakon-sports.com/api/cart/clear`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {

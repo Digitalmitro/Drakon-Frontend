@@ -13,7 +13,7 @@ function BlogPost() {
     const fetchBlogPost = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_API}/api/blog/${slug}`
+          `https://api.drakon-sports.com/api/blog/${slug}`
         );
         const data = await response.json();
         console.log("data by slug", data);

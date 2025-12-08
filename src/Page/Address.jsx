@@ -97,14 +97,14 @@ function Address() {
             // console.log("payload", payload);
             if (payload.billingAddress.billingcountry !== "") {
                 const response1 = await axios.post(
-                    `${import.meta.env.VITE_BACKEND_API}/addressbookbilling`,
+                    `https://api.drakon-sports.com/addressbookbilling`,
                     payload.billingAddress
                 );
                 // console.log("Billing response:", response1);
                 // window.location.href = "/my-account";
             } else {
                 const response2 = await axios.post(
-                    `${import.meta.env.VITE_BACKEND_API}/addressbookshipping`,
+                    `https://api.drakon-sports.com/addressbookshipping`,
                     payload.shippingAddress
                 );
                 // console.log("Billing response:", response1);
@@ -145,14 +145,14 @@ function Address() {
     async function getAddresses() {
         try {
             const billing = await axios.get(
-                `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
+                `https://api.drakon-sports.com/addressbookbilling/${userId}`
             );
             console.log("billing", billing);
 
             setBillingAddresses(billing.data);
 
             const shipping = await axios.get(
-                `${import.meta.env.VITE_BACKEND_API}/addressbookshipping/${userId}`
+                `https://api.drakon-sports.com/addressbookshipping/${userId}`
             );
             // console.log("shipping", shipping);
 

@@ -21,7 +21,7 @@ const Checkout = () => {
   const handleProduct = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/products/${id}`
+        `https://api.drakon-sports.com/products/${id}`
       );
 
       console.log("product response", response);
@@ -40,11 +40,11 @@ const Checkout = () => {
   const getAddressData = async () => {
     try {
       const response1 = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/addressbookbilling/${userId}`
+        `https://api.drakon-sports.com/addressbookbilling/${userId}`
       );
       // console.log("Billing response:", response1);
       const response2 = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/addressbookshipping/${userId}`
+        `https://api.drakon-sports.com/addressbookshipping/${userId}`
       );
       await setBillingData(response1.data.addressbookbilling);
       await setShippingData(response2.data.addressbookShipping);

@@ -7,7 +7,7 @@ function Blog() {
   const [blogPost,setBlogPost] = useState([])
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/api`);
+      const response = await fetch(`https://api.drakon-sports.com/api`);
       const data = await response.json();
       console.log(data);
       setBlogPost(data);

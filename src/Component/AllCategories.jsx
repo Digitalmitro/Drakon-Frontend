@@ -29,7 +29,7 @@ const GlassesSection = ({ closeCart, navigate }) => {
   };
   const getAllProducts = async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_API}/products`
+      `https://api.drakon-sports.com/products`
     );
     if (response.ok) {
       const data = await response.json();

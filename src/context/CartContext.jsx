@@ -15,7 +15,7 @@ export const CartProvider = ({ children }) => {
         if (token) {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_BACKEND_API}/api/cart`,
+                    `https://api.drakon-sports.com/api/cart`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 

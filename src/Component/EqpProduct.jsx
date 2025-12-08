@@ -17,7 +17,7 @@ const Product = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_API}/products`);
+      const res = await axios.get(`https://api.drakon-sports.com/products`);
       setData(res.data);
       setLoad(true);
     } catch (error) {

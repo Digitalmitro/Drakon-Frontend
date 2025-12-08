@@ -24,7 +24,7 @@ function ResetPassword() {
         try {
             const token = Cookies.get("token");
             const response = await axios.put(
-                `${import.meta.env.VITE_BACKEND_API}/reset-password`,
+                `https://api.drakon-sports.com/reset-password`,
                 { oldPassword, newPassword },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

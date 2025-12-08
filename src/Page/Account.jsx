@@ -25,7 +25,7 @@ const Account = () => {
     };
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/registerclient`,
+        `https://api.drakon-sports.com/registerclient`,
         payload
       );
       message.success(res.data);
@@ -49,7 +49,7 @@ const Account = () => {
     };
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/loginclient`,
+        `https://api.drakon-sports.com/loginclient`,
         payload
       );
       console.log(res.data);

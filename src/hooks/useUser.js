@@ -17,7 +17,7 @@ export function useUser() {
         setError(null);
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/user/profile`, {
+            const res = await fetch(`https://api.drakon-sports.com/user/profile`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

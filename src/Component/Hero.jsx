@@ -10,7 +10,7 @@ const Hero = ({ closeCart, setLoading, loading }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/api/banners`
+        `https://api.drakon-sports.com/api/banners`
       );
       if (response.ok) {
         const data = await response.json();

@@ -13,7 +13,7 @@ function UserProfileForm() {
 
         try {
             const res = await fetch(
-                `${import.meta.env.VITE_BACKEND_API}/updateclient`,
+                `https://api.drakon-sports.com/updateclient`,
                 {
                     method: "PUT",
                     headers: {

@@ -17,7 +17,7 @@ const Orders = () => {
 
   const getOrders = async () => {
     const response = await axios.get(
-      `${import.meta.env.VITE_BACKEND_API}/order/${userId}`
+      `https://api.drakon-sports.com/order/${userId}`
     );
     setOrderData(response.data.order.reverse());
     navigate("/profile?tab=3");

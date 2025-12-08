@@ -52,7 +52,7 @@ function App() {
         text: `Thank you for Subscribing Us. We will update you with latest collection amazing discounts. \nStay tuned with us.\n\nBest regards,\nDrakon`,
       };
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/send-email`,
+        `https://api.drakon-sports.com/send-email`,
         emailPayload
       );
     } catch {
@@ -64,7 +64,7 @@ function App() {
         email: email
       }
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_API}/subscribe`,
+        `https://api.drakon-sports.com/subscribe`,
         payload
       );
 

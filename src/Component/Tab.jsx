@@ -14,7 +14,7 @@ export default function UserProfilePage() {
 
   const getUserById = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_API}/user/profile`, {
+      const res = await axios.get(`https://api.drakon-sports.com/user/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

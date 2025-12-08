@@ -26,12 +26,12 @@ const Cart = () => {
     try {
 
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/general-settings`
+        `https://api.drakon-sports.com/general-settings`
       );
 
       setEnableCurrency(res.data[0].Currency)
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist/${user_id}`
+        `https://api.drakon-sports.com/wishlist/${user_id}`
       );
       console.log(response);
 
@@ -76,7 +76,7 @@ const Cart = () => {
     dispatch(removeItem(productId))
     try {
       const  data  = await axios.delete(
-        `${import.meta.env.VITE_BACKEND_API}/wishlist/${wishlistId}`
+        `https://api.drakon-sports.com/wishlist/${wishlistId}`
       );
       handleProduct();
       window.location.reload()

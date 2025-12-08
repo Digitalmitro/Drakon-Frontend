@@ -13,7 +13,7 @@ function Order() {
     const getOrders = async (id) => {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_BACKEND_API}/api/user/${id}`
+                `https://api.drakon-sports.com/api/user/${id}`
             );
             if (!response.ok) throw new Error("Failed to fetch orders");
 

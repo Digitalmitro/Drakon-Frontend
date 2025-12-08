@@ -36,7 +36,7 @@ const GlassesSection = ({ closeCart }) => {
   };
   const getAllProducts = async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_API}/products`
+      `https://api.drakon-sports.com/products`
     );
     if (response.ok) {
       const data = await response.json();
@@ -82,7 +82,7 @@ const GlassesSection = ({ closeCart }) => {
       // logged-in: hit server
       dispatch(addItem(topProduct));
       try {
-        await axios.post(`${import.meta.env.VITE_BACKEND_API}/api/add`, {
+        await axios.post(`https://api.drakon-sports.com/api/add`, {
           image: topProduct.image,
           title: topProduct.title,
           price: topProduct.price,
@@ -137,7 +137,7 @@ const GlassesSection = ({ closeCart }) => {
         </h2>
 
         <Carousel autoplay effect="fade">
-          {glassesBanner.map((ban, i) => (
+          {glassesBanner?.map((ban, i) => (
             <div className="py-8 relative" key={i}>
               <div className="hidden sm:block relative">
                 <img
@@ -193,7 +193,7 @@ const GlassesSection = ({ closeCart }) => {
               }}
               className="mt-10 lg:pl-8 mx-6 lg:mx-0"
             >
-              {glassesProducts.map((e) => (
+              {glassesProducts?.map((e) => (
                 <SwiperSlide key={e._id}>
                   <div className="lg:h-[500px] h-[440px]">
                     <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300 relative">
