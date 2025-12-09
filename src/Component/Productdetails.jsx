@@ -132,7 +132,30 @@ const Productdetails = () => {
   };
 
   // console.log(data)
+const SIZE_ORDER = ['YS', 'YM', 'YL', 'YXL', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
+// precompute rank
+const sizeRank = SIZE_ORDER.reduce((acc, size, index) => {
+  acc[size] = index;
+  return acc;
+}, {});
+
+const SIZE_ORDER_MAP = {
+  YS: 0,
+  YM: 1,
+  YL: 2,
+  YXL: 3,
+  XS: 4,
+  S: 5,
+  M: 6,
+  L: 7,
+  XL: 8,
+  XXL: 9,
+  XXXL: 10,
+};
+
+
+const normalizedFitType = (fitType || 'all').toLowerCase();
   return (
     <>
       <div className=" w-full max-w-1200 max-auto px-4">
@@ -267,48 +290,66 @@ const Productdetails = () => {
                 <div className="flex items-center gap-5 mb-3">
                   <div className="flex flex-col items-start gap-1 ">
                     <h4 className="text-lg font-semibold ">SIZE</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {Array.isArray(data.size) &&
-                        data?.size
-                        ?.sort((sizeA, sizeB) => {
-                            const sizeOrder = ['YS', 'YM', 'YL', 'YXL', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
-                            return sizeOrder.indexOf(sizeA) - sizeOrder.indexOf(sizeB);
-                        })
-                          ?.filter((size) => {
-                            const lower = size?.toLowerCase();
 
-                            if (lower === 'youth' || lower === 'adult') return false;
+<div className="flex flex-wrap gap-2">
+  {Array.isArray(data.size) &&
+    [...data.size] // don't mutate original
+      .sort((sizeA, sizeB) => {
+        const a = String(sizeA).trim().toUpperCase();
+        const b = String(sizeB).trim().toUpperCase();
 
-                            if (fitType === 'all') return true;
+        const rankA =
+          SIZE_ORDER_MAP[a] !== undefined ? SIZE_ORDER_MAP[a] : Number.MAX_SAFE_INTEGER;
+        const rankB =
+          SIZE_ORDER_MAP[b] !== undefined ? SIZE_ORDER_MAP[b] : Number.MAX_SAFE_INTEGER;
 
-                            if (fitType === 'youth') return size.startsWith('Y');
+        if (rankA !== rankB) return rankA - rankB;
+        // if both unknown or same rank, fallback to alpha for stable order
+        return a.localeCompare(b);
+      })
+      .filter((size) => {
+        const raw = String(size).trim();
+        const lower = raw.toLowerCase();
 
-                            if (fitType === 'adult') return !size.startsWith('Y');
+        // never show literal "youth" / "adult"
+        if (lower === "youth" || lower === "adult") return false;
 
-                            return true;
-                          })
-                          .map((size) => {
-                            const isSoldOut = data.soldOutSizes?.includes(size);
+        if (fitType === "all") return true;
 
-                            return (
-                              <button
-                                key={size}
-                                className={`size-btn px-2 text-xl font-medium ${
-                                  isSoldOut
-                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed line-through'
-                                    : selectedSize === size
-                                    ? 'bg-orange-500 text-white'
-                                    : 'bg-gray-100'
-                                }`}
-                                onClick={() => !isSoldOut && setSelectedSize(size)}
-                                disabled={isSoldOut}
-                                title={isSoldOut ? 'This size is sold out' : ''}
-                              >
-                                {size}
-                              </button>
-                            );
-                          })}
-                    </div>
+        if (fitType === "youth") {
+          return raw.toUpperCase().startsWith("Y"); // YS, YM, YL, YXL
+        }
+
+        if (fitType === "adult") {
+          return !raw.toUpperCase().startsWith("Y"); // XS, S, M, L, XL, XXL, ...
+        }
+
+        return true;
+      })
+      .map((size) => {
+        const isSoldOut = data.soldOutSizes?.includes(size);
+
+        return (
+          <button
+            key={size}
+            className={`size-btn px-2 text-xl font-medium ${
+              isSoldOut
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed line-through"
+                : selectedSize === size
+                ? "bg-orange-500 text-white"
+                : "bg-gray-100"
+            }`}
+            onClick={() => !isSoldOut && setSelectedSize(size)}
+            disabled={isSoldOut}
+            title={isSoldOut ? "This size is sold out" : ""}
+          >
+            {size}
+          </button>
+        );
+      })}
+</div>
+
+
                   </div>
                 </div>
               )}
