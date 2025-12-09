@@ -270,6 +270,10 @@ const Productdetails = () => {
                     <div className="flex flex-wrap gap-2">
                       {Array.isArray(data.size) &&
                         data?.size
+                        ?.sort((sizeA, sizeB) => {
+                            const sizeOrder = ['YS', 'YM', 'YL', 'YXL', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+                            return sizeOrder.indexOf(sizeA) - sizeOrder.indexOf(sizeB);
+                        })
                           ?.filter((size) => {
                             const lower = size?.toLowerCase();
 
