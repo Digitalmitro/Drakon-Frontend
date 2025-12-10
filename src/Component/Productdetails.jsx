@@ -139,7 +139,7 @@ const Productdetails = () => {
  
   const renderFitTypeButtons = (category = '', name = '') => {
     if (category.toLowerCase() == 'sunglasses' || category.toLowerCase() == 'eyewear') {fitTypeShowing = false; return null;}
-    if (name.toLowerCase().includes('sunglasses') || name.toLowerCase().includes('headband') || name.toLowerCase().includes('blue compression sleeve')){ fitTypeShowing = false; return null;}
+    if (name.toLowerCase().includes('sunglasses') || name.toLowerCase().includes('headband') || name.toLowerCase().includes('compression sleeve')){ fitTypeShowing = false; return null;}
     
     if(category.toLowerCase().includes('equipment')){ fitTypeShowing = false; return null;}
     return (
