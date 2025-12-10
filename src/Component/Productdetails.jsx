@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactStars from 'react-rating-stars-component';
 import Payment from '../assets/method.png';
 import axios from 'axios';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
-import product1 from '../assets/pad.png';
 import { message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../Redux/CartSlice';
 
 const Productdetails = () => {
+   let fitTypeShowing = true;
   const { id } = useParams();
   const [selectedSize, setSelectedSize] = useState(null);
   const [showSizeChart, setShowSizeChart] = useState(false);
-  const [fitType, setFitType] = useState('all');
+  const [fitType, setFitType] = useState('youth');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = Cookies.get('token');
@@ -28,6 +28,8 @@ const Productdetails = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     getAllProductData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fitTypeShowing = true;
   }, []);
 
   const getAllProductData = async () => {
@@ -44,6 +46,7 @@ const Productdetails = () => {
     // ...
   };
 
+  console.log('Product Data:', data);
   const handleCart = async () => {
     if (!data) return;
 
@@ -53,7 +56,18 @@ const Productdetails = () => {
       return;
     }
 
-    if (selectedSize && data.soldOutSizes?.includes(selectedSize)) {
+    console.log('Selected Size:', selectedSize);
+    console.log('Fit Type Showing:', fitTypeShowing);
+
+    if (data?.size?.length > 0 ) {
+      console.log('Size selection is required', selectedSize);
+      if (!selectedSize || selectedSize === null) {
+        message.error('Please select a size');
+        return;
+      }
+    }
+
+    if (data?.soldOutSizes?.length > 0 && !data.soldOutSizes.includes(selectedSize)) {
       message.error(`Size ${selectedSize} is sold out`);
       return;
     }
@@ -108,54 +122,140 @@ const Productdetails = () => {
     }
   };
 
-  const getSizesForCategory = (category) => {
-    switch (category?.toLowerCase()) {
-      case 'sunglasses':
-      case 'headband':
-        return 'no-size'; // text only
-      case 'hat':
-        return 'snapback';
-      case 'elbow guard':
-      case 'sliding mitt':
-      case 'shin guard':
-        return ['Youth', 'Adult'];
-      case 'compression sleeve':
-        return ['M', 'L', 'XL'];
-      case 'batting gloves':
-        return {
-          youth: ['YS', 'YM', 'YL', 'YXL'],
-          standard: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-        };
-      default:
-        return ['S', 'M', 'L', 'XL', 'XXL'];
-    }
+  const SIZE_ORDER_MAP = {
+    YS: 0,
+    YM: 1,
+    YL: 2,
+    YXL: 3,
+    XS: 4,
+    S: 5,
+    M: 6,
+    L: 7,
+    XL: 8,
+    XXL: 9,
+    XXXL: 10,
   };
 
-  // console.log(data)
-const SIZE_ORDER = ['YS', 'YM', 'YL', 'YXL', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+ 
+  const renderFitTypeButtons = (category = '', name = '') => {
+    if (category.toLowerCase() == 'sunglasses' || category.toLowerCase() == 'eyewear') {fitTypeShowing = false; return null;}
+    if (name.toLowerCase().includes('sunglasses') || name.toLowerCase().includes('headband') || name.toLowerCase().includes('blue compression sleeve')){ fitTypeShowing = false; return null;}
+    if(category.toLowerCase().includes('equipment')){ fitTypeShowing = false; return null;}
+    return (
+      <div className="flex flex-col items-start gap-1 mb-3">
+        <h4 className="text-lg font-semibold">FIT TYPE</h4>
+        <div className="flex gap-3">
+          {['youth', 'adult'].map((type) => (
+            <button
+              key={type}
+              onClick={() => setFitType(type)}
+              className={`px-4 py-1 rounded-md border text-sm font-medium transition
+                                  ${
+                                    fitType === type
+                                      ? 'bg-black text-white border-black'
+                                      : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'
+                                  }
+                                `}
+            >
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
-// precompute rank
-const sizeRank = SIZE_ORDER.reduce((acc, size, index) => {
-  acc[size] = index;
-  return acc;
-}, {});
+  // Helpers (can live above the component)
+  const normalizeSize = (value) => String(value ?? '').trim();
+  const toKey = (value) => normalizeSize(value).toUpperCase();
 
-const SIZE_ORDER_MAP = {
-  YS: 0,
-  YM: 1,
-  YL: 2,
-  YXL: 3,
-  XS: 4,
-  S: 5,
-  M: 6,
-  L: 7,
-  XL: 8,
-  XXL: 9,
-  XXXL: 10,
-};
+  const sortSizes = (sizes, sizeOrderMap) =>
+    [...sizes].sort((sizeA, sizeB) => {
+      const aKey = toKey(sizeA);
+      const bKey = toKey(sizeB);
 
+      const rankA = sizeOrderMap[aKey] ?? Number.MAX_SAFE_INTEGER;
+      const rankB = sizeOrderMap[bKey] ?? Number.MAX_SAFE_INTEGER;
 
-const normalizedFitType = (fitType || 'all').toLowerCase();
+      if (rankA !== rankB) return rankA - rankB;
+      return aKey.localeCompare(bKey);
+    });
+
+  const filterSizesByFitType = (sizes, fitType) =>
+    sizes.filter((size) => {
+      if(fitTypeShowing === false) return true;
+      const raw = normalizeSize(size);
+      const lower = raw.toLowerCase();
+      const upper = raw.toUpperCase();
+
+      // never show literal "youth" / "adult"
+      if (lower === 'youth' || lower === 'adult') return false;
+
+      if (fitType === 'all') return true;
+
+      if (fitType === 'youth') {
+        // YS, YM, YL, YXL etc.
+        return upper.startsWith('Y');
+      }
+
+      if (fitType === 'adult') {
+        // XS, S, M, L, XL, XXL etc.
+        return !upper.startsWith('Y');
+      }
+
+      return true;
+    });
+
+  const getSizeButtonClasses = (size, selectedSize, isSoldOut) => {
+    if (isSoldOut) {
+      return 'size-btn px-2 text-xl font-medium bg-gray-300 text-gray-500 cursor-not-allowed line-through';
+    }
+
+    if (selectedSize === size) {
+      return 'size-btn px-2 text-xl font-medium bg-orange-500 text-white';
+    }
+
+    return 'size-btn px-2 text-xl font-medium bg-gray-100';
+  };
+
+  const renderSizeButtons = (data) => {
+    const allSizes = Array.isArray(data.size) ? data.size : [];
+
+    const sortedSizes = sortSizes(allSizes, SIZE_ORDER_MAP);
+    const visibleSizes = filterSizesByFitType(sortedSizes, fitType);
+
+    if (!visibleSizes.length) {
+      return null; // or fallback UI if you want
+    }
+
+    return (
+      <div className="flex items-center gap-5 mb-3">
+        <div className="flex flex-col items-start gap-1">
+          <h4 className="text-lg font-semibold">SIZE</h4>
+
+          <div className="flex flex-wrap gap-2">
+            {visibleSizes.map((size) => {
+              const isSoldOut = data.soldOutSizes?.includes(size);
+              const classes = getSizeButtonClasses(size, selectedSize, isSoldOut);
+
+              return (
+                <button
+                  key={size}
+                  className={classes}
+                  onClick={() => !isSoldOut && setSelectedSize(size)}
+                  disabled={isSoldOut}
+                  title={isSoldOut ? 'This size is sold out' : ''}
+                >
+                  {size}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <div className=" w-full max-w-1200 max-auto px-4">
@@ -193,166 +293,10 @@ const normalizedFitType = (fitType || 'all').toLowerCase();
                   Category: <span className="font-medium">{data?.category}</span>
                 </b>
               </h5>
-              {/* {data?.category && (
-                <div className="size-selector mb-6">
-                  <h4 className="text-lg font-semibold mb-3">SIZE</h4>
 
-                  {(() => {
-                    const sizes = getSizesForCategory(data.category);
+              {renderFitTypeButtons(data?.category, data?.title)}
 
-                    if (sizes === "no-size") {
-                      return <p className="text-gray-600">One size fits most</p>;
-                    }
-
-                    if (sizes === "snapback") {
-                      return <p className="text-gray-600">Snapback hat - one size fits most</p>;
-                    }
-
-                    if (Array.isArray(sizes)) {
-                      return (
-                        <div className="flex flex-wrap gap-2">
-                          {sizes.map((size) => (
-                            <button
-                              key={size}
-                              className={`size-btn px-2 text-xl font-medium ${selectedSize === size ? "bg-orange-500 text-white" : "bg-gray-100"
-                                }`}
-                              onClick={() => setSelectedSize(size)}
-                            >
-                              {size}
-                            </button>
-                          ))}
-                        </div>
-                      );
-                    }
-
-                    if (typeof sizes === "object") {
-                      return (
-                        <div className="glove-sizing">
-                          <div className="youth-sizing mb-4">
-                            <h5 className="font-medium mb-2">Youth Sizing</h5>
-                            <div className="flex flex-wrap gap-2">
-                              {sizes.youth.map((size) => (
-                                <button
-                                  key={size}
-                                  className={`size-btn text-xl px-2 font-medium ${selectedSize === size ? "bg-orange-500 text-white" : "bg-gray-100"
-                                    }`}
-                                  onClick={() => setSelectedSize(size)}
-                                >
-                                  {size}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                          <div className="standard-sizing">
-                            <h5 className="font-medium mb-2">Standard Sizing</h5>
-                            <div className="flex flex-wrap gap-2">
-                              {sizes.standard.map((size) => (
-                                <button
-                                  key={size}
-                                  className={`size-btn text-xl px-2 font-medium ${selectedSize === size ? "bg-orange-500 text-white" : "bg-gray-100"
-                                    }`}
-                                  onClick={() => setSelectedSize(size)}
-                                >
-                                  {size}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    }
-
-                    return null;
-                  })()}
-                </div>
-              )} */}
-              <div className="flex flex-col items-start gap-1 mb-3">
-                <h4 className="text-lg font-semibold ">FIT TYPE</h4>
-                <div className="flex flex-wrap gap-2">
-                  <select
-                    className="size-btn px-2 text-xl font-medium bg-gray-100"
-                    onChange={(e) => setFitType(e.target.value)}
-                    value={fitType || 'all'}
-                  >
-                    <option className="size-btn px-2 text-xl font-medium bg-gray-100" value="all">
-                      All
-                    </option>
-                    <option className="size-btn px-2 text-xl font-medium bg-gray-100" value="youth">
-                      Youth
-                    </option>
-                    <option className="size-btn px-2 text-xl font-medium bg-gray-100" value="adult">
-                      Adult
-                    </option>
-                  </select>
-                </div>
-              </div>
-              {data?.category && (
-                <div className="flex items-center gap-5 mb-3">
-                  <div className="flex flex-col items-start gap-1 ">
-                    <h4 className="text-lg font-semibold ">SIZE</h4>
-
-<div className="flex flex-wrap gap-2">
-  {Array.isArray(data.size) &&
-    [...data.size] // don't mutate original
-      .sort((sizeA, sizeB) => {
-        const a = String(sizeA).trim().toUpperCase();
-        const b = String(sizeB).trim().toUpperCase();
-
-        const rankA =
-          SIZE_ORDER_MAP[a] !== undefined ? SIZE_ORDER_MAP[a] : Number.MAX_SAFE_INTEGER;
-        const rankB =
-          SIZE_ORDER_MAP[b] !== undefined ? SIZE_ORDER_MAP[b] : Number.MAX_SAFE_INTEGER;
-
-        if (rankA !== rankB) return rankA - rankB;
-        // if both unknown or same rank, fallback to alpha for stable order
-        return a.localeCompare(b);
-      })
-      .filter((size) => {
-        const raw = String(size).trim();
-        const lower = raw.toLowerCase();
-
-        // never show literal "youth" / "adult"
-        if (lower === "youth" || lower === "adult") return false;
-
-        if (fitType === "all") return true;
-
-        if (fitType === "youth") {
-          return raw.toUpperCase().startsWith("Y"); // YS, YM, YL, YXL
-        }
-
-        if (fitType === "adult") {
-          return !raw.toUpperCase().startsWith("Y"); // XS, S, M, L, XL, XXL, ...
-        }
-
-        return true;
-      })
-      .map((size) => {
-        const isSoldOut = data.soldOutSizes?.includes(size);
-
-        return (
-          <button
-            key={size}
-            className={`size-btn px-2 text-xl font-medium ${
-              isSoldOut
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed line-through"
-                : selectedSize === size
-                ? "bg-orange-500 text-white"
-                : "bg-gray-100"
-            }`}
-            onClick={() => !isSoldOut && setSelectedSize(size)}
-            disabled={isSoldOut}
-            title={isSoldOut ? "This size is sold out" : ""}
-          >
-            {size}
-          </button>
-        );
-      })}
-</div>
-
-
-                  </div>
-                </div>
-              )}
+              {data?.category && renderSizeButtons(data)}
 
               {/* Size Chart Modal */}
               {showSizeChart && (
