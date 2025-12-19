@@ -248,7 +248,16 @@ const Productdetails = () => {
     const visibleSizes = filterSizesByFitType(sortedSizes, fitType);
 
     if (!visibleSizes.length) {
-      return null;
+      return (
+        <div className="flex items-center gap-5 mb-3">
+          <div className="flex flex-col items-start gap-1">
+            <h4 className="text-lg font-semibold">SIZE</h4>
+            <div className="text-gray-500 italic py-2">
+              Not available for {fitType === 'youth' ? 'Youth' : 'Adult'} sizes
+            </div>
+          </div>
+        </div>
+      );
     }
 
     return (
