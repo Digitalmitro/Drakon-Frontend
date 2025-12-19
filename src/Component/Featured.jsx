@@ -247,17 +247,16 @@ const Featured = ({ closeCart }) => {
                     </div>
                     {/* Buttons */}
                     <div className="flex mt-3 gap-2">
-                      <button 
-                        className={`text-white text-lg font-medium py-2 px-2 rounded w-full transition ${
+                      <Link
+                        to={`/productDetails/${e._id}`}
+                        className={`text-white text-lg font-medium py-2 px-2 rounded w-full transition text-center block ${
                           e.isSoldOut 
-                            ? "bg-gray-400 cursor-not-allowed" 
+                            ? "bg-gray-400 cursor-not-allowed pointer-events-none" 
                             : "bg-[#0f172a] hover:bg-[#1e293b]"
                         }`}
-                        onClick={() => handleCart(e._id)}
-                        disabled={e.isSoldOut}
                       >
                         {e.isSoldOut ? "Sold Out" : "Add to cart"}
-                      </button>
+                      </Link>
                       <Link
                         to={`/productDetails/${e._id}`}
                         className="bg-[#f97316] text-white text-lg font-medium py-2 lg:pl-8 pl-10 rounded w-full hover:bg-[#ea580c] transition"

@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import { message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../Redux/CartSlice';
+import API_BASE_URL from '../config/api';
 
 const Productdetails = () => {
    let fitTypeShowing = true;
@@ -34,7 +35,7 @@ const Productdetails = () => {
 
   const getAllProductData = async () => {
     try {
-      const productRes = await axios.get(`https://api.drakon-sports.com/products/${id}`);
+      const productRes = await axios.get(`${API_BASE_URL}/products/${id}`);
       setData(productRes.data);
       setSelectedImage(productRes.data.image?.[0] || null);
     } catch (err) {
@@ -72,6 +73,17 @@ const Productdetails = () => {
       return;
     }
 
+    // Extract UPC for the selected size or product
+    let upc = '';
+    if (selectedSize && data?.size && Array.isArray(data.size)) {
+      const sizeData = data.size.find(s => s.size === selectedSize);
+      upc = sizeData?.upc || data.upc || '';
+    } else {
+      upc = data.upc || '';
+    }
+
+    console.log('Extracted UPC for cart:', upc);
+
     // item shape for both guest & logged-in
     const cartItem = {
       productId: {
@@ -85,6 +97,8 @@ const Productdetails = () => {
       },
       quantity,
       total: data.price * quantity,
+      size: selectedSize,
+      upc: upc,
     };
 
     if (user_id) {
@@ -109,7 +123,7 @@ const Productdetails = () => {
     } else {
       // guest: write to localStorage
       const guestCart = JSON.parse(localStorage.getItem('guest_cart') || '[]');
-      const existing = guestCart.find((i) => i.productId._id === data._id);
+      const existing = guestCart.find((i) => i.productId._id === data._id && i.size === selectedSize);
       if (existing) {
         existing.quantity += quantity;
         existing.total = existing.quantity * data.price;
@@ -221,12 +235,20 @@ const Productdetails = () => {
 
   const renderSizeButtons = (data) => {
     const allSizes = Array.isArray(data.size) ? data.size : [];
+    
+    // Extract size strings from objects {size: "Youth", upc: "..."} or use strings directly
+    const sizeStrings = allSizes.map(s => {
+      if (typeof s === 'object' && s !== null && s.size) {
+        return s.size;
+      }
+      return s;
+    });
 
-    const sortedSizes = sortSizes(allSizes, SIZE_ORDER_MAP);
+    const sortedSizes = sortSizes(sizeStrings, SIZE_ORDER_MAP);
     const visibleSizes = filterSizesByFitType(sortedSizes, fitType);
 
     if (!visibleSizes.length) {
-      return null; // or fallback UI if you want
+      return null;
     }
 
     return (

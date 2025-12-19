@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import API_BASE_URL from "../config/api";
 
 const ProductContext = createContext();
 
@@ -6,7 +7,7 @@ export const ProductProvider = ({ children }) => {
   const getCategory = async () => {
     try {
       const response = await fetch(
-        `https://api.drakon-sports.com/api/top-category`
+        `${API_BASE_URL}/api/top-category`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
@@ -22,11 +23,11 @@ export const ProductProvider = ({ children }) => {
       let response;
       if (!arg) {
         response = await fetch(
-          `https://api.drakon-sports.com/api/category`
+          `${API_BASE_URL}/api/category`
         );
       }
       response = await fetch(
-        `https://api.drakon-sports.com/api/category/?categoryName=${arg}`
+        `${API_BASE_URL}/api/category/?categoryName=${arg}`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
@@ -42,7 +43,7 @@ export const ProductProvider = ({ children }) => {
     try {
       let response;
       response = await fetch(
-        `https://api.drakon-sports.com/products/?category=${arg}`
+        `${API_BASE_URL}/products/?category=${arg}`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
@@ -58,7 +59,7 @@ export const ProductProvider = ({ children }) => {
   const getAllTopProducts = async () => {
     try {
       const response = await fetch(
-        `https://api.drakon-sports.com/top-products`
+        `${API_BASE_URL}/top-products`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
@@ -73,7 +74,7 @@ export const ProductProvider = ({ children }) => {
   const getAllShopProduct = async () =>{
     try {
       const response = await fetch(
-        `https://api.drakon-sports.com/feature-products`
+        `${API_BASE_URL}/feature-products`
       );
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);

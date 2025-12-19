@@ -72,9 +72,7 @@ const CartPage = () => {
   // 3️⃣ Stripe checkout redirect
   const checkout = async () => {
     const subtotal = cart.reduce((acc, i) => acc + i.total, 0);
-    const shippingCost = 6.99;
-    const shippingDiscount = -6.99;
-    const total = subtotal + shippingCost + shippingDiscount;
+    const total = subtotal;
 
     try {
       const stripe = await stripePromise;
@@ -117,9 +115,7 @@ const CartPage = () => {
   };
 
   const subtotal = cart.reduce((acc, item) => acc + item.total, 0);
-  const shippingCost = 6.99;
-  const shippingDiscount = -6.99;
-  const estimatedTotal = subtotal + shippingCost + shippingDiscount;
+  const estimatedTotal = subtotal;
 
   return (
     <div className="mx-auto px-4 sm:px-6 pt-24 pb-12">
@@ -214,12 +210,6 @@ const CartPage = () => {
           <div className="w-full lg:w-[30%]">
             <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm lg:sticky lg:top-24">
               <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-
-              {subtotal >= 200 && (
-                <div className="bg-green-50 text-green-700 p-3 rounded-md mb-4 text-sm">
-                  Nice work! You've unlocked free shipping
-                </div>
-              )}
 
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">

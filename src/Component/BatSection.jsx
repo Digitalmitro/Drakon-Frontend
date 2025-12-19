@@ -225,9 +225,12 @@ const BatSection = ({ closeCart }) => {
 
                       {/* Buttons */}
                       <div className="flex mt-3 gap-2">
-                        <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition" onClick={() => handleCart(e._id)}>
+                        <Link
+                          to={`/productDetails/${e._id}`}
+                          className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition text-center block"
+                        >
                           Add to cart
-                        </button>
+                        </Link>
                         <Link
                           to={`/productDetails/${e._id}`}
                           className="bg-[#f97316] text-white text-lg font-medium py-2 lg:pl-8 pl-10 rounded w-full hover:bg-[#ea580c] transition"

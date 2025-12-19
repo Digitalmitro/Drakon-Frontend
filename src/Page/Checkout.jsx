@@ -7,6 +7,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import moment from "moment";
 import { message, Spin } from "antd";
 import { FiEdit } from "react-icons/fi";      // ← edit icon
+import API_BASE_URL from "../config/api";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -39,6 +40,11 @@ export default function Checkout() {
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [shippingCost, setShippingCost] = useState(0);
   const [finalPayment, setFinalPayment] = useState(0);
+  
+  // Shipping options per item
+  const [itemShippingOptions, setItemShippingOptions] = useState({});
+  const [selectedShippingMethods, setSelectedShippingMethods] = useState({});
+  const [itemQuantities, setItemQuantities] = useState({}); // Track quantities for shipping calculation
 
   // Settings
   const [enableTax, setEnableTax] = useState(false);
@@ -88,7 +94,7 @@ export default function Checkout() {
     if (token) {
       try {
         const { data } = await axios.get(
-          `https://api.drakon-sports.com/api/cart`,
+          `${API_BASE_URL}/api/cart`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setCartData(data.products || []);
@@ -103,7 +109,7 @@ export default function Checkout() {
   // FETCH SETTINGS
   async function fetchSettings() {
     try {
-      const sRes = await axios.get(`https://api.drakon-sports.com/general-settings`);
+      const sRes = await axios.get(`${API_BASE_URL}/general-settings`);
       const settings = sRes.data[0];
       setEnableCoupon(settings.EnableCoupon || false);
       setEnableTax(settings.EnableTax);
@@ -131,7 +137,7 @@ export default function Checkout() {
     
     try {
       const res = await axios.post(
-        `https://api.drakon-sports.com/coupon/validate`,
+        `${API_BASE_URL}/coupon/validate`,
         { couponCode: couponCode.trim() }
       );
       
@@ -176,16 +182,35 @@ export default function Checkout() {
     setShowAddressForm(true);
   }
 
-  // CALCULATE SHIPPING
+  // CALCULATE SHIPPING - Now fetches shipping options per item
   async function calculateShipping() {
     setShippingLoading(true);
     try {
-      const totalOunces = cartData.reduce(
-        (sum, item) => sum + (item.productId?.weight || 0) * item.quantity,
-        0
-      );
+      console.log('Full cartData:', JSON.stringify(cartData, null, 2)); // Debug: see full cart structure
+      
+      // Prepare items with UPC codes for ShipStation
+      const items = cartData.map(item => {
+        // UPC is now stored directly in cart item
+        const upc = item.upc || '';
+        
+        console.log('Cart item:', {
+          size: item.size,
+          upc: item.upc,
+          productId: item.productId?._id
+        });
+        
+        return {
+          upc,
+          quantity: item.quantity,
+          productId: item.productId._id,
+          selectedSize: item.size
+        };
+      }).filter(item => item.upc); // Only include items with UPC
+
+      console.log('Shipping request items:', items); // Debug log
+
       const res = await axios.post(
-        `https://api.drakon-sports.com/shipping/estimate`,
+        `${API_BASE_URL}/shipping/estimate-v2`,
         {
           to: {
             shippingcountry: deliveryAddress.shippingcountry,
@@ -193,17 +218,67 @@ export default function Checkout() {
             shippingcity: deliveryAddress.shippingcity,
             shippingstate: deliveryAddress.shippingstate,
           },
-          weightOunces: totalOunces,
+          items,
         },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
-      setShippingCost(res.data.estimatedCost || 0);
-    } catch {
+
+      // Store shipping options per item
+      const shippingOptions = {};
+      const defaultSelections = {};
+      const quantities = {};
+      let totalShipping = 0;
+
+      res.data.items.forEach((itemData, index) => {
+        const cartItem = items[index];
+        const key = `${cartItem.productId}-${cartItem.upc}`;
+        
+        shippingOptions[key] = itemData.shippingOptions;
+        quantities[key] = cartItem.quantity; // Store quantity for this item
+        
+        // Select cheapest option by default
+        const cheapestOption = itemData.shippingOptions.reduce((min, opt) => 
+          opt.cost < min.cost ? opt : min
+        , itemData.shippingOptions[0]);
+        
+        defaultSelections[key] = cheapestOption.serviceCode;
+        totalShipping += cheapestOption.cost * cartItem.quantity; // Multiply by quantity
+      });
+
+      setItemShippingOptions(shippingOptions);
+      setSelectedShippingMethods(defaultSelections);
+      setItemQuantities(quantities);
+      setShippingCost(totalShipping);
+      
+    } catch (error) {
+      console.error("Shipping calculation error:", error);
       message.error("Failed to calculate shipping");
       setShippingCost(0);
     } finally {
       setShippingLoading(false);
     }
+  }
+
+  // Handle shipping method selection for a specific item
+  function handleShippingMethodChange(itemKey, serviceCode) {
+    setSelectedShippingMethods(prev => ({
+      ...prev,
+      [itemKey]: serviceCode
+    }));
+
+    // Recalculate total shipping cost with quantity multiplier
+    let totalShipping = 0;
+    Object.keys(itemShippingOptions).forEach(key => {
+      const selectedService = key === itemKey ? serviceCode : selectedShippingMethods[key];
+      const option = itemShippingOptions[key].find(opt => opt.serviceCode === selectedService);
+      const quantity = itemQuantities[key] || 1;
+      
+      if (option) {
+        totalShipping += option.cost * quantity; // Multiply by quantity
+      }
+    });
+    
+    setShippingCost(totalShipping);
   }
 
   async function initiateStripe() {
@@ -217,7 +292,7 @@ export default function Checkout() {
       }
 
       const { data } = await axios.post(
-        `https://api.drakon-sports.com/api/stripe/create-payment-intent`,
+        `${API_BASE_URL}/api/stripe/create-payment-intent`,
         {
           amount: Math.round((finalPayment + shippingCost) * 100),
           success_url: `${location.origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
@@ -241,11 +316,11 @@ export default function Checkout() {
   }
 
 
-  // CONFIRM PAYMENT & CREATE ORDER  (unchanged except for brevity)
+  // CONFIRM PAYMENT & CREATE ORDER
   async function confirmPayment(sid) {
     try {
       await axios.post(
-        `https://api.drakon-sports.com/api/stripe/confirm`,
+        `${API_BASE_URL}/api/stripe/confirm`,
         { sessionId: sid },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
@@ -260,6 +335,33 @@ export default function Checkout() {
       };
       const normalizedBilling = normalizedShipping;
 
+      // Prepare cart items with selected shipping methods
+      const cartItemsWithShipping = cartData.map((p) => {
+        // UPC is now stored directly in cart item
+        const upc = p.upc || '';
+        const itemKey = `${p.productId._id}-${upc}`;
+        
+        // Get selected shipping method for this item
+        const selectedServiceCode = selectedShippingMethods[itemKey];
+        const shippingOptions = itemShippingOptions[itemKey] || [];
+        const selectedShipping = shippingOptions.find(opt => opt.serviceCode === selectedServiceCode);
+
+        return {
+          productId: p.productId._id || p.productId,
+          quantity: p.quantity,
+          name: p?.productId?.title ?? "",
+          size: p?.size ?? "M",
+          weight: p?.productId?.weight ?? p.weight ?? 0,
+          price: p.productId.price || p.price,
+          upc: upc,
+          shippingMethod: selectedShipping ? {
+            serviceName: selectedShipping.serviceName,
+            serviceCode: selectedShipping.serviceCode,
+            cost: selectedShipping.cost
+          } : null
+        };
+      });
+
       const payload = token
         ? {
           paymentMethod: "Stripe",
@@ -272,14 +374,7 @@ export default function Checkout() {
           paymentStatus: "Paid",
           shippingAddress: normalizedShipping,
           billingAddress: normalizedBilling,
-          cartData: cartData.map((p) => ({
-            productId: p.productId._id || p.productId,
-            quantity: p.quantity,
-            name: p?.productId?.title ?? "",
-            size: p?.productId?.size ?? "M",
-            weight: p?.productId?.weight ?? p.weight ?? 0,
-            price: p.productId.price || p.price,
-          })),
+          cartData: cartItemsWithShipping,
           subtotal,
           shippingCost,
           discount: couponDiscount,
@@ -287,14 +382,14 @@ export default function Checkout() {
         };
 
       await axios.post(
-        `https://api.drakon-sports.com/order`,
+        `${API_BASE_URL}/order`,
         payload,
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
       if (token) {
         await axios.delete(
-          `https://api.drakon-sports.com/api/cart/clear`,
+          `${API_BASE_URL}/api/cart/clear`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
@@ -397,19 +492,58 @@ export default function Checkout() {
               <tr><th>Product</th><th></th><th>Qty</th><th>Price</th></tr>
             </thead>
             <tbody>
-              {cartData.map((item) => {
+              {cartData.map((item, idx) => {
                 const p = item.productId;
+                // UPC is now stored directly in cart item
+                const upc = item.upc || '';
+                const itemKey = `${p._id}-${upc}`;
+                const hasShippingOptions = itemShippingOptions[itemKey] && itemShippingOptions[itemKey].length > 0;
+                
                 return (
-                  <tr key={p._id || p}>
-                    <td>
-                      <img src={p.image?.[0] || ""} alt={p.title}
-                        style={{ width: 50, height: 50, objectFit: "cover" }}
-                        className="me-2" /> {p.title}
-                    </td>
-                    <td></td>
-                    <td>{item.quantity} <strong className=""> {item.productId?.size ?? item?.size}</strong></td>
-                    <td>{enableCurrency} {(p.price * item.quantity).toFixed(2)}</td>
-                  </tr>
+                  <React.Fragment key={idx}>
+                    <tr>
+                      <td>
+                        <img src={p.image?.[0] || ""} alt={p.title}
+                          style={{ width: 50, height: 50, objectFit: "cover" }}
+                          className="me-2" /> {p.title}
+                      </td>
+                      <td></td>
+                      <td>{item.quantity} <strong className=""> {item?.size}</strong></td>
+                      <td>{enableCurrency} {(p.price * item.quantity).toFixed(2)}</td>
+                    </tr>
+                    {/* Shipping method selection row */}
+                    {hasShippingOptions && (
+                      <tr>
+                        <td colSpan="4" className="pt-0 pb-3">
+                          <div className="d-flex align-items-center gap-2" style={{ fontSize: '0.9em' }}>
+                            <span className="text-muted">Shipping Method:</span>
+                            <select 
+                              className="form-select form-select-sm" 
+                              style={{ maxWidth: '300px' }}
+                              value={selectedShippingMethods[itemKey] || ''}
+                              onChange={(e) => handleShippingMethodChange(itemKey, e.target.value)}
+                            >
+                              {itemShippingOptions[itemKey].map((option, optIdx) => (
+                                <option key={optIdx} value={option.serviceCode}>
+                                  {option.serviceName} - {enableCurrency}{option.cost.toFixed(2)}
+                                </option>
+                              ))}
+                            </select>
+                            {item.quantity > 1 && (
+                              <span className="text-muted">
+                                x{item.quantity} = {enableCurrency}
+                                {(() => {
+                                  const selectedService = selectedShippingMethods[itemKey];
+                                  const option = itemShippingOptions[itemKey].find(opt => opt.serviceCode === selectedService);
+                                  return option ? (option.cost * item.quantity).toFixed(2) : '0.00';
+                                })()}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 );
               })}
 
