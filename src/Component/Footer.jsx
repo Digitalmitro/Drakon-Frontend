@@ -59,7 +59,7 @@ const Footer = ({ closeCart }) => {
                 </Link>
               </div>
             </div>
-            <div className="flex py-5 px-10 flex-col banner items-center lg:items-start gap-2 text-black mb-5 lg:mb-0 ">
+            <div className="flex py-5 px-10 flex-col banner items-center lg:items-start gap-2 text-white mb-5 lg:mb-0 ">
               <h3 className="text-2xl font-bold">Category</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col gap-7 text-2xl lg:text-xl cursor-pointer">
@@ -72,7 +72,7 @@ const Footer = ({ closeCart }) => {
                 <li onClick={() => navigate("/apparel")}>Apparel</li>
               </ul>
             </div>
-            <div className="flex flex-col px-10 items-center banner lg:items-start gap-2 py-5 text-black mb-5 lg:mb-0">
+            <div className="flex flex-col px-10 items-center banner lg:items-start gap-2 py-5 text-white mb-5 lg:mb-0">
               <h3 className="text-2xl font-bold">Useful Links</h3>
               <hr className="border-red-500 w-36 mb-4" />
               <ul className="flex flex-col gap-7 text-xl cursor-pointer">
