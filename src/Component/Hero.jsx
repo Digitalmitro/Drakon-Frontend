@@ -1,98 +1,106 @@
-import { Button, useMediaQuery } from "@mui/material";
-import React from "react";
-import gloves from "../assets/8.png";
-import elbowGuard from "../assets/7.png";
-import tshirt from "../assets/6.png";
-import sunglass from "../assets/9.png";
+import { Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
-const Hero = ({ closeCart }) => {
-  const navigate = useNavigate()
-  const isMobile = useMediaQuery("(max-width:900px)");
+import { Carousel } from "antd";
+import { Helmet } from "react-helmet";
+const Hero = ({ closeCart, setLoading, loading }) => {
+  const navigate = useNavigate();
+  const [banner, setBanner] = useState([]);
+  const fetchAllBanners = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API}/api/banners`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setBanner(data);
+      }
+    } catch (error) {
+      console.error("Error fetching banners:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchAllBanners();
+  }, []);
   return (
     <>
-      <div onClick={closeCart} className="bg-[#F3F3F3]">
-        <div
-          className="hero-bg-img flex items-center  bg-contain lg:bg-cover "
-          style={{ zoom: isMobile ? "0.7" : "" }}
-        >
-          <div className=" ml-[20px] lg:ml-[200px] text-center lg:text-left">
-            <h3 className="uppercase text-3xl lg:text-5xl font-bold text-white mb-10">
-              Always in motion
-            </h3>
-            <Button
-              sx={{
-                borderRadius: "100vw",
-                padding: "15px 40px",
-                fontSize: "1rem",
-                fontWeight: "bold",
-                backgroundColor: "#F5743B",
-                ml: isMobile ? "" : "40px",
-                mr: "20px",
-                "&:hover": {
-                  backgroundColor: "#be410c", // Adjust the brightness to darken the color
-                },
-                zoom: isMobile ? "0.7" : ""
-              }}
-              variant="contained"
-              onClick={() => navigate('/product')}
-            >
-              shop men
-            </Button>
+      <Helmet>
+        <title>Quality Baseball Apparel Online | Drakon Sports Apparel</title>
+        <meta
+          name="description"
+          content="Purchase high-quality baseball apparel online at Drakon Sports Apparel all around the U.S. Sport enthusiasts, be ready to shop for your favorite sports equipment."
+        />
+      </Helmet>
+      <div onClick={closeCart} className="bg-[#F3F3F3] lg:mt-16 ">
+        {loading ? (
+          <div className="flex justify-center items-center h-screen">
+            <button className="text-blue-300 ">
+              <svg
+                className="animate-spin size-5 mr-3"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  cx={12}
+                  cy={12}
+                  r={10}
+                  stroke="currentColor"
+                  strokeWidth={3}
+                  strokeDasharray={40}
+                ></circle>
+              </svg>
+            </button>
+          </div>
+        ) : (
+          <Carousel autoplay effect="fade">
+            {banner.map((img, index) => (
+              <div key={index} className="relative w-full h-screen">
+                <div
+                  className={`w-full h-full bg-cover bg-center flex items-center justify-start`}
+                  style={{
+                    backgroundImage: `url(${
+                      window.innerWidth < 1024
+                        ? img.mobile_image
+                        : img.desktop_image
+                    }) `,
+                  }}
+                >
+                  <div className={`text-white px-4 `}>
+                    <h1 className="  mb-10 lg:w-[850px] ">
+                      <span className="text-amber-500 md:text-7xl text-3xl font-semibold leading-[1.5]">
+                        {img.title}
+                      </span>
+                      <br />
+                      {/* <span>{img.description}</span> */}
+                    </h1>
+                    <div>
+                      <Button
+                        sx={{
+                          borderRadius: "100vw",
+                          padding: "10px 30px",
+                          fontSize: "1.3rem",
+                          fontWeight: 700,
+                          backgroundColor: "#F5743B",
+                          mr: "20px",
+                          "&:hover": { backgroundColor: "#be410c" },
+                        }}
+                        variant="contained"
+                        onClick={() => navigate("/shop")}
+                      >
+                        Shop Now
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Carousel>
+        )}
 
-            <Button
-              sx={{
-                borderRadius: "100vw",
-                padding: "15px 40px",
-                fontSize: "1rem",
-                fontWeight: "bold",
-                backgroundColor: "white",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "#cccccc", // Adjust the brightness to darken the color
-                },
-                zoom: isMobile ? "0.7" : ""
-              }}
-              variant="contained"
-              onClick={() => navigate('/product')}
-            >
-              shop women
-            </Button>
-          </div>
-        </div>
-
-        <div className="container mx-auto py-10 grid lg:grid-cols-2 gap-10">
-          {/* <div className="w-full flex flex-col items-center justify-center">
-            <img src={gloves} alt="" className="lg:w-64" />
-            <h3 className="text-4xl lg:text-3xl font-bold">Cricket Gloves</h3>
-            <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
-            <p className="text-xl lg:text-lg">Drakon Sports Apparel gloves...</p>
-          </div> */}
-          {/* <div className="w-full flex flex-col items-center justify-center">
-            <img src={elbowGuard} alt="" className="lg:w-64" />
-            <h3 className="text-4xl lg:text-3xl font-bold">Elbow Guard</h3>
-            <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
-            <p className="text-xl lg:text-lg">Drakon Sports elbow guard...</p>
-          </div> */}
-        <Link to={'/product'}>
-        <div className="w-full flex flex-col items-center justify-center">
-            <img src={tshirt} alt="" className="lg:mb-[0px] lg:h-[400px]" />
-            <h3 className="text-4xl lg:text-3xl font-bold">Drakon Hoodie</h3>
-            <h3 className="text-3xl lg:text-2xl font-bold my-3">$ 125</h3>
-            <p className="text-xl lg:text-lg">
-            Drakon Sports Apparel hoodie...
-            </p>
-          </div>
-        </Link>
-        <Link to={'/product'}>
-          <div className="w-full flex flex-col items-center justify-center">
-            <img src={sunglass} alt="" className="lg:w-64" />
-            <h3 className="text-4xl lg:text-3xl font-bold">Sunglass</h3>
-            <h3 className="text-3xl lg:text-2xl font-bold my-5">$ 125</h3>
-            <p className="text-xl lg:text-lg">Drakon Sports sunglass...</p>
-          </div>
-          </Link>
-        </div>
+        <div></div>
       </div>
     </>
   );

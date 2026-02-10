@@ -1,75 +1,139 @@
 import { Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import tshirt from "../assets/tshirt.png";
-import cap from "../assets/cap.png";
-import sunglassNew from "../assets/sunglass-new.png";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { addItem } from "../Redux/CartSlice";
-import { message } from "antd";
-import feature from "../feature.json"
-import { Link } from "react-router-dom";
-const Featured = ({closeCart}) => {
-  const dispatch = useDispatch();
+import React, { useRef, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
+import { Pagination, Autoplay } from "swiper/modules";
+import { Carousel } from "antd";
+import { useProduct } from "../context/ProductContext";
+
+// Initialize Swiper modules
+SwiperCore.use([Autoplay, Pagination]);
+
+const Featured = ({ closeCart, navigate }) => {
+  const { getAllTopProducts } = useProduct();
+  const [topProductBanner, setTopProductBanner] = useState([]);
+  const swiperRef = useRef(null);
+
+  const fetchAllGlassesBanner = async () => {
+    const response = await getAllTopProducts();
+    setTopProductBanner(response);
+  };
 
   useEffect(() => {
-    getProducts();
+    fetchAllGlassesBanner();
   }, []);
 
-  const [products, setProducts] = useState([]);
-  async function getProducts() {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_API}/feature-products`
-      );
-      setProducts(data);
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    // Start autoplay when data is loaded and swiper is ready
+    if (
+      swiperRef.current &&
+      swiperRef.current.swiper &&
+      topProductBanner.length > 0
+    ) {
+      swiperRef.current.swiper.autoplay.start();
     }
-  }
+  }, [topProductBanner]);
+
   return (
-    <div className="bg-[#F3F3F3]" onClick={closeCart}>
-      <div className="container mx-auto" style={{}}>
-        <h2 className="font-bold text-4xl lg:text-5xl uppercase text-center">
-          Featured Products
+    <div className="bg-[#fcf7f7]" onClick={closeCart}>
+      <div className="max-w-6xl mx-auto text-center px-4 py-12">
+        <h2 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          Order Top-Quality Baseball Equipment
+          <br />
+          <span className="text-orange-600 mt-2">It's Time to Win</span>
         </h2>
-        <div className="flex flex-col lg:flex-row gap-10 justify-between py-20">
-          {feature?.map((e) => (
-           <Link to={`/productDetails/${e._id}`}>
-             <div className="shadow-lg lg:h-[600px] lg:w-[400px] lg:p-20 flex flex-col justify-between items-center gap-6 lg:gap-0 bg-white p-10">
-              <div className="lg:w-[200px] h-[200px] flex justify-center">
-                <img
-                  src={e.image}
-                  className="object-cover w-1/2 lg:w-full"
-                  style={{}}
-                />
-              </div>
-              <h3 className="font-bold text-3xl">{e.title}</h3>
-              <h4 className="text-[#959595] font-bold text-2xl">$ {e.price}</h4>
-              <Button
-                // onClick={() => {
-                //   dispatch(addItem(e))
-                //   message.success("Item added to cart")
-                // }}
-                sx={{
-                  borderRadius: "100vw",
-                  paddingY: "10px",
-                  fontSize: "1rem",
-                  width: "80%",
-                  backgroundColor: "#F5743B",
-                  "&:hover": {
-                    backgroundColor: "#be410c", // Adjust the brightness to darken the color
-                  },
-                }}
-                variant="contained"
-                onClick={() => navigate(`/checkout/${id}`)}
-              >
-                Buy now
-              </Button>
-            </div>
-           </Link>
-          ))}
-        </div>
+        <p className="text-lg md:text-xl text-gray-800 max-w-3xl mx-auto leading-relaxed">
+          In search of quality baseball apparel and equipment? You are at the
+          right baseball gear shop—
+          <span className="font-semibold text-gray-900">
+            buy baseball clothing online with Drakon Sports Apparel
+          </span>
+          . We've got everything for the sport you support.
+        </p>
+      </div>
+      <div className="mx-auto py-10">
+        <h2 className="font-bold text-4xl md:text-6xl text-gray-900 lg:text-4xl uppercase text-center">
+          Top Products
+        </h2>
+
+        {topProductBanner.length > 0 ? (
+          <Swiper
+            ref={swiperRef}
+            slidesPerView={4}
+            loop={true}
+            pagination={{ clickable: true }}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+              waitForTransition: true,
+              pauseOnMouseEnter: true,
+            }}
+            modules={[Pagination, Autoplay]}
+            breakpoints={{
+              1024: { slidesPerView: 4 },
+              600: { slidesPerView: 2 },
+              375: { slidesPerView: 1 },
+            }}
+            className="mt-10 lg:pl-8 mx-6 lg:mx-0"
+            onInit={(swiper) => {
+              swiper.autoplay.start();
+            }}
+          >
+            {topProductBanner.map((e) => (
+              <SwiperSlide key={e._id}>
+                <div className="lg:h-[500px] h-[440px]">
+                  <div className="shadow-lg rounded-lg w-full lg:w-[360px] bg-white flex flex-col justify-between p-2 hover:shadow-xl transition-all duration-300">
+                    {/* LIMITED Badge */}
+                    <div className="absolute bg-zinc-800 text-white text-base font-bold px-2 py-1 rounded-md uppercase ml-4 mt-2 z-10">
+                      LIMITED
+                    </div>
+
+                    {/* Product Image */}
+                    <Link
+                      to={`/productDetails/${e._id}`}
+                      className="bg-[#dddfe0] rounded-md overflow-hidden flex justify-center items-center h-[240px] lg:h-[270px]"
+                    >
+                      <img
+                        src={e.image?.[0]}
+                        alt="Product"
+                        className="object-contain h-full w-full"
+                      />
+                    </Link>
+
+                    {/* Product Info */}
+                    <div className="mt-4 px-1 flex flex-col gap-1">
+                      <h3 className="font-semibold text-black text-[1.3rem] leading-tight">
+                        {e.title}
+                      </h3>
+                      <h4 className="text-[#4b4b4b] font-bold text-[1.5rem]">
+                        $ {e.price}
+                      </h4>
+                    </div>
+                    {/* Buttons */}
+                    <div className="flex mt-3 gap-2">
+                      <button className="bg-[#0f172a] text-white text-lg font-medium py-2 px-2 rounded w-full hover:bg-[#1e293b] transition">
+                        Add to cart
+                      </button>
+                      <Link
+                        to={`/productDetails/${e._id}`}
+                        className="bg-[#f97316] text-white text-lg font-medium py-2 lg:pl-8 pl-10 rounded w-full hover:bg-[#ea580c] transition"
+                      >
+                        QUICK VIEW
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <div className="text-center py-10">Loading products...</div>
+        )}
       </div>
     </div>
   );

@@ -3,10 +3,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams,useLocation } from "react-router-dom";
 
 const Checkout = () => {
-
+  const location = useLocation();
+  const { quantity } = location.state || {};
   const token = Cookies.get("token");
   const decodedToken = token && jwtDecode(token);
   const userId = decodedToken?._id;
@@ -15,8 +16,6 @@ const Checkout = () => {
   const [shippingData, setShippingData] = useState();
   const [billingData, setBillingData] = useState();
   const [data, setData] = useState();
-
-
 
 
   const handleProduct = async () => {
@@ -36,8 +35,8 @@ const Checkout = () => {
 
   useEffect(() => {
     handleProduct()
-  })
-
+  },[])
+//  console.log()
   const getAddressData = async () => {
     try {
       const response1 = await axios.get(
@@ -56,7 +55,7 @@ const Checkout = () => {
     // console.log("billing response:", billingData);
   };
   useEffect(() => {
-    getAddressData();
+    // getAddressData();
     handleProduct();
   }, []);
 
@@ -64,6 +63,9 @@ const Checkout = () => {
     navigate('/profile?tab=1');
  
   };
+  const handletoCheckout =()=>{
+    
+  }
 
   return (
     <>
@@ -157,7 +159,7 @@ const Checkout = () => {
                   <td className="p-4 m-4 px-7 border-b-4"></td>
                   <td className="p-4 m-4 px-7 border-b-4 text-green-600">
                     <p className="text-orange-600">-$0</p>
-                    <p className="text-green-600">+$24</p>
+                    <p className="text-green-600">+$0</p>
                   </td>
                 </tr>
                 <tr className="p-4 m-4 px-7 mb-8 border-b-4">
@@ -166,7 +168,7 @@ const Checkout = () => {
                   </td>
                   <td className="p-4 m-4 px-7 border-b-4"></td>
                   <td className="p-4 m-4 px-7"></td>
-                  <td className="p-4 m-4 px-7 border-b-4">-$123456</td>
+                  <td className="p-4 m-4 px-7 border-b-4">${data?.price*quantity}</td>
                 </tr>
               </tbody>
             </table>
@@ -176,7 +178,9 @@ const Checkout = () => {
                 Your personal details will be used to process your order,
                 support your experience throughout this website
               </p>
-              <button className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white">
+              <button className="px-5 py-3 m-3 w-2/3 bg-orange-500 rounded-lg text-white"
+              onClick={handletoCheckout()}
+              >
                 Place Order
               </button>
             </div>

@@ -43,7 +43,7 @@ const Orders = () => {
   return (
     <div className="">
       <div className="text-center">
-        <h2 className="fs-1 text my-3 pastOrderHead">Past Orders</h2>
+        <h2 className="fs-1 text my-3 pastOrderHead">All Orders</h2>
       </div>
       <div className="past-order order-response d-sm-flex flex-column flex-sm-row justify-center ">
         {currentProducts?.map((order) => (

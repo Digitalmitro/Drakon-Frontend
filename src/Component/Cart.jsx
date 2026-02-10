@@ -22,7 +22,6 @@ const Cart = () => {
   const [data, setData] = useState();
   const [enableCurrency, setEnableCurrency] = useState();
  
-
   const handleProduct = async () => {
     try {
 
@@ -42,9 +41,9 @@ const Cart = () => {
     }
   };
 
-  console.log("cartData", data)
+  // console.log("cartData", data)
 
-  console.log("data", data);
+  // console.log("data", data);
   const totalPrice = data?.reduce((acc, curr) => acc + (curr.price* curr.qty), 0);
   const netPayable = totalPrice - (totalPrice * 0.3);
 

@@ -20,19 +20,19 @@
   text-align: center;
 }
 .hero-bg-img {
-  background-image: url("./assets/banner.jpg");
+  background-image: url("./assets/carousel/crousal-1.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   height: 500px;
 }
 .contact-banner{
-  background: url("./assets/contact.png"),rgba(0, 0, 0, 0.7);
+  background: url("https://res.cloudinary.com/dinitjlyf/image/upload/v1743772085/chat_uploads/zsar2np2vwgtevrtva6o.jpg"),rgba(0, 0, 0, 0.7);
   background-blend-mode: multiply;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 500px;
+  height: 700px;
 }
 .bg-men-running {
   background-image: url("./assets/8.png");
@@ -47,7 +47,7 @@
   background-blend-mode: multiply;
   background-position: center;
   background-size: cover;
-  height: 300px;
+  height: 500px;
 }
 .faq-banner{
   background: url("./assets/image17.png"),rgba(0, 0, 0, 0.4);
@@ -55,7 +55,7 @@
   background-blend-mode: multiply;
   background-position: center;
   background-size: cover;
-  height: 300px;
+  height: 400px;
 }
 .shipping-banner{
   background: url("./assets/shipping.png");
@@ -156,7 +156,7 @@
  background-blend-mode: multiply;
  background-position: center; 
  background-size: cover;
- height: 400px;
+ height: 500px;
 }
 
 .about-banner{
@@ -881,12 +881,13 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 .productDetails{
-  width: fit-content !important;
+  width: 100% !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  margin: 0 auto; /* Center the container */
+  padding: 0;
 }
 .product-counter{
  display: flex;
@@ -920,3 +921,4 @@ input[type="range"]::-webkit-slider-thumb {
   flex-direction: column;
 }
 }
+
