@@ -1,35 +1,46 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import API_BASE_URL from "../config/api";
 
 function Order() {
     const [pastOrders, setPastOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const token = Cookies.get("token");
-    const decodedToken = token && jwtDecode(token);
-    const userId = decodedToken?._id;
 
-    const getOrders = async (id) => {
+    const getOrders = async () => {
         try {
+            if (!token) {
+                setPastOrders([]);
+                return;
+            }
+
             const response = await fetch(
-                `https://api.drakon-sports.com/api/user/${id}`
+                `${API_BASE_URL}/order`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
             );
+
+            if (response.status === 404) {
+                setPastOrders([]);
+                return;
+            }
             if (!response.ok) throw new Error("Failed to fetch orders");
 
             const data = await response.json();
-            setPastOrders(data);
+            setPastOrders(Array.isArray(data) ? data : []);
             console.log("Order Data:", data);
         } catch (error) {
             console.error("Error fetching orders:", error);
+            setPastOrders([]);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        if (userId) getOrders(userId);
-    }, []);
+        getOrders();
+    }, [token]);
 
     if (loading) {
         return (
@@ -53,18 +64,13 @@ function Order() {
                         {/* Products List */}
                         <div className="space-y-4 flex-1">
                             <h3 className="font-semibold text-lg text-orange-600">Items</h3>
-                            {order.products?.map((item, index) => (
+                            {order.items?.map((item, index) => (
                                 <div key={index} className="flex items-start gap-6">
-                                    <img
-                                        src={item?.productId?.image[0]}
-                                        alt={item?.productId?.title}
-                                        className="w-24 h-24 object-cover rounded-md border"
-                                    />
                                     <div className="text-sm space-y-1">
-                                        <p className="font-medium">{item?.productId?.title}</p>
+                                        <p className="font-medium">{item?.name}</p>
                                         <p>Qty: <b>{item?.quantity}</b></p>
-                                        <p>Price: ₹<b>{item?.price}</b></p>
-                                        <p>Total: ₹<b>{item?.total}</b></p>
+                                        <p>Price: $<b>{item?.unitPrice}</b></p>
+                                        <p>Total: $<b>{(Number(item?.unitPrice || 0) * Number(item?.quantity || 0)).toFixed(2)}</b></p>
                                     </div>
                                 </div>
                             ))}
@@ -77,10 +83,10 @@ function Order() {
                             </h2>
                             <p>Status: <span className="text-blue-600 font-medium">{order?.orderStatus}</span></p>
                             <p>Payment: {order?.paymentMethod} ({order?.paymentStatus})</p>
-                            <p>Total Paid: ₹{order?.totalAmount}</p>
+                            <p>Total Paid: ${order?.orderTotal}</p>
                             <p className="text-gray-500">
                                 Ordered on: <br />
-                                {new Date(order?.createdAt).toLocaleString()}
+                                {new Date(order?.orderDate || order?.createdAt).toLocaleString()}
                             </p>
                         </div>
                     </div>

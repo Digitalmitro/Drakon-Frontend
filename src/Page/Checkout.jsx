@@ -60,6 +60,13 @@ export default function Checkout() {
   // Stripe session
   const [sessionId, setSessionId] = useState(null);
 
+  const getShippingItemKey = (item) => {
+    const productId = item?.productId?._id || item?.productId || "unknown";
+    const size = item?.size || "nosize";
+    const upc = item?.upc || "noupc";
+    return `${productId}-${size}-${upc}`;
+  };
+
   // ───────────────────────────────────────────────────
   // 1) on mount
   // ───────────────────────────────────────────────────
@@ -86,8 +93,8 @@ export default function Checkout() {
 
   // 3) auto shipping
   useEffect(() => {
-    if (!showAddressForm && cartData.length) calculateShipping();
-  }, [deliveryAddress]);
+    if (!showAddressForm && deliveryAddress && cartData.length) calculateShipping();
+  }, [showAddressForm, deliveryAddress, cartData]);
 
   // FETCH CART
   async function fetchCart() {
@@ -110,11 +117,24 @@ export default function Checkout() {
   async function fetchSettings() {
     try {
       const sRes = await axios.get(`${API_BASE_URL}/general-settings`);
-      const settings = sRes.data[0];
-      setEnableCoupon(settings.EnableCoupon || false);
-      setEnableTax(settings.EnableTax);
-      setTaxRate(settings.TaxRate);
-      setEnableCurrency(settings.Currency);
+      const settingsList = Array.isArray(sRes.data) ? sRes.data : [];
+      const settings = settingsList.length ? settingsList[settingsList.length - 1] : {};
+
+      const parseBoolean = (value, fallback = false) => {
+        if (typeof value === "boolean") return value;
+        if (typeof value === "number") return value !== 0;
+        if (typeof value === "string") {
+          const normalized = value.trim().toLowerCase();
+          if (["true", "1", "yes", "on", "active", "enabled"].includes(normalized)) return true;
+          if (["false", "0", "no", "off", "inactive", "disabled"].includes(normalized)) return false;
+        }
+        return fallback;
+      };
+
+      setEnableCoupon(parseBoolean(settings.EnableCoupon ?? settings.enableCoupon, true));
+      setEnableTax(parseBoolean(settings.EnableTax ?? settings.enableTax, false));
+      setTaxRate(Number(settings.TaxRate ?? settings.taxRate ?? 0));
+      setEnableCurrency(settings.Currency ?? settings.currency ?? "$");
     } catch { }
   }
 
@@ -189,9 +209,9 @@ export default function Checkout() {
       console.log('Full cartData:', JSON.stringify(cartData, null, 2)); // Debug: see full cart structure
       
       // Prepare items with UPC codes for ShipStation
-      const items = cartData.map(item => {
+      const items = cartData.map((item) => {
         // UPC is now stored directly in cart item
-        const upc = item.upc || '';
+        const upc = item.upc ? String(item.upc).trim() : null;
         
         console.log('Cart item:', {
           size: item.size,
@@ -200,12 +220,21 @@ export default function Checkout() {
         });
         
         return {
+          key: getShippingItemKey(item),
           upc,
           quantity: item.quantity,
           productId: item.productId._id,
           selectedSize: item.size
         };
-      }).filter(item => item.upc); // Only include items with UPC
+      });
+
+      if (!items.length) {
+        setItemShippingOptions({});
+        setSelectedShippingMethods({});
+        setItemQuantities({});
+        setShippingCost(0);
+        return;
+      }
 
       console.log('Shipping request items:', items); // Debug log
 
@@ -231,7 +260,7 @@ export default function Checkout() {
 
       res.data.items.forEach((itemData, index) => {
         const cartItem = items[index];
-        const key = `${cartItem.productId}-${cartItem.upc}`;
+        const key = cartItem.key;
         
         shippingOptions[key] = itemData.shippingOptions;
         quantities[key] = cartItem.quantity; // Store quantity for this item
@@ -303,6 +332,11 @@ export default function Checkout() {
 
       console.log("Session from backend ➜", data);   // verify sessionId value
 
+      if (data.sessionUrl) {
+        window.location.assign(data.sessionUrl);
+        return;
+      }
+
       const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
 
       if (error) {
@@ -339,7 +373,7 @@ export default function Checkout() {
       const cartItemsWithShipping = cartData.map((p) => {
         // UPC is now stored directly in cart item
         const upc = p.upc || '';
-        const itemKey = `${p.productId._id}-${upc}`;
+        const itemKey = getShippingItemKey(p);
         
         // Get selected shipping method for this item
         const selectedServiceCode = selectedShippingMethods[itemKey];
@@ -494,9 +528,7 @@ export default function Checkout() {
             <tbody>
               {cartData.map((item, idx) => {
                 const p = item.productId;
-                // UPC is now stored directly in cart item
-                const upc = item.upc || '';
-                const itemKey = `${p._id}-${upc}`;
+                const itemKey = getShippingItemKey(item);
                 const hasShippingOptions = itemShippingOptions[itemKey] && itemShippingOptions[itemKey].length > 0;
                 
                 return (

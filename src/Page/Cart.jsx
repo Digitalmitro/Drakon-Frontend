@@ -85,6 +85,12 @@ const CartPage = () => {
         },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
+
+      if (data.sessionUrl) {
+        window.location.assign(data.sessionUrl);
+        return;
+      }
+
       await stripe.redirectToCheckout({ sessionId: data.sessionId });
     } catch (err) {
       console.error('Stripe checkout error:', err);
