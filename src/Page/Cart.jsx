@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { loadStripe } from '@stripe/stripe-js';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { message } from 'antd';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -15,7 +16,44 @@ const CartPage = () => {
   const [sessionId, setSessionId] = useState(null);
   const [params] = useSearchParams();
   const token = Cookies.get('token');
-  console.log(cart);
+
+  const parseGuestCart = () => {
+    try {
+      const stored = localStorage.getItem('guest_cart');
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('Invalid guest cart in localStorage:', error);
+      return [];
+    }
+  };
+
+  const normalizedCart = (Array.isArray(cart) ? cart : []).map((item, index) => {
+    const product =
+      item?.productId && typeof item.productId === 'object'
+        ? item.productId
+        : item?.product || {};
+
+    const quantity = Number(item?.quantity ?? item?.qty ?? 1) || 1;
+    const price = Number(item?.price ?? product?.price ?? 0) || 0;
+    const rawTotal = Number(item?.total);
+    const lineTotal = Number.isFinite(rawTotal) ? rawTotal : price * quantity;
+
+    const imageSource = Array.isArray(product?.image)
+      ? product.image[0]
+      : product?.image || item?.image || '';
+
+    const itemId = product?._id || item?.productId || item?._id || `cart-item-${index}`;
+
+    return {
+      key: String(itemId),
+      productId: String(itemId),
+      title: product?.title || item?.title || 'Product',
+      image: imageSource,
+      quantity,
+      size: item?.size || product?.size,
+      total: lineTotal,
+    };
+  });
 
   useEffect(() => {
     fetchCart();
@@ -42,7 +80,7 @@ const CartPage = () => {
       }
     } else {
       // guest
-      setCart(JSON.parse(localStorage.getItem('guest_cart') || '[]'));
+      setCart(parseGuestCart());
     }
     setLoading(false);
   };
@@ -61,9 +99,13 @@ const CartPage = () => {
       }
     } else {
       // guest
-      const guestCart = JSON.parse(localStorage.getItem('guest_cart') || '[]').filter(
-        (i) => i.productId._id !== productId
-      );
+      const guestCart = parseGuestCart().filter((item) => {
+        const itemProductId =
+          item?.productId && typeof item.productId === 'object'
+            ? item.productId?._id
+            : item?.productId || item?._id;
+        return String(itemProductId) !== String(productId);
+      });
       localStorage.setItem('guest_cart', JSON.stringify(guestCart));
       setCart(guestCart);
     }
@@ -120,7 +162,7 @@ const CartPage = () => {
     }
   };
 
-  const subtotal = cart.reduce((acc, item) => acc + item.total, 0);
+  const subtotal = normalizedCart.reduce((acc, item) => acc + item.total, 0);
   const estimatedTotal = subtotal;
 
   return (
@@ -129,7 +171,7 @@ const CartPage = () => {
 
       {loading ? (
         <p>Loading...</p>
-      ) : cart.length === 0 ? (
+      ) : normalizedCart.length === 0 ? (
         <div className="bg-white p-8 rounded-lg shadow-sm text-center">
           <p className="text-gray-500 text-lg">Your cart is empty.</p>
           <button
@@ -152,20 +194,20 @@ const CartPage = () => {
                 <div className="col-span-2 text-center">Delete</div>
               </div>
 
-              {cart.map((item) => (
+              {normalizedCart.map((item) => (
                 <div
-                  key={item.productId._id}
+                  key={item.key}
                   className="flex flex-col sm:grid sm:grid-cols-12 gap-4 py-4 border-b last:border-b-0"
                 >
                   {/* Product Info */}
                   <div className="sm:col-span-5 flex items-start gap-4">
                     <img
-                      src={item.productId.image[0]}
-                      alt={item.productId.title}
+                      src={item.image}
+                      alt={item.title}
                       className="w-20 h-20 object-contain rounded-md"
                     />
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-700 text-base">{item.productId.title}</h3>
+                      <h3 className="font-semibold text-gray-700 text-base">{item.title}</h3>
                       <div className="text-sm text-gray-500 mt-1 space-y-1"></div>
                       {/* Mobile Price - Hidden on desktop */}
                       <p className="sm:hidden font-semibold mt-2 text-base">${item.total.toFixed(2)}</p>
@@ -178,7 +220,7 @@ const CartPage = () => {
                     <div className="flex items-center gap-2  rounded-md px-3 py-1">
                       {/* <span className="text-gray-500">-</span> */}
                       <span className="font-medium">
-                        {item.quantity} {item.productId?.size ?? item?.size}{' '}
+                        {item.quantity} {item.size}{' '}
                       </span>
                       {/* <span className="text-gray-500">+</span> */}
                     </div>
@@ -192,7 +234,7 @@ const CartPage = () => {
                   <div className="hidden sm:flex sm:col-span-2 items-center justify-center">
                     <button
                       className="text-gray-400 hover:text-red-500 transition"
-                      onClick={() => removeProduct(item.productId._id)}
+                      onClick={() => removeProduct(item.productId)}
                     >
                       <FaTrash size={16} />
                     </button>
@@ -202,7 +244,7 @@ const CartPage = () => {
                   <div className="sm:hidden flex justify-end mt-2">
                     <button
                       className="text-gray-400 hover:text-red-500 transition"
-                      onClick={() => removeProduct(item.productId._id)}
+                      onClick={() => removeProduct(item.productId)}
                     >
                       <FaTrash size={16} />
                     </button>

@@ -369,6 +369,18 @@ export default function Checkout() {
       };
       const normalizedBilling = normalizedShipping;
 
+      const selectedShippingSummary = Object.keys(selectedShippingMethods).reduce((acc, key) => {
+        if (acc) return acc;
+        const selectedServiceCode = selectedShippingMethods[key];
+        const options = itemShippingOptions[key] || [];
+        const selectedOption = options.find((option) => option.serviceCode === selectedServiceCode);
+        return selectedOption || null;
+      }, null);
+
+      const normalizedShippingMethod = selectedShippingSummary
+        ? (selectedShippingSummary.serviceName || selectedShippingSummary.serviceCode || "")
+        : "";
+
       // Prepare cart items with selected shipping methods
       const cartItemsWithShipping = cartData.map((p) => {
         // UPC is now stored directly in cart item
@@ -402,12 +414,26 @@ export default function Checkout() {
           paymentStatus: "Paid",
           shippingAddress: normalizedShipping,
           billingAddress: normalizedBilling,
+          shippingMethod: normalizedShippingMethod,
+          shipstationConfig: selectedShippingSummary ? {
+            carrierCode: "stamps_com",
+            serviceCode: selectedShippingSummary.serviceCode || "",
+            packageCode: "package",
+            confirmation: "none",
+          } : undefined,
         }
         : {
           paymentMethod: "Stripe",
           paymentStatus: "Paid",
           shippingAddress: normalizedShipping,
           billingAddress: normalizedBilling,
+          shippingMethod: normalizedShippingMethod,
+          shipstationConfig: selectedShippingSummary ? {
+            carrierCode: "stamps_com",
+            serviceCode: selectedShippingSummary.serviceCode || "",
+            packageCode: "package",
+            confirmation: "none",
+          } : undefined,
           cartData: cartItemsWithShipping,
           subtotal,
           shippingCost,
