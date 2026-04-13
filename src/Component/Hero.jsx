@@ -1,17 +1,24 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Carousel } from "antd";
 import { Helmet } from "react-helmet";
+import API_BASE_URL from "../config/api";
+import { fetchFirstCmsEntry } from "../utils/cmsApi";
+
 const Hero = ({ closeCart, setLoading, loading }) => {
   const navigate = useNavigate();
   const [banner, setBanner] = useState([]);
+  const [heroSection, setHeroSection] = useState({
+    title: "",
+    buttonText: "",
+    buttonUrl: "",
+  });
+
   const fetchAllBanners = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://api.drakon-sports.com/api/banners`
-      );
+      const response = await fetch(`${API_BASE_URL}/api/banners`);
       if (response.ok) {
         const data = await response.json();
         setBanner(data);
@@ -22,9 +29,35 @@ const Hero = ({ closeCart, setLoading, loading }) => {
       setLoading(false);
     }
   };
+
+  const loadHomeCms = async () => {
+    try {
+      const homeEntry = await fetchFirstCmsEntry("home");
+      if (homeEntry?.heroSection) {
+        setHeroSection((prev) => ({
+          ...prev,
+          ...homeEntry.heroSection,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching Home CMS hero section:", error);
+    }
+  };
+
+  const handleHeroCta = () => {
+    const target = (heroSection.buttonUrl || "/shop").trim();
+    if (/^https?:\/\//i.test(target)) {
+      window.location.href = target;
+      return;
+    }
+    navigate(target.startsWith("/") ? target : `/${target}`);
+  };
+
   useEffect(() => {
     fetchAllBanners();
+    loadHomeCms();
   }, []);
+
   return (
     <>
       <Helmet>
@@ -70,8 +103,8 @@ const Hero = ({ closeCart, setLoading, loading }) => {
                 >
                   <div className={`text-white px-4 `}>
                     <h2 className="  mb-10 lg:w-[850px] ">
-                      <span className="text-amber-500 md:text-7xl text-3xl font-semibold leading-[1.5]">
-                        {img.title}
+                      <span className="text-amber-500 md:text-7xl text-3xl font-semibold leading-[1.5] whitespace-pre-line">
+                        {heroSection.title || img.title}
                       </span>
                       <br />
                       {/* <span>{img.description}</span> */}
@@ -88,9 +121,9 @@ const Hero = ({ closeCart, setLoading, loading }) => {
                           "&:hover": { backgroundColor: "#be410c" },
                         }}
                         variant="contained"
-                        onClick={() => navigate("/shop")}
+                        onClick={handleHeroCta}
                       >
-                        Shop Now
+                        {heroSection.buttonText || "Shop Now"}
                       </Button>
                     </div>
                   </div>

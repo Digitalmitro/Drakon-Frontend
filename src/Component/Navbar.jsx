@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -18,17 +18,14 @@ import logo from "../assets/logo.png";
 import search from "../assets/search.png";
 import profile from "../assets/profile.png";
 import { useMediaQuery } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { cartModal, removeItem } from "../Redux/CartSlice";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useCart } from "../context/CartContext";
 import { useUser } from "../hooks/useUser";
+import { fetchFirstCmsEntry } from "../utils/cmsApi";
 
 const drawerWidth = 240;
-const navItems = [
+const defaultNavItems = [
   { name: "HOME", path: "/" },
   { name: "ABOUT", path: "/about" },
   { name: "SHOP", path: "/shop" },
@@ -42,14 +39,16 @@ const navItems = [
 
 function Navbar(props) {
   const navigate = useNavigate();
-  const location = useLocation();
   const { window } = props;
-  const token = Cookies.get("token");
-  const decodedToken = token && jwtDecode(token);
-  const user = decodedToken?.email;
-  const user_id = decodedToken?._id;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [data, setData] = useState();
+  const [navItems, setNavItems] = useState(defaultNavItems);
+  const [headerLogo, setHeaderLogo] = useState("");
+  const [logoLoadFailed, setLogoLoadFailed] = useState(false);
+  const [announcementBar, setAnnouncementBar] = useState({
+    text: "",
+    linkText: "",
+    linkUrl: "",
+  });
   const { user: userData, setUser } = useUser()
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -77,60 +76,68 @@ function Navbar(props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-  // CART PRODUCTS
   const { cart } = useCart();
-  const products = useSelector((state) => state.cartReducer.items);
-  const isOpenCart = useSelector((state) => state.cartReducer.openCartModal);
-  const dispatch = useDispatch();
-  // const pathname = window.location
-  console.log("products", products);
-  console.log("loaction ", location.pathname);
-  const handleOpenChange = () => {
-    dispatch(cartModal(!isOpenCart));
-  };
 
-  // cartData
-  const handleProduct = async () => {
+  const loadCmsData = async () => {
     try {
-      const response = await axios.get(
-        `https://api.drakon-sports.com/wishlist/${user_id}`
-      );
+      const [homeEntry, headerEntry] = await Promise.all([
+        fetchFirstCmsEntry("home"),
+        fetchFirstCmsEntry("header"),
+      ]);
 
-      setData(response.data.wishlist.reverse());
+      if (homeEntry?.announcementBar) {
+        setAnnouncementBar((prev) => ({
+          ...prev,
+          ...homeEntry.announcementBar,
+        }));
+      }
+
+      if (headerEntry?.logo) {
+        setHeaderLogo(headerEntry.logo);
+      }
+
+      if (Array.isArray(headerEntry?.navItems)) {
+        const cmsNavItems = headerEntry.navItems.filter(
+          (item) => item?.name && item?.path
+        );
+        if (cmsNavItems.length) {
+          setNavItems(cmsNavItems);
+        }
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Failed to load CMS data:", error);
     }
   };
 
   useEffect(() => {
-    handleProduct();
+    loadCmsData();
   }, []);
 
-  const handleDeleteCart = async (wishlistId, productId) => {
-    dispatch(removeItem(productId));
-    try {
-      const deletedData = await axios.delete(
-        `https://api.drakon-sports.com/wishlist/${wishlistId}`
-      );
-      handleProduct();
+  useEffect(() => {
+    setLogoLoadFailed(false);
+  }, [headerLogo]);
 
-      console.log("deletedData", deletedData);
-    } catch (error) {
-      console.log(error);
-    }
+  const cmsLogo = typeof headerLogo === "string" ? headerLogo.trim() : "";
+  const logoSrc = logoLoadFailed ? logo : cmsLogo || logo;
+  const showAnnouncement = Boolean(announcementBar.text || announcementBar.linkText);
+  const announcementHref = announcementBar.linkUrl || "/shop";
+  const isExternalAnnouncementLink = /^https?:\/\//i.test(announcementHref);
+  const displayName = userData?.name || userData?.user?.name || "User";
+  const displayInitial = displayName?.charAt(0)?.toUpperCase() || "U";
+
+  const handleLogoError = () => {
+    setLogoLoadFailed(true);
   };
 
-
-
-  console.log(userData, "userData in navbar");
   // NAV Items
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <div className="flex justify-center p-5 ">
         <img
           onClick={() => navigate("/")}
-          src={logo}
+          src={logoSrc}
           alt="logo"
+          onError={handleLogoError}
           className=""
           style={{ zoom: "0.7", cursor: "pointer" }}
         />
@@ -174,20 +181,31 @@ function Navbar(props) {
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <CssBaseline />
       <AppBar component="nav" sx={{ background: "#F3F3F3", boxShadow: "none" }}>
-        <Box className="bg-[#ff5B00]">
-          <Box
-            className="lg:max-w-full px-10 py-4 mx-auto gap-[3px] hidden lg:flex justify-center items-center"
-            sx={{
-              zoom: isMobile ? "0.2" : "0.5",
-            }}
-          >
-            <Box className="flex">
-              <Typography variant="h4" className="flex gap-2">
-                Shop Our Fall Buying Guide:<Link>Gear Up</Link>
-              </Typography>
+        {showAnnouncement ? (
+          <Box className="bg-[#ff5B00]">
+            <Box
+              className="lg:max-w-full px-10 py-4 mx-auto gap-[3px] hidden lg:flex justify-center items-center"
+              sx={{
+                zoom: isMobile ? "0.2" : "0.5",
+              }}
+            >
+              <Box className="flex">
+                <Typography variant="h4" className="flex gap-2">
+                  <span>{announcementBar.text}</span>
+                  {announcementBar.linkText ? (
+                    isExternalAnnouncementLink ? (
+                      <a href={announcementHref} target="_blank" rel="noreferrer">
+                        {announcementBar.linkText}
+                      </a>
+                    ) : (
+                      <Link to={announcementHref}>{announcementBar.linkText}</Link>
+                    )
+                  ) : null}
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        ) : null}
 
         <Toolbar
           className="lg:h-[100px]"
@@ -197,8 +215,9 @@ function Navbar(props) {
 
             <img
               onClick={() => navigate("/")}
-              src={logo}
+              src={logoSrc}
               alt="logo"
+              onError={handleLogoError}
               className="w-36 cursor-pointer block lg:hidden"
             />
             <IconButton
@@ -213,8 +232,9 @@ function Navbar(props) {
 
             <img
               onClick={() => navigate("/")}
-              src={logo}
+              src={logoSrc}
               alt="logo"
+              onError={handleLogoError}
               className="w-48 cursor-pointer logoMobile md:hidden lg:block"
             />
           </div>
@@ -242,7 +262,7 @@ function Navbar(props) {
               <div
                 className=" justify-center items-center cursor-pointer hidden lg:flex">
                 {userData ?
-                  <p className="flex items-center gap-1 user-btn" onClick={() => setDropdownOpen(!dropdownOpen)}  > <span className="h-10 w-10 border rounded-full bg-orange-500 text-white font-bold grid place-items-center ">{userData.name.at(0)}</span> {userData.name}</p>
+                  <p className="flex items-center gap-1 user-btn" onClick={() => setDropdownOpen(!dropdownOpen)}  > <span className="h-10 w-10 border rounded-full bg-orange-500 text-white font-bold grid place-items-center ">{displayInitial}</span> {displayName}</p>
                   :
                   <>
                     <p className="flex gap-1 items-center" onClick={() => navigate("/account")}>MY ACCOUNT<img src={profile} alt="" className="h-10 p-1 pb-2 block" /></p>

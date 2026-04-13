@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import API_BASE_URL from "../config/api";
 
 
 
@@ -10,14 +11,20 @@ export function useUser() {
     const [error, setError] = useState(null);
 
     const token = Cookies.get("token");
-    const decodedToken = token ? jwtDecode(token) : null;
+    let decodedToken = null;
+    try {
+        decodedToken = token ? jwtDecode(token) : null;
+    } catch (error) {
+        Cookies.remove("token");
+        decodedToken = null;
+    }
 
     const getUserById = async () => {
         setLoading(true);
         setError(null);
 
         try {
-            const res = await fetch(`https://api.drakon-sports.com/user/profile`, {
+            const res = await fetch(`${API_BASE_URL}/user/profile`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
